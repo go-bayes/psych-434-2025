@@ -1,0 +1,1420 @@
+---
+title: "Causal Inference: Effect-Modification and Interaction"
+date: "2024-APR-22"
+bibliography: /Users/joseph/GIT/templates/bib/references.bib
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    warnings: FALSE
+    error: FALSE
+    messages: FALSE
+    code-overflow: scroll
+    highlight-style: kate
+    code-tools:
+      source: true
+      toggle: FALSE
+html-math-method: katex
+reference-location: margin
+citation-location: margin
+cap-location: margin
+code-block-border-left: true
+---
+
+
+```{=html}
+<style>
+  .boxedblue {
+      border: 2px solid blue;
+      border-radius: 4px; /* slight roundness */
+      padding: 3px 6px; /* vertical | horizontal */
+      display: inline-block;
+      color: blue;
+  }
+  .circleblue {
+      border: 2px dashed blue;
+      border-radius: 50%;
+      padding: 3px 6px;
+      display: inline-block;
+      color: blue;
+  }
+</style>
+```
+
+
+```{r}
+#| include: false
+# for information about this template: https://github.com/mikemahoney218/quarto-arxiv/blob/main/template.qmd
+#libraries and functions
+# read libraries
+library("tinytex")
+library(extrafont)
+loadfonts(device = "win")
+
+# fix G = 1
+# fix hats
+# fix examples
+
+# read functions
+#source("/Users/joseph/GIT/templates/functions/funs.R")
+```
+
+::: {.callout-note}
+**Required**
+- [@hernan2024WHATIF] Chapters 4-5 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+**Optional**
+- [@vanderweele2007FOURTYPESOFEFFECT] [link](https://www.dropbox.com/scl/fi/drytp2ui2b8o9jplh4bm9/four_types_of_effect_modification__a.6.pdf?rlkey=mb9nl599v93m6kyyo69iv5nz1&dl=0)
+- [@vanderweele2009distinction] [link](https://www.dropbox.com/scl/fi/srpynr0dvjcndveplcydn/OutcomeWide_StatisticalScience.pdf?rlkey=h4fv32oyjegdfl3jq9u1fifc3&dl=0)
+:::
+
+::: {.callout-important}
+## Key concepts for the test(s):
+  - **Causal Estimand**
+  - **Statistical Estimand**
+  - **Interaction/Moderation**
+  - **Heterogeneous Treatment Effects**
+  - **Conditional Average Treatment Effect**
+  - **Effect Modification**
+:::
+
+
+## If you learning nothing else from this course...
+
+
+To answer a psychological question we must first ask it.
+
+
+## Causal inference begins by stating a counterfactual contrast
+
+
+In the simpliest case, we calculate the contrast between two or more "treatments" or equivalently "exposures":
+
+
+
+$$
+\text{Average Treatment Effect} = \mathbb{E}[Y(a^*) -Y(a)]
+$$
+
+
+
+### After Stating the Causal Interest, We State the Conditions Needed for Identifying This Effect from Data
+
+In observational studies, the next step is to identify this effect by controlling for common causes of both the treatment and outcome (or proxies of such common causes). The regression standardization formula is:
+
+$$
+\widehat{\text{ATE}} = \int \left( \mathbb{E}[Y(a^*) \mid L] - \mathbb{E}[Y(a) \mid L] \right) dP(L)
+$$
+
+Where:
+
+- **Statistical Estimand**: $\widehat{\text{ATE}}$, is the estimated average treatment effect.
+- **$\mathbb{E}[Y(a^*) \mid L]$**: is the expected value (mean) of the outcome variable $Y$ when the treatment $a^*$ is applied, given the confounders $L$.
+- **$\mathbb{E}[Y(a) \mid L]$**: is the expected value of $Y$ when the treatment $a$ is applied, given $L$.
+- **$\mathbb{E}[Y(a^*) \mid L] - \mathbb{E}[Y(a) \mid L]$**: is the difference in the expected treatments, controlling for $L$.
+- **$\int (...) dP(L)$**: $dP(L)$ is an integral (remember high school math?). Integrals give us areas under curves. Here the area is a distribution of probabilities. To obtain valid inference, the treatment effect is computed over all the probability distribution of $L$ in the population.
+
+### So, in the simplest possible terms
+
+Understanding causal inference is fundamentally about comparing what happened with what could have happened *an average* under different conditions or treatments *in some population*, while carefully accounting for factors that might confound or distort the comparison that interests us (i.e. that might give a false answer to the question we asked).
+
+
+##  What do the words "Moderation" and "Interaction" mean? 
+
+
+We here these words used freely in psychology.  What do they mean?   Causal inference allows us to be precise. 
+
+
+Let's set the term *moderation* to the side, and in its place consider "effect-modification." Our task today is to use counterfactual notation to distinguish between two concepts: 
+
+1. Interaction
+2. Effect-modification
+
+
+
+## Interaction
+
+
+An interaction is a **joint intervention**
+
+When assessing "interaction" we are interested in  the combined effect of two interventions (two "treatments" or "exposures").  
+
+Call these treatments, $A$ and $B$.  Call the outcome $Y$.
+
+Recall that in potential outcomes terminology, we defined the potential outcome under treatment $A = \tilde{a}$:
+
+$$
+Y(\tilde{a})
+$$
+
+And we identify $Y(\tilde{a})$ from data using the consistency assumption: $Y_i(\tilde{a}) = (Y_i |A_i = \tilde{a})$, assuming that $Y_i(\tilde{a})\coprod A|L$, where, again, $L$ donotes a set of measured covariates sufficient to insure no confounding (no common causes), or equivalently, no open backdoor path between $A$ and $Y$.
+
+
+A joint intervention of two treatments, call them $A$ and $B$, which may act on $Y$, requires that we extend our notation:
+
+$$
+Y(\tilde{a}, \tilde{b})
+$$
+This is the effect on $Y$ when $A$ is set to $\tilde{a}$ amd $B$ is set to $\tilde{b}$.
+
+
+In addition to requiring $Y_i(\tilde{a}) = (Y_i \mid A_i = \tilde{a})$, assuming that $Y_i(\tilde{a}) \coprod A \mid L$, we require that for all $i \in 1\dots N$ individuals in the target population, both $Y_i(\tilde{b}) = (Y_i \mid B_i = \tilde{b})$, and that $Y_i(\tilde{b}) \coprod B \mid Q$, where $Q$ denotes a set of confounders sufficient to ensure no confounding for the effect of $B$ on $Y$. 
+
+Notably, the sets $L$ and $Q$ may have overlapping variables, which in set notation we write: 
+
+$$
+L \cap Q \not\equiv \emptyset
+$$
+
+That is the union of $L$ and $Q$ does not imply the empty set,  which implies that identification may be harder when there are interactions.  Statistical estimation is more difficult too, but we'll ignore that. 
+
+
+
+### How do we define such a contrast between two interventions of equal status in our model? 
+
+
+Consider the effect of beliefs in Big Gods (treatment, denoted  $A$) on social complexity (outcome, denoted$Y$), potentially influenced by a culture's monumental architecture (treatment, denoted $B$). Suppose we wish to assess the individual and combined effects of $A$ and $B$ on the difference scale.  Let assume the treatments are binary variables.
+
+
+In the counterfactual framework, we say there is evidence for interaction only if the following inequality were to hold:
+
+$$\bigg(\underbrace{\mathbb{E}[Y(1,1)]}_{\text{joint exposure}} - \underbrace{\mathbb{E}[Y(0,0)]}_{\text{neither exposed}}\bigg) - \bigg[ \bigg(\underbrace{\mathbb{E}[Y(1,0)]}_{\text{only A exposed}} - \underbrace{\mathbb{E}[Y(0,0)]}_{\text{neither exposed}}\bigg) + \bigg(\underbrace{\mathbb{E}[Y(0,1)]}_{\text{only B exposed}} - \underbrace{\mathbb{E}[Y(0,0)]}_{\text{neither exposed}} \bigg)\bigg] \neq 0 $$
+
+
+Expanding the terms inside the brackets:
+
+   $$ \mathbb{E}[Y(1,1)] - \mathbb{E}[Y(0,0)] - \mathbb{E}[Y(1,0)] + \mathbb{E}[Y(0,0)] - \mathbb{E}[Y(0,1)] + \mathbb{E}[Y(0,0)] $$
+
+
+And cancelling $\mathbb{E}[Y(0,0)]$, which appears three times, once with a minus sign and twice with a plus sign, simplifies to:
+
+
+   $$ \mathbb{E}[Y(1,1)] - \mathbb{E}[Y(1,0)] - \mathbb{E}[Y(0,1)] + \mathbb{E}[Y(0,0)] $$
+
+
+And we define interaction on the additive scale:
+
+$$ \underbrace{\mathbb{E}[Y(1,1)]}_{\text{joint exposure}} - \underbrace{\mathbb{E}[Y(1,0)]}_{\text{only A exposed}} - \underbrace{\mathbb{E}[Y(0,1)]}_{\text{only B exposed}} + \underbrace{\mathbb{E}[Y(0,0)]}_{\text{neither exposed}} \neq 0 $$
+
+The estimand is net interaction effect, after accounting for the individual effects of $A$ and $B$, as well as the baseline where neither treatment $A$ nor treatment $B$ is given.
+
+
+
+A positive value would indicate evidence for additive interaction. A negative value would indicate evidence for sub-additive interaction. A value near zero would imply no reliable evidence for interaction.
+
+
+Note that the order of the terms does not matter: 
+
+
+$$
+Y(\tilde{a}, \tilde{b})\equiv Y(\tilde{b}, \tilde{a})
+$$
+
+
+#### Having defined the causal estimand, we next consider what would be needed to identify it using data?
+
+For this we can write our causal diagram. @fig-dag-interaction describes the structure of the identification problem:
+
+```{tikz}
+#| label: fig-dag-interaction
+#| fig-cap: "This diagram presents the individual and joint effects of two exposures, A and B, on outcome Y. We assume that A and B are causally independent. If either exposure affects the other, then we may conduct effect-modification analysis or mediation analysis, but we should avoid causal interaction analysis. The diagram includes confounders L and W. Control for these confounders is necessary to close the backdoor paths that relate each exposure, A and B, to the outcome. Each exposure has equal status in our model: Y(a,b) = Y(b,a). The red path denotes paths of confounding."
+#| out-width: 100%
+#| echo: false
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\begin{tikzpicture}[{every node/.append style}=draw]
+
+\node [rectangle, draw=white] (LA) at (0, .5) {L$_{0}$};
+\node [rectangle, draw=white] (LB) at (0, -.5) {Q$_{0}$};
+\node [rectangle, draw=white] (A) at (2, .5) {A$_{1}$};
+\node [rectangle, draw=white] (B) at (2, -.5) {B$_{1}$};
+\node [rectangle, draw=white] (Y) at (5, 0) {Y$_{2}$};
+
+
+\draw [-latex, draw=red] (LA) to (A);
+\draw [-latex, draw=red] (LB) to (B);
+\draw [-latex, draw=red, bend left] (LA) to (Y);
+\draw [-latex, draw=red, bend right] (LB) to (Y);
+
+%\draw [-latex, draw=black] (A) to (Y);
+%\draw [-latex, draw=black] (B) to (Y);
+
+
+\end{tikzpicture}
+
+```
+
+Here, @fig-dag-interaction clarifies the need to evaluate two sources of counfounding, one for each intervention ($A$ and $B$).
+
+By adjusting for $L_{0}$ we obtain an unbiased estimate of the $A\to Y$ path. 
+
+By adjusting for $Q_{0}$ we obtain an unbiased estimate of the $B\to Y$ path. As indicated in @fig-dag-interaction-solved, we must condition on both $L_{0}$ and $Q_{0}$ to identify causal interaction conceived as a joint interaction. 
+
+
+<!-- [^noteinteraction] -->
+
+<!--  [^noteinteraction]: An important complication is that evidence for causal interaction may differ depending on the measurement scale one chooses to assess it [@vanderweele2014; @vanderweele2012; @vanderweele2014]. For most applications in psychological science we would use the the causal difference scale (refer to @vanderweele2014 for discussion).  We set this complication to the side, noting that investigators must state the scale of causal contrast on which there study focusses.  -->
+
+
+
+```{tikz}
+#| label: fig-dag-interaction-solved
+#| fig-cap: "We adjust for confounding in causal interaction analysis by adjusting for all confounders of the A to Y path as well as all for the B to Y path. The box over the confounders indicates the biasing paths are closed."
+#| out-width: 80%
+#| echo: false
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\begin{tikzpicture}[{every node/.append style}=draw]
+
+\node [rectangle, draw=black] (LA) at (0, .5) {L$_{0}$};
+\node [rectangle, draw=black] (LB) at (0, -.5) {Q$_{0}$};
+\node [rectangle, draw=white] (A) at (2, .5) {A$_{1}$};
+\node [rectangle, draw=white] (B) at (2, -.5) {B$_{1}$};
+\node [rectangle, draw=white] (Y) at (5, 0) {Y$_{2}$};
+
+
+\draw [-latex, draw=black] (LA) to (A);
+\draw [-latex, draw=black] (LB) to (B);
+\draw [-latex, draw=black, bend left] (LA) to (Y);
+\draw [-latex, draw=black, bend right] (LB) to (Y);
+
+%\draw [-latex, draw=black] (A) to (Y);
+%\draw [-latex, draw=black] (B) to (Y);
+
+
+\end{tikzpicture}
+
+```
+
+
+Consider the following set of plausible confounders:
+
+**L**: variables in $L$ that might confound the relationship between beliefs in Big Gods and social complexity:
+
+1. **General religiosity**: prevalence of religion might influence both the belief in Big Gods and social complexity.
+2. **Cultural norms and values**: ingrained social norms and values, not any part of religion.
+3. **Historical path dependent events**: e.g. conquest.
+4. **Education**: affects religious beliefs and the complexity.
+5. **Economic development**: economic conditions might whether people prefer religious practices or resource intensive hobbies and also, social complexity.
+6. **Political stability**: stable governance can influence both the proliferation of religious practices and the development of complex social structures
+7. **Political complexity in the past**:  huge confounder, must be adjusted for.
+8. **Beliefs in big gods in the past**: huge confounder, must be adjusted for.
+
+**Q**: variables in $Q$ that that might confound the relationship between monumental architecture and social complexity:
+ 
+1. **Technology**: for constructing of monumental architecture and managing social complexity.
+2. **Economic resources**: as above (overlap)
+3. **Historical path dependent events**: e.g. conquestm as above
+4. **Labour**: the availability of builders, slaves, etc.
+5. **Geography**: natural resources can affect a society's ability to build monumental structures and its social development.
+6. **Cultural norms and values**: ingrained social norms and values, not any part of religion.
+7. **Political complexity in the past**:  huge confounder, must be adjusted for.
+8. **Beliefs in big gods in the past**: huge confounder, must be adjusted for.
+
+
+
+As we see:
+
+$$
+L \cap Q \not\equiv \emptyset
+$$
+
+
+However, the set of control variables are larger, and note, we are assuming that monumental architecture and big God beliefs do not affect each other. 
+
+
+## Effect Modification
+
+**It is often scientifically interesting to consider whether treatment effects vary over levels of other variable without imagining a double intervention.** 
+Broadly, we will think of "effect-modification" as a set of related and overlapping concepts pertaining to the understanding variability of a single effect within a population.  
+
+
+### Heterogeneous Treatment Effects -- a broad concept of effect-modification
+
+
+Heterogeneous Treatment Effects (HTE) refer to settings where treatment effects vary across individuals or subgroups within a study population. This variability can arise from differences in baseline characteristics, environmental conditions, histories, .... much of which is unmeasured. 
+
+**Appendix A** discusses the challenges in identifying HTE from data, but we already know that individual causal effects are not typically identifiable, and so heteroeneous treatment effects, at the limit of individual causal effects, are elusive. 
+
+
+
+### Conditional Average Treatment Effect (CATE) -- a narrower concept of effect-modification.
+
+We might be interested estimating average treatment effects within specific levels of measured covariates
+
+When our focus is estimation of the average treatment effect conditional on a specific level of a covariate or set of covariates. Our causal estimand is often written:
+
+ $$\text{CATE}(x) = E[Y(1) - Y(0) | X = x]$$ 
+ 
+ where $X = x$, where $X$ denotes the level of a measured covariate or covariates of interest. 
+
+The question: how does a causal effect vary within the population defined by levels of stratum $X=x$ 
+
+
+### Comparing Effect Heterogenity in Groups. 
+
+
+
+We might be interested in the following causal quantity (estimand), which compares two conditional average treatment effects between levels defined by $G = \tilde{g}$:
+
+
+$${\gamma} = \overbrace{\big( \mathbb{E}[Y(a^*)|G=g] - \mathbb{E}[Y(a)|G=g] \big)}^{{\delta_g}} - \overbrace{\big(\mathbb{E}[Y(a^*)|G=g^{\prime}]- \mathbb{E}[Y(a)|G=g']\big)}^{{\delta_{g^{\prime}}}}$$
+
+
+Suppose $A$ is the treatment, $G$ is the effect-modifier, and $Y$ is the outcome. The analysis of effect-modification assesses whether the effect of $A$ on $Y$ is different across levels of $G$ (i.e., whether the effect of $A$ on $Y$ is different when $G = g_1$ compared to when $G = g_2$).
+
+What do we need to identify such effects?  Note that $G$ here is not an intervention variable. It might not be coherent to imagine that $G$ *can* be intervened upon. 
+
+@fig-dag-effect-modification is a causal diagram. Imagine we are intereste in whether the effect of $A$ on $Y$ differs across levels of $G$. Because we are not interested in the causal effect of $G$ as such, but rather, how the effect of $A$ varies across $G$, we need *not* adjust by $Q$.  However, which variables shall we include in our model?  What will happen if we assess the $G$ by examining a regression coefficient?  Suppose $L$ were not a confounder of $A$ to $Y$.  How then should we interpret our model?  
+
+
+
+```{tikz}
+#| label: fig-dag-effect-modification
+#| fig-cap: "Imagine A is an experiment. How shall we investigate effect modification of A on Y by Z? Can you see why regression coefficients will not work?"
+#| out-width: 80%
+#| echo: false
+
+
+
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}
+
+\node [rectangle, draw=white, thick] (Q) at (-4,0) {Q};
+\node [black] (G) at (-2,0) {G};
+\node [rectangle, draw=black,thick] (L) at (0,0) {L$_{0}$};
+\node [rectangle, draw=white, thick] (A) at (2,0) {A$_{1}$};
+
+\node [emoddot] (Z) at (0, -1) {Z};
+
+\node [rectangle, draw=white, thick] (Y) at (4,0) {Y$_{2}$};
+
+\draw[Arrow, draw=black] (Q) to (G);
+\draw[Arrow, draw=black] (G) to (L);
+\draw[Arrow, draw=black] (L) to (A);
+\draw[Arrow, draw=black, bend left = 30] (L) to (Y);
+\draw[Arrow, draw=black, bend right = 40] (Q) to (Y);
+\draw [-latex, draw=black] (A) to (Y);
+\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend right = 10] (Z) to (Y); Circle-ended arrow
+\end{tikzpicture}
+```
+
+
+
+Often, it is useful to obtain causal effects by restricting to one level of a population. Where $G$ denotes a society, consider:
+
+
+
+
+1.  **Causal effect within North American societies (**$G=1$):
+    $$\delta_{g_1} = \mathbb{E}[Y(1)|G= g_1] - \mathbb{E}[Y(0)|G = g_1]$$ 
+    
+Here, $\delta_{g_2}$ represents the estimated causal effect of changing the exposure from $A = 0$ to $A = 1$ within the North American societies.
+
+2.  **Causal effect within Continental societies (**$G=g_2$):
+
+    $$\delta_{g2} = \mathbb{E}[Y(1)|G=g_2] - \mathbb{E}[Y(0)|G=g_2]$$
+
+    Similarly, ${\delta}_{g_2}$ denotes the estimated causal effect for the Continental societies.
+
+3.  **Comparing causal effects across groups**:
+
+    $${\gamma} = {\delta}_{g_1} - {\delta}_{g_2}$$ 
+    
+The quantity ${\gamma}$ defines the difference in the causal estimands between the two groups. A nonzero $\hat{\gamma}$ indicates effect-modification, suggesting that the effect of changing the exposure differs between the two groups. If we were to observe that $\hat{\gamma} \neq 0$, this would provide evidence for variability in the effect of the exposure on the outcome in different groups. Note that the causal effect for one group might be indistinguishable from zero, and yet we might nevertheless find evidence for effect-modification if the comparison group exhibits reliably different responses from the contrast group that is indistinguishable from zero.
+
+
+
+That's it, we now know our causal quantity of interest.  Next week, we'll develop our statistical estimands, estimators, and begin evaluating effect-modification by groups. 
+
+
+### Summary of what we learned
+
+- Interaction targets a joint intervention in a population
+- Effect modificiation targets how a single intervention varies by groups within a population
+
+Note, to obtain the group-wise contrasts, we must be able to imagine the groups as belonging to a larger population. When thinking of people, we all belong Later we shall consider how measurement complicates this assumption, even if all humans belong to the same species...
+
+
+## Lab Part 1: Setting up your data
+
+
+### Set up your libraries
+
+```{r}
+library("margot")
+library("tidyverse")
+library("ggplot2")
+library("here")
+library("skimr")
+if (!require(gtsummary)) install.packages("gtsummary")
+if (!require(janitor)) install.packages("janitor")
+
+
+# if you need to update the margot package, uncomment and do this
+# devtools::install_github("go-bayes/margot")
+#devtools::install_github("go-bayes/margot")
+```
+
+
+
+
+### Set up a path to a folder in your directory 
+
+
+This will allow you to save the outputs of models and other information, which will be handy when you are producing your manuscript. Call this `push_mods`
+
+```{r}
+### Set up a path to a folder in your directory 
+
+# create a folder called saved and make a path like this
+push_mods <- here::here('/Users/joseph/Library/CloudStorage/Dropbox-v-project/data/saved')
+
+# view it (will be different for you)
+push_mods
+
+# another option
+# saveRDS(object, here::here(push_mods, "object"))
+
+```
+
+
+
+### Initial Data Wrangling to select the study sample
+
+#### Where to find variable names information
+
+Find it the data directory here: <https://osf.io/75snb/>
+
+Also see here: <https://github.com/go-bayes/templates/tree/main/method>
+
+
+#### Think, what are my eligibility criteria? 
+
+- Participated in at baseline
+- Participated at treatment wave
+- May have been lost to follow up at the end of the study
+- Full information on the treatment variable (think about this...)
+
+
+
+```{r}
+library(margot)
+# eliminate haven labels
+df_nz <- as.data.frame(df_nz)
+df_nz <- haven::zap_formats(df_nz)
+df_nz <- haven::zap_label(df_nz)
+df_nz <- haven::zap_widths(df_nz)
+
+# name output folder
+push_mods <- here::here("outputs")
+
+# set exposure name
+name_exposure <-  "perfectionism"
+
+# obtain ids for individuals who participated in 2018 and have no missing baseline exposure
+ids_2018 <- df_nz %>%
+   dplyr::filter(year_measured == 1, wave == 2018) %>%
+   dplyr::filter(!is.na(!!sym(name_exposure))) |> # criteria, no missing
+  pull(id)
+
+# obtain ids for individuals who participated in 2019
+ids_2019 <- df_nz %>%
+   dplyr::filter(year_measured == 1, wave == 2019) %>%
+   dplyr::filter(!is.na(!!sym(name_exposure))) |> # criteria, no missing
+  pull(id)
+
+# intersect IDs from 2018 and 2019 to ensure participation in both years
+ids_2018_2019 <- intersect(ids_2018, ids_2019)
+
+# data wrangling
+dat_long <- df_nz |>
+  dplyr::filter(id %in% ids_2018_2019 &
+                  wave %in% c(2018, 2019, 2020)) |>
+  arrange(id, wave) |>
+  select(
+    "id",
+    "wave",
+    "year_measured",
+    "age",
+    "male",
+    "born_nz",
+    "eth_cat",
+    #factor(EthCat, labels = c("Euro", "Maori", "Pacific", "Asian")),
+    "employed",
+    # Are you currently employed? (this includes self-employment or casual work)
+    "edu",
+    # "gen_cohort",
+    "household_inc",
+    "partner",
+    # 0 = no, 1 = yes
+    "parent",
+    "alert_level_combined_lead", # see bibliography
+    # 0 = no, 1 = yes
+    "political_conservative", # see nzavs sheet
+    "hours_exercise", # see nzavs sheet
+    "agreeableness", 
+    # Mini-IPIP6 Agreeableness (also modelled as empathy facet)
+    # Sympathize with others' feelings.
+    # Am not interested in other people's problems.
+    # Feel others' emotions.
+    # Am not really interested in others.
+    "conscientiousness",
+    # see mini ipip6
+    # Get chores done right away.
+    # Like order.
+    # Make a mess of things.
+    # Often forget to put things back in their proper place.
+    "extraversion",
+    # Mini-IPIP6 Extraversion
+    # Am the life of the party.
+    # Don't talk a lot.
+    # Keep in the background.
+    # Talk to a lot of different people at parties.
+    "honesty_humility",
+    # see mini ipip6
+    # Would like to be seen driving around in a very expensive car.
+    # Would get a lot of pleasure from owning expensive luxury goods.
+    # Feel entitled to more of everything.
+    # Deserve more things in life.
+    "openness",
+    # see mini ipip6
+    # Have a vivid imagination.
+    # Have difficulty understanding abstract ideas.
+    # Do not have a good imagination.
+    # Am not interested in abstract ideas.
+    "neuroticism",
+    # see mini ipip6
+    # Have frequent mood swings.
+    # Am relaxed most of the time.
+    # Get upset easily.
+    # Seldom feel blue.
+    "modesty",
+    # # see mini ipip6
+    # # I want people to know that I am an important person of high status,
+    # # I am an ordinary person who is no better than others.
+    # # I wouldn’t want people to treat me as though I were superior to them.
+    # # I think that I am entitled to more respect than the average person is
+    #"w_gend_age_ethnic",
+    "sample_weights", # see nzavs sheet
+    "neighbourhood_community",
+    # #I feel a sense of community with others in my local neighbourhood.
+    "belong", # see nzavs sheet
+    "rural_gch_2018_l",# see nzavs sheet
+    "support",
+    # "support_help",
+    # # 'There are people I can depend on to help me if I really need it.
+    # "support_turnto",
+    # # There is no one I can turn to for guidance in times of stress.
+    # "support_rnoguidance",
+    #There is no one I can turn to for guidance in times of stress.
+    "perfectionism",
+    "religion_religious",
+    "kessler_latent_depression",
+    "kessler_latent_anxiety"
+  ) |>
+  mutate(
+    #initialize 'censored'
+    censored = ifelse(lead(year_measured) == 1, 1, 0),
+    
+    # modify 'censored' based on the condition; no need to check for NA here as 'censored' is already defined in the previous step
+    censored =  ifelse(is.na(censored) &
+                         year_measured == 1, 1, censored)
+  ) |>
+  select(-year_measured) |>
+  dplyr::mutate(
+    # rescale these variables, to get all variables on a similar scale
+    # otherwise your models can blow up, or become uninterpretable. 
+    household_inc_log = log(household_inc + 1),
+    hours_exercise_log = log(hours_exercise + 1)  ) |>
+  dplyr::select(
+    -c(
+      household_inc,
+      hours_exercise)
+  ) |>
+  droplevels() |>
+  # dplyr::rename(sample_weights = w_gend_age_ethnic,
+  #               sample_origin =  sample_origin_names_combined) |>
+  arrange(id, wave) |>
+  mutate(
+  rural_gch_2018_l = as.numeric(as.character(rural_gch_2018_l)),
+  #   parent = as.numeric(as.character(parent)),
+  partner = as.numeric(as.character(partner)),
+  born_nz = as.numeric(as.character(born_nz)),
+  censored = as.numeric(as.character(censored)),
+  employed = as.numeric(as.character(employed))
+  ) |>
+  droplevels() |>
+  data.frame() |>
+  droplevels() |>
+  arrange(id, wave) |>
+  data.frame()
+
+# check n in this sample
+n_participants <- skimr::n_unique(dat_long$id)
+
+
+# make number pretty
+n_participants<- prettyNum(n_participants,big.mark=",")
+
+# save this so that you can use it in your manuscript
+margot::here_save(n_participants, "n_participants")
+
+# try reading 
+n_participants_did_it_work_question_mark <- margot::here_read("n_participants")
+
+
+# view
+# n_participants_did_it_work_question_mark
+```
+
+There are N = `r n_participants_did_it_work_question_mark` participants.
+
+### Define your baseline covariates, treatment (exposure), and outcome
+
+
+```{r}
+
+# for example 
+baseline_vars = c("age", "male", "edu", "eth_cat", "partner", "employed", "born_nz", "neighbourhood_community", "household_inc_log",
+"parent", "religion_religious", "rural_gch_2018_l","sample_weights", "employed", "alert_level_combined_lead")
+
+# treatment
+exposure_var = c("perfectionism", "censored") # we will use the censored variable later
+
+# outcome, can be many
+outcome_vars = c("kessler_latent_anxiety", "kessler_latent_depression")
+```
+
+
+### Make your baseline table
+
+```{r}
+library(gtsummary)
+# the setdiff command allows us to remove names from the baseline vars list that we do not want
+base_var <-
+  setdiff(baseline_vars, c("censored", "sample_weights", "alert_level_combined_lead", outcome_vars))
+
+
+#  we only want the data at baseline 
+
+# select only baseline wave
+dt_18 <- dat_long |> 
+  dplyr::filter(wave == 2018)
+
+
+# get only the baseline variables for the table
+selected_base_cols <-
+  dt_18 |> select(all_of(base_var))
+
+#check
+colnames_use <- colnames(selected_base_cols)
+colnames_use
+
+# # aside to get different names in lists
+# everything_better_cols <- c(colnames_use, "inkuk")
+# everything_better_cols
+# 
+# # get rid of name
+# everything_worse_cols <- setdiff(everything_better_cols, "inkuk")
+
+# baseline table
+library(gtsummary)
+
+
+# this is just a demo of another package, which can be useful for quick tables, less for your manuscripts
+no_miss_df <- df_nz |> 
+  drop_na()
+
+table1::table1( ~ perfectionism  | wave * eth_cat ,
+                data = no_miss_df,
+                overall = FALSE)
+
+
+
+
+table_baseline <- selected_base_cols |> 
+  janitor::clean_names(case = "title") |> 
+  tbl_summary(
+    missing = "ifany",
+    percent = "column",
+    statistic = list(
+      all_continuous() ~ c(
+        "{mean} ({sd})", # Mean and SD
+        "{min}, {max}", # Range (Min, Max)
+        "{p25}, {p75}" # IQR (25th percentile, 75th percentile)
+      )
+    ),
+    type = all_continuous() ~ "continuous2"
+  ) |>
+  modify_header(label = "**Exposure + Demographic Variables**") |> # update the column header
+  bold_labels() 
+
+
+# baseline
+table_baseline
+
+# save your baseline table
+margot::here_save(table_baseline, "table_baseline")
+```
+
+
+### Make exposure wave table
+
+
+
+```{r}
+# get first and second wave
+dt_18_19 <- dat_long |> 
+  dplyr::filter(wave == 2018 | wave == 2019) |> 
+  # we need to drop unused levels of the wave
+  droplevels()
+
+# get vars.
+selected_exposure_cols <-
+  dt_18_19 %>% select(
+    c(
+      "perfectionism",
+      "wave"
+    )
+  )
+
+# check
+#str(selected_exposure_cols)
+
+
+library(gtsummary)
+
+table_exposures <- selected_exposure_cols %>%
+  janitor::clean_names(case = "title") %>% 
+  labelled::to_factor() %>%  # ensure consistent use of pipe operator
+  tbl_summary(
+    by = "Wave",  #specify the grouping variable. Adjust "Wave" to match the cleaned column name
+    missing = "always", 
+    percent = "column",
+    # statistic = list(all_continuous() ~ "{mean} ({sd})")  # Uncomment and adjust if needed for continuous variables
+  ) %>%
+  #  add_n() %>%  # Add column with total number of non-missing observations
+  modify_header(label = "**Exposure Variables by Wave**") %>%  # Update the column header
+  bold_labels()
+
+table_exposures
+
+
+# save baseline
+here_save(table_exposures, "table_exposures")
+
+table_exposures
+```
+
+### Table for the outcome
+
+```{r}
+# outcome table -----------------------------------------------------------
+dt_18_20 <- dat_long |> 
+  dplyr::filter(wave == 2018 | wave == 2020) |> 
+  droplevels()
+
+names_outcomes_tab <- setdiff(outcome_vars, dt_18_20)
+names_outcomes_sorted <- sort(names_outcomes_tab)
+names_outcomes_final <- names_outcomes_sorted # consistent workflow
+
+# better names if desirable
+selected_outcome_cols <-
+  dt_18_20 %>% select(all_of(names_outcomes_final),
+                      wave) 
+# |> # example if you want to rename your variables for the table
+#   rename(
+#     Social_belonging = belong,
+#     Annual_charity = charity_donate,
+#     Volunteering_hours = hours_charity,
+#     Community_gives_money_binary = community_money_binary,
+#     Community_gives_time_binary = community_time_binary,
+#     Family_gives_money_binary = family_money_binary,
+#     Family_gives_time_binary = family_time_binary,
+#     Friends_give_money_binary = friends_money_binary,
+#     Friends_give_time = friends_time_binary,
+#     Social_support = support,
+#     Sense_neighbourhood_community = neighbourhood_community
+#   )
+
+# order names correctly
+selected_outcome_cols <- selected_outcome_cols %>%
+  select(sort(names(selected_outcome_cols)))
+
+# checks
+# str(selected_outcome_cols)
+# colnames(selected_outcome_cols)
+
+table_outcomes <- selected_outcome_cols %>%
+  janitor::clean_names(case = "title") %>% 
+  labelled::to_factor() %>%  # ensure consistent use of pipe operator
+  tbl_summary(
+    by = "Wave",  #specify the grouping variable. Adjust "Wave" to match the cleaned column name
+    missing = "always", 
+    percent = "column",
+    # statistic = list(all_continuous() ~ "{mean} ({sd})")  # Uncomment and adjust if needed for continuous variables
+  ) %>%
+  #  add_n() %>%  # Add column with total number of non-missing observations
+  modify_header(label = "**Outcome Variables by Wave**") %>%  # Update the column header
+  bold_labels()
+
+
+# save
+margot::here_save(table_outcomes, "table_outcomes")
+
+# read if needed
+table_outcomes <- margot::here_read("table_outcomes")
+table_outcomes
+```
+
+### Inspect the distribution of the exposure in treatment wave
+
+```{r}
+# select 2019 wave
+dt_19 <- dat_long |> dplyr::filter(wave == 2019)
+
+# mean
+mean_exposure <-mean(dt_19$perfectionism, na.rm=TRUE)
+
+# median
+median_exposure <-median(dt_19$perfectionism, na.rm=TRUE)
+
+# check if you like
+# median_exposure
+# mean_exposure
+
+# # generate bar plot
+graph_density_of_exposure_up <- margot::coloured_histogram_shift(
+  dt_19,
+  shift = "up",
+  col_name = "perfectionism",
+  binwidth = .25, 
+  range_highlight = c(0,mean_exposure)
+)
+
+# show
+graph_density_of_exposure_up
+
+# save
+#margot::here_save(graph_density_of_exposure_up, "graph_density_of_exposure_up")
+
+```
+
+
+### Another Graph: Shift Interventions Up
+
+```{r}
+margot::coloured_histogram(
+  dt_19,
+  col_name = "perfectionism",
+  binwidth = .25,
+  unit_of_change = 1,
+  scale_min = 1,
+  scale_max = 7,
+  highlight_range = "both"
+)
+```
+
+
+
+### Check for change in the treatment (Positivity )
+
+```{r}
+#  select data from wave 18 and 19 
+dt_18_19_positivity <- dat_long |>
+  dplyr::filter(wave == 2018 | wave == 2019) |>
+  dplyr::mutate(perfectionism_round = round(perfectionism, digits = 0)) |>
+  dplyr::select(perfectionism_round, id, wave) |>
+  droplevels()
+
+out <-margot::create_transition_matrix(data = dt_18_19_positivity, state_var = "perfectionism_round", id_var = "id")
+
+
+# t_tab_2_labels <- c("< weekly", ">= weekly")
+# transition table
+transition_table  <- margot::transition_table(out)
+
+# for import later
+# margot::here_save(transition_table, "transition_table")
+
+
+print(transition_table$table)
+
+```
+
+
+### Explanation for the table
+
+```{r}
+transition_table$explanation
+```
+
+
+
+## Lab Part 2: Simulation to Clarify Why The Distribution of Effect Modifiers Matter For Estimating Treatment Effects 
+
+
+First, we load the `stdReg` library, which obtains marginal effect estimates by simulating counterfactuals under different levels of treatment [@sjölander2016]. If a treatment is continuous, the levels can be specified. 
+
+We also load the `parameters` library, which creates nice tables [@parameters2020].
+
+
+```{r}
+# to obtain marginal effects
+library(stdReg)
+# to create nice tables
+library(parameters)
+```
+
+Next, we write a function to simulate data for the sample and and target populations. 
+
+We assume the treatment effect is the same in the sample and target population. We will assume that the coefficient for the effect-modifier and the coefficient for interaction are the same.  We assume no unmeasured confounding throughout the study.  We assume only selective attrition of one effect modifier such that the baseline population differs from the sample population at the end of the study.   
+
+That is: **the distribution of effect modifiers is the only respect in which the sample will differ from the target population.**
+
+This function will generate data under a range of scenarios.[^margot]
+
+[^margot]: See documentation in the `margot` package: @margot2024
+
+
+
+```{r}
+# function to generate data for the sample and population, 
+# along with precise sample weights for the population, there are differences 
+# in the distribution of the true effect modifier but no differences in the treatment effect 
+# or the effect modification.all that differs between the sample and the population is 
+# the distribution of effect-modifiers.
+
+
+# reproducability
+set.seed(123)
+
+# simulate the data -- you can use different parameters
+data <- margot::simulate_ate_data_with_weights(
+  n_sample = 10000,
+  n_population = 100000,
+  p_z_sample = 0.1,
+  p_z_population = 0.5,
+  beta_a = 1,
+  beta_z = 2.5,
+  noise_sd = 0.5
+)
+
+skimr::skim(data)
+```
+
+Ok, we have generated both sample and population data. 
+
+Next, we verify that the distributions of effect modifiers differ in the sample and in the target population:
+
+```{r}
+# obtain the generated data
+sample_data <- data$sample_data
+population_data <- data$population_data
+
+
+# check imbalance
+table(sample_data$z_sample) # type 1 is rare
+table(population_data$z_population) # type 1 is common
+```
+
+
+
+Good, the distributions differ. The simulation is working as intended.
+
+Next, consider the question: "What are the differences in the coefficients that we obtain from the study population at the end of study, as compared with the target population?"  
+
+First, we obtain the coefficients for the sample. They are as follows:
+
+
+```{r}
+# model coefficients sample
+model_sample  <-
+  glm(y_sample ~ a_sample * z_sample, data = sample_data)
+
+# summary
+parameters::model_parameters(model_sample, ci_method = "wald")
+```
+
+Ok, let's obtain the coefficients for the weighted regression of the sample.   Notice that the coefficients are virtually the same:
+
+```{r}
+# model the sample weighted to the population, again note that these coefficients are similar 
+model_weighted_sample <-
+  glm(y_sample ~  a_sample  * z_sample,
+      data = sample_data,
+      weights = weights)
+
+# summary
+summary(parameters::model_parameters(model_weighted_sample, ci_method =
+                                       "wald"))
+```
+
+
+We might be tempted to infer that weighting wasn't relevant to the analysis. However, we'll see that such an interpretation would be a mistake.
+
+
+Next, let us obtain model coefficients for the population. Note again there is no difference -- only narrower errors owing to the large sample size. 
+
+
+```{r}
+# model coefficients population -- note that these coefficients are very similar. 
+model_population <-
+  glm(y_population ~ a_population * z_population, data = population_data)
+
+parameters::model_parameters(model_population, ci_method = "wald")
+```
+
+
+Again, there is no difference. That is, we find that all model coefficients are practically equivalent. The different distribution of effect modifiers does not result in different coefficient values for the treatment effect, the effect-modifier "effect," or the interaction of effect modifier and treatment. 
+
+Consider why this is the case: in a large sample where the causal effects are invariant -- as we have simulated them to be -- we will have good replication in the effect modifiers within the sample, so our statistical model can recover the *coefficients* for the population -- no problem. 
+
+However, **in causal inference, we are interested in obtaining the marginal effect of the treatment**. That is, we seek an estimate for the counterfactual contrast in which everyone in a pre-specified population was subject to one level of treatment compared with a counterfactual condition in which everyone in a population was subject to another level of the same treatment. **When the sample population differs in the distribution of effect modifiers from the target population effect, the marginal effect estimates will typically differ.**
+
+To see this, we use the `stdReg` package to recover marginal effect estimates, comparing (1) the sample ATE, (2) the true oracle ATE for the population, and (3) the weighted sample ATE.  We will use the outputs of the same models above. The only difference is that we will calculate marginal effects from these outputs. We will contrast a difference from an intervention in which everyone receives treatment = 0 with one in which everyone receives treatment = 1, however, this choice is arbitrary, and the general lessons apply irrespective of the estimand.
+
+
+First, consider this ATE for the sample population. 
+
+
+
+```{r}
+# What inference do we draw?  We cannot say the models are unbiased for the marginal effect estimates. 
+# regression standardisation 
+library(stdReg) # to obtain marginal effects 
+
+
+# obtain sample ate
+fit_std_sample <-
+  stdReg::stdGlm(model_sample, data = sample_data, X = "a_sample")
+
+# summary
+summary(fit_std_sample,
+        contrast = "difference",
+        reference = 0)
+```
+
+The treatment effect is given as a 1.06 unit change in the outcome across the sample population, with a confidence interval from 1.04 to 1.08. 
+
+
+Next, we obtain the true (oracle) treatment effect for the population under the same intervention.
+
+
+```{r}
+## note the population effect is different
+
+#obtain true ate
+fit_std_population <-
+  stdReg::stdGlm(model_population, data = population_data, X = "a_population")
+
+# summary
+summary(fit_std_population,
+        contrast = "difference",
+        reference = 0)
+```
+
+
+Note, the true treatment effect is a 1.25 unit change in the population, with a confidence bound between 1.24 and 1.26. This is well outside the ATE that we obtain from the sample population!
+
+
+
+Next, consider the ATE in the weighted regression, where the sample was weighted to the target population's true distribution of effect modifiers. 
+
+
+```{r}
+## next try weights adjusted ate where we correctly assign population weights to the sample
+fit_std_weighted_sample_weights <- stdReg::stdGlm( model_weighted_sample, 
+    data = sample_data, 
+    X = "a_sample")
+
+# this gives us the right answer
+summary(fit_std_weighted_sample_weights, 
+    contrast = "difference", 
+    reference = 0)
+
+
+# Moral of the story. When we marginalise over the entire sample we need to weight estimates to the target population. 
+```
+
+
+We find that we obtain the population-level causal effect estimate with accurate coverage by weighting the sample to the target population. So with appropriate weights, our results generalise from the sample to the target population.
+
+
+## Lessons from Lab 2
+
+- Regression coefficients do not clarify the problem of sample/target population mismatch -- or selection bias as discussed in this manuscript.
+- The correct advice to investigators is that they should not rely on regression coefficients when evaluating the biases that arise from sample attrition. This advice applies to both methods that the authors use to investigate threats of bias. That is, to implement this advice, the authors must first take it.
+- Generally, observed data are insufficient for assessing threats. Observed data do not clarify structural sources of bias, nor do they clarify effect-modification in the full counterfactual data condition in which all receive the treatment and all do not receive the treatment (at the same level).
+- To properly assess bias, one would need access to the counterfactual outcome—what would have happened to the missing participants had they not been lost to follow-up or had they responded. Again, the join distributions over "full data" are inherently unobservable [@vanderlaan2011]. 
+- In simple settings like the one we just simulated, we may address the gap between the sample and target population using methods such as modelling the censoring (e.g., censoring weighting). However, we never know what setting we are in or whether it is simple—such modelling must be handled with care. There is a large and growing epidemiology literature on this topic (see, for example, @li2023non).
+<!-- - Matters become more complex when there is confounding and selection bias because the problem is not merely one of external validity but also internal validity (i.e. obtaining valid causal effect estimates for the baseline sample). See for example @scharfstein1999adjusting; @laan2003unified; @howe2016selection (note that @howe2016selection, "selection" bias is defined as collider stratification bias, a variety of confounding bias and not simple sample and target population mismatch.)   -->
+
+
+
+## Appendix A 
+
+
+### Evidence for effect-modification is relative to inclusion of other variables in the model
+
+The 'sharp-null hypothesis' states there is no effect of the exposure on
+the outcome for any unit in the target population. Unless the 'sharp-null hypothesis' is false, there may be effect-modification. For any study worth conducting, we cannot evaluate whether the sharp-null hypothesis is false. If we could the experiment would be otiose. Therefore, we must assume the possibility of effect-modification. Notably, whether a variable is an effect-modifier also depends on which other variables are included in the model. That is, just as for the concept of a 'confounder', where a variable is an 'effect-modifier' cannot be stated without reference to an assumed causal order and an explicit statement about which other variables will be included in the model [@vanderweele2012].
+
+As illustrated in  @fig-eff-mod-rel, the marginal association between $A$ and $Y$ is unbiased. Here, exposure $A$ is unconditionally associated with $Y$. Recall our convention <svg width="40px" height="40px"><circle cx="20" cy="20" r="18" fill="none" stroke="blue" stroke-width="2"/><text x="20" y="20" alignment-baseline="middle" text-anchor="middle" fill="blue" font-size="16">G</text></svg> denotes effect-modification with conditioning and <svg width="40px" height="40px"><circle cx="20" cy="20" r="18" fill="none" stroke="blue" stroke-width="2" stroke-dasharray="4,4"/><text x="20" y="20" alignment-baseline="middle" text-anchor="middle" fill="blue" font-size="16">Z</text></svg> indicates effect-modification without conditioning.
+
+```{tikz}
+#| label: fig-eff-mod-rel
+#| fig-cap: "Consider a randomised experiment. There is no confounding. Here, the marginal association between A and Y provides an unbiased estimate for the causal effect of A on Y. Does the conditional association of A on Y vary within levels of G? The causal diagram allows for a classification of G as an effect modifier of A on Y by proxy. G modifies A's effect on Y in virtue of G's relationship to Z, which, according to this graph, is a direct effect modifier for the effect of A on Y."
+#| out-width: 80%
+#| echo: false
+
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}[{every node/.append style}=draw, emod/.style={rectangle, fill=blue!10,draw=blue, thick},
+emoddot/.style={circle, fill=blue!10, draw=blue, dotted}]
+
+
+\node [rectangle, draw=white] (A) at (0, 0) {A$_{1}$};
+\node [rectangle, draw=white] (Y) at (2, 0) {Y$_{2}$};
+\node [emoddot] (Z) at (-3,0) {Z};
+\node [emod] (G) at (-1, 0) {G};
+
+\draw [-latex, draw=black] (A) to (Y);
+\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend left = 40]  (Z) to (Y);
+\draw [-latex, draw = blue] (Z) to (G);
+
+\end{tikzpicture} 
+
+
+```
+
+@fig-dag-effect-modificationb presents the same a randomised experiment as in the previous causal diagram. We again assume that there is no confounding of the marginal association between the exposure, $A$, and the outcome, $Y$. However, suppose we were to adjust for $Z$ and ask, does the conditional association of $A$ on $Y$ vary within levels of $G$, after adjusting for $Z$? That is, does $G$ remain an effect-modifier of the exposure on the outcome? @vanderweele2007 proved that for effect-modification to occur, at least one other arrow besides the treatment must enter into the outcome. According to @fig-dag-effect-modificationb the only arrow into $Y$ other than $A$ arrives from $Z$. Because $Y$ is independent of $G$ conditional on $Z$ we may infer that $G$ is no longer an effect modifier for the effect of $A$ on $Y$. Viewed another way, $G$ no longer co-varies with $Y$
+conditional on $Z$ and so cannot act as an effect-modifier.
+
+```{tikz}
+#| label: fig-dag-effect-modificationb
+#| fig-cap: "Conditioning on Z renders G independent of Y. G is no longer an effect modifier after conditioning on Z because G is independent of Y. Although Z is an unconditional effect modifier, G is not."
+#| out-width: 80%
+#| echo: false
+
+
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}[{every node/.append style}=draw, emod/.style={rectangle, fill=blue!10,draw=blue, thick},
+squarednode/.style={rectangle, draw=blue!60, fill=red!20, very thick, minimum size=5mm}]
+
+
+\node [rectangle, draw=white] (A) at (0, 0) {A$_{1}$};
+\node [rectangle, draw=white] (Y) at (2, 0) {Y$_{2}$};
+\node [emod] (Z) at (-3,0) {Z};
+\node [rectangle, draw=white] (G) at (-1, 0) {G};
+
+\draw [-latex, draw=black] (A) to (Y);
+\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend left = 40] (Z) to (Y);
+\draw [-latex, draw = black] (Z) to (G);
+
+\end{tikzpicture} 
+
+
+```
+
+@fig-dag-effect-modificationc presents the same a randomised experiment as in the previous graph. We assume a true effect of $A \rightarrow Y$. If we do not condition on $B$, then $G$ will not modify the effect of $A  \rightarrow Y$ because $G$ will not be associated with $Y$. However, if we were to condition on $B$, then both $B$ (an effect modifier by proxy) and $G$ may become effect-modifiers for the causal effect of $A$ on $Y$. In this setting, both $B$ and $G$ are conditional effect-modifiers.
+
+Note that casual graphs help us to evaluate classifications of conditional and unconditional effect modifiers. They may also help to clarify conditions in which conditioning on unconditional effect-modifiers may remove conditional effect-modification. However we cannot not tell from a causal diagram whether the ancestors of an
+unconditional effect-modifier will be conditional effect-modifiers for the effect of the exposure on the outcome; see: @vanderweele2007, also @suzuki2013counterfactual. Causal diagrams express non-parametric relations. I have adopted an off-label colouring convention to denote instances of effect-modification to highlight possible pathways for effect-modification, which may be relative to other variables in a model.
+
+```{tikz}
+#| label: fig-dag-effect-modificationc
+#| fig-cap: "Blue path denotes effect-modification for G by conditioning on B. Both B and G are conditional effect modifiers."
+#| out-width: 80%
+#| echo: false
+
+
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}[{every node/.append style}=draw, emod/.style={rectangle, fill=blue!10,draw=blue, thick},
+squarednode/.style={rectangle, draw=blue!60, fill=red!20, very thick, minimum size=5mm}]
+
+
+
+\node [rectangle, draw=white] (A) at (1, 0) {A$_{1}$};
+\node [rectangle, draw=white] (Y) at (3, 0) {Y$_{2}$};
+\node [emoddot, dotted, draw=blue, bend left = 40] (Z) at (-2, 1) {Z};
+\node [emod] (G) at (-2, -1) {G};
+\node [emod] (B) at (-1,0) {B};
+
+\draw [-latex, draw=black] (A) to (Y);
+\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend left = 20] (Z) to (Y);
+\draw [-latex, draw=blue] (Z) to (B);
+\draw [-latex, draw=blue] (G) to (B);
+\end{tikzpicture} 
+
+```
+
+@fig-dag-effect-modificationd reveals the relativity of effect-modification. If investigators do not condition on $B$, then $G$
+cannot be a conditional effect-modifier because $G$ would then be independent of $Z$ because $B$ is a collider. However, as we observed in
+@fig-dag-effect-modificationc, conditioning on $B$, a collider, may open a path for effect-modification of $G$ by $Z$. Both $B$ and $G$ are
+conditional effect modifiers.
+
+```{tikz}
+#| label: fig-dag-effect-modificationd
+#| fig-cap: "Blue path denotes effect-modification. Here G is not an effect modifier because B, a common effect (collider) of G and Z, is not conditioned on. Any conditional effect modification for G would require conditioning on B, and not-conditioning on G. Otherwise G will be d-separated from Y."
+#| out-width: 80%
+#| echo: false
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}[{every node/.append style}=draw, emod/.style={rectangle, fill=blue!10,draw=blue},
+emoddot/.style={circle, fill=blue!10, draw=blue, dotted}]
+
+\node [rectangle, draw=white] (A) at (1, 0) {A$_{1}$};
+\node [rectangle, draw=white] (Y) at (3, 0) {Y$_{2}$};
+\node [emoddot, dotted, draw=blue] (Z) at (-2, 1) {Z};
+\node [rectangle, draw = black] (G) at (-2, -1) {G};
+\node [emoddot] (B) at (-1,0) {B};
+
+\draw [-latex, draw=black] (A) to (Y);
+\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend left = 20] (Z) to (Y);
+\draw [-latex, draw=blue] (Z) to (B);
+\draw [-latex, draw=black] (G) to (B);
+\end{tikzpicture} 
+
+```
+
+```{tikz}
+#| label: fig-dag-effect-modification5c
+#| fig-cap: "Blue path denotes effect-modification. Neither, G nor B are unconditional effect-modifiers for the effect of A on Y after Z is conditioned upon. If investigators condition on Z, the causal diagram implies they will not find evidence for effect-modification by B or G, which are conditionally independent of Y once Z is conditioned upon."
+#| out-width: 80%
+#| echo: false
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}[{every node/.append style}=draw, emod/.style={rectangle, fill=blue!10,draw=blue},
+emoddot/.style={circle, fill=blue!10, draw=blue, dotted}]
+
+\node [rectangle, draw=white] (A) at (1, 0) {A$_{1}$};
+\node [rectangle, draw=white] (Y) at (3, 0) {Y$_{2}$};
+\node [emod, draw=blue] (Z) at (-2, 1) {Z};
+\node [rectangle, draw = black] (G) at (-2, -1) {G};
+\node [rectangle] (B) at (-1,0) {B};
+
+\draw [-latex, draw=black] (A) to (Y);
+\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend left = 40](Z) to (Y);
+\draw [-latex, draw=black] (Z) to (B);
+\draw [-latex, draw=black] (G) to (B);
+\end{tikzpicture} 
+
+```
+
+@fig-dag-effect-modification5c considers the implications of
+conditioning on $Z$, which is the only unconditional effect-modifier on
+the graph. If $Z$ is measured, conditioning on $Z$ will remove
+effect-modification for $B$ and $G$ because $B,G\coprod Y |Z$. This
+examples again reveals the context dependency of effect-modification.
+Here, causal diagrams are useful for clarifying features of dependent
+and independent effect modification. For further discussion, see:
+@suzuki2013counterfactual; @vanderweele2009distinction.
+
+
+
+
+
+### Packages
+
+```{r}
+report::cite_packages()
+```
+
+
+
+
+

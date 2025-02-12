@@ -1,0 +1,38 @@
+\documentclass[
+%% TIKZ_CLASSOPTION %%
+tikz
+]{standalone}
+\usepackage{amsmath}
+\usetikzlibrary{matrix}
+%% EXTRA_TIKZ_PREAMBLE_CODE %%
+\begin{document}
+%% TIKZ_CODE %%
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\begin{tikzpicture}[{every node/.append style}=draw]
+
+
+\node [draw=black] (L) at (0, 0) {L};
+\node [rectangle, draw=black] (X1) at (3, 1) {X1};
+\node [rectangle, draw=white] (X2) at (3, 0) {$\vdots$};
+\node [rectangle, draw=black] (Xn) at (3, -1) {X$_n$};
+\node [rectangle, draw=white] (eta) at (6, 0) {$\eta$};
+\node [rectangle, draw=white] (Y) at (9, 0) {Y};
+
+
+
+\draw [-latex, draw=black] (X1) to (eta);
+\draw [-latex, draw=black] (X2) to (eta);
+\draw [-latex, draw=black] (Xn) to (eta);
+\draw [-latex, bend right=80, draw=black] (L) to (Y);
+\draw [-latex, draw=black, bend left = 80] (L) to (eta);
+\draw [-latex, draw=red] (eta) to (Y);
+
+
+\end{tikzpicture}
+\end{document}

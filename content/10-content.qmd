@@ -1,0 +1,110 @@
+---
+title: "Student Presentations and Hands On Working With Quarto Manuscript"
+date: "2025-MAY-20"
+bibliography: /Users/joseph/GIT/templates/bib/references.bib
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    warnings: FALSE
+    error: FALSE
+    messages: FALSE
+    code-overflow: scroll
+    highlight-style: oblivion
+    code-tools:
+      source: true
+      toggle: FALSE
+html-math-method: katex
+reference-location: margin
+citation-location: margin
+cap-location: margin
+code-block-border-left: true
+---
+
+## Part 1: Student Presentations
+
+
+## Part 2: Quarto manuscripts
+
+```{r}
+#| include: false
+#| echo: false
+#read libraries
+
+library("tinytex")
+library(extrafont)
+loadfonts(device = "all")
+
+library("margot")
+library("tidyverse")
+```
+
+
+::: {.callout-note}
+**Required**
+Download Quarto here: 
+- Use the `prelease` version: https://quarto.org/docs/download/
+**Optional**
+- [@Bulbulia2024PracticalGuide] [link](https://osf.io/preprints/psyarxiv/uyg3d)
+- [@hoffman2023] [link](https://arxiv.org/pdf/2304.09460.pdf)
+:::
+
+::: {.callout-important}
+## Key concepts
+- Writing up your manuscript
+
+:::
+
+::: {.callout-important}
+## For the lab, download the script
+- We will go through this script step-by-step.
+:::
+
+
+
+### To Do
+
+- Download the script (from week 9) and store in our R directory: [link to analysis script ](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example_analysis.R)
+
+- Download the manuscript template and store in our R directory: [link to manuscript template](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example-manuscript.qmd)
+
+- Download the following `tex` file and save it to your R directory:
+[latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex)
+
+
+- Download the followign `tex` file and save it to your R directory:
+[title preamble](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/title.tex)
+
+
+- Download the following `csl` file and save it to your R directory:
+[csl preamble](https://raw.githubusercontent.com/go-bayes/templates/main/csl/camb-a.csl)
+
+- Make sure you can install all libraries required of the manuscript template.
+- Come to the seminar prepared to work through the analysis
+
+
+
+## What You Will Learn
+
+- **How to create a publication quality manuscript** 
+
+- **How to create a workflow for references** 
+
+- **How to import results into your manuscript** 
+
+- **How to make graphs of your results (using) `margot`** 
+
+- **How to report your results**
+
+- **How to interpret your results**
+
+
+### Packages
+
+```{r}
+report::cite_packages()
+```
+
+
+
+

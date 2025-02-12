@@ -1,0 +1,54 @@
+project:
+  type: website
+  output-dir: docs
+
+title-block-banner: true
+
+execute:
+  freeze: auto  # Re-render only when source changes
+  
+website:
+  title: "PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025"
+  navbar:
+    search: true
+    right:
+    - text: "Course Outline"
+      href: content/course-outline.qmd
+    - text: "Content"
+      menu:
+        - text: "Glossary"
+          href: content/glossary.pdf
+        - text: "Course Outline"
+          href: content/course-outline.qmd
+        - text: "Week 1: Course Introduction - R (installing packages)"
+          href: content/01-content.qmd
+        - text: "Week 2: Causal Diagrams - Elementary Structures and Rules - R (using the interface)"
+          href: content/02-content.qmd
+        - text: "Week 3: Causal Diagrams - Confounding Bias - R (regression/simulation)"
+          href: content/03-content.qmd
+        - text: "Week 4: Causal Diagrams - Interaction, Measurement Bias, Selection Bias - R (regression/simulation)"
+          href: content/04-content.qmd
+        - text: "Week 5: Quiz - R (regression/simulation/reporting)"
+        - text: "Week 6: Causal Inference - Key Concepts ATE - R (regression/simulation: ATE)"
+          href: content/06-content.qmd
+        - text: "Week 7: Causal Inference - Key Concept CATE - R (regression/simulation: ATE)"
+          href: content/07-content.qmd
+        - text: "Week 8: Causal Inference - Estimation of ATE and CATE - R and LaTeX"
+          href: content/08-content.qmd
+        - text: "Week 9: Hands On: Full Analysis in R"
+          href: content/09-content.qmd
+        - text: "Week 10: Working with Quarto Documents"
+          href: content/10-content.qmd
+        - text: "Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance "
+          href: content/11-content.qmd
+        - text: "Week 12: Measurement: Conceptual Problems"
+          href: content/12-content.qmd
+format:
+  html:
+    toc: true
+    css: styles.css
+    html-math-method: katex
+
+license: CC BY-NC-SA
+
+

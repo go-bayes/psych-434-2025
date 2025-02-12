@@ -1,0 +1,11 @@
+---
+format: html
+html-math-method: katex
+---
+
+```{r, echo=FALSE, results='asis'}
+if (knitr::is_html_output()) {
+  macros <- readLines('latex-for-quarto.tex')
+  writeLines(macros)
+} 
+```

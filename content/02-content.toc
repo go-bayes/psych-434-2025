@@ -1,0 +1,31 @@
+\contentsline {subsection}{Overview}{2}{section*.2}%
+\contentsline {subsection}{Review}{2}{section*.3}%
+\contentsline {subsection}{Download Your Laboratory R Script Here}{2}{section*.4}%
+\contentsline {subsection}{Causal Diagrams -- or ``Causal Directed Acyclic Graphs''}{3}{section*.5}%
+\contentsline {subsection}{Lab -- Regression in R}{3}{section*.6}%
+\contentsline {subsection}{Simulating Data in R: \texttt {Outcome\ \textasciitilde {}\ Treatment}}{3}{section*.7}%
+\contentsline {paragraph}{Step 1: Set Up Your R Environment}{3}{section*.8}%
+\contentsline {paragraph}{Step 2: Set a Seed for Reproducibility}{3}{section*.9}%
+\contentsline {paragraph}{Step 3: Simulating Continuous Data}{3}{section*.10}%
+\contentsline {paragraph}{Step 4: Simulating Categorical Data}{3}{section*.11}%
+\contentsline {subsection}{Visualising simulated data}{5}{section*.12}%
+\contentsline {subsection}{Histogram}{6}{section*.14}%
+\contentsline {subsection}{Excercise 3}{7}{section*.15}%
+\contentsline {subsection}{Simulating data for familiar statistical tests}{7}{section*.16}%
+\contentsline {subsubsection}{\textbf {Exercise 3: Linear Regression Analysis with Simulated Data}}{8}{section*.17}%
+\contentsline {paragraph}{\textbf {Task 1: Simulating Continuous Treatment Variable}}{8}{section*.18}%
+\contentsline {paragraph}{\textbf {Task 2: Exploring the Simulated Data}}{9}{section*.19}%
+\contentsline {paragraph}{\textbf {Task 3: Regression Analysis of Continuous Treatment Effect}}{9}{section*.20}%
+\contentsline {subsection}{Equivalence of ANOVA and Regression}{9}{section*.21}%
+\contentsline {subsection}{Method}{9}{section*.22}%
+\contentsline {subsection}{Upshot}{11}{section*.23}%
+\contentsline {subsubsection}{Exercise 3}{12}{section*.24}%
+\contentsline {paragraph}{Step 5: Simulating Data Frames}{13}{section*.25}%
+\contentsline {subsection}{More complexity}{13}{section*.26}%
+\contentsline {paragraph}{Step 7: Visualising Simulated Data}{14}{section*.27}%
+\contentsline {subsection}{Practice}{14}{section*.28}%
+\contentsline {subsection}{Appendix A: Solutions}{14}{section*.29}%
+\contentsline {subsubsection}{Solution Problem Set 3: simulate data and regression reporting}{14}{section*.30}%
+\contentsline {subsection}{What You Have Learned}{16}{section*.31}%
+\contentsline {subsection}{For more information about the packages used here:}{16}{section*.32}%
+\contentsline {subsection}{Appendix A: I lied}{16}{section*.33}%

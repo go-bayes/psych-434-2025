@@ -1,0 +1,399 @@
+---
+title: "Psych 434: Conducting Research Across Cultures"
+author:
+    name: Joseph Bulbulia
+    orcid: 0000-0002-5861-2056
+    affiliation: Victoria University of Wellington, New Zealand
+    email: joseph.bulbulia@vuw.ac.nz
+    corresponding: yes
+    echo: false
+    warnings: false
+    error: false
+    highlight: kate
+    code-fold: true
+    code-overflow: scroll
+    code-line-numbers: true
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+#| echo: false
+# Necessary for using dvisvgm on macOS
+# See https://www.andrewheiss.com/blog/2021/08/27/tikz-knitr-html-svg-fun/
+# Sys.setenv(LIBGS = "/usr/local/share/ghostscript/9.53.3/lib/libgs.dylib.9.53")
+# font_opts <- list(dvisvgm.opts = "--font-format=woff")
+```
+
+```{r}
+#| echo: false
+library("tinytex")
+```
+
+# Welcome to the Psych 434 lecture website
+
+
+
+::: {.callout-tip}
+### Accessing Lectures and Readings
+
+- **Seminar Time/Location**: Tuesdays, 9:00-11:50am **Easterfield Building Room 406**
+
+- **Course Outline**: find a detailed schedule of topics, readings, and assignments in the `Course Outline` tab.
+
+- **Readings**: links to readings are directly within the `Course Outline` tab, essential for lecture preparation.
+
+- **Lecture Materials**: access slides, video recordings, and more under the `Content` tab, organised by week for ease of use.
+
+- **Tests**: in the same room as the seminar
+:::
+
+
+
+## Class times and locations
+
+**Test/Quiz Location** **IN CLASS**
+
+## Contents Tab
+
+The `Contents` tab offers direct access to weekly seminar and lab materials, including lecture outlines and lab resources.
+
+- Access it from the top right of the course platform by selecting the appropriate week.
+
+- Lab materials are available one week before the lecture; seminar review materials post-seminar.
+
+
+```{r .column-body-outset}
+#| echo: false
+library(leaflet)
+leaflet() %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addMarkers(lng=174.7681, lat=-41.2889, popup="Easterfield")
+```
+
+## Names and contact details
+
+**Course Coordinator** Prof Joseph Bulbulia [joseph.bulbulia\@vuw.ac.nz](mailto:joseph.bulbulia@vuw.ac.nz){.email}
+
+**Course Coordinator's Office** EA324
+
+**R Help from ** Dr.Inkuk Kim [inkuk.kim\@vuw.ac.nz](mailto:inkuk.kim@vuw.ac.nz){.email}
+
+
+
+
+## Assignments and due dates
+
+```{r }
+#| echo: false
+#| code-fold: true
+#| warnings: false
+#| message: false
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# create data frame
+my_data <- tibble(
+  Assessment = c(
+    "Class participation",
+    "Test 1",
+    "Test 2",
+    "Research Report"
+  ),
+  CLOs = c("1,2,3", "2", "2", "1,2,3"),
+  Percent = c("10", "25", "25", "40"),
+  Due = c(
+    "Weekly",
+     "25 March (w5)",
+     "6 May (w9)",
+     "3 June (w12)"
+  )
+  
+)
+
+# create table 
+my_data %>%
+  kbl(format = "html") |> 
+  kable_styling("hover")
+
+```
+
+
+## Course Description
+
+The official description:
+
+*This course will focus on theoretical and practical challenges for conducting research involving individuals from more than one cultural background or ethnicity. Topics are likely to include defining and measuring culture; developing culture-sensitive studies, choice of language and translation; communication styles and bias; questionnaire and interview design; qualitative and quantitative data analysis for cultural and cross-cultural research; minorities, power and ethics in cross-cultural research; and ethno-methodologies and indigenous research methodologies. Appropriate background for this course: PSYC 338.*
+
+## Course Learning Objectives
+
+**Preamble:** in this advanced course, students will develop foundational skills in cross-cultural psychological research with a strong emphasis on causal inference, a new and critical methodological approach. 
+
+1.  **Programming in R** students will learn the basics of programming in the statistical language R, gaining essential computational tools for psychological research. The skills you acquire will lay the foundation for applying data analysis techniques in a causal inference framework and beyond.
+
+2.  **Understanding Causal Inference.** students will develop a robust understanding of causal inference concepts and approaches, with particular emphasis on how they mitigate common pitfalls in cross-cultural research. We will focus on designing studies, analysing data, and drawing strong conclusions about cause-and-effect relationships across cultures.
+
+5.  **Understanding Measurement in Comparative Settings.** students will learn techniques for constructing and validating psychometrically sound measures across diverse cultures. We will examine how to ensure measurements are reliable, cross-culturally valid, and aligned with theoretical constructs while focusing strongly on causal reasoning. 
+
+## Assignments and due dates
+
+```{r }
+#| echo: false
+#| code-fold: true
+#| warnings: false
+#| message: false
+
+library(tidyverse)
+library(knitr)
+library(kableExtra)
+
+# create data frame
+my_data <- tibble(
+  Assessment = c(
+    "Class participation",
+    "Test (1)",
+    "Take Home (2)",
+    "Research Report"
+  ),
+  CLOs = c("1,2,3", "2", "2", "1,2,3"),
+  Percent = c("10", "25", "25", "40"),
+  Due = c(
+    "Weekly",
+     "25 March (w5)",
+     "13 May (w10)",
+     "3 June (w13)"
+  )
+  
+)
+
+# create table 
+my_data %>%
+  kbl(format = "html") |> 
+  kable_styling("hover")
+
+```
+
+### Assessment 1: Class Participation
+
+- **Attendance and Participation**:
+    - (a) Class attendance and active participation.
+    - (b) Lab attendance and active participation.
+
+### Assessment 2: In-class Test
+
+## Test Guidelines
+- Test duration is under an hour. The allocated time is nearly two hours.
+
+::: {.callout-important}
+- **THE TEST IS IN CLASS** (i.e. come to class with a writing instrument).
+:::
+
+- Each lecture starts and ends with key concept definitions and reviews for the test.
+- R or RStudio knowledge isn't part of the test. R support aims to enhance research report skills.
+- Tests are conducted in the lecture room without the aids of notes, a computer, or a phone.
+- Required: pen/pencil. 
+- ** Test (50 minutes, total time allowed: 1 hour 50 minutes)**:
+    - Focuses on revising core statistical and methodological concepts.
+    - Aims to refresh basic statistical knowledge foundational for later course material.
+
+
+
+## Take-Home Assessment
+- Take Home Asssessment (~6 Hours) due March 12**:
+- Builds upon the course concepts, emphasising the application of basic conceptual, statistical, and theoretical knowledge as applied to your research question.
+- Specifically, how to formulate a research question and develop a strategy for answering it.
+
+**Task**
+- Write a draft Introduction to your final writing assessment.
+- Write a draft Method section for your writing assessment. 
+- Prepare an in-class presentation of 10 minutes summaring your study.
+- You are **encouraged** to use AI, and you will be marked as if you are using Ai. 
+- Note that even the best AI models make mistakes and hallucinate, particularly in causal inference. You must therefore internalise understanding. **Be warned: I will mark hallucinations and errors harshly.**
+- Although I encourage you to use AI, I also encourage you to you write in your own voice. Your self-expression will make you interesting, and employable. Writing in your own voice will cultivate this part of you.
+
+### Assessment criteria 
+
+#### Stating the problem
+-   **State your question:** is your question clearly stated? 
+-   **Relevance:** have you explained its *scientific* importance? 
+-   **Causality:** Is your question causal?
+-   **Subgroup analysis:** does your question involve a subgroups (e.g., cultural group)? Which?
+-   **Explain the framework:** Have you explained the causal inference framework in a way that is comprehensible to non-specialists?
+-   **Ethics/Policy interests** have you explained how this question might practically affect people? 
+-   **Data source:** are your data from the NZAVS simulated data set? (if not, consult with me)
+-   **Data waves:** are your data using three waves?
+
+#### Determining the Outcome
+-   **Outcome variable:** is your outcome variable *Y* well-defined? 
+-   **Multiple outcomes:** do you assess multiple outcomes are are these well-defined?
+-   **Outcome relevance:** can you explain how the outcome variable/s relate to your question? 
+-   **Outcome type:** is your outcome binary and rare? ... etc.
+-   **Outcome timing:** does your outcome appear after your exposure?
+
+#### Determining the Exposure
+
+-   **Exposure variable:** is your exposure variable *A* well-defined?
+-   **Multiple exposures:** are there multiple exposures? (If yes, for this study, reassess).
+-   **Exposure relevance:** have you explained how the exposure variable relates to your question? 
+-   **Positivity:** can we intervene on the exposure at all levels of the covariates?
+-   **Consistency:** can we interpret what it means to intervene on the exposure? 
+-   **Exchangeability:** are there different versions of the exposure conditionally exchangeable given measured baseline confounders?
+-   **Exposure type:** is the exposure binary or continuous?
+-   **Shift intervention**: do you contrast static interventions or modified treatment policies? 
+-   **Exposure timing:** does your exposure appear before the outcome? (It should.)
+
+#### Accounting for Confounders
+
+-   **Baseline confounders:** Have you defined your baseline confounders *L*?
+-   **Justification:** Can you explain how the baseline confounders could affect both *A* and *Y*? 
+-   **Timing:** Are the baseline confounders measured before the exposure? 
+-   **Inclusion:** Is the baseline measure of the exposure and the baseline outcome included in the set of baseline confounders? 
+-   **Sufficiency:** Are the baseline confounders sufficient to ensure balance on the exposure, such that *A* is independent of *Y* given *L*? If not, explain your sensitivity analysis (E-values)
+-   **Confounder type:** Are the confounders continuous or binary? If so, consider converting them to z-scores. If they are categorical with three or more levels, do not convert them to z-scores, but rather use one-hot encoding (see lecture 9.)
+
+#### Drawing a Causal Diagram with Unmeasured Confounders
+
+-   **Causal diagram:** Have you drawn a causal diagram (DAG) to highlight both measured and unmeasured sources of confounding? 
+-   **Measurement error:** Have you described potential biases from measurement errors?
+-   **Temporal order:** Does your DAG have time indicators to ensure correct temporal order? 
+-   **Time consistency:** Is your DAG organized so that time follows in a consistent direction? 
+
+#### Identifying the Estimand
+
+**Note**: Do not be alarmed by this math if you are reading this material before I have introduced these concepts. All will be made clear, I promise. 
+
+-   **Causal Estimand:** Is your causal estimand one of the following:
+
+$$ATE_{G,(A,A')} = E[Y(1) - Y(0)|G, L]$$
+
+$$ATE_{G,(A/A')} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}$$
+
+A modified treatment policy, e.g.
+
+$$
+\mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\ 
+a_1 & \text{otherwise} \end{cases}
+$$
+$$
+\mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\ 
+a_1 & \text{otherwise} \end{cases}
+$$
+
+$$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
+
+$$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
+
+$$
+{\delta}(g) ={g'} - {g''}
+$$
+
+
+
+#### Understanding Source and Target Populations
+
+-   **Populations identified:** Have you explained how your sample relates to your target populations? 
+
+
+#### Set Eligibility Criteria
+
+-   **Criteria stated:** Have you stated the eligibility criteria for the study?
+
+#### Describe Sample Characteristics
+
+-   **Descriptive statistics:** have you provided descriptive statistics for demographic information taken at baseline? 
+
+-   **Exposure change:** Have you described the magnitudes of change in the exposure from baseline to the exposure interval 
+
+-   **References:** Have you included references for more information about the sample (e.g. the NZAVS website)? I should have.
+
+- **DATA ARE SIMULATED**: Have you made it clear you are working with simulated data? 
+
+#### Addressing Missing Data
+
+-   **Missing data checks:** Have you checked for missing data? 
+-   **Missing data plan:** If there are missing data, have you described how you will address the problem? (IPCW, see week 9)
+
+#### Selecting the Model Approach
+
+-   **Approach decision:** G-computation, IPTW, or Doubly-Robust Estimation? 
+-   **Model specification:** Model Specification?
+-   **Machine Learning**: have you explained how machine learning works? 
+-   **Outcome Specifics:** If the outcome is rare and binary, have you specified logistic regression? If it's continuous, have I considered converting it to z-scores?
+-   **Sensitivity analysis:** Have you described your sensitivity analysis (e.g. E-values.)
+
+
+Note most of these tasks can be ticked off in a sentence or two, but all need to be covered. 
+
+**Length:** ~ 1,000 - 2,000 words (note it is a draft introduction and draft methods section).
+
+
+### Assessment 3: Research Report
+
+::: {.callout-important}
+## Research Report Instructions
+- We will supply the data.
+- Lab sessions are designed to support you in this assignment.
+- We assume no statistical background. 
+:::
+
+
+
+- **Title**: "Causal Inference in Cultural Psychology: Examining Exposure Effects on Dimensions of Well-being Modified by Cultural or Sociodemographic Categories".
+
+- **Objective**:
+    - To quantify the causal effect of a specific exposure on well-being dimensions, modified by sociodemographic categories (`born_nz`, `eth_cat`, `big_doms`, `gen_cohort`) using the NZAVS longitudinal synthetic dataset.
+
+- **Instructions**:
+
+  1. **Theoretical Interest and Research Question**:
+        - Describe the significance of your chosen exposure and its potential impact on the selected outcomes, modified by the cultural or sociodemographic category.
+        - State the research question clearly.
+
+  2. **Directed Acyclic Graph (DAG)**:
+        - Construct a DAG illustrating the relationships between exposure, outcomes, sociodemographic category, and potential bias sources. Ensure clarity in labelling.
+
+  3. **Confounding Control Strategy**:
+        - Outline your strategy for confounding control, justifying the chosen confounders.
+
+  4. **Measurement Biases**:
+        - Address and analyse measurement biases as relevant.
+
+    5. **Assumptions and Statistical Models**:
+        - Discuss the assumptions of your causal inference approach and your statistical model, including their limitations.
+
+- **Requirements**:
+    - Introduction: 1,500 words **limit.**
+    - Conclusion: 1,500 words  **limit.**
+    - Method and Results sections should be concise; no specific word limit.
+    - Use any useful sources, citing appropriately to avoid academic misconduct.
+    - Follow APA style for citations and references.
+    - Include tables/figures as needed.
+    - Submit as a single PDF, including R code in an appendix.
+
+- **Evaluation Criteria**:
+    - Clarity of theoretical framework, research question, and design.
+    - Validity of confounding control strategy.
+    - Discussion on assumptions and statistical models.
+    - Organisation and presentation quality.
+
+### Extensions and Penalties
+
+- **Extensions**:
+    - Negotiate a new due date by writing (email) before **March 10th, 2024**, if necessary.
+
+- **Penalties**:
+    - Late submissions incur a one-grade-per-day penalty.
+    - Over-length assignments will be penalised.
+
+- **Unforeseeable Events**:
+    - Extensions post-March 10 require evidence (e.g., medical certificate).
+
+### Materials and Equipment
+
+- Bring a laptop with R and RStudio installed for data analysis sessions. Contact the instructor if you lack computer access.
+- For in-class tests, bring a writing utensil. Again, electronic devices are **not permitted.**
+
+
+

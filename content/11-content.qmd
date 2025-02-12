@@ -1,0 +1,693 @@
+---
+title: "Hands on Measurement: Exploratory Factor Analysis, Confirmatory Factor Analysis (CFA), Multigroup Confirmatory Factor Analysis, Partial Invariance (Configural, Metric, and Scalar equivalence)."
+date: "2025-MAY-27"
+bibliography: /Users/joseph/GIT/templates/bib/references.bib
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    warnings: FALSE
+    error: FALSE
+    messages: FALSE
+    code-overflow: scroll
+    highlight-style: kate
+    code-tools:
+      source: true
+      toggle: FALSE
+html-math-method: katex
+reference-location: margin
+citation-location: margin
+cap-location: margin
+code-block-border-left: true
+---
+
+
+```{r}
+#| include: false
+#| echo: false
+#read libraries
+
+library("tinytex")
+library(extrafont)
+loadfonts(device = "all")
+
+library("margot")
+library("tidyverse")
+library("parameters")
+library("tidyr")
+library("kableExtra")
+library("psych")
+library("lavaan")
+library("datawizard")
+
+# WARNING:  COMMENT THIS OUT. JB DOES THIS FOR WORKING WITHOUT WIFI
+#source("/Users/joseph/GIT/templates/functions/libs2.R")
+
+# WARNING:  COMMENT THIS OUT. JB DOES THIS FOR WORKING WITHOUT WIFI
+#source("/Users/joseph/GIT/templates/functions/funs.R")
+
+# WARNING:  COMMENT THIS OUT. JB DOES THIS FOR WORKING WITHOUT WIFI
+source("/Users/joseph/GIT/templates/functions/experimental_funs.R")
+```
+
+
+::: {.callout-readings}
+### Required Readings
+- [@fischer2019primer] [link](https://www.dropbox.com/scl/fi/1h8slzy3vzscvbtp6yrjh/FischeKarlprimer.pdf?rlkey=xl93d5y7280c1qjhn3k2g8qls&dl=0)
+
+### Optional Readings 
+- [@Vijver2021CulturePsychology] [link](https://doi.org/10.1017/9781107415188)
+- [@he2012] [link](https://www.dropbox.com/scl/fi/zuv4odmxbz8dbtdjfap3e/He-BiasandEquivalence.pdf?rlkey=wezprklb4jm6rgvvx0g58nw1n&dl=0ā)
+- [@Harkness2003TRANSALTION] [link](https://www.dropbox.com/scl/fi/hmmje9vbunmcu3oiahaa5/Harkness_CC_translation.pdf?rlkey=6vqq3ap5n52qp7t1e570ubpgt&dl=0)
+:::
+
+::: {.callout-important}
+## Key concepts
+- EFA
+- CFA
+- Multigroup CFA
+- Invariance Testing (configural, metric, scalar)
+:::
+
+::: {.callout-important}
+- You need to know these measurement concepts
+:::
+
+
+#### Readings
+
+- [@fischer2019primer] [link](https://www.dropbox.com/scl/fi/1h8slzy3vzscvbtp6yrjh/FischeKarlprimer.pdf?rlkey=xl93d5y7280c1qjhn3k2g8qls&dl=0)
+
+##### Optional Readings 
+
+- [@Vijver2021CulturePsychology] [link](https://doi.org/10.1017/9781107415188)
+- [@he2012] [link](https://www.dropbox.com/scl/fi/zuv4odmxbz8dbtdjfap3e/He-BiasandEquivalence.pdf?rlkey=wezprklb4jm6rgvvx0g58nw1n&dl=0ā)
+- [@Harkness2003TRANSALTION] [link](https://www.dropbox.com/scl/fi/hmmje9vbunmcu3oiahaa5/Harkness_CC_translation.pdf?rlkey=6vqq3ap5n52qp7t1e570ubpgt&dl=0)
+
+#### Lab
+
+- R exercises focusing on measurement theory applications and graphing
+
+
+## Overview
+By the conclusion of our session, you will gain proficiency in:
+
+- Exploratory Factor Analysis,
+- Confirmatory Factor Analysis (CFA),
+- Multigroup Confirmatory Factor Analysis,
+- Partial Invariance (configural, metric, and scalar equivalence) 
+
+We will learn these concepts by doing an analysis.
+
+## Focus on Kessler-6 Anxiety
+
+The code below will:
+
+-   Load required packages.
+-   Select the Kessler 6 items
+-   Check whether there is sufficient correlation among the variables to support factor analysis.
+
+#### Select A Scale To Validate: Kessler 6 Distress
+
+
+```{r}
+#| label: cfa_factor_structure
+
+# get synthetic data
+library(margot)
+library(tidyverse)
+library(performance)
+
+# update margot
+# uncomment
+# devtools::install_github("go-bayes/margot")
+
+
+# select the columns of the kesser-6 need. 
+dt_only_k6 <- df_nz |> 
+  filter(wave == 2018) |> 
+  select(
+    kessler_depressed,
+    kessler_effort,
+    kessler_hopeless,
+    kessler_worthless,
+    kessler_nervous,
+    kessler_restless
+  )
+
+
+# check factor structure
+performance::check_factorstructure(dt_only_k6)
+```
+
+### Practical Definitions of the Kessler-6 Items
+
+- The `df_nz` is loaded with the `margot` package. It is a synthetic dataset. 
+- take items from the Kessler-6 (K6) scale: depressed, effort, hopeless, worthless, nervous, and restless [@kessler2002; @kessler2010].
+-  The Kessler-6 is used as a diagnostic screening tool for depression for physicians in New Zealand 
+
+
+The Kessler-6 (K6) is a widely-used diagnostic screening tool designed to identify levels of psychological distress that may indicate mental health disorders such as depression and anxiety. Physicians in New Zealand to screen patients quickly [@krynen2013measuring]. Each item on the Kessler-6 asks respondents to reflect on their feelings and behaviors over the past 30 days, with responses provided on a five-point ordinal scale: 
+
+1. **"...you feel hopeless"**
+   - **Interpretation**: This item measures the frequency of feelings of hopelessness. It assesses a core symptom of depression, where the individual perceives little or no optimism about the future.
+
+2. **"...you feel so depressed that nothing could cheer you up"**
+   - **Interpretation**: This statement gauges the depth of depressive feelings and the inability to gain pleasure from normally enjoyable activities, a condition known as anhedonia.
+
+3. **"...you feel restless or fidgety"**
+   - **Interpretation**: This item evaluates agitation and physical restlessness, which are common in anxiety disorders but can also be present in depressive states.
+
+4. **"...you feel that everything was an effort"**
+   - **Interpretation**: This query assesses feelings of fatigue or exhaustion with everyday tasks, reflecting the loss of energy that is frequently a component of depression.
+
+5. **"...you feel worthless"**
+   - **Interpretation**: This item measures feelings of low self-esteem or self-worth, which are critical indicators of depressive disorders.
+
+6. **"...you feel nervous"**
+   - **Interpretation**: This question is aimed at identifying symptoms of nervousness or anxiety, helping to pinpoint anxiety disorders.
+
+#### Response Options
+
+The ordinal response options provided for the Kessler-6 are designed to capture the frequency of these symptoms, which is crucial for assessing the severity and persistence of psychological distress:
+
+- **1. "None of the time"**: The symptom was not experienced at all.
+- **2. "A little of the time"**: The symptom was experienced infrequently.
+- **3. "Some of the time"**: The symptom was experienced occasionally.
+- **4. "Most of the time"**: The symptom was experienced frequently.
+- **5. "All of the time"**: The symptom was constantly experienced.
+
+
+In clinical practice, higher scores on the Kessler-6 are indicative of greater distress and a higher likelihood of a mental health disorder. Physicians use a sum score of 13 to decide on further diagnostic evaluations or immediate therapeutic interventions. 
+
+The simplicity and quick administration of the Kessler-6 make it an effective tool for primary care settings in New Zealand, allowing for the early detection and management of mental health issues. Let's stop to consider this measure. Do the items in this scale cohere? Do they all relate to depression? Might we quantitatively evaluate "coherence" in this scale?  
+
+
+### Exploratory Factor Analysis
+
+We employ `performance::check_factorstructure()` to evaluate the data's suitability for factor analysis. Two tests are reported:
+
+a. **Bartlett's Test of Sphericity**
+
+Bartlett's Test of Sphericity is used in psychometrics to assess the appropriateness of factor analysis for a dataset. It tests the hypothesis that the observed correlation matrix of is an identity matrix, which would suggest that all variables are orthogonal (i.e., uncorrelated) and therefore, factor analysis is unlikely to be appropriate. (Appendix A.)
+
+The outcome:
+
+- **Chi-square (Chisq)**: 50402.32 with **Degrees of Freedom (15)** and a **p-value** < .001
+
+This highly reliable result (p < .001) confirms that the observed correlation matrix is not an identity matrix, substantiating the factorability of the dataset.
+
+b. **Kaiser-Meyer-Olkin (KMO) Measure**
+
+The KMO test assesses sampling adequacy by comparing the magnitudes of observed correlation coefficients to those of partial correlation coefficients. A KMO value nearing 1 indicates appropriateness for factor analysis. The results are:
+
+- **Overall KMO**: 0.87
+  - This value suggests good sampling adequacy, indicating that the sum of partial correlations is relatively low compared to the sum of correlations, thus supporting the potential for distinct and reliable factors.
+
+Each item’s KMO value exceeds the acceptable threshold of 0.5,so suitabale for factor analysis.
+
+
+#### Explore Factor Structure 
+
+The following R code allows us to perform exploratory factor analysis (EFA) on the Kessler 6 (K6) scale data, assuming three latent factors. 
+
+
+```{r}
+#| label: efa_made_easy
+# exploratory factor analysis
+# explore a factor structure made of 3 latent variables
+
+library("psych")
+library("parameters")
+
+
+# do efa
+efa <- psych::fa(dt_only_k6, nfactors = 3) |>
+  model_parameters(sort = TRUE, threshold = "max")
+
+print( efa )
+```
+
+####  Explore Factor Structure
+
+```{r}
+library(psych)
+efa <- psych::fa(dt_only_k6, nfactors = 3) |>
+  model_parameters(sort = TRUE, threshold = "max")
+print(efa)
+```
+
+#### What is "Rotation"?
+
+In factor analysis, rotation is a mathematical technique applied to the factor solution to make it more interpretable. Rotation is like adjusting the angle of a camera to get a better view. When we rotate the factors, we are not changing the underlying data, just how we are looking at it, to make the relationships between variables and factors clearer and more meaningful.
+
+The main goal of rotation is to achieve a simpler and more interpretable factor structure. This simplification is achieved by **making the factors as distinct as possible,** by aligning them closer with specific variables, which makes it easier to understand what each factor represents. Think of orthogonal rotation like organising books on a shelf so that each book only belongs to one category. Each category (factor) is completely independent of the others.
+
+There are two types:
+
+**Orthogonal rotations** (such as Varimax), which assume that the factors are uncorrelated and keep the axes at 90 degrees to each other. This is useful when we assume that the underlying factors are independent.
+
+**Oblique rotations** (such as Oblimin), which allow the factors to correlate. Returning to our analogy, imagine a more complex library system where some categories of books overlap; for example, "history" might overlap with "political science". Oblique rotation recognises and allows these overlaps.This is more realistic in psychological and social sciences, ... here, we believe that stress and anxiety might naturally correlate with each other, so Oblique rotation is a better option.
+
+#### Results 
+
+Using oblimin rotation, the items loaded as follows on the three factors:
+
+- **MR3**: Strongly associated with 'kessler_hopeless' (0.79) and 'kessler_worthless' (0.79). This factor might be capturing aspects related to feelings of hopelessness and worthlessness, often linked with depressive affect.
+- **MR1**: Mostly linked with 'kessler_depressed' (0.99), suggesting this factor represents core depressive symptoms.
+- **MR2**: Includes 'kessler_restless' (0.72), 'kessler_nervous' (0.43), and 'kessler_effort' (0.38). This factor seems to encompass symptoms related to anxiety and agitation.
+
+The **complexity** values indicate the number of factors each item loads on "significantly."  A complexity near 1.00 suggests that the item predominantly loads on a single factor, which is seen with most of the items except for 'kessler_nervous' and 'kessler_effort', which show higher complexity and thus share variance with more than one factor.
+
+**Uniqueness** values represent the variance in each item not explained by the common factors. Lower uniqueness values for items like 'kessler_depressed' indicate that the factor explains most of the variance for that item.
+
+#### Variance Explained
+
+The three factors together account for 62.94% of the total variance in the data, distributed as follows:
+
+- **MR3**: 28.20%
+- **MR1**: 17.56%
+- **MR2**: 17.18%
+
+This indicates a substantial explanation of the data’s variance by the model, with the highest contribution from the factor associated with hopelessness and worthlessness.
+
+
+#### Consensus View?
+
+There are different algorithms for assessing the factor structure.  The performance package allows us to consider a 'consensus' view.
+
+
+```{r}
+#| label: plot_factors
+#| code-fold: true
+#| column: page-right
+
+
+n <-n_factors(dt_only_k6)
+n
+# plot
+plot(n) + theme_classic()
+```
+
+Output: 
+
+> The choice of 1 dimensions is supported by 8 (50.00%) methods out of 16 (Optimal coordinates, Acceleration factor, Parallel analysis, Kaiser criterion, Scree (SE), Scree (R2), VSS complexity 1, Velicer's MAP). 
+
+
+The result indicates that a single dimension is supported by half of the methods used (8 out of 16).  However science isn't a matter of voting. Also, does it make sense that there is one latent factor here?  Let's press on...
+
+
+### Confirmatory Factor Analysis (ignoring groups)
+
+CFA to validate the hypothesised factor structures derived from EFA. 
+
+- **One-factor model**: assumes all items measure a single underlying construct.
+- **Two-factor model**: assumes two distinct constructs measured by the items.
+- **Three-factor model**: assumes three distinct constructs measured by the items.
+
+Steps are:
+
+#### 1. Data Partition
+
+First, we take the dataset (`dt_only_k6`) and partition it into training and testing sets. This division helps in validating the model built on the training data against an unseen test set; this enhances robustness for the factor analysis findings.
+
+```{r}
+set.seed(123)
+part_data <- datawizard::data_partition(dt_only_k6, training_proportion = .7, seed = 123)
+training <- part_data$p_0.7
+test <- part_data$test
+```
+
+#### 2. Model Setup for CFA
+
+Bases on the EFA results, we consider three different factor structures
+
+- **One-factor model**: assumes all items measure a single underlying construct.
+- **Two-factor model**: assumes two distinct constructs measured by the items.
+- **Three-factor model**: assumes three distinct constructs measured by the items.
+
+We fit each model to the training data:
+
+```{r}
+# One-factor model
+structure_k6_one <- psych::fa(training, nfactors = 1) |>
+  efa_to_cfa()
+
+# Two-factor model
+structure_k6_two <- psych::fa(training, nfactors = 2) |>
+  efa_to_cfa()
+
+# Three-factor model
+structure_k6_three <- psych::fa(training, nfactors = 3) %>%
+  efa_to_cfa()
+```
+
+
+Then we split our data for cross-validation
+
+```{r}
+#| label: cfa
+# first partition the data 
+part_data <- datawizard::data_partition(dt_only_k6, traing_proportion = .7, seed = 123)
+
+
+# set up training data
+training <- part_data$p_0.7
+test <- part_data$test
+
+
+# one factor model
+structure_k6_one <- psych::fa(training, nfactors = 1) |>
+  efa_to_cfa()
+
+# two factor model model
+structure_k6_two <- psych::fa(training, nfactors = 2) |>
+  efa_to_cfa()
+
+# three factor model
+structure_k6_three <- psych::fa(training, nfactors = 3) %>%
+  efa_to_cfa()
+
+# inspect models
+structure_k6_one
+structure_k6_two
+structure_k6_three
+```
+
+- **One-Factor Model**: All items are linked to a single factor (`MR1`).
+  
+- **Two-Factor Model**: 
+  - `MR1` is linked with `kessler_depressed`, `kessler_hopeless`, and `kessler_worthless`, suggesting these items might represent a more depressive aspect of **distress.**
+  - `MR2` is associated with `kessler_effort`, `kessler_nervous`, and `kessler_restless`, which could indicate a different aspect, perhaps related to **anxiety or agitation.**
+
+- **Three-Factor Model**: 
+  - `MR1` includes `kessler_depressed`, `kessler_effort`, `kessler_hopeless`, and `kessler_worthless`, indicating a broad factor possibly encompassing overall distress.
+  - `MR2` consists solely of `kessler_effort`.
+  - `MR3` includes `kessler_nervous` + `kessler_restless`, which might imply these are distinctivene from other distress components.
+  
+
+Do these results make sense?  Note they are different from the Exploratory Factor Analysis. Why might that be? 
+  
+  
+Next we perform the confirmatory factor analysis itself...
+
+```{r}
+#| label: fit-models
+# fit and compare models
+
+# one latent model
+one_latent <-
+  suppressWarnings(lavaan::cfa(structure_k6_one, data = test))
+
+# two latents model
+two_latents <-
+  suppressWarnings(lavaan::cfa(structure_k6_two, data = test))
+
+# three latents model
+three_latents <-
+  suppressWarnings(lavaan::cfa(structure_k6_three, data = test))
+
+
+# compare models
+compare <-
+  performance::compare_performance(one_latent, two_latents, three_latents, verbose = FALSE)
+
+# select cols we want
+key_columns_df <- compare[, c("Model", "Chi2", "Chi2_df", "CFI", "RMSEA", "RMSEA_CI_low", "RMSEA_CI_high", "AIC", "BIC")]
+
+# view as html table
+as.data.frame(key_columns_df) |>
+  kbl(format = "markdown")
+```
+
+####  Metrics:
+
+- **Chi2 (Chi-Square Test)**: A lower Chi2 value indicates a better fit of the model to the data.
+- **df (Degrees of Freedom)**: Reflects the model complexity.
+- **CFI (Comparative Fit Index)**: Values closer to 1 indicate a better fit. A value above 0.95 is generally considered to indicate a good fit.
+- **RMSEA (Root Mean Square Error of Approximation)**: values less than 0.05 indicate a good fit, and values up to 0.08 are acceptable.
+- **AIC (Akaike Information Criterion) and BIC (Bayesian Information Criterion)**: lower values are better, indicating a more parsimonious model, with the BIC imposing a penalty for model complexity.
+
+#### Model Selection:
+
+What do you think? 
+
+- The **Three Latents Model** shows the best fit across all indicators, having the lowest Chi2, RMSEA, and the highest CFI. It also has the lowest AIC and BIC scores, suggesting it not only fits well but is also the most parsimonious among the tested models. 
+
+But... 
+
+- **The CFI** for the two-factor model is 0.990, which is close to 1 and suggests a very good fit to the data. This is superior to the one-factor model (CFI = 0.9468) and slightly less than the three-factor model (CFI = 0.9954). A CFI value closer to 1 indicates a better fit of the model to the data.
+
+- **Root Mean Square Error of Approximation (RMSEA):** The two-factor model has an RMSEA of 0.0443, which is within the excellent fit range (below 0.05). It significantly improves upon the one-factor model's RMSEA of 0.0985 and is only slightly worse than the three-factor model's 0.0313.
+
+- **BIC* isn't much different, So
+
+We might say the two-factor model strikes a balance between simplicity and model fit. It has fewer factors than the three-factor model, making it potentially easier to interpret while still capturing the variance in the data.
+
+Look at the items. What do you think? 
+
+Does Anxiety appear to differ from Depression? 
+
+
+
+
+### Measurement Invariance in Multi-group Confirmatory Factor Analysis
+
+When we use tools like surveys or tests to measure psychological constructs (like distress, intelligence, satisfaction), we often need to ensure that these tools work similarly across different groups of people. This is crucial for fair comparisons. Think of it as ensuring that a ruler measures inches or centimeters the same way, whether you are in Auckland or Wellington.
+
+#### Levels of Measurement Invariance
+
+Measurement invariance tests how consistently a measure operates across different groups, such as ethnic or gender groups. Consider how we can understand it through the K6 Distress Scale applied to different demographic groups in New Zealand:
+
+1. **Configural Invariance**
+
+   - **What it means**: The measure's structure is the same across groups. Imagine you have a toolkit; configural invariance means that everyone has the same set of tools (screwdrivers, hammers, wrenches) in their kits.
+   - **Application**: For the K6 Distress Scale, both Māori and New Zealand Europeans use the same six questions to gauge distress. However, how strongly each question predicts distress can vary between the groups. (Not we are using "prediction" here -- we are only assessessing associations.)
+
+2. **Metric Invariance**
+   - **What it means**: The strength of the relationship between each tool (question) and the construct (distress) is consistent across groups. If metric invariance holds, turning a screw (answering a question about feeling nervous) tightens the screw by the same amount no matter who uses the screwdriver.
+   - **Application**: A unit change in the latent distress factor affects scores on questions (like feeling nervous or hopeless) equally for Māori and New Zealand Europeans. 
+
+3. **Scalar Invariance**
+   - **What it means**: Beyond having the same tools and relationships, everyone starts from the same baseline. If scalar invariance holds. It is like ensuring that every screwdriver is calibrated to the same torque setting before being used.
+   - **Application**: The actual scores on the distress scale mean the same thing across different groups. If a Māori scores 15 and a New Zealander of European descent scores 15, both are experiencing a comparable level of distress.
+
+#### Concept of "Partial Invariance"
+
+Sometimes, not all conditions for full metric or scalar invariance are met, which could hinder meaningful comparisons across groups. This is where the concept of "partial invariance" comes into play.
+
+**Partial Invariance** occurs when invariance holds for some but not all items of the scale across groups. Imagine if most, but not all, tools in the kits behaved the same way across different groups. If sufficient items (tools) exhibit invariance, the measure might still be usable for certain comparisons.
+
+- **Metric Partial Invariance**: This might mean that while most items relate similarly to the underlying factor across groups, one or two do not. Researchers might decide that there’s enough similarity to proceed with comparisons of relationships (correlations) but should proceed with caution.
+
+- **Scalar Partial Invariance**: Here, most but not all items show the same intercepts across groups. It suggests that while comparisons of the construct means can be made, some scores might need adjustments or nuanced interpretation.
+
+
+In practical terms, achieving partial invariance in your analysis allows for some comparisons but signals a need for careful interpretation and potentially more careful analysis. For instance, if partial scalar invariance is found on the K6 Distress Scale, researchers might compare overall distress levels between Māori and New Zealand Europeans but should acknowledge that differences in certain item responses might reflect measurement bias rather than true differences in distress.
+
+
+The upshot is that understanding these levels of invariance helps ensure that when we compare mental health or other constructs across different groups, we are making fair and meaningful comparisons. Partial invariance offers a flexible approach to handle real-world data where not all conditions are perfectly met. This approach allows researchers to acknowledge and account for minor discrepancies while still extracting valuable insights from their analyses.
+
+The following script runs multi-group confirmatory factor analysis (MG-CFA) to assess the invariance of the Kessler 6 (K6) distress scale across two ethnic groups: European New Zealanders and Māori.
+
+```{r}
+#| label: group_by_cfa
+
+# select needed columns plus 'ethnicity'
+# filter dataset for only 'euro' and 'maori' ethnic categories
+dt_eth_k6_eth <- df_nz |> 
+  filter(wave == 2018) |> 
+  filter(eth_cat == "euro" | eth_cat == "maori") |> 
+  select(kessler_depressed, kessler_effort, kessler_hopeless,
+         kessler_worthless, kessler_nervous, kessler_restless, eth_cat)
+
+# partition the dataset into training and test subsets
+# stratify by ethnic category to ensure balanced representation
+part_data_eth <- datawizard::data_partition(dt_eth_k6_eth, training_proportion = .7, seed = 123, group = "eth_cat")
+
+training_eth <- part_data_eth$p_0.7
+test_eth <- part_data_eth$test
+
+# configural invariance models
+#run CFA models specifying one, two, and three latent variables without constraining across groups
+one_latent_eth_configural <- suppressWarnings(lavaan::cfa(structure_k6_one, group = "eth_cat", data = test_eth))
+two_latents_eth_configural <- suppressWarnings(lavaan::cfa(structure_k6_two, group = "eth_cat", data = test_eth))
+three_latents_eth_configural <- suppressWarnings(lavaan::cfa(structure_k6_three, group = "eth_cat", data = test_eth))
+
+# compare model performances for configural invariance
+compare_eth_configural <- performance::compare_performance(one_latent_eth_configural, two_latents_eth_configural, three_latents_eth_configural, verbose = FALSE)
+compare_eth_configural
+# metric invariance models
+# run CFA models holding factor loadings equal across groups
+one_latent_eth_metric <- suppressWarnings(lavaan::cfa(structure_k6_one, group = "eth_cat", group.equal = "loadings", data = test_eth))
+two_latents_eth_metric  <- suppressWarnings(lavaan::cfa(structure_k6_two, group = "eth_cat", group.equal = "loadings", data = test_eth))
+three_latents_eth_metric  <- suppressWarnings(lavaan::cfa(structure_k6_three, group = "eth_cat",group.equal = "loadings", data = test_eth))
+
+# compare model performances for metric invariance
+compare_eth_metric  <- performance::compare_performance(one_latent_eth_metric, two_latents_eth_metric, three_latents_eth_metric, verbose = FALSE)
+
+# scalar invariance models
+# run CFA models holding factor loadings and intercepts equal across groups
+one_latent_eth_scalar <- suppressWarnings(lavaan::cfa(structure_k6_one, group = "eth_cat", group.equal = c("loadings","intercepts"), data = test_eth))
+two_latents_eth_scalar  <- suppressWarnings(lavaan::cfa(structure_k6_two, group = "eth_cat", group.equal =  c("loadings","intercepts"), data = test_eth))
+three_latents_eth_scalar  <- suppressWarnings(lavaan::cfa(structure_k6_three, group = "eth_cat",group.equal =  c("loadings","intercepts"), data = test_eth))
+
+# Compare model performances for scalar invariance
+compare_eth_scalar <- compare_eth_scalar  <- performance::compare_performance(one_latent_eth_scalar, two_latents_eth_scalar, three_latents_eth_scalar, verbose = FALSE)
+```
+
+### Configural Invariance Results
+
+```{r}
+
+compare_eth_configural_key <- compare_eth_configural[, c("Name", "Chi2", "Chi2_df","RFI", "NNFI", "CFI","GFI","RMSEA", "RMSEA_CI_low", "RMSEA_CI_high", "AIC", "BIC")]
+
+as.data.frame(compare_eth_configural_key)|>
+  kbl(format = "markdown")
+
+```
+
+The table represents the comparison of three multi-group confirmatory factor analysis (CFA) models conducted to test for configural invariance across different ethnic categories (eth_cat). Configural invariance refers to whether the pattern of factor loadings is the same across groups. It's the most basic form of measurement invariance.
+
+Looking at the results, we can draw the following conclusions:
+
+1.  **Chi2 (Chi-square)**: a lower value suggests a better model fit. In this case, the three looks best 
+
+2.  **GFI (Goodness of Fit Index) and AGFI (Adjusted Goodness of Fit Index)**: These values range from 0 to 1, with values closer to 1 suggesting a better fit. All models are close. 
+
+3.  **NFI (Normed Fit Index), NNFI (Non-Normed Fit Index, also called TLI), CFI (Comparative Fit Index)**: These range from 0 to 1, with values closer to 1 suggesting a better fit. The two and three factors models have the highest values.
+
+4.  **RMSEA (Root Mean Square Error of Approximation)**: lower values are better, with values below 0.05 considered good and up to 0.08 considered acceptable.Only two and three meet this threshold.
+
+5.  **RMR (Root Mean Square Residual) and SRMR (Standardized Root Mean Square Residual)**: three is best.
+
+6.  **RFI (Relative Fit Index), PNFI (Parsimonious Normed Fit Index), IFI (Incremental Fit Index), RNI (Relative Noncentrality Index)**: These range from 0 to 1, with values closer to 1 suggesting a better fit. Again three is the winner.
+
+7.  **AIC (Akaike Information Criterion) and BIC (Bayesian Information Criterion)**: The three factor model win's again.
+
+### Analysis of the Results:
+- **One Latent Model**: shows the poorest fit among the models with a high RMSEA and the lowest CFI. The model's Chi-squared value is also significantly high, indicating a substantial misfit with the observed data.
+
+- **Two Latents Model**: displays a much improved fit compared to the one latent model, as evident from its much lower Chi-squared value, lower RMSEA, and higher CFI. This suggests that two factors might be necessary to adequately represent the underlying structure in the data.
+
+- **Three Latents Model**: provides the best fit metrics among the three configurations.
+
+### Metric Equivalence
+
+```{r}
+compare_eth_metric <- compare_eth_metric[, c("Name", "Chi2", "Chi2_df","RFI", "NNFI", "CFI","GFI","RMSEA", "RMSEA_CI_low", "RMSEA_CI_high", "AIC", "BIC")]
+
+as.data.frame(compare_eth_metric)|>
+  kbl(format = "markdown")
+```
+
+This table presents the results of a multi-group confirmatory factor analysis (CFA) conducted to test metric equivalence (also known as weak measurement invariance) across different ethnic categories (eth_cat).  
+
+The three factor model wins again.
+
+
+### Scalar Equivalence
+
+```{r}
+# view as html table
+
+compare_eth_scalar <- compare_eth_scalar[, c("Name", "Chi2", "Chi2_df","RFI", "NNFI", "CFI","GFI","RMSEA", "RMSEA_CI_low", "RMSEA_CI_high", "AIC", "BIC")]
+
+as.data.frame(compare_eth_scalar)|>
+  kbl(format = "markdown")
+```
+
+Overall, it seems that we have good evidence for the three-factor model of Kessler-6, but two-factor is close.
+
+Consider: when might we prefer a two-factor model?  When might we prefer a three-factor model?  When might we prefer a one-factor model? 
+
+
+### Conclusion: Understanding the Limits of Association in Factor Models
+
+This discussion of measurement invariance across different demographic groups underscores the reliance of factor models on the underlying associations in the data. It is crucial to remember that these models are fundamentally descriptive, not prescriptive; they organize the observed data into a coherent structure based on correlations and assumed relationships among variables.
+
+Next week, we will consider the causal assumptions inherent in these factor models. Factor analysis assumes that the latent variables (factors) causally influence the observed indicators. This is a stron assumption that can profoundly affect the interpretation of the results. Understanding and critically evaluating our assumptions is important when applying factor analysis to real-world scenarios.
+
+The assumption that latent variables cause the observed indicators, rather than merely being associated with them, suggests a directional relationship that can affect decisions made based on the analysis. For instance, if we believe that a latent construct like psychological distress causally influences responses on the K6 scale, interventions might be designed to target this distress directly. However, if the relationship is more complex or bidirectional, such straightforward interventions might not be as effective.
+
+Next week's session on causal assumptions will provide a deeper insight into how these assumptions shape our interpretations and the strategies we derive from factor models. This understanding is critical for applying these models appropriately and effectively in psychological research and practice.
+
+### Lab assignment
+
+Using the code above, perform MG-CFA on personality measures using the `df_nz` data set. 
+
+
+## Appendix A. What is a Correlation Matrix? 
+
+A correlation matrix is a square matrix that contains the Pearson correlation coefficients between each pair of variables within a dataset. Each element in the matrix represents the correlation between two variables.
+
+#### Structure
+- **Dimensions**: the matrix is $p \times p$ where $p$ is the number of variables.
+- **Diagonal Elements**: all diagonal elements are 1, because each variable has a perfect correlation with itself.
+- **Off-Diagonal Elements**: These elements, denoted as $r_{ij}$, are the Pearson correlation coefficients between the $i^{th}$ and $j^{th}$ variables, ranging from -1 to +1.
+  - $r_{ij} = 1$ indicates a perfect positive linear relationship.
+  - $r_{ij} = -1$ indicates a perfect negative linear relationship.
+  - $r_{ij} = 0$ indicates no linear relationship.
+
+#### Properties
+- **Symmetry**: the matrix is symmetric around the diagonal, meaning $r_{ij} = r_{ji}$.
+- **Real Values**: all entries are real numbers.
+- **Bounded Values**: values are constrained between -1 and 1, inclusive.
+
+####  Use
+- Exploring relationships between variables.
+- Conducting factor analysis to identify latent factors, as here.
+- ... 
+
+```{r}
+# Compute the correlation matrix
+library(margot)
+library(tidyverse)
+dt_only_k6 <- df_nz |> 
+  dplyr::filter(wave == 2018) |> 
+  dplyr::select(
+    kessler_depressed,
+    kessler_effort,
+    kessler_hopeless,
+    kessler_worthless,
+    kessler_nervous,
+    kessler_restless
+  )
+
+cor_matrix <- cor(dt_only_k6, use = "pairwise.complete.obs", method = "pearson")
+print( 
+  round( cor_matrix, 2) 
+)
+```
+
+
+```{r}
+library(tidyr)
+
+#plot
+cor_matrix_df <- as.data.frame(cor_matrix)  # convert matrix to data frame
+cor_matrix_df$variable <- rownames(cor_matrix_df)  # add a new column for rownames
+
+long_cor_matrix <- tidyr::pivot_longer(cor_matrix_df, 
+                                cols = -variable, 
+                                names_to = "comparison", 
+                                values_to = "correlation")
+
+ggplot(long_cor_matrix, aes(x = variable, y = comparison, fill = correlation)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0, limit = c(-1,1)) +
+  theme_minimal() +
+  labs(x = "Variables", y = "Variables", fill = "Correlation") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+
+
+### Packages
+
+```{r}
+report::cite_packages()
+```
+
+

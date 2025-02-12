@@ -1,0 +1,86 @@
+/* css styles */
+
+/* Edit the CSS properties in this file to create a custom
+   Distill theme. Only edit values in the right column
+   for each row; values shown are the CSS defaults.
+   To return any property to the default,
+   you may set its value to: unset
+   All rows must end with a semi-colon.       FROM DISTILL  */
+
+/* Optional: embed custom fonts here with `@import`          */
+/* This must remain at the top of this file.                 */
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Roboto&display=swap');
+
+html {
+  /*-- Main font sizes --*/
+  /*  --title-size:      32px;
+  --body-size:       1.06rem;
+  --code-size:       14px;
+  --aside-size:      12px;
+  --fig-cap-size:    13px;
+  /*-- Main font colors --*/
+  --title-color:     #000000;
+  --header-color:    rgba(0, 0, 0, 0.8);
+  --body-color:      rgba(0, 0, 0, 0.8);
+  --aside-color:     rgba(0, 0, 0, 0.6);
+  --fig-cap-color:   rgba(0, 0, 0, 0.6);
+  /*-- Specify custom fonts ~~~ must be imported above   --*/
+  --heading-font:    "Fira Code", sans-serif;
+  --body-font:       "Fira Code", sans-serif;
+  --navbar-font:     "Fira Code", sans-serif;  /* websites + blogs only */
+  --mono-font:       "Fira Code", monospace;
+}
+
+code {
+  font-family: var(--mono-font);
+  font-size: 14px;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+
+/* Set Fira Code as the default font */
+.reveal .slides {
+    font-family: "Fira Code", monospace;
+}
+
+/* Reduce font size for titles */
+.reveal h1 {
+    font-size: 1.6em;
+}
+
+.reveal h2 {
+    font-size: 1.4em;
+}
+
+.reveal h3 {
+    font-size: 1.2em;
+}
+
+/* Ensure all headings use Fira Code */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+    font-family: "Fira Code", monospace;
+    font-weight: 600;
+}
+
+/* Maximize image size while maintaining aspect ratio */
+.reveal img {
+    max-width: 100%;
+    max-height: 70vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Ensure code blocks use Fira Code */
+.reveal pre code {
+    font-family: "Fira Code", monospace;
+}
+
+/* Optional: Adjust body text size if needed */
+.reveal {
+    font-size: 24px;
+}
+
+
+
+

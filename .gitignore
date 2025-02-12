@@ -1,0 +1,47 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+/.quarto/
+
+# History files
+.Rhistory
+.Rapp.history
+
+# Session Data files
+.RData
+
+# User-specific files
+.Ruserdata
+
+# Example code in package build process
+#*-Ex.R
+
+# Output files from R CMD check
+/*.Rcheck/
+
+*/saved
+
+# RStudio files
+.Rproj.user/
+
+# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
+.httr-oauth
+
+# Big gifs
+#_post/**/*.gif
+# knitr and R markdown default cache directories *_cache/
+
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+*.txt
+
+# Using different computers
+*.DS_Store
+
+
+
+

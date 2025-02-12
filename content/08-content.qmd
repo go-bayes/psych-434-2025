@@ -1,0 +1,2224 @@
+---
+title: "Causal Inference: Estimation of ATE and CATE"
+date: "2025-APR-29"
+format:
+  html:
+    warnings: FALSE
+    error: FALSE
+    messages: FALSE
+    code-overflow: scroll
+    highlight-style: kate
+    code-tools:
+      source: true
+      toggle: FALSE
+html-math-method: katex
+reference-location: margin
+citation-location: margin
+cap-location: margin
+code-block-border-left: true
+---
+
+```{r}
+#| include: false
+# for information about this template: https://github.com/mikemahoney218/quarto-arxiv/blob/main/template.qmd
+#libraries and functions
+# read libraries
+library("tinytex")
+library(extrafont)
+loadfonts(device = "win")
+
+# read functions
+#source("/Users/joseph/GIT/templates/functions/funs.R")
+```
+
+
+::: {.callout-note}
+**Required**
+- [@vanderweele2020] [link](https://www.dropbox.com/scl/fi/srpynr0dvjcndveplcydn/OutcomeWide_StatisticalScience.pdf?rlkey=h4fv32oyjegdfl3jq9u1fifc3&dl=0)
+
+
+**Optional**
+- [@suzuki2020] [link](https://www.dropbox.com/scl/fi/4midxwr9ltg9oce02e0ss/suzuki-causal-diagrams.pdf?rlkey=uktzf3nurtgpbj8m4h0xz82dn&dl=0)
+- [@Bulbulia2024PracticalGuide] [link](https://osf.io/preprints/psyarxiv/uyg3d)
+- [@hoffman2023] [link](https://arxiv.org/pdf/2304.09460.pdf)
+:::
+
+::: {.callout-important}
+## Key concepts for the test(s):
+  - **Counfounding vs Confounder**
+  - **Causal Estimand, Statistical Estimand, Statistical Estimator**
+  - **Inverse probabilitiy of treatment weights using propensity scores: modelling the exposure or treatment, not the outcome.**
+  - **Subgroup analysis using propensity scores**
+:::
+
+::: {.callout-important}
+## For the lab, copy and paste code chunks following the "LAB" section.
+:::
+
+
+# Seminar
+
+## Learning Outcomes
+
+- You will learn how to state a causal question in a three-wave panel
+- You will learn how to identify causal effects in a three-waves of panel data.
+- How to do Propensity-score weighting: modelling the exposure or treatment, not the outcome.
+<!-- - Outcome modelling: modelling the outcome, with the treatment included in the model -->
+<!-- - Doubly robust estimation: model both the treatment and the outcome.** -->
+- Subgroup analysis by doubly-robust estimation
+
+
+<!-- - You will learn how to write a report statement that formulates a causal question, names a population of interest, and constructs a causal diagram that explains whether and how to identify a causal effect from data.  -->
+
+
+### Why is this lesson important?
+
+<!-- Recall that in psychology, our task is to answer some questions about how people think and behave. In cross-cultural psychology, these questions are typically comparative. -->
+
+<!-- Our first task is clearly define that question. Our second task is to answer that question. -->
+
+The methods you will learn today will help you to define and answer comparative questions in psychology. 
+
+
+## Review: The Fundamental Problem of Causal Inference as a Missing Data Problem
+
+Recall the fundamental problem of causal inference, returning to the question of whether bilingualism improves cognitive abilities:
+
+-   $Y_i^{a = 1}$: The cognitive ability of child $i$ if they were bilingual. This is the counterfactual outcome when A = 1.
+-   $Y_i^{a = 0}$:: The cognitive ability of child $i$ if they were monolingual. This is the counterfactual outcome when A = 0.
+
+The causal effect of bilingualism on cognitive ability for individual $i$ is then defined as the difference between these potential outcomes:
+
+$$
+\text{Causal Effect}_i = Y_i^{a=1} - Y_i^{a=0} 
+$$
+
+We say there is a causal effect if:
+
+$$
+Y_i^{a=1} - Y_i^{a=0}  \neq 0
+$$
+
+However, we only observe one of the potential outcomes for each child. The other outcome is not observed because physics prevents a child from both receiving and not receiving bilingual exposure.
+
+The fact that causal contrasts are not observed in individuals is called "The fundamental problem of causal inference."
+
+Although we typically cannot observe individual causal effects, we can obtain average causal effects when certain assumptions are satisfied.
+
+```{=tex}
+\begin{align}
+E(\delta) = E(Y^{a=1} - Y^{a=0})\\
+          ~  = E(Y^{a=1}) - E(Y^{a=0}) \\
+          ~  = ATE
+\end{align}
+```
+We may identify average causal effects from the data when the following assumptions are met:
+
+-   **Causal Consistency:** The exposure values under comparisons correspond to well-defined interventions that, in turn, correspond to the treatment versions in the data.[]
+-   **Positivity:** The probability of receiving every value of the exposure within all strata of co-variates is greater than zero []
+-   **Exchangeability:** The conditional probability of receiving every value of an exposure level, though not decided by the investigators, depends only on the measured covariates []
+
+Further assumptions:
+
+-   **No Interference,** also known as the **Stable Unit Treatment Value Assumption** (SUTVA), requires that the treatment given to one unit (e.g., person, group, organization) does not interfere with the potential outcomes of another unit. Put differently, there are no "spillover" effects. Note: this assumption may be thought to be part of causal consistency, namely individual has only one potential outcome under each treatment condition.
+-   **Correctly specified model**: the requirement that the underlying statistical model used to estimate causal effects accurately represents the true relationships between the variables of interest. We say the model should be able to capture "the functional form" of the relationship between the treatment, the outcome, and any covariates. The model's functional form should be flexible enough to capture the true underlying relationship. The estimated causal effects may be biased if the model's functional form is incorrect. Additionally, the model must handle omitted variable bias by including all relevant confounders and should correctly handle missing data from non-response or loss-to follow up. We will return to the bias arising from missing data in the weeks ahead. For now, it is important to note that causal inference assumes that our model is correctly specified.
+
+
+## Subgroup analysis
+
+<!-- In causal inference, these two concepts are related but have distinct meanings. -->
+
+<!-- Let $Y_{a}$ denote the counterfactual outcome Y when the experimental intervention $A$ is set to level $a$. Let $Y_{r}$ denote the counterfactual outcome $Y$ when another experimental intervention $R$ is set to level $r$. Following VanderWeele (2009), we can define interaction and effect modification as follows: -->
+
+<!-- 1.  Interaction (causal interaction) on the difference scale, conditional on confounders $L$, occurs when: -->
+
+<!-- $$E(Y^{a1,r1}|L=l) - E(Y^{a0,r1}|L=l) \neq E(Y^{a1,r0}|L=l) - E(Y^{a0,r0}|L=l)$$ -->
+
+<!-- In this case, we are considering a double intervention, and interaction occurs when the combined effect of interventions $A$ and $R$ is not equal to the sum of their individual effects. -->
+
+Redcall, **Effect Modification** (also known as "heterogeneity of treatment effects", and "Effect-measure modification") occurs when the causal effect of intervention $A$ varies across different levels of another variable $R$:
+
+$$E(Y^{a=1}|G=g_1, L=l) - E(Y^{a=0}|G=g_1, L=l) \neq E(Y^{a=1}|G=g_2, L=l) - E(Y^{a=0}|G=g_2, L=l)$$
+
+Effect modification indicates that the magnitude of the causal effect of intervention $A$ is related to the modifier variable $G$ level. As discussed last week, effect modification can be observed even when there is no direct causal interaction between the treatment and the modifier variable. We noted that **interaction in causal inference refers to a situation where the combined effect of two interventions is not equal to the sum of their individual effects**. **Effect modification, on the other hand, occurs when the causal effect of one intervention varies across different levels of another variable.**
+
+
+We also noted that 
+
+> **For comparative research, we are typically interested in effect-modification, which requires subgroup analysis.**
+
+
+### Causal Estimand, Statistical Estimand, Statistical Estimator
+
+Let's set subgroup analysis to the side for a moment and begin focussing on statistical estimation.  
+
+Suppose a researcher wants to understand the causal effect of marriage on individual happiness. Participants in the study are surveyed for their marital status ("married" or "not married") and their self-reported happiness on a scale from 1 to 10.
+
+#### Causal Estimand
+
+- **Definition**: The causal estimand is the specific quantity or parameter that we aim to estimate to understand the causal effect of an intervention or treatment on an outcome.
+
+- **Example**: Here, the **Causal Estimand** would be the Average Treatment Effect (ATE) of being married on happiness. Specifically, we define the ATE as the difference in the potential outcomes of happiness if all individuals were married versus if no individuals were married:
+
+  $$
+  \text{ATE} = E[Y^{a=1} - Y^{a=0}]
+  $$
+
+
+  Here, $Y^{a=1}$ represents the potential happiness score if an individual is married, and $Y^{a=0}$ if they are not married.
+
+
+#### Next step: Are Causal Assumptions Met? 
+
+- Identification (Exchangeability): balance in the confounders across the treatments to be compared
+
+- Consistency: well-defined interventions
+
+- Positivity: treatments occur within levels of covariates $L$
+
+
+#### Statistical Estimand (next step)
+
+- **The problem**: how do we bridge the gap between potential outcomes and data? 
+
+- **Definition**: the statistical estimand is the parameter or function that summarises the relationship between variables as described by a statistical model applied to data. 
+
+- **Example**: for our study, the **Statistical Estimand** might be the mean difference in happiness scores between individuals who are married and those who are not, as derived from a linear regression model:
+
+  $$
+  \text{Happiness} = \beta_0 + \beta_1 \times \text{Married} + \epsilon
+  $$
+
+  In this equation, $\beta_1$ represents the estimated difference in happiness scores between the married and non-married groups.
+
+#### Statistical Estimator
+
+- **Definition**: a statistical estimator is a rule or method by which a numerical estimate of a statistical estimand is calculated from the data.
+
+- **Example**: in our marriage study, the **Statistical Estimator** for $\beta_1$ is the ordinary least squares (OLS) estimator. This estimator is used to calculate $\beta_1$ from the sample data provided by the survey. It provides an estimate of the impact of being married on happiness, calculated using:
+  $$
+  \hat{\beta}_1 = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2}
+  $$
+  where $X_i$ is a binary indicator for being married (1 for married, 0 for not married), $Y_i$ is the observed happiness score, and $\bar{X}$, $\bar{Y}$ are the sample means of $X$ and $Y$, respectively.
+
+
+(Note: you will not need to know this equation for the quiz)
+
+
+The upshot, we anchor our causal inquiries within a mult-step framework of data analysis. This involves: 
+
+1. clearly defining our causal estimand within a specified *target population,*
+2. clarifying assumptions, & especially identification assumptions, 
+3. describing a statistical strategy for extracting this estimand from the data, and then 
+4. applying an algorithm that embodies this statistical method.
+
+
+## Methods for Statistical Estimation in Causal Inference: Inverse Probability of Treatment Weights Using Propensity Scores
+
+Last week, we discussed confounding control using regression adjustment. Recall the formula for the average treatment effect (ATE) when conditioning on a set of covariates $L$:
+
+$$
+\begin{aligned}
+\text{ATE} = E[Y^{a=1} \mid L = l] - E[Y^{a=0} \mid L = l] \quad \text{for any value of } l
+\end{aligned}
+$$
+
+> "We say that a set $L$ of measured non-descendants of $L$ is a sufficient set for confounding adjustment when conditioning on $L$ blocks all backdoor paths—that is, the treated and the untreated are exchangeable within levels of $L$" (Hernán & Robins, *Causal Inference*, p. 86).
+
+This formula calculates the expected outcome difference between treated ($a=1$) and untreated ($a=0$) groups, given a specific value of the covariates $l$.
+
+Inverse Probability of Treatment Weighting (IPTW) takes a different approach. We create a pseudo-population where the treatment assignment is independent of the observed covariates by assigning weights to each individual based on their propensity scores.
+
+**We do this by modelling the treatment**
+
+Denote the treatment indicator by $A$, where $A = 1$ if an individual receives treatment and $A = 0$ otherwise. $L$ represents the vector of observed covariates, and $Y^a$ the potential outcomes. The propensity score, $e(L)$, is defined as the probability of receiving the treatment given the observed covariates:
+
+$$
+\hat{e}(L) = P(A = 1 \mid L)
+$$
+
+To obtain IPTW weights, compute the inverse probability of treatment:
+
+$$
+v_i = \frac{A_i}{\hat{e}(L_i)} + \frac{1 - A_i}{1 - \hat{e}(L_i)}
+$$
+
+Which simplifies to 
+
+$$
+v_i = 
+\begin{cases} 
+\frac{1}{\hat{e}} & \text{if } A_i = 1 \\
+\frac{1}{1-\hat{e}} & \text{if } A_i = 0 
+\end{cases}
+$$
+
+where $v_i$ is the IPTW weight for individual $i$, $A_i$ is the treatment indicator for individual $i$, and $\hat{e}(L_i)$ is the estimated propensity score for individual $i$.   
+
+How might we use these weights to obtain causal effect estimates?
+
+
+
+## Marginal Structural Models (MSMs)
+
+Marginal Structural Models (MSMs) estimate causal effects without requiring an "outcome model" that stratifies on covariates. Rather, MSMs employ weights derived from the inverse probability of treatment weighting (IPTW) to create a pseudo-population in which the distribution of covariates is independent of treatment assignment over time.
+
+The general form of an MSM can be expressed as follows:
+
+$$
+E[Y^a] = \beta_0 + \beta_1a
+$$
+
+where $E[Y^a]$ is the expected outcome under treatment $a$  and $\beta_0$ and $\beta_1$ are parameters estimated by fitting the weighted model. Again, the weights used in the MSM, typically derived from the IPTW (or another treatment model), adjust for the confounding, allowing the model to estimate the unbiased effect of the treatment on the outcome without requiring covariates in the model.
+
+Where do weights fit in?   Note, we have $E[Y^a]$ in please of $E[Y|A=a]$.  When applying propensity score weights in the linear regression model $E[Y^a] = \beta_0 + \beta_1a$, each observation is weighted by $v_i$, such that $v_i(\beta_0 + \beta_1a)$. This changes the estimation process to focus on a weighted sum of outcomes, where each individual's contribution is adjusted to reflect their probability of receiving the treatment, given their covariates.
+
+
+## Interpretation of $\beta_0$ and $\beta_1$  in a Marginal Structural Model
+
+### Binary Treatment
+
+In models where the treatment $a$ is binary (e.g., $a = 0$ or $a = 1$), such as in many causal inference studies:
+
+- **$\beta_0$**: the expected value of the outcome $Y$ when the treatment is not applied ($a = 0$). This is the baseline level of the outcome in the absence of treatment.
+- **$\beta_1$**: the change in the expected outcome when the treatment status changes from 0 to 1. In logistic regression, $\beta_1$ represents the log-odds ratio of the outcome for the treatment group relative to the control group. In linear regression, $\beta_1$ quantifies the difference in the average outcome between the treated and untreated groups.
+
+### Continuous Treatment
+
+When the treatment $a$ is continuous, the interpretation of $\beta_0$ and $\beta_1$ adjusts slightly:
+
+- **$\beta_0$**: represents the expected value of the outcome $Y$ when the treatment $a$ is at its reference value (often zero). 
+- **$\beta_1$**: represents the expected change in the outcome for each unit increase in the treatment. In this case, $\beta_1$ measures the gradient or slope of the relationship between the treatment and the outcome. For every one-unit increase in treatment, the outcome changes by $\beta_1$ units, assuming all other factors remain constant.
+
+
+<!-- ### Example: Binary treatment, Binary outcome -->
+
+<!-- ### Logistic Regression Model -->
+
+<!-- In the logistic regression (binary outcomes), the Marginal Structural Model (MSM) model is specified as: -->
+<!-- $$ -->
+<!-- \text{Logit}(E[Y^a]) = \beta_0 + \beta_1 a, -->
+<!-- $$ -->
+
+<!-- where $a$ is the treatment indicator (0 for no treatment, 1 for treatment). -->
+
+<!-- ### Calculation for$Y^{a=0}$(No Treatment) -->
+
+<!-- - **Model Simplification**: when$a = 0$(no treatment), the logit model simplifies to: -->
+
+<!--  $$ -->
+<!--   \text{Logit}(E[Y^{a=0}]) = \beta_0. -->
+<!--  $$ -->
+
+
+<!-- - **Expected Outcome**: To find$E[Y^{a=0}]$, convert the logit back to probability: -->
+
+<!--  $$ -->
+<!--   E[Y^{a=0}] = \frac{e^{\beta_0}}{1 + e^{\beta_0}} -->
+<!--  $$ -->
+
+<!--   This formula gives the predicted probability of the outcome occurring when there is no treatment. -->
+
+<!-- ### Calculation for$Y^{a=1}$(Treatment Given) -->
+
+<!-- - **Model Specification**: when$a = 1$(treatment given), the logit model is: -->
+
+<!--  $$ -->
+<!--   \text{Logit}(E[Y^{a=1}]) = \beta_0 + \beta_1. -->
+<!--  $$ -->
+
+<!-- - **Expected Outcome**: To find$E[Y^{a=1}]$, similarly convert the logit to probability: -->
+
+<!--  $$ -->
+<!--   E[Y^{a=1}] = \frac{e^{\beta_0 + \beta_1}}{1 + e^{\beta_0 + \beta_1}}. -->
+<!--  $$ -->
+
+<!--   This is the predicted probability of the outcome occurring when the treatment is applied. -->
+
+<!-- ### Example of MSM -->
+
+<!-- Suppose$\beta_0 = -0.5$and$\beta_1 = 0.8$. Then: -->
+
+<!-- - **No Treatment**:  -->
+
+<!--  $$ -->
+<!--   E[Y^{a=0}] = \frac{e^{-0.5}}{1 + e^{-0.5}} \approx \frac{0.607}{1.607} \approx 0.378, -->
+<!--  $$ -->
+
+
+<!-- indicating a 37.8% probability of the outcome occurring without treatment. -->
+
+<!-- - **With Treatment**: -->
+<!--  $$ -->
+<!--   E[Y^{a=1}] = \frac{e^{-0.5 + 0.8}}{1 + e^{-0.5 + 0.8}} = \frac{e^{0.3}}{1 + e^{0.3}} \approx \frac{1.35}{2.35} \approx 0.574, -->
+<!--  $$ -->
+
+<!-- indicating a 57.4% probability of the outcome occurring with treatment. -->
+
+
+###  How can we apply marginal structural models in subgroups? 
+
+
+### Assumptions
+
+- **Model assumptions**: the treatment model is correctly specified.
+- **Causal assumptions**: all confounders are appropriately controlled, positivity and consistency assumptions hold.
+
+
+### Calculating Treatment Weights (Propensity Scores) and Confounding Control in Subgroups
+
+We may often achieve greater balance when conducting weighted analyses in subgroups by estimating propensity scores *within* these subgroups. The propensity score $ e(L, G) $ is the conditional probability of receiving the exposure $ A = 1 $, given the covariates $ L $ and subgroup indicator $ G $. This is often modelled using logistic regression or other methods that ensure covariate balance
+We define the estimated propensity score as follows:
+
+$$
+\hat{e} = P(A = 1 \mid L, G) = f_A(L, G; \theta_A)
+$$
+
+Here, $ f_A(L, G; \theta_A) $ is the statistical model estimating the probability of exposure $A = 1$ given covariates $L$ and subgroup $G$. We then calculate the weights for each individual, denoted $v$, using the estimated propensity score:
+
+$\theta_A$ encapsulates all the coefficients (parameters) in this model, including intercepts, slopes, and potentially other parameters depending on the model complexity (e.g., interaction terms, non-linear effects...etc).
+
+These weights $v$ depend on $A$ and are calculated as the inverse of the propensity score for exposed individuals and as the inverse of $ 1-\hat{e} $ for unexposed individuals.
+
+Propensity scores are estimated *separately* within strata of the subgroup to control for potential confounding tailored to each subgroup. These weights $v$ are specific to each individual in subgroup $G$. In the lab, we will clarify how to fit models to estimate contrasts for the causal effects within groups $\hat{\delta}_{g}, \hat{\delta}_{g'}$, etc., and how to obtain estimates for group-wise differences:
+
+$$
+\hat{\gamma} = \overbrace{\big( \hat{E}[Y^a \mid G=g] - \hat{E}[Y^{a'} \mid G=g] \big)}^{\hat{\delta}_g} - \overbrace{\big( \hat{E}[Y^{a'} \mid G=g'] - \hat{E}[Y^a \mid G=g'] \big)}^{\hat{\delta}_{g'}}
+$$
+
+
+- **$\hat{E}[Y^a \mid G=g]$**: Estimated expected outcome when treatment $a$ is applied to subgroup $G=g$.
+- **$\hat{E}[Y^{a'} \mid G=g]$**: Estimated expected outcome when a different treatment or control $a'$ is applied to the same subgroup $G=g$.
+- **$\hat{\delta}_g$**: Represents the estimated treatment effect within subgroup $G=g$, computed as the difference in expected outcomes between treatment $a$ and $a'$ within this subgroup.
+
+- **$\hat{E}[Y^{a'} \mid G=g']$**: Estimated expected outcome when treatment $a'$ is applied to a different subgroup $G=g'$.
+- **$\hat{E}[Y^a \mid G=g']$**: Estimated expected outcome when treatment $a$ is applied to subgroup $G=g'$.
+- **$\hat{\delta}_{g'}$**: Represents the estimated treatment effect within subgroup $G=g'$, computed as the difference in expected outcomes between treatment $a'$ and $a$ within this subgroup.
+
+- **$\hat{\gamma}$**: The overall measure calculated from your formula represents the difference in treatment effects between two subgroups, $G=g$ and $G=g'$. It quantifies how the effect of switching between treatments $a$ and $a'$ differs across the two subgroups.
+
+
+### Considerations
+
+- **Estimation**: to estimate the expected outcomes $\hat{E}[Y^a \mid G]$ and $\hat{E}[Y^{a'} \mid G]$, we require statistical models. If we use regression, we include interaction terms between treatment and subgroup indicators to directly estimate subgroup-specific treatment effects. Our use depends on correct model specification.
+- **Confidence intervals**: we may compute confidence intervals for $\hat{\gamma}$ using bootstrap, the delta method, or -- in our excercises -- simulation based methods.
+- **Causal assumptions**: again, a causal interpretation of $\hat{\gamma}$ relies on satisfying both causal assumptions and modelling assumptions.  Here, we have described estimation using propensity scores.
+
+
+## Doubly Robust Estimation
+
+We can combine regression-based estimation with propensity score estimation to obtain *doubly robust* estimation. I will walk you through the steps in the lab. The TL;DR is this: doubly robust estimation reduces reliance on correct model specification. If either the PS model or the regression model is correctly specified, the model will be unbiased -- if the other causal inference assumptions are met.
+
+We cannot know whether these assumptions are met, we will need to do a sensitivity analysis, the topic of next week.
+
+I'll show you in lab how to employ simulation-based inference methods to compute standard errors and confidence intervals, following the approaches suggested by Greifer (2023)[].
+
+## Readings:
+
+Noah Griefer's Software and Blogs: [https://ngreifer.github.io/blog/subgroup-analysis-psm/](https://ngreifer.github.io/blog/)
+
+
+# Lab
+
+
+Today we estimate causal effects
+
+```{r}
+
+# uncomment, update the margot package
+# devtools::install_github("go-bayes/margot")
+
+# load packages
+library(tidyverse)
+library(margot)
+library(skimr)
+library(naniar)
+library(WeightIt)
+library(clarify)
+library(MatchThem)
+library(cobalt)
+library(MatchIt)
+library(kableExtra)
+library(lmtp)
+library(SuperLearner)
+library(ranger)
+library(xgboost)
+library(nnls)
+library(mice)
+
+if (!requireNamespace("doParallel", quietly = TRUE)) {
+  install.packages("doParallel")
+}
+if (!requireNamespace("foreach", quietly = TRUE)) {
+  install.packages("foreach")
+}
+library(doParallel)
+library(foreach)
+# createmiceadds# create a folder names saved (you should have done this last week).
+# set your path to this folder
+
+# save in cloud if using github
+push_mods <- here::here('/Users/joseph/Library/CloudStorage/Dropbox-v-project/data/saved')
+
+# check it is correct
+# uncomment, check
+#push_mods
+
+# set seed for reproducability
+set.seed(123)
+
+
+# eliminate haven labels
+df_nz <- as.data.frame(df_nz)
+df_nz <- haven::zap_formats(df_nz)
+df_nz <- haven::zap_label(df_nz)
+df_nz <- haven::zap_widths(df_nz)
+
+# read functions
+# source("/Users/joseph/GIT/templates/functions/funs.R")
+
+# experimental functions (more functions)
+# source(
+#   "https://raw.githubusercontent.com/go-bayes/templates/main/functions/experimental_funs.R"
+# )
+# # set exposure name
+
+name_exposure <-  "perfectionism"
+
+# check missing values
+skimr::skim(df_nz) |> arrange(n_missing)
+
+# obtain ids for individuals who participated in 2018 and have no missing baseline exposure
+ids_2018 <- df_nz |>
+  dplyr::filter(year_measured == 1, wave == 2018) |>
+  dplyr::filter(!is.na(!!sym(name_exposure))) |> # criteria, no missing
+  dplyr::filter(!is.na(eth_cat)) |> # criteria, no missing
+  pull(id)
+
+
+# obtain ids for individuals who participated in 2019
+ids_2019 <- df_nz |>
+  dplyr::filter(year_measured == 1, wave == 2019) |>
+  dplyr::filter(!is.na(!!sym(name_exposure))) |> # criteria, no missing
+  pull(id)
+
+# intersect IDs from 2018 and 2019 to ensure participation in both years
+ids_2018_2019 <- intersect(ids_2018, ids_2019)
+
+# data wrangling
+dat_long <- df_nz |>
+  dplyr::filter(id %in% ids_2018_2019 &
+                  wave %in% c(2018, 2019, 2020)) |>
+  arrange(id, wave) |>
+  select(
+    "id",
+    "wave",
+    "year_measured",
+    "age",
+    "male",
+    "born_nz",
+    "eth_cat",
+    #factor(EthCat, labels = c("Euro", "Maori", "Pacific", "Asian")),
+    "employed",
+    # are you currently employed? (this includes self-employment or casual work)
+    "edu",
+    # "gen_cohort",
+    "household_inc",
+    "partner",
+    # 0 = no, 1 = yes
+    "parent",
+    #"alert_level_combined_lead", # see bibliography
+    # 0 = no, 1 = yes
+    "political_conservative", # see nzavs sheet
+    "hours_exercise", # see nzavs sheet
+    "agreeableness", 
+    # Mini-IPIP6 Agreeableness (also modelled as empathy facet)
+    # Sympathize with others' feelings.
+    # Am not interested in other people's problems.
+    # Feel others' emotions.
+    # Am not really interested in others.
+    "conscientiousness",
+    # see mini ipip6
+    # Get chores done right away.
+    # Like order.
+    # Make a mess of things.
+    # Often forget to put things back in their proper place.
+    "extraversion",
+    # Mini-IPIP6 Extraversion
+    # Am the life of the party.
+    # Don't talk a lot.
+    # Keep in the background.
+    # Talk to a lot of different people at parties.
+    "honesty_humility",
+    # see mini ipip6
+    # Would like to be seen driving around in a very expensive car.
+    # Would get a lot of pleasure from owning expensive luxury goods.
+    # Feel entitled to more of everything.
+    # Deserve more things in life.
+    "openness",
+    # see mini ipip6
+    # Have a vivid imagination.
+    # Have difficulty understanding abstract ideas.
+    # Do not have a good imagination.
+    # Am not interested in abstract ideas.
+    "neuroticism",
+    # see mini ipip6
+    # Have frequent mood swings.
+    # Am relaxed most of the time.
+    # Get upset easily.
+    # Seldom feel blue.
+    "modesty",
+    # # see mini ipip6
+    # # I want people to know that I am an important person of high status,
+    # # I am an ordinary person who is no better than others.
+    # # I wouldn’t want people to treat me as though I were superior to them.
+    # # I think that I am entitled to more respect than the average person is
+    #"w_gend_age_ethnic",
+    "neighbourhood_community",
+    # #I feel a sense of community with others in my local neighbourhood.
+    "belong", # see nzavs sheet
+    "rural_gch_2018_l",# see nzavs sheet
+    "support",
+    # "support_help",
+    # # 'There are people I can depend on to help me if I really need it.
+    # "support_turnto",
+    # # There is no one I can turn to for guidance in times of stress.
+    # "support_rnoguidance",
+    #There is no one I can turn to for guidance in times of stress.
+    "perfectionism",
+    "religion_religious",
+    "kessler_latent_depression",
+    "kessler_latent_anxiety"
+  ) |>
+  mutate(
+    #initialize 'censored'
+    censored = ifelse(lead(year_measured) == 1, 1, 0),
+    
+    # modify 'censored' based on the condition; no need to check for NA here as 'censored' is already defined in the previous step
+    censored =  ifelse(is.na(censored) &
+                         year_measured == 1, 1, censored),
+    # create urban binary variable
+    
+    urban = ifelse(rural_gch_2018_l == 1, 1, 0)
+    
+  ) |>
+  select(-c(year_measured, rural_gch_2018_l) )|>
+  dplyr::mutate(
+    # rescale these variables, to get all variables on a similar scale
+    # otherwise your models can blow up, or become uninterpretable. 
+    household_inc_log = log(household_inc + 1),
+    hours_exercise_log = log(hours_exercise + 1)  ) |>
+  dplyr::select(
+    -c(
+      household_inc,
+      hours_exercise)
+  ) |>
+  droplevels() |>
+  # dplyr::rename(sample_weights = w_gend_age_ethnic,
+  #               sample_origin =  sample_origin_names_combined) |>
+  arrange(id, wave) |>
+  mutate(
+    urban = as.numeric(as.character(urban)),
+    #   parent = as.numeric(as.character(parent)),
+    partner = as.numeric(as.character(partner)),
+    born_nz = as.numeric(as.character(born_nz)),
+    censored = as.numeric(as.character(censored)),
+    employed = as.numeric(as.character(employed))
+  ) |>
+  droplevels() |>
+  arrange(id, wave) |>
+  data.frame()
+
+
+# inspect data
+glimpse(dat_long)
+
+# more thorough view
+#skimr::skim(dat_long)
+```
+
+
+Next let's insure that we obtain 50/50 representation of gender within our estimation.  
+
+
+```{r}
+# balance on gender weights
+# calculate gender weights assuming male is coded as 1 and female as 0
+prop_male_population <-
+  0.5  # target proportion of males in the population
+prop_female_population <-
+  0.5  # target proportion of females in the population
+
+prop_male_sample <- mean(dat_long$male)
+prop_female_sample <- 1 - prop_male_sample
+
+gender_weight_male <- prop_male_population / prop_male_sample
+gender_weight_female <- prop_female_population / prop_female_sample
+
+dat_long$sample_weights <-
+  ifelse(dat_long$male == 1, gender_weight_male, gender_weight_female)
+
+# we will upweight males and down weight non-males to obtain a balance of gender in the *target* population
+table(dat_long$sample_weights)
+
+```
+Next let's get our data into shape.  Today we're going to consider a 'treatment' of perfectionism in which we shift people by different quantiles of perfectionism: 
+
+
+
+
+```{r}
+dat_long <-
+  margot::create_ordered_variable(dat_long, "perfectionism", n_divisions = 4) #
+
+# view scale
+# uncommentto see break points
+# print(quantile(dat_long$perfectionism, probs = seq(0, 1, 1/4), na.rm = TRUE))
+
+# n by groups
+table(dat_long$perfectionism_cat)
+
+# obtain labels if useful later
+labels <- levels(dat_long$perfectionism_cat)
+```
+
+
+
+
+### Consider where the quantiles break
+
+```{r}
+#| fig-width: 12
+#| fig-height: 12
+
+
+dt_19 <- dat_long |> filter(wave == 2019)
+
+margot::margot_plot_categorical(col_name = "perfectionism",
+                                    # custom_breaks = c(1,1.9,3.9,7),
+                                    n_divisions = 4,
+                                     cutpoint_inclusive = "upper",
+                                     binwidth = .5,
+                                     dt_19)
+```
+
+
+### Consider mean
+
+```{r}
+#| fig-width: 12
+#| fig-height: 12
+
+
+dt_19 <- dat_long |> filter(wave == 2019)
+
+margot::coloured_histogram_sd(col_name = "perfectionism", binwidth = .5, dt_19)
+
+margot::margot_plot_shift(col_name = "perfectionism", binwidth = .1, 
+                                 shift = "down",
+                                 range_highlight = c(1,2),
+                                 dt_19)
+```
+
+
+
+### Set variables
+
+Next lets set our baseline variables
+
+```{r}
+baseline_vars = c("age", "male", "edu", "eth_cat", "partner", "employed", "born_nz", "neighbourhood_community", "household_inc_log", "parent", "religion_religious", "urban", "employed", "sample_weights")
+
+# treatment
+exposure_vars = c("perfectionism_cat") 
+
+# outcome, can be many
+outcome_vars = c("kessler_latent_anxiety", "kessler_latent_depression")
+```
+
+
+
+
+### Muliply impute missing values
+
+
+In our first analysis we will not merely impute baseline values. Rather we will impute baseline and outcome values within quantiles of the exposure.  Consider, why should we impute within the treatments to be compared?  What are the lingering dangers of this approach? 
+
+
+
+
+```{r}
+# make long data wide
+
+# remove sample weights, return them later
+prep_dat_wide <- margot_wide(dat_long, 
+                             baseline_vars = baseline_vars, 
+                             exposure_var = exposure_vars,
+                             outcome_vars = outcome_vars)
+
+
+# filter data, so that we impute within quartiles
+list_filtered_df <-
+  margot::margot_filter(prep_dat_wide, exposure_vars = "t1_perfectionism_cat", sort_var = "id")
+
+# check that these add up to the total data set
+a <- nrow( list_filtered_df$tile_1)
+b <- nrow( list_filtered_df$tile_2)
+c <- nrow( list_filtered_df$tile_3)
+d <-nrow( list_filtered_df$tile_4)
+
+# must sum to equal
+a + b + c + d == nrow(prep_dat_wide)
+```
+
+
+### Visualise missing values
+
+```{r}
+# visually inspect missingness
+naniar::vis_miss(prep_dat_wide, warn_large_data = FALSE)
+
+# check for collinear vars
+mice:::find.collinear(prep_dat_wide) # note sample weights is collinear
+```
+
+
+### Imputations
+Next we impute by quartile.  Save this output in your folder. 
+
+```{r}
+#| label: imputation
+#| eval: false
+#| include: true
+#| echo: true
+
+# impute by quartile
+mice_health <- margot::impute_and_combine(list_filtered_df,  m = 5 )
+
+
+margot::here_save(mice_health, "mice_health")
+```
+
+
+### Wrangling
+
+```{r}
+#| label: read-imputation
+#| eval: false
+#| echo: true
+
+# read data if you are not running the imputation again
+mice_health <- here_read("mice_health")
+
+# post-imputation arrange
+mice_health_mids <- mice_health |>
+  arrange(.imp, id) |>
+  rename(sample_weights = t0_sample_weights) |>
+dplyr::mutate(
+  across(
+    where(is.numeric) &
+      !sample_weights,
+    ~ scale(.x),
+    .names = "{col}_z"
+  )
+) |>
+  select(-.imp_z, -.id_z) |>
+  select(where(is.factor),
+         sample_weights,
+         ends_with("_z"),
+         .imp,
+         .id) |>
+  relocate(sample_weights, .before = starts_with("t1_"))  |>
+  relocate(id, .before = sample_weights)  |>
+  relocate(starts_with("t0_"), .before = starts_with("t1_"))  |>
+  relocate(starts_with("t2_"), .after = starts_with("t1_"))  |>
+  arrange(.imp, id) |>
+  droplevels() |>
+  mutate_if(is.matrix, as.vector) |>
+  as.mids()
+
+# make long
+mice_health_long <- mice::complete(mice_health_mids, "long", inc = TRUE)
+
+
+#Save
+here_save(mice_health_mids, "mice_health_mids")
+here_save(mice_health_long, "mice_health_long")
+
+```
+
+### Compute propensity scores for IPTW using machine learning
+
+
+```{r}
+#| label: propensity-scores
+#| eval: false
+#| echo: true
+
+# this is how you read saved files without the margot package
+mice_health_mids <- readRDS(here::here(push_mods, "mice_health_mids"))
+mice_health_long <- readRDS(here::here(push_mods, "mice_health_long"))
+
+# propensity scors --------------------------------------------------------
+
+
+# set exposure
+X = "t1_perfectionism_cat"
+
+# set estimand
+estimand = "ATE"
+
+# set baseline variables
+baseline_vars_models = mice_health_long |>
+  dplyr::select(starts_with("t0"))|> colnames() # note, we earlier change name of `t0_sample_weights` to `sample weights`
+
+baseline_vars_models
+# obtain propensity scores
+match_ebal_ate <- margot::match_mi_general(data = mice_health_mids, 
+                                      X = X, 
+                                      baseline_vars = baseline_vars_models, 
+                                      estimand = "ATE",  
+                                   #   focal = "tile_3", #for ATT
+                                      method = "ebal", 
+                                      sample_weights = "sample_weights")
+
+# save output
+margot::here_save(match_ebal_ate, "match_ebal_ate")
+```
+
+
+```{r}
+#| label: vis_matching_ate
+#| eval: false
+#| echo: true
+#| fig-width: 12
+#| fig-height: 12
+
+# read output
+match_ebal_ate <- margot::here_read("match_ebal_ate")
+
+
+# check balance
+#bal.tab(match_ebal_ate)
+
+# visualise imbalance
+love.plot(match_ebal_ate, binary = "std", thresholds = c(m = .1),
+          wrap = 50, position = "bottom", size =3)
+```
+
+### Visualise imbalance
+
+
+```{r}
+#| eval: false
+# consider results 
+
+sum_ebal_match_ebal_ate <- summary(match_ebal_ate)
+
+# summarise
+sum_ebal_match_ebal_ate
+
+# visualise
+plot(sum_ebal_match_ebal_ate)
+
+```
+
+Some extreme weights.  We can trim weights as follows. (Note there is no hard and fast rule about how much to trim weights by, here we trim by 1%.)
+
+```{r}
+#| fig-width: 12
+#| fig-height: 12
+#| eval: false
+# trimmed weights
+match_ebal_ate_trim <- WeightIt::trim(match_ebal_ate, at = .99)
+
+# check balance
+# bal.tab(match_ebal_ate_trim)
+
+# summary
+summary_match_ebal_ate_trim <- summary(match_ebal_ate_trim)
+
+# check - extreme weights gone
+plot(summary_match_ebal_ate_trim)
+
+# plot for balance
+love.plot(match_ebal_ate_trim, binary = "std", thresholds = c(m = .1),
+          wrap = 50, position = "bottom", size =2, limits = list(m = c(-.5, .5)))
+```
+
+### Estimation
+
+```{r}
+#| label: estimate
+#| eval: false
+#| echo: true
+# here_save(match_ebal_ate_trim, "match_ebal_ate_trim")
+# match_ebal_ate_trim <- here_read( "match_ebal_ate_trim")
+
+# set data frame; output of match_mi_general model
+df_ate = match_ebal_ate_trim
+str(df_ate)
+str(match_ebal_ate_trim)
+# remind self of levels if needed
+# levels(mice_health_long$t1_perfectionism_4tile)
+
+# set treatment level
+treat_0 = "[1.0,2.0]" # lowest quartile
+treat_1 = "(4.0,7.0]" # third quartile
+
+# bootstrap simulations ( generally use 1000)
+nsims <- 1000
+
+# cores
+cl =  parallel::detectCores () 
+
+estimand = "ATE"
+
+# as specified
+vcov = "HC2" # robust standard errors. 
+
+# cores
+cores = parallel::detectCores () # use all course
+
+# Example call to the function
+# propensity score only model
+
+# code review: these are the functions 'under the hood'
+
+# this function is defined outside of both main functions
+# build_formula_str <- function(Y, X, continuous_X, splines, baseline_vars) {
+#   baseline_part <- if (!(length(baseline_vars) == 1 && baseline_vars == "1")) {
+#     paste(baseline_vars, collapse = "+")
+#   } else {
+#     "1"
+#   }
+# 
+#   if (continuous_X && splines) {
+#     paste(Y, "~ bs(", X, ")", "*", "(", baseline_part, ")")
+#   } else {
+#     paste(Y, "~", X, "*", "(", baseline_part, ")")
+#   }
+# }
+# 
+# causal_contrast_marginal <- function(df, Y, X, baseline_vars = "1", treat_0, treat_1,
+#                                      estimand = c("ATE", "ATT"), type = c("RR", "RD"),
+#                                      nsims = 200, cores = parallel::detectCores(), family = "gaussian",
+#                                      weights = NULL, continuous_X = FALSE, splines = FALSE, vcov = "HC2",
+#                                      verbose = FALSE) {
+#   # validate the type argument
+#   type <- match.arg(type, choices = c("RR", "RD"))
+# 
+#   # validate the family argument
+#   if (is.character(family)) {
+#     if (!family %in% c("gaussian", "binomial", "Gamma", "inverse.gaussian", "poisson", "quasibinomial", "quasipoisson", "quasi")) {
+#       stop("Invalid 'family' argument. Please specify a valid family function.")
+#     }
+#     family_fun <- get(family, mode = "function", envir = parent.frame())
+#   } else if (inherits(family, "family")) {
+#     family_fun <- family
+#   } else {
+#     stop("Invalid 'family' argument. Please specify a valid family function or character string.")
+#   }
+# 
+#   # use the updated causal_contrast_engine function
+#   results <- causal_contrast_engine(
+#     df = df,
+#     Y = Y,
+#     X = X,
+#     baseline_vars = baseline_vars,
+#     treat_0 = treat_0,
+#     treat_1 = treat_1,
+#     estimand = estimand,
+#     type = type,
+#     nsims = nsims,
+#     cores = cores,
+#     family = family,
+#     weights = weights,
+#     continuous_X = continuous_X,
+#     splines = splines,
+#     vcov = vcov,
+#     verbose = verbose
+#   )
+# 
+#   return(results)
+# }
+# 
+# causal_contrast_engine <- function(df, Y, X, baseline_vars, treat_0, treat_1,
+#                                    estimand = c("ATE", "ATT"), type = c("RR", "RD"),
+#                                    nsims = 200, cores = parallel::detectCores(),
+#                                    family = "gaussian", weights = TRUE,
+#                                    continuous_X = FALSE, splines = FALSE,
+#                                    vcov = "HC2", verbose = FALSE) {
+#   # check if required packages are installed
+#   required_packages <- c("clarify", "rlang", "glue", "parallel", "mice")
+#   for (pkg in required_packages) {
+#     if (!requireNamespace(pkg, quietly = TRUE)) {
+#       stop(paste0("Package '", pkg, "' is needed for this function but is not installed"))
+#     }
+#   }
+# 
+#   # helper function to process a single imputed dataset
+#   process_imputation <- function(imputed_data, weights) {
+#     # build formula
+#     formula_str <- build_formula_str(Y, X, continuous_X, splines, baseline_vars)
+#     
+#     # apply model
+#     fit <- glm(
+#       as.formula(formula_str),
+#       weights = weights,
+#       family = get(family, mode = "function", envir = parent.frame()),
+#       data = imputed_data
+#     )
+#     
+#     return(fit)
+#   }
+# 
+#   # check if df is a wimids object
+#   if (inherits(df, "wimids")) {
+#     # Extract the mids object and weights
+#     mids_obj <- df$object
+#     weights_list <- lapply(df$models, function(m) m$weights)
+#     
+#     # process each imputed dataset
+#     fits <- lapply(1:mids_obj$m, function(i) {
+#       imputed_data <- mice::complete(mids_obj, i)
+#       process_imputation(imputed_data, weights_list[[i]])
+#     })
+#     
+#     # create a misim object
+#     sim.imp <- clarify::misim(fits, n = nsims, vcov = vcov)
+#   } else {
+#     # If df is not a wimids object, process it as before
+#     weight_var <- if (!is.null(weights) && weights %in% names(df)) df[[weights]] else NULL
+#     
+#     fit <- process_imputation(df, weight_var)
+#     sim.imp <- clarify::sim(fit, n = nsims, vcov = vcov)
+#   }
+# 
+#   if (continuous_X) {
+#     estimand <- "ATE"
+#   }
+# 
+#   # compute the average marginal effects
+#   if (!continuous_X && estimand == "ATT") {
+#     subset_expr <- rlang::expr(!!rlang::sym(X) == !!treat_1)
+#     sim_estimand <- clarify::sim_ame(
+#       sim.imp,
+#       var = X,
+#       subset = eval(subset_expr),
+#       cl = cores,
+#       verbose = FALSE
+#     )
+#   } else {
+#     sim_estimand <- clarify::sim_ame(sim.imp,
+#       var = X,
+#       cl = cores,
+#       verbose = FALSE
+#     )
+# 
+#     treat_0_name <- paste0("`E[Y(", treat_0, ")]`")
+#     treat_1_name <- paste0("`E[Y(", treat_1, ")]`")
+# 
+#     if (type == "RR") {
+#       rr_expression_str <- glue::glue("{treat_1_name}/{treat_0_name}")
+#       rr_expression <- rlang::parse_expr(rr_expression_str)
+#       sim_estimand <- transform(sim_estimand, RR = eval(rr_expression))
+#       return(summary(sim_estimand))
+#     } else if (type == "RD") {
+#       rd_expression_str <- glue::glue("{treat_1_name} - {treat_0_name}")
+#       rd_expression <- rlang::parse_expr(rd_expression_str)
+#       sim_estimand <- transform(sim_estimand, RD = eval(rd_expression))
+#       return(summary(sim_estimand))
+#     } else {
+#       stop("Invalid type. Please choose 'RR' or 'RD'")
+#     }
+#   }
+# }
+
+propensity_mod_fit_t2_kessler_latent_anxiety_z <-double_robust_marginal(
+  df = df_ate,
+  Y = "t2_kessler_latent_anxiety_z",
+  X = X, 
+  baseline_vars = 1, # we are not regressing with any covariates
+  treat_1 = treat_1,
+  treat_0 = treat_0,
+  nsims = 1000,
+  cores = cores,
+  family = "gaussian",
+  weights = TRUE,
+  continuous_X = FALSE,
+  splines = FALSE,
+  estimand = "ATE",
+  type_causal = "RD",  
+  type_tab = "RD",    
+  vcov = vcov,         
+  new_name = "Kessler Anxiety (PR)",
+  delta = 1,
+  sd = 1
+)
+
+
+
+# save
+here_save(propensity_mod_fit_t2_kessler_latent_anxiety_z, "propensity_mod_fit_t2_kessler_latent_anxiety_z")
+
+propensity_mod_fit_t2_kessler_latent_depression_z <-margot::double_robust_marginal(
+  df = df_ate,
+  Y = "t2_kessler_latent_depression_z",
+  X = X,  
+  baseline_vars = 1, #no covariates, only the propensity scores
+  treat_1 = treat_1,
+  treat_0 = treat_0,
+  nsims = 1000,
+  cores = cores,
+  family = "gaussian",
+  weights = TRUE,
+  continuous_X = FALSE,
+  splines = FALSE,
+  estimand = "ATE",
+  type_causal = "RD",  
+  type_tab = "RD",    
+  vcov = vcov,         
+  new_name = "Kessler Depression (PR)",
+  delta = 1,
+  sd = 1
+)
+
+# save
+here_save(propensity_mod_fit_t2_kessler_latent_depression_z, "propensity_mod_fit_t2_kessler_latent_depression_z")
+
+
+
+## Doubly robust
+mod_fit_t2_kessler_latent_anxiety_z <-margot::double_robust_marginal(
+  df = df_ate,
+  Y = "t2_kessler_latent_anxiety_z",
+  X = X,
+  baseline_vars = baseline_vars_models, # no covariates, only the propensity scores
+  treat_1 = treat_1,
+  treat_0 = treat_0,
+  nsims = 1000,
+  cores = cores,
+  family = "gaussian",
+  weights = TRUE,
+  continuous_X = FALSE,
+  splines = FALSE,
+  estimand = "ATE",
+  type_causal = "RD",  
+  type_tab = "RD",    
+  vcov = vcov,         
+  new_name = "Kessler Anxiety (DR)",
+  delta = 1,
+  sd = 1
+)
+# save
+here_save(mod_fit_t2_kessler_latent_anxiety_z, "mod_fit_t2_kessler_latent_anxiety_z")
+
+
+# model 2
+mod_fit_t2_kessler_latent_depression_z <-margot::double_robust_marginal(
+  df = df_ate,
+  Y = "t2_kessler_latent_depression_z",
+  X = X,
+  baseline_vars = baseline_vars_models,
+  treat_1 = treat_1,
+  treat_0 = treat_0,
+  nsims = 1000,
+  cores = cores,
+  family = "gaussian",
+  weights = TRUE,
+  continuous_X = FALSE,
+  splines = FALSE,
+  estimand = "ATE",
+  type_causal = "RD",  
+  type_tab = "RD",    
+  vcov = vcov,         
+  new_name = "Kessler Depression (DR)",
+  delta = 1,
+  sd = 1
+)
+
+# save
+here_save(mod_fit_t2_kessler_latent_depression_z, "mod_fit_t2_kessler_latent_depression_z")
+```
+
+
+### Results
+
+```{r}
+#| eval: false
+#| echo: true
+# to save time, we do not run the models
+# recover saved models 
+
+# propensity score  models
+propensity_mod_fit_t2_kessler_latent_depression_z<- here_read("propensity_mod_fit_t2_kessler_latent_depression_z")
+propensity_mod_fit_t2_kessler_latent_anxiety_z<- here_read("propensity_mod_fit_t2_kessler_latent_anxiety_z")
+
+# doubly robust models
+mod_fit_t2_kessler_latent_depression_z<- here_read("mod_fit_t2_kessler_latent_depression_z")
+mod_fit_t2_kessler_latent_anxiety_z<- here_read("mod_fit_t2_kessler_latent_anxiety_z")
+
+
+# tables
+library(kableExtra)
+
+# proprensity only 
+tab_double_pr <- rbind(propensity_mod_fit_t2_kessler_latent_depression_z$tab_results,
+      propensity_mod_fit_t2_kessler_latent_anxiety_z$tab_results)
+# bind results in a table
+tab_double_robust <- rbind(mod_fit_t2_kessler_latent_depression_z$tab_results,
+      mod_fit_t2_kessler_latent_anxiety_z$tab_results)
+
+
+# combine the individual results
+tab_combo <- rbind(tab_double_pr,tab_double_robust)
+
+
+# table
+tab_combo |> 
+  kbl(format = "markdown")
+```
+
+
+We see that the doubly robust estimator leads to lower overall effect sizes.
+
+<!-- ## Sugroup Estimation Using Machine Learning -->
+
+<!-- ### impute baseline values only -->
+
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- #| echo: true -->
+<!-- #| label: impute_subgroup_baseline -->
+<!-- # let's take a different approach -->
+<!-- # this time we include the censored variable  -->
+
+<!-- exposure_vars <- c("perfectionism_cat", "censored") -->
+<!-- baseline_vars<-setdiff(baseline_vars, "sample_weights") -->
+
+<!-- # here we imput the baseline  -->
+<!-- df_impute_base<- margot_wide_impute_baseline(dat_long, baseline_vars = baseline_vars,  -->
+<!--                                              exposure_var = exposure_vars, outcome_vars = outcome_vars) -->
+
+<!-- # save -->
+
+<!-- # get sample weights -->
+<!-- dt_18 <- dat_long |> filter(wave == 2018) -->
+
+<!-- # add sample weights -->
+<!-- df_impute_base$t0_sample_weights = dt_18$sample_weights -->
+
+<!-- # save -->
+<!-- here_save(df_impute_base, "df_impute_base") -->
+<!-- ``` -->
+
+<!-- ### Obtain censoring weights -->
+
+
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- #| echo: true -->
+<!-- df_impute_base <- here_read("df_impute_base") -->
+<!-- #  -->
+<!-- # # is.factor(df_impute_base$t0_perfectionism_cat) -->
+<!-- # # get correct censoring  -->
+<!-- # t0_na_condition <- -->
+<!-- #   rowSums(is.na(select(df_impute_base, starts_with("t1_")))) > 0 -->
+<!-- # t1_na_condition <- -->
+<!-- #   rowSums(is.na(select(df_impute_base, starts_with("t2_")))) > 0 -->
+<!-- #  -->
+<!-- # str(df_impute_base$t1_perfectionism_cat) -->
+<!-- #  -->
+<!-- #  -->
+<!-- #  -->
+<!-- # # Revised data cleaning code -->
+<!-- # df_clean <- df_impute_base |> -->
+<!-- #   mutate(t0_censored = ifelse(t0_na_condition, 0, t0_censored)) |> -->
+<!-- #   mutate(t1_censored = ifelse(t1_na_condition, 0, t1_censored)) |> -->
+<!-- #   mutate(across(starts_with("t1_"), ~ ifelse(t0_censored == 0, NA, .)), -->
+<!-- #          across(starts_with("t2_"), ~ ifelse(t0_censored == 0, NA, .))) |> -->
+<!-- #   mutate(across(starts_with("t2_"), ~ ifelse(t1_censored == 0, NA, .))) |> -->
+<!-- #   # Scale numeric variables, excluding t1_perfectionism_cat -->
+<!-- #   mutate(across(where(is.numeric) &  -->
+<!-- #                 !any_of(c("t0_censored", "t0_sample_weights", "t1_censored", "t1_perfectionism_cat")),  -->
+<!-- #                 ~ scale(.),  -->
+<!-- #                 .names = "{.col}_z")) |> -->
+<!-- #   # Ensure t1_perfectionism_cat remains a factor -->
+<!-- #   mutate(t1_perfectionism_cat = factor(t1_perfectionism_cat,  -->
+<!-- #                                        levels = levels(df_impute_base$t1_perfectionism_cat), -->
+<!-- #                                        ordered = TRUE)) |> -->
+<!-- #   select( -->
+<!-- #     where(is.factor), -->
+<!-- #     t0_sample_weights, -->
+<!-- #     t0_censored, -->
+<!-- #     t1_perfectionism_cat, -->
+<!-- #     t1_censored, -->
+<!-- #     ends_with("_z") -->
+<!-- #   ) |> -->
+<!-- #   mutate(t0_lost = 1 - t1_censored, -->
+<!-- #          t1_lost = 1 - t1_censored) |>  -->
+<!-- #   relocate(starts_with("t0_"), .before = starts_with("t1_")) |> -->
+<!-- #   relocate("t0_censored", .before = starts_with("t1_")) |> -->
+<!-- #   relocate("t1_censored", .before = starts_with("t2_")) -->
+<!-- #  -->
+<!-- # # Check the result -->
+<!-- # print(str(df_clean$t1_perfectionism_cat)) -->
+<!-- # print(levels(df_clean$t1_perfectionism_cat)) -->
+<!-- # str(df_clean$t1_perfectionism_cat) -->
+
+<!-- # Get correct not_censored conditions -->
+<!-- t0_na_condition <- rowSums(is.na(select(df_impute_base, starts_with("t1_")))) > 0 -->
+<!-- t1_na_condition <- rowSums(is.na(select(df_impute_base, starts_with("t2_")))) > 0 -->
+
+<!-- # Revised data cleaning code -->
+<!-- df_clean <- df_impute_base |> -->
+<!--   mutate(t0_not_censored = ifelse(t0_na_condition, 0, 1), -->
+<!--          t1_not_censored = ifelse(t1_na_condition, 0, 1)) -->
+
+<!-- print("t0_not_censored and t1_not_censored after initial mutation:") -->
+<!-- print(table(df_clean$t0_not_censored, df_clean$t1_not_censored)) -->
+
+<!-- df_clean <- df_clean |> -->
+<!--   # Apply NA conditions while preserving factor structure -->
+<!--   mutate(across(starts_with("t1_") & !all_of("t1_perfectionism_cat"),  -->
+<!--                 ~ ifelse(t0_not_censored == 0, NA, .))) |> -->
+<!--   mutate(across(starts_with("t2_"),  -->
+<!--                 ~ ifelse(t1_not_censored == 0, NA, .))) |> -->
+<!--   # Scale numeric variables, excluding t1_perfectionism_cat -->
+<!--   mutate(across(where(is.numeric) &  -->
+<!--                 !any_of(c("t0_not_censored", "t0_sample_weights", "t1_not_censored", "t1_perfectionism_cat")),  -->
+<!--                 ~ scale(.),  -->
+<!--                 .names = "{.col}_z")) |> -->
+<!--   # Ensure t1_perfectionism_cat remains a factor and apply t1_not_censored condition -->
+<!--   mutate(t1_perfectionism_cat = factor(t1_perfectionism_cat,  -->
+<!--                                        levels = levels(df_impute_base$t1_perfectionism_cat), -->
+<!--                                        ordered = TRUE), -->
+<!--          t1_perfectionism_cat = if_else(t1_not_censored == 0, NA_character_, as.character(t1_perfectionism_cat)), -->
+<!--          t1_perfectionism_cat = factor(t1_perfectionism_cat,  -->
+<!--                                        levels = levels(df_impute_base$t1_perfectionism_cat), -->
+<!--                                        ordered = TRUE)) -->
+
+<!-- print("t1_perfectionism_cat after applying conditions:") -->
+<!-- print(table(df_clean$t1_perfectionism_cat, useNA = "ifany")) -->
+
+<!-- df_clean <- df_clean |> -->
+<!--   select( -->
+<!--     where(is.factor), -->
+<!--     t0_sample_weights, -->
+<!--     t0_not_censored, -->
+<!--     t1_perfectionism_cat, -->
+<!--     t1_not_censored, -->
+<!--     ends_with("_z") -->
+<!--   ) |> -->
+<!--   mutate(t0_lost = 1 - t1_not_censored, -->
+<!--          t1_lost = 1 - t1_not_censored) |>  -->
+<!--   relocate(starts_with("t0_"), .before = starts_with("t1_")) |> -->
+<!--   relocate("t0_not_censored", .before = starts_with("t1_")) |> -->
+<!--   relocate("t1_not_censored", .before = starts_with("t2_")) -->
+
+<!-- # final checks -->
+<!-- print("Final t0_not_censored and t1_not_censored:") -->
+<!-- print(table(df_clean$t0_not_censored, df_clean$t1_not_censored)) -->
+
+<!-- print("Final t1_perfectionism_cat:") -->
+<!-- print(table(df_clean$t1_perfectionism_cat, useNA = "ifany")) -->
+
+<!-- print("Relationship between t1_not_censored and t1_perfectionism_cat:") -->
+<!-- print(table(df_clean$t1_not_censored, is.na(df_clean$t1_perfectionism_cat))) -->
+
+
+<!-- # get rid of attributes -->
+<!-- df_clean <- margot::remove_numeric_attributes(df_clean) -->
+
+
+<!-- # censoring --------------------------------------------------------------- -->
+<!-- baseline_vars_models_ml = df_clean |>  # post process of impute and combine -->
+<!--   dplyr::select(starts_with("t0"), -t0_not_censored, -t0_lost, -t0_sample_weights)|> colnames() # note, we ear -->
+
+<!-- baseline_vars_models_ml -->
+<!-- # fit proponsity score model  -->
+<!-- # match_censoring <- margot::match_mi_general(data = df_clean,  -->
+<!-- #                                       X = "t1_lost",  -->
+<!-- #                                       baseline_vars = baseline_vars_models,  -->
+<!-- #                                       estimand = "ATE",   -->
+<!-- #                                       # focal = "< >", for ATT -->
+<!-- #                                       method = "cbps",  -->
+<!-- #                                       sample_weights = "sample_weights") -->
+<!-- #  -->
+<!-- # # save output -->
+<!-- # here_save( match_censoring, "match_censoring")  # another approach -->
+
+
+
+<!-- df_clean_pre <- df_clean[baseline_vars_models_ml] -->
+<!-- # colnames(df_clean_pre) -->
+<!-- # Perform one-hot encoding using model.matrix -->
+<!-- encoded_vars <- model.matrix(~  t0_perfectionism_cat + t0_eth_cat - 1, data = df_clean_pre) -->
+
+<!-- # convert matrix to data frame -->
+<!-- encoded_df <- as.data.frame(encoded_vars) -->
+
+
+<!-- # make better names (if needed) -->
+<!-- encoded_df <- encoded_df |> -->
+<!--   janitor::clean_names() -->
+
+<!-- # View the first few rows to confirm structure -->
+<!-- head(encoded_df) -->
+
+<!-- # bind the new one-hot encoded variables back to the original dataframe -->
+<!-- # ensure to remove original categorical variables to avoid duplication -->
+<!-- df_clean_hot <- df_clean |> -->
+<!--   select(-c(t0_eth_cat,t0_perfectionism_cat)) |> -->
+<!--   bind_cols(encoded_df) -->
+
+<!-- # extract and print the new column names for encoded variables -->
+<!-- new_encoded_colnames <- colnames(encoded_df) -->
+<!-- print(new_encoded_colnames) -->
+
+<!-- new_encoded_colnames -->
+
+<!-- colnames(df_clean_pre) -->
+
+<!-- # assuming you have a base list of predictors -->
+<!-- baseline_vars_set <- setdiff(names(df_clean_pre), c("t0_lost", "t0_eth_cat", "t0_perfectionism_cat")) -->
+<!-- baseline_vars_set -->
+<!-- # Add the new encoded column names -->
+<!-- full_predictor_vars <- c(baseline_vars_set, new_encoded_colnames) -->
+
+
+<!-- # check -->
+<!-- full_predictor_vars -->
+
+<!-- # cross validated sets -->
+<!-- cv_control <- list(V = 10, stratifyCV = TRUE)  # 10-fold CV with stratification -->
+
+<!-- # use super learner -->
+<!-- library(SuperLearner) -->
+<!-- library(ranger) -->
+
+<!-- # Multi core -->
+<!-- library(doParallel) -->
+<!-- library(SuperLearner) -->
+
+<!-- # check predictors -->
+<!-- str(df_clean_hot[full_predictor_vars]) -->
+
+<!-- # make library e.g. simple library -->
+<!-- # list learners -->
+<!-- listWrappers() -->
+
+<!-- match_lib = c("SL.glmnet", "SL.ranger") -->
+
+
+<!-- # Set up parallel backend -->
+<!-- no_cores <- detectCores() -->
+<!-- cl <- makeCluster(no_cores - 1) -->
+
+<!-- # start parrallel -->
+<!-- registerDoParallel(cl) -->
+
+<!-- # propensity scores for censoring -->
+<!-- sl <- SuperLearner( -->
+<!--   Y = df_clean_hot$t1_lost,  -->
+<!--   X = df_clean_hot[full_predictor_vars],  # Use all specified predictors -->
+<!--   SL.library = match_lib, -->
+<!--   family = binomial(),  -->
+<!--   method = "method.NNloglik",  -->
+<!--   cvControl = list(V = 10) -->
+<!-- ) -->
+
+<!-- # save your model -->
+<!-- here_save(sl, "sl") -->
+
+<!-- # stop your cluster -->
+<!-- stopCluster(cl) -->
+
+
+<!-- # checks  -->
+<!-- print(sl)                  # prints the summary of the SuperLearner output -->
+<!-- summary(sl)                # provides a detailed summary, including cross-validated risks -->
+
+<!-- # detailed examination of cross-validated performance -->
+<!-- sl$cvRisk                  # cross-validated risks for each learner -->
+<!-- sl$coef                    # weights assigned to each learner in the final ensemble -->
+
+
+
+<!-- # generate predictions from the model -->
+<!-- predictions <- predict(sl, newdata = df_clean_hot[full_predictor_vars], type = "response") -->
+
+<!-- # extract predictions from the 'pred' component and ensure it's a vector -->
+<!-- df_clean_hot$pscore <- predictions$pred[, 1] -->
+
+<!-- # Check the structure of the predictions -->
+<!-- str(predictions) -->
+
+
+<!-- df_clean$cens_weights <- ifelse(df_clean_hot$t0_lost == 1, 1 / df_clean_hot$pscore, 1 / (1 - df_clean_hot$pscore)) -->
+
+
+<!-- # check  -->
+<!-- hist(df_clean$cens_weights) -->
+
+<!-- mean(df_clean$cens_weights) -->
+
+<!-- max(df_clean$cens_weights) -->
+
+<!-- min(df_clean$cens_weights) -->
+
+<!-- ### Stabalise weights -->
+
+<!-- marginal_censored<- mean(df_clean$t0_lost) -->
+
+<!-- # stabalised weights -->
+<!-- df_clean$weights_stabilised <- ifelse(df_clean_hot$t0_lost == 1, -->
+<!--                                   marginal_censored / df_clean_hot$pscore, -->
+<!--                                   (1 - marginal_censored) / (1 - df_clean_hot$pscore)) -->
+
+
+
+<!-- hist(df_clean$weights_stabilised ) -->
+<!-- min(df_clean$weights_stabilised ) -->
+<!-- max(df_clean$weights_stabilised ) -->
+
+<!-- # new weights -->
+<!-- df_clean$t0_combo_weights = df_clean$weights_stabilised * df_clean$t0_sample_weights -->
+
+<!-- min( df_clean$t0_combo_weights) -->
+<!-- max( df_clean$t0_combo_weights) -->
+
+<!-- hist( df_clean$t0_combo_weights) -->
+
+<!-- here_save(df_clean, "df_clean") -->
+
+<!-- # save the censored sample  -->
+
+<!-- df_clean_t2 <- df_clean |> -->
+<!--   filter(!is.na(t1_lost)) |>  -->
+<!--  select(-cens_weights, -marginal_censored) |>  -->
+<!--   select(-all_of(c("t0_lost", "t1_lost"))) |>  -->
+<!--   relocate(starts_with("t0_"), .before = starts_with("t1_")) |> -->
+<!--   relocate("t0_censored", .before = starts_with("t1_"))  |> -->
+<!--   relocate("t1_censored", .before = starts_with("t2_")) |>  -->
+<!--   relocate("weights_stabilised", .before = starts_with("t0_")) -->
+
+<!-- colnames(df_clean_t2) -->
+<!-- here_save(df_clean_t2, "df_clean_t2") -->
+
+
+
+
+<!-- # Diagnostic steps -->
+<!-- print("Original data:") -->
+<!-- print(str(df_impute_base$t1_perfectionism_cat)) -->
+<!-- print(table(df_impute_base$t1_perfectionism_cat, useNA = "ifany")) -->
+
+<!-- # Revised data cleaning code -->
+<!-- df_clean <- df_impute_base |> -->
+<!--   mutate(t0_censored = ifelse(t0_na_condition, 0, t0_censored)) |> -->
+<!--   mutate(t1_censored = ifelse(t1_na_condition, 0, t1_censored)) |> -->
+<!--   # Remove the lines that might be introducing NAs -->
+<!--   # mutate(across(starts_with("t1_"), ~ ifelse(t0_censored == 0, NA, .)), -->
+<!--   #        across(starts_with("t2_"), ~ ifelse(t0_censored == 0, NA, .))) |> -->
+<!--   # mutate(across(starts_with("t2_"), ~ ifelse(t1_censored == 0, NA, .))) |> -->
+<!--   # Scale numeric variables, excluding t1_perfectionism_cat -->
+<!--   mutate(across(where(is.numeric) &  -->
+<!--                 !any_of(c("t0_censored", "t0_sample_weights", "t1_censored", "t1_perfectionism_cat")),  -->
+<!--                 ~ scale(.),  -->
+<!--                 .names = "{.col}_z")) |> -->
+<!--   # Ensure t1_perfectionism_cat remains a factor -->
+<!--   mutate(t1_perfectionism_cat = factor(t1_perfectionism_cat,  -->
+<!--                                        levels = levels(df_impute_base$t1_perfectionism_cat), -->
+<!--                                        ordered = TRUE)) |> -->
+<!--   select( -->
+<!--     where(is.factor), -->
+<!--     t0_sample_weights, -->
+<!--     t0_censored, -->
+<!--     t1_perfectionism_cat, -->
+<!--     t1_censored, -->
+<!--     ends_with("_z") -->
+<!--   ) |> -->
+<!--   mutate(t0_lost = 1 - t1_censored, -->
+<!--          t1_lost = 1 - t1_censored) |>  -->
+<!--   relocate(starts_with("t0_"), .before = starts_with("t1_")) |> -->
+<!--   relocate("t0_censored", .before = starts_with("t1_")) |> -->
+<!--   relocate("t1_censored", .before = starts_with("t2_")) -->
+
+<!-- # Check the result -->
+<!-- print("Cleaned data:") -->
+<!-- print(str(df_clean$t1_perfectionism_cat)) -->
+<!-- print(table(df_clean$t1_perfectionism_cat, useNA = "ifany")) -->
+<!-- print(levels(df_clean$t1_perfectionism_cat)) -->
+
+<!-- # If NAs are still present, investigate which rows have NAs -->
+<!-- if(any(is.na(df_clean$t1_perfectionism_cat))) { -->
+<!--   print("Rows with NAs in t1_perfectionism_cat:") -->
+<!--   print(df_clean[is.na(df_clean$t1_perfectionism_cat),  -->
+<!--                  c("t0_censored", "t1_censored", "t1_perfectionism_cat")]) -->
+<!-- } -->
+<!-- ``` -->
+
+
+<!-- ### Matching in subgroups -->
+
+
+<!-- ### Subgroup analysis  -->
+
+<!-- ```{r} -->
+<!-- #| label: subgroup_weights -->
+<!-- #| eval: false -->
+<!-- #| echo: true -->
+
+
+<!-- hist(df_clean_filtered$sample_weights) -->
+
+<!-- # next propensity scores by groups  -->
+
+<!-- levels(df_clean_t2$t0_eth_cat) -->
+<!-- levels(df_clean_t2$t1_perfectionism_4tile) -->
+<!-- #  -->
+
+<!-- df_subgroup <-df_clean_t2 |> filter(t0_eth_cat == "maori" | t0_eth_cat == "euro") |> droplevels() -->
+
+<!-- # save -->
+<!-- here_save(df_subgroup, "df_subgroup") -->
+
+<!-- # check -->
+<!-- table(df_subgroup$t0_eth_cat) -->
+
+<!-- baseline_vars_models_sans_eth <- setdiff(baseline_vars_models, "t0_eth_cat") -->
+
+<!-- # save -->
+<!-- here_save(baseline_vars_models_sans_eth, "baseline_vars_models_sans_eth") -->
+
+<!-- ##  -->
+<!-- string <- formula_str <- as.formula(paste("t1_perfectionism_4tile", "~", paste(baseline_vars_models, collapse = "+"))) -->
+
+<!-- string_sans <- formula_str <- as.formula(paste("t1_perfectionism_4tile", "~", paste(baseline_vars_models_sans_eth, collapse = "+"))) -->
+
+<!-- W1 <- weightit( -->
+<!--   string, -->
+<!--   method = "ipt", -->
+<!--   estimand = "ATT", -->
+<!--   weights = "weights_stabilised", -->
+<!--   focal = "tile_3", -->
+<!--   # super = TRUE, -->
+<!--   #SL.library = c("SL.ranger", "SL.glmnet", "SL.polymars", "SL.xgboost"), -->
+<!--   #super = TRUE, -->
+<!--   data = df_subgroup -->
+<!-- ) -->
+<!-- summary(W1) -->
+
+<!-- # save model -->
+<!-- here_save(W1, "W1") -->
+
+<!-- W2 <- weightit( -->
+<!--   string_sans, -->
+<!--   method = "ipt", -->
+<!--   estimand = "ATT", -->
+<!--   weights = "sample_weights", -->
+<!--   by = "t0_eth_cat", -->
+<!--   weights = "sample_weights", -->
+<!--   focal = "tile_3", -->
+<!-- #  super = TRUE, -->
+<!-- #  SL.library = c("SL.ranger", "SL.glmnet", "SL.polymars", "SL.xgboost"), -->
+<!--   data = df_subgroup -->
+<!-- ) -->
+
+<!-- summary(W2) -->
+
+<!-- # save model -->
+<!-- here_save(W2, "W2") -->
+
+<!-- # test diff -->
+
+<!-- #S <- sbps(W1, W2) -->
+<!-- # warnings() -->
+<!-- # S -->
+<!-- ``` -->
+
+<!-- ### Evaluate subgroup weighting model -->
+
+<!-- ```{r} -->
+<!-- #| fig-width: 12 -->
+<!-- #| fig-height: 12 -->
+
+<!-- W1 <- here_read("W1") -->
+<!-- W2 <- here_read("W2") -->
+
+<!-- # read -->
+<!-- df_subgroup <- margot::here_read("df_subgroup") -->
+
+
+
+<!-- # this method has better effective samples -->
+<!-- #bal.tab(W1) -->
+
+
+<!-- # this method has better balance -->
+<!-- # bal.tab(W2, cluster = "t0_eth_cat") -->
+<!-- # bal.tab(W1, cluster = "t0_eth_cat") -->
+<!-- # graph by cluster -->
+
+
+<!-- # W2 obtains better balance -->
+<!-- love.plot(W1,  cluster = "t0_eth_cat", binary = "std", thresholds = c(m = .1), -->
+<!--           wrap = 50, position = "bottom", size =2) -->
+
+<!-- love.plot(W2,  cluster = "t0_eth_cat", binary = "std", thresholds = c(m = .1), -->
+<!--           wrap = 50, position = "bottom", size =2) -->
+
+<!-- # check marginal too -->
+<!-- love.plot(W2,   binary = "std", thresholds = c(m = .1), -->
+<!--           wrap = 50, position = "bottom", size =2) -->
+<!-- ``` -->
+
+
+<!-- ### Parametric estimation of subgroup model -->
+
+<!-- ```{r} -->
+<!-- # prepare data -->
+
+<!-- # read vars -->
+<!-- baseline_vars_models_sans_eth <- margot::here_read("baseline_vars_models_sans_eth") -->
+
+<!-- # make combo weights -->
+<!-- df_subgroup$combo_weights = W2$weights * df_subgroup$t0_combo_weights -->
+
+
+<!-- # set dataframe -->
+<!-- df = df_subgroup -->
+
+<!-- ### SUBGROUP analysis -->
+<!-- Y_anxiety = "t2_kessler_latent_anxiety_z" -->
+<!-- Y_depression = "t2_kessler_latent_depression_z" -->
+
+<!-- X = "t1_perfectionism_4tile" -->
+
+<!-- treat_0 = "tile_1" -->
+<!-- treat_1 = "tile_3" -->
+<!-- estimand = "ATT" -->
+<!-- scale = "RD" -->
+<!-- nsims = 1000 -->
+<!-- family = "gaussian" -->
+<!-- continuous_X = FALSE -->
+<!-- splines = FALSE -->
+<!-- cores = parallel::detectCores() -->
+<!-- S = "t0_eth_cat" -->
+
+<!-- # not we interact the subclass X treatment X covariates -->
+
+<!-- formula_str_anxiety <- -->
+<!--   paste( -->
+<!--     Y_anxiety, -->
+<!--     "~", -->
+<!--     S, -->
+<!--     "*", -->
+<!--     "(", -->
+<!--     X , -->
+<!--     "*", -->
+<!--     "(", -->
+<!--     paste(baseline_vars_models_sans_eth, collapse = "+"), -->
+<!--     ")", -->
+<!--     ")" -->
+<!--   ) -->
+
+<!-- formula_str_depression <- -->
+<!--   paste( -->
+<!--     Y_depression, -->
+<!--     "~", -->
+<!--     S, -->
+<!--     "*", -->
+<!--     "(", -->
+<!--     X , -->
+<!--     "*", -->
+<!--     "(", -->
+<!--     paste(baseline_vars_models_sans_eth, collapse = "+"), -->
+<!--     ")", -->
+<!--     ")" -->
+<!--   ) -->
+
+<!-- formula_str_anxiety -->
+<!-- formula_str_depression -->
+
+<!-- # fit model -->
+<!-- fit_all_all_anxiety  <- glm( -->
+<!--   as.formula(formula_str_anxiety), -->
+<!--   weights = combo_weights, -->
+<!--   # weights = if (!is.null(weight_var)) weight_var else NULL, -->
+<!--   family = family, -->
+<!--   data = df -->
+<!-- ) -->
+
+<!-- #summary(fit_all_all_anxiety) -->
+
+<!-- fit_all_all_depression  <- glm( -->
+<!--   as.formula(formula_str_depression), -->
+<!--   weights = combo_weights, -->
+<!--   # weights = if (!is.null(weight_var)) weight_var else NULL, -->
+<!--   family = family, -->
+<!--   data = df -->
+<!-- ) -->
+
+
+<!-- # coefs <- coef(fit_all_all_anxiety) -->
+<!-- # table(is.na(coefs))#     t0_eth_catmāori:t1_perfectionism_coarsen.Q:t0_gen_cohort.C -->
+
+<!-- # #FALSE  TRUE -->
+<!-- # 344     4 -->
+<!-- #  -->
+<!-- # insight::get_varcov(fit_all_all_anxiety) -->
+<!-- ``` -->
+
+<!-- ### Subgroup Results  -->
+
+<!-- ```{r} -->
+<!-- #| label: sim_subgroup -->
+<!-- #| eval: false -->
+<!-- #| echo: true -->
+
+<!-- # simulate coefficients -->
+<!-- sim_model_all <- sim(fit_all_all_anxiety, n = nsims, vcov = "HC2") -->
+
+
+<!-- # simulate effect as modified in europeans -->
+<!-- sim_estimand_all <- sim_ame( -->
+<!--   sim_model_all, -->
+<!--   var = X, -->
+<!--   cl = cores, -->
+<!--   by = "t0_eth_cat", -->
+<!--   verbose = FALSE -->
+<!-- ) -->
+
+<!-- # summary(sim_estimand_all) -->
+
+<!-- # make table -->
+<!-- sim_estimand_all_tab <- -->
+<!--   transform(sim_estimand_all, RD_euro = `E[Y(tile_3)|euro]` - `E[Y(tile_1)|euro]`, -->
+<!--             RD_maori =  `E[Y(tile_3)|maori]` - `E[Y(tile_1)|maori]`, -->
+<!--             gamma_hat = (`E[Y(tile_3)|euro]` - `E[Y(tile_1)|euro]`) - (`E[Y(tile_3)|maori]` - `E[Y(tile_1)|maori]`)) -->
+
+<!-- sim_estimand_all_tab -->
+<!-- # save table -->
+<!-- here_save(sim_estimand_all_tab, "sim_estimand_all_tab") -->
+<!-- ``` -->
+
+<!-- Summary of model -->
+
+<!-- ```{r} -->
+<!-- # read table -->
+<!-- sim_estimand_all_tab <- margot::here_read("sim_estimand_all_tab") -->
+
+<!-- # print table -->
+<!-- summary(sim_estimand_all_tab) -->
+<!-- ``` -->
+
+
+<!-- ### Machine learning estimation: subgroups -->
+
+<!-- ```{r} -->
+<!-- #| label: lmtp_subgroup -->
+<!-- #| eval: false -->
+<!-- #| echo: true -->
+
+<!-- # lmtp -->
+<!-- library("lmtp") -->
+
+<!-- # set number of folds for ML here. use a minimum of 5 and a max of 10 -->
+<!-- SL_folds = 5 -->
+
+<!-- #this will allow you to track progress -->
+<!-- progressr::handlers(global = TRUE) -->
+
+<!-- # set seed for reproducing results -->
+<!-- set.seed(0112358) -->
+
+<!-- # set cores for estimation -->
+<!-- library(future) -->
+<!-- plan(multisession) -->
+<!-- n_cores <- parallel::detectCores() - 2 # save two cores for other work while these models run -->
+
+<!-- # check -->
+<!-- n_cores -->
+
+<!-- # super learner libraries -->
+<!-- # these are useful for high-dimensional data -->
+
+
+<!-- df_clean_t2 <- here_read('df_clean_t2') -->
+
+<!-- df_maori <-df_clean_t2 |> dplyr::filter(t0_eth_cat == "maori") |> droplevels() -->
+<!-- df_euro <-df_clean_t2 |> dplyr::filter(t0_eth_cat == "euro")  |> droplevels() -->
+<!-- nrow(df_maori) -->
+<!-- nrow(df_euro) -->
+<!-- colnames(df_euro) -->
+
+
+<!-- colnames(df_clean_t2) -->
+
+<!-- A<- "t1_perfectionism_4tile" -->
+
+<!-- # note lmtp's unconventional use of "censored" -->
+<!-- C <- c("t1_censored") -->
+
+<!-- df_clean_t2$t0_combo_weights -->
+
+<!-- names_base <- -->
+<!--   df_clean_t2 |> select(starts_with("t0"), -->
+<!--                      -t0_combo_weights,  -->
+<!--                      -t0_censored, -->
+<!--                      -t0_eth_cat) |> colnames() -->
+<!-- names_base -->
+<!-- C <- c("t1_censored") -->
+
+
+<!-- shift_all_tile_3 <- function(data, trt) { -->
+<!--   ifelse(data[[trt]] != "tile_3", "tile_3",  data[[trt]]) -->
+<!-- } -->
+
+
+<!-- shift_all_tile_1 <- function(data, trt) { -->
+<!--   ifelse(data[[trt]] != "tile_1", "tile_1",  data[[trt]]) -->
+<!-- } -->
+
+<!-- C -->
+
+<!-- # for faster estimation use fewer -->
+<!-- sl_lib <- c(#"SL.glmnet", -->
+<!--             "SL.ranger", # forests -->
+<!--           #  "SL.rpart",#  -->
+<!--             "SL.xgboost" -->
+<!--             )  -->
+
+<!-- ## no parametric estimation  -->
+<!-- maori_tile_3_t2_kessler_latent_anxiety_z <- lmtp_tmle( -->
+<!--     data = df_maori, -->
+<!--     trt = A, -->
+<!--     baseline = names_base, -->
+<!--     outcome = "t2_kessler_latent_anxiety_z", -->
+<!--     cens = C, -->
+<!--     shift = shift_all_tile_3, -->
+<!--     mtp = TRUE, -->
+<!--     folds = 5, -->
+<!--     # trim = 0.99, # if needed -->
+<!--     # time_vary = NULL, -->
+<!--     outcome_type = "continuous", -->
+<!--     weights = df_maori$weights_stabilised, -->
+<!--     learners_trt = sl_lib, -->
+<!--     learners_outcome =sl_lib, -->
+<!--     parallel = n_cores -->
+<!--   ) -->
+<!-- maori_tile_3_t2_kessler_latent_anxiety_z -->
+<!-- here_save(maori_tile_3_t2_kessler_latent_anxiety_z, "maori_tile_3_t2_kessler_latent_anxiety_z") -->
+
+<!-- # learners for the exposure -->
+<!-- maori_tile_3_t2_kessler_latent_anxiety_z$fits_m -->
+
+<!-- # learners for the  outcome -->
+<!-- maori_tile_3_t2_kessler_latent_anxiety_z$fits_r -->
+
+
+<!-- maori_tile_1_t2_kessler_latent_anxiety_z <- lmtp_tmle( -->
+<!--     data = df_maori, -->
+<!--     trt = A, -->
+<!--     baseline = names_base, -->
+<!--     outcome = "t2_kessler_latent_anxiety_z", -->
+<!--     cens = C, -->
+<!--     shift = shift_all_tile_1, -->
+<!--     mtp = TRUE, -->
+<!--     folds = 5, -->
+<!--     # trim = 0.99, # if needed -->
+<!--     # time_vary = NULL, -->
+<!--     outcome_type = "continuous", -->
+<!--     weights = df_maori$weights_stabilised, -->
+<!--     learners_trt = sl_lib, -->
+<!--     learners_outcome =sl_lib, -->
+<!--     parallel = n_cores -->
+<!--   ) -->
+<!-- maori_tile_1_t2_kessler_latent_anxiety_z -->
+<!-- here_save(maori_tile_1_t2_kessler_latent_anxiety_z, "maori_tile_1_t2_kessler_latent_anxiety_z") -->
+
+<!-- # higher anxiety  -->
+<!-- maori_results <-lmtp_contrast(maori_tile_3_t2_kessler_latent_anxiety_z, ref = maori_tile_1_t2_kessler_latent_anxiety_z) -->
+<!-- # maori_results -->
+<!-- here_save(maori_results, "maori_results") -->
+
+<!-- euro_tile_3_t2_kessler_latent_anxiety_z <- lmtp_tmle( -->
+<!--     data = df_euro, -->
+<!--     trt = A, -->
+<!--     baseline = names_base, -->
+<!--     outcome = "t2_kessler_latent_anxiety_z", -->
+<!--     cens = C, -->
+<!--     shift = shift_all_tile_3, -->
+<!--     mtp = TRUE, -->
+<!--     folds = 5, -->
+<!--     # trim = 0.99, # if needed -->
+<!--     # time_vary = NULL, -->
+<!--     outcome_type = "continuous", -->
+<!--     weights = df_euro$weights_stabilised, -->
+<!--     learners_trt = sl_lib, -->
+<!--     learners_outcome =sl_lib, -->
+<!--     parallel = n_cores -->
+<!--   ) -->
+<!-- euro_tile_3_t2_kessler_latent_anxiety_z -->
+<!-- here_save(euro_tile_3_t2_kessler_latent_anxiety_z, "euro_tile_3_t2_kessler_latent_anxiety_z") -->
+
+
+<!-- euro_tile_1_t2_kessler_latent_anxiety_z <- lmtp_tmle( -->
+<!--     data = df_euro, -->
+<!--     trt = A, -->
+<!--     baseline = names_base, -->
+<!--     outcome = "t2_kessler_latent_anxiety_z", -->
+<!--     cens = C, -->
+<!--     shift = shift_all_tile_1, -->
+<!--     mtp = TRUE, -->
+<!--     folds = 5, -->
+<!--     # trim = 0.99, # if needed -->
+<!--     # time_vary = NULL, -->
+<!--     outcome_type = "continuous", -->
+<!--     weights = df_euro$weights_stabilised, -->
+<!--     learners_trt = sl_lib, -->
+<!--     learners_outcome =sl_lib, -->
+<!--     parallel = n_cores -->
+<!--   ) -->
+<!-- euro_tile_1_t2_kessler_latent_anxiety_z -->
+<!-- here_save(euro_tile_1_t2_kessler_latent_anxiety_z, "euro_tile_1_t2_kessler_latent_anxiety_z") -->
+
+
+<!-- euro_results <- lmtp_contrast(euro_tile_3_t2_kessler_latent_anxiety_z, ref = euro_tile_1_t2_kessler_latent_anxiety_z) -->
+<!-- here_save(euro_results, "euro_results") -->
+
+<!-- ``` -->
+
+
+<!-- ### Machine learning: results -->
+
+<!-- No difference between groups.  -->
+
+<!-- ```{r} -->
+<!-- euro_results <- margot::here_read("euro_results") -->
+<!-- maori_results<- margot::here_read("maori_results") -->
+
+<!-- euro_results -->
+<!-- maori_results -->
+
+<!-- g_hat_theta= euro_results$vals$theta - maori_results$vals$theta  -->
+<!-- g_hat_theta # difference of means -->
+<!-- euro_results$vals$std.error -->
+<!-- # difference  -->
+<!-- se_diff = sqrt( (euro_results$vals$std.error^2) + (maori_results$vals$std.error^2) ) -->
+
+<!-- diff_conf.low = g_hat_theta - (1.97 * se_diff) -->
+<!-- diff_conf.high = g_hat_theta + (1.97 * se_diff) -->
+
+
+<!-- g_hat_anxiety <- cbind.data.frame(g_hat_theta, se_diff, diff_conf.low, diff_conf.high) -->
+
+<!-- # result -->
+<!-- g_hat_anxiety -->
+<!-- ``` -->
+
+
+<!-- Note, however that the invevention increases anxiety for both groups equally -->
+
+
+<!-- ### Europeans results -->
+
+<!-- ```{r} -->
+<!-- euro_results <- margot::here_read("euro_results") -->
+<!-- round( euro_results$vals, 3) -->
+<!-- ``` -->
+
+
+<!-- ### Maori results -->
+
+<!-- ```{r} -->
+<!-- maori_results<- margot::here_read("maori_results") -->
+<!-- round(maori_results$vals, 3) -->
+
+
+
+<!-- ``` -->
+
+
+<!-- ### Graph results -->
+
+<!-- ```{r} -->
+<!-- tab_euro_results <- margot::margot_lmtp_evalue( -->
+<!--   euro_results, -->
+<!--   scale = "RD", -->
+<!--   new_name = "Euro: 1_tile to 3_tile" -->
+<!-- ) -->
+
+
+
+<!-- tab_maori_results <- margot::margot_lmtp_evalue( -->
+<!--   maori_results, -->
+<!--   scale = "RD", -->
+<!--   new_name = "Māori: 1_tile to 3_tile" -->
+<!-- ) -->
+
+<!-- bind_results_anxiety <- rbind(tab_euro_results, tab_maori_results) -->
+
+<!-- here_save(bind_results_anxiety, "bind_results_anxiety") -->
+
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- #| fig-width: 10 -->
+<!-- #| fig-height: 12 -->
+
+<!-- bind_results_anxiety <- here_read("bind_results_anxiety") -->
+<!-- group_tab_anxiety <- margot::group_tab(bind_results_anxiety, type = "RD") -->
+<!-- conflicted::conflicts_prefer(ggplot2::margin) -->
+<!-- # graph results -->
+<!--  margot_plot( -->
+<!--   group_tab_anxiety, -->
+<!--   type = "RD", -->
+<!--   title = "Perfectionism: shift all to 3_tile, contrast with 1_tile", -->
+<!--   subtitle = "Outcome = Anxiety", -->
+<!--   estimate_scale = 1, -->
+<!--   base_size = 18, -->
+<!--   text_size = 4.5, -->
+<!--   point_size = 3.5, -->
+<!--   title_size = 20, -->
+<!--   subtitle_size = 16, -->
+<!--   legend_text_size = 10, -->
+<!--   legend_title_size = 10, -->
+<!--   x_offset = -.5, -->
+<!--   x_lim_lo = -.5, -->
+<!--   x_lim_hi =  .5 -->
+<!-- ) -->
+<!-- ``` -->
+
+
+<!-- Interpret Results -->
+
+
+<!-- ```{r} -->
+<!-- margot_interpret_table(group_tab_anxiety, estimand = "ATT", causal_scale = "causal_difference") -->
+<!-- ``` -->
+
+
+<!-- ## Take Home Message -->
+
+<!-- Machine learning with cross validation recovers nearly identical estimates for the effect of a shift in perfectionism on anxiety among Māori and Europeans.  -->
+
+<!-- Which results are correct?  We don't know. With more time, we would add more learners to the model, including parametric learners.  -->
+
+
+<!-- Generally, I suggest using machine learning algorithms, because they can include parametric estimators.  -->
+
+
+
+### Packages
+
+```{r}
+report::cite_packages()
+```
+
+
+

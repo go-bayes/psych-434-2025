@@ -1,0 +1,272 @@
+---
+title:  "Psych 434: Conducting Research Across Cultures"
+subtitle: "Conducting Research About Cultures"
+date: "2025-FEB-25"
+bibliography: /Users/joseph/GIT/templates/bib/references.bib
+editor_options: 
+  chunk_output_type: console
+---
+
+# Course Outline
+
+## Week 1 - Course Introduction - Introduction to R
+
+#### Focus
+
+- Introduce course objectives and outline
+- R setup
+
+#### Lab
+
+- Getting started with R/R-studio: installation and package management
+
+##### Readings
+
+##### Optional Readings
+
+- [@bulbulia2022] [link]()
+
+## Week 2 - Causal Diagrams: Five Elementary Causal Structures
+
+#### Focus
+
+- Understanding causal diagrams: definitions and applications
+- Introduction to five elementary structures and four rules in causal inference
+- Introduction to R interface and data simulation
+
+#### Readings
+
+- Barrett M (2023). _ggdag: Analyze and Create Elegant Directed Acyclic Graphs_. R package version 0.2.7.9000, <https://github.com/malcolmbarrett/ggdag>
+- "An Introduction to Directed Acyclic Graphs", <https://r-causal.github.io/ggdag/articles/intro-to-dags.html>
+- "Common Structures of Bias", <https://r-causal.github.io/ggdag/articles/bias-structures.html>
+
+#### Lab
+
+- Practical exercises in R: Using the interface and simulating data
+
+## Week 3: March 11 - Causal Diagrams: The Structures of Confounding Bias
+
+#### Focus
+
+- Confounding bias using causal diagrams
+- Application of regression and simulation in R
+
+#### Lab
+
+- Practical exercises in R: regression and `ggdag`
+
+
+#### Readings
+
+- [@hernan2024WHATIF] Chapter 6 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+##### Optional Readings
+
+- [@suzuki2020] [link](https://www.dropbox.com/scl/fi/4midxwr9ltg9oce02e0ss/suzuki-causal-diagrams.pdf?rlkey=uktzf3nurtgpbj8m4h0xz82dn&dl=0)
+- [@bulbulia2023] [link](https://osf.io/preprints/psyarxiv/b23k7)
+- [@neal2020introduction] Chapter 3 [link]()
+
+
+
+## Week 4 - Causal Diagrams: The Structures of Interaction/Effect Modification, Measurement Bias, Selection Bias
+
+#### Focus
+
+- Key concepts of interaction, measurement bias, and selection bias understood through causal diagrams
+- Both External and Internal Validity clarified by Causal Graphs
+- Advanced regression and simulation exercises in R
+
+#### Lab
+
+- Continuation of regression and simulation exercises in R
+
+#### Readings
+
+- [@hernan2024WHATIF] Chapter 6-9 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+##### Optional Readings
+
+- [@hernan2004STRUCTURAL] [link](https://www.dropbox.com/scl/fi/qni0y1lstntmdw410m2nh/Heran2004StructuralSelectionBias.pdf?rlkey=0ob86mmx7vscxqmn3ipg9m94f&dl=0)
+- [@hernan2017SELECTIONWITHOUTCOLLIDER] [link](https://www.dropbox.com/scl/fi/zr3tk7ngsutjprqr18bbg/hernan-selection-without-colliders.pdf?rlkey=vfluyl3a7zksfphqepao04fix&dl=0)
+- [@hernan2009MEASUREMENT] [link](https://www.dropbox.com/scl/fi/ip8nil6uc5l0x9xw14mbr/hernan_cole_Measure_causal_diagrams.pdf?rlkey=wkj3ayen8xb6ncog46sps2g49&dl=0)
+- [@vanderweele2012MEASUREMENT] [link](https://www.dropbox.com/scl/fi/wtqoibuyitdwm5nlpjuu7/vander_hernan_measurement_error_vanderweel.pdf?rlkey=e4znxaqdfzf2vg6sj4ui799bb&dl=0)
+
+## Week 5 - Quiz/Test **IN CLASS** (25%)
+
+#### Focus
+
+- Assessment covering key terms and concepts taught so far
+
+<!-- - Terms include node, edge, arrow, conditional independence, d-separation, d-connection, confounding, over-adjustment bias, collider bias, the five elemental structural relationships, effect-modification, interaction, measurement error bias, selection bias, collider bias, M-bias, external validity, internal validity, target population, transportability. -->
+
+#### No Lab
+
+
+## Week 6 - Causal Inference: Average Treatment (Marginal) Effects
+
+#### Focus
+
+- Key concepts of Average Treatment Effect (ATE)
+- Application of regression and simulation in R to obtain ATE estimation
+
+#### Readings
+- [@hernan2024WHATIF] Chapters 1-3 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+##### Extra Readings
+- [@neal2020introduction] Chapter 1-2 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+
+#### Lab
+
+- Regression and simulation exercises in R focussed on estimating the ATE
+
+## Week 7 - Causal Inference and Effect Modification
+
+- [@hernan2024WHATIF] Chapters 4-5 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+##### Optional Readings
+
+- [@vanderweele2007FOURTYPESOFEFFECT] [link](https://www.dropbox.com/scl/fi/drytp2ui2b8o9jplh4bm9/four_types_of_effect_modification__a.6.pdf?rlkey=mb9nl599v93m6kyyo69iv5nz1&dl=0)
+- [@vanderweele2009distinction] [link](https://www.dropbox.com/scl/fi/srpynr0dvjcndveplcydn/OutcomeWide_StatisticalScience.pdf?rlkey=h4fv32oyjegdfl3jq9u1fifc3&dl=0)
+
+#### Focus
+
+- Effect Modification: Definine your Causal Estimand
+- Distinguishing *Cultural Effect-Modification* from the confused and conflated concepts of "Moderation", "Mediation", "Interaction."
+- Detour into Causal Mediation
+
+#### Lab
+
+- Analysis step 1: data wrangling and descriptive tables/graphs
+
+
+## Week 8 - Causal Inference: Marginal Structural Models; Inverse Probability of Treatment Weighting; Conditional Average Treatment Effects; IPTW when Groups are Compared.
+
+#### Focus
+
+- Workflow for causal question formulation, population statement, and causal diagram creation
+- Marginal Structural Models: propensity scores and Inverse Probability of Treatment Weighting (IPTW)
+- IPTW when estimating conditional causal effects
+- Estimation techniques evaluating evidence for group-wise effect modification using R.
+
+
+#### Readings
+
+- [@greifer2023a] [link](https://ngreifer.github.io/WeightIt/)
+- [@vanderweele2020] [link](https://www.dropbox.com/scl/fi/srpynr0dvjcndveplcydn/OutcomeWide_StatisticalScience.pdf?rlkey=h4fv32oyjegdfl3jq9u1fifc3&dl=0)
+
+##### Optional Readings 
+
+- [@Bulbulia2024PracticalGuide] [link](https://osf.io/preprints/psyarxiv/uyg3d)
+- [@hoffman2023] [link](https://arxiv.org/pdf/2304.09460.pdf)
+
+#### Lab
+
+- Estimation ATE; CATE
+
+## Week 9 - Hands On Analysis (and TAKE HOME Assessment (25%)) 
+
+#### Focus
+
+- Second assessment covering advanced topics in causal inference
+- Topics include ATE, Effect-Modification, fundamental assumptions of causal inference, experiments, and real-world confounding
+
+#### Lab
+
+- Preparing your analysis: Hands On Study!
+
+## Week 10: May 13 - Hands On Working With Quarto Manuscript
+
+- No readings, do your take-home assignment (see course details). 
+
+## Labs
+
+- Creating and managing Quarto documents for publication quality research workflows
+
+
+## Week 11: May 20 - Measurement Matters
+
+#### Focus
+
+- Factor analysis, confirmatory factor analysis (CFA), multigroup CFA, partial invariance
+- Worked example on configural, metric, and scalar equivalence
+
+#### Readings
+
+- [@fischer2019primer] [link](https://www.dropbox.com/scl/fi/1h8slzy3vzscvbtp6yrjh/FischeKarlprimer.pdf?rlkey=xl93d5y7280c1qjhn3k2g8qls&dl=0)
+
+##### Optional Readings 
+
+- [@Vijver2021CulturePsychology] [link](https://doi.org/10.1017/9781107415188)
+- [@he2012] [link](https://www.dropbox.com/scl/fi/zuv4odmxbz8dbtdjfap3e/He-BiasandEquivalence.pdf?rlkey=wezprklb4jm6rgvvx0g58nw1n&dl=0ā)
+- [@Harkness2003TRANSALTION] [link](https://www.dropbox.com/scl/fi/hmmje9vbunmcu3oiahaa5/Harkness_CC_translation.pdf?rlkey=6vqq3ap5n52qp7t1e570ubpgt&dl=0)
+
+#### Lab
+
+- R exercises focusing on measurement theory applications and graphing
+
+
+## Week 12: May 27 - Measurement + External Validity in Causal Inference
+
+#### Focus
+
+- Understanding causal assumptions of measurement theory
+- Guidance on your final assessment.
+
+#### Readings
+
+- [@vanderweele2022]  [link](https://www.dropbox.com/scl/fi/mmyguc0hrci8wtyyfkv6w/tyler-vanderweele-contruct-measures.pdf?rlkey=o18fiyajdqqpyjgssyh6mz6qm&dl=0)
+
+##### Suggested Readings
+
+- [@harkness2003questionnaire] [link](https://www.dropbox.com/scl/fi/uhj73050r1i7rznn6i57f/HarknessvandeVijver2003_Chapter-2.pdf?rlkey=ijxobrh7czj3rfnq9air342d2&dl=0)
+
+
+#### Lab
+
+- R programming using causal inference to examine failure modes in measurement models
+
+
+## Week 13: June 3: No Seminar: Comparative Report Due (40%)
+  - You assess a questions: do cultural groups vary in response to interventions on well-beings? 
+
+
+
+## References
+
+
+## Appendix Optional Videos
+
+### Johannas Karl on Getting Started In R 
+
+{{< video https://www.youtube.com/embed/haYxa3vWA28 >}}
+
+
+### Richard McElreath on Causal Inference
+
+{{< video https://www.youtube.com/watch?v=KNPYUVmY3NM>}}
+
+
+### Miguel Hernan: How to We learn What Works
+
+{{< video https://www.youtube.com/watch?v=bspMnt3ujYA&t=1499s>}}
+
+
+#### Tyler VanderWeele on Measurement Contructs 
+
+- Abstract. Psychosocial constructs can only be assessed indirectly, and measures are typically formed by a combination of indicators that are thought to relate to the construct. Reflective and formative measurement models offer different conceptualizations of the relation between the indicators and what is sometimes conceived of as a univariate latent variable supposedly corresponding to the construct. I argue that the empirical implications of these models will often be violated by data since the causally relevant constituents will generally be multivariate, not univariate. In fact, the assumption of an underlying univariate structural latent variable is so strong that it has empirically testable implications, even though the latent is unobserved. Formal statistical tests can be developed to reject this assumption, but factor analysis, as typically practiced, is not adequate to do so. Factor analysis also suffers from the inability to distinguish associations arising from causal versus conceptual relations. I put forward an outline for a new model of the process of measure construction and propose a causal interpretation of associations between constructed measures and subsequent outcomes that is applicable even if the usual assumptions of reflective and formative models fail. I discuss the practical implications of these observations and proposals for the provision of definitions, the selection of items, item-by-item analyses, the construction of measures, and the causal interpretation of regression analyses.
+
+{{< video  https://www.youtube.com/watch?v=UA2WvYlT2RE&t=24s  >}}
+
+
+####  Stijn Vansteelandt on the Problem of Mediation Analysis
+
+
+{{< video https://www.youtube.com/watch?v=IgC7R07Qk6A  >}} 
+
+
+####  Stijn Vansteelandt and Besty Ogburn on Causal Inference (Workflows)
+
+ > Abstract: Causal inference research has shifted from being primarily descriptive (describing the data-generating mechanism using statistical models) to being primarily prescriptive (evaluating the effects of specific interventions). The focus has thereby moved from being centered on statistical models to being centered on causal estimands. This evolution has been driven by the increasing need for practical solutions to real-world problems, such as designing effective interventions, making policy decisions, and identifying effective treatment strategies. It has brought enormous progress, not solely in terms of delivering more useful answers to the scientific questions at stake, but also in providing a more hygienic inference that targets a well-understood causal estimand. However, many causal questions are not readily translated into the effects of specific interventions, and even if they can, scientists may be reliant on help from an expert statistician to make that translation, may not find the considered interventions feasible or of immediate interest, or may find too little information in the data about the considered estimand. In this talk, I will reflect on this and argue that hygienic causal inference thinking therefore comes with a price. I will next propose a compromise solution at the intersection of descriptive and prescriptive causal inference. It borrows the flexibility of statistical modeling, while tying model parameters to causal estimands in order to ensure that we understand what is being estimated and obtain valid (data-adaptive) inference for it, even when the model is wrong. Examples on structural (nested) mean models, instrumental variables estimation, target trials, … will be used to provide insight.
+
+{{< video https://www.youtube.com/watch?v=DkyNCJLWqUg&t=2827s >}}

@@ -1,1 +1,3 @@
-# psych-434-2025
+### Psych 434: Conducting Research Across Cultures
+
+license: CC BY-NC-SA

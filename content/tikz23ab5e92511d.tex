@@ -1,0 +1,40 @@
+\documentclass[
+%% TIKZ_CLASSOPTION %%
+tikz
+]{standalone}
+\usepackage{amsmath}
+\usetikzlibrary{matrix}
+%% EXTRA_TIKZ_PREAMBLE_CODE %%
+\begin{document}
+%% TIKZ_CODE %%
+\usetikzlibrary{positioning}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{arrows}
+\usetikzlibrary{decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}[{every node/.append style}=draw, emod/.style={rectangle, fill=blue!10,draw=blue},
+emoddot/.style={circle, fill=blue!10, draw=blue, dotted}]
+
+\node [rectangle, draw=white] (A) at (1, 0) {A$_{1}$};
+\node [rectangle, draw=white] (Y) at (3, 0) {Y$_{2}$};
+\node [emoddot, dotted, draw=blue] (Z) at (-2, 1) {Z};
+\node [rectangle, draw = black] (G) at (-2, -1) {G};
+\node [emoddot] (B) at (-1,0) {B};
+
+\draw [-latex, draw=black] (A) to (Y);
+\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend left = 20] (Z) to (Y);
+\draw [-latex, draw=blue] (Z) to (B);
+\draw [-latex, draw=black] (G) to (B);
+\end{tikzpicture} 
+
+\end{document}

@@ -1,0 +1,585 @@
+---
+title: "Week 1: Intalling and Using R"
+format:
+  revealjs: 
+    slide-number: true
+    echo: true
+    smaller: true
+    scrollable: true
+    incremental: false
+    chalkboard: true 
+    buttons: false
+    preview-links: auto
+    theme: default
+    embed-resources: false
+    code-fold: false
+    code-overflow: scroll
+    code-line-numbers: true
+    auto-stretch: true
+    html-math-method: katex
+    progress: true
+    highlight: kate
+    bibliography: /Users/joseph/GIT/templates/bib/references.bib
+---
+
+
+### By the end of this lab you will:
+
+1.  Have R and R-studio Downloaded on your machine
+2.  Be able to use R for basic analysis and graphing
+
+### Things To Remember
+
+1.  File names and code should be **legible**
+2.  Learn macros to save time and order your code
+3.  Learning is making mistakes; try first, and then seek help. 
+
+## Introduction
+
+- Why learn R?
+- You'll need it for your final report.
+- Supports your psychology coursework.
+- Enhances your coding skills.
+
+## Install R
+
+- Visit the comprehensive r archive network (cran) at [https://cran.r-project.org/](https://cran.r-project.org/)
+- Select the version of r suitable for your operating system (windows, mac, or linux)
+- Download and install it by following the on-screen instructions
+
+
+## Install RStudio
+- Visit rstudio download page at [https://www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/)
+- Choose the free version of rstudio desktop, 
+- Download it for your operating system
+- Install and open
+
+## Create new project 
+- `file` > `new project`
+- Choose new directory
+- Specify the location where the project folder will be created
+- Click `create project`
+
+## Exercise 1: Install `tidyverse`
+- Open rstudio: launch rstudio on your computer
+- `tools` > `install packages`
+- Type `tidyverse`
+- Click on the install button
+- Type `library(tidyverse)` in the console and press `enter`
+
+## Execut Code
+
+- Use `Ctrl + Enter` (Windows/Linux) or `Cmd + Enter` (Mac).
+
+## Assignment Operator
+
+The assignment operator in R is `<-`. This operator assigns values to variables.
+
+```{r}
+x <- 10 # assigns the value 10 to x
+y <- 5  # assigns the value 5 to y
+```
+
+Alternative assignment:
+```{r}
+x = 10
+y = 5
+```
+
+Comparing values:
+```{r}
+10 == 5 # returns FALSE
+```
+
+## RStudio Assignment Operator Shortcut
+
+- For macOS: `Option` + `-` inserts `<-`.
+- For Windows and Linux: `Alt` + `-` inserts `<-`.
+
+## Keyboard Shortcuts
+
+Explore keyboard shortcuts in RStudio through `Tools` -> `Keyboard Shortcuts Help`.
+
+## Concatenation
+
+The `c()` function combines multiple elements into a vector.
+
+```{r}
+numbers <- c(1, 2, 3, 4, 5) # a vector of numbers
+print(numbers)
+```
+
+## Arithmetic Operations
+
+Addition and subtraction in R:
+
+```{r}
+sum <- x + y
+print(sum)
+
+difference <- x - y
+print(difference)
+```
+
+## Multiplication and Division
+
+```{r}
+# Scalar operations
+product <- x * y
+quotient <- x / y
+
+
+# vector multiplication and division
+vector1 <- c(1, 2, 3)
+vector2 <- c(4, 5, 6)
+
+# Vector operations
+vector_product <- vector1 * vector2
+vector_division <- vector1 / vector2
+```
+
+Be cautious with division by zero:
+
+```{r}
+result <- 10 / 0 # Inf
+zero_division <- 0 / 0 # NaN
+```
+
+Integer division and modulo operation:
+
+```{r}
+integer_division <- 10 %/% 3
+remainder <- 10 %% 3
+```
+
+## Logical Operators
+
+Examples of NOT, NOT EQUAL, and EQUAL operations:
+
+```{r}
+x_not_y <- x != y
+x_equal_10 <- x == 10
+```
+
+OR and AND operations:
+
+```{r}
+vector_or <- c(TRUE, FALSE) | c(FALSE, TRUE)
+single_or <- TRUE || FALSE
+
+vector_and <- c(TRUE, FALSE) & c(FALSE, TRUE)
+single_and <- TRUE && FALSE
+```
+
+## Integers
+
+- Whole numbers without decimal points, defined with an `L` suffix
+
+```{r}
+x <- 42L
+str(x) # check type
+```
+
+- Conversion to numeric
+
+```{r}
+y <- as.numeric(x)
+str(y)
+```
+
+## Characters
+
+- Text strings enclosed in quotes
+
+```{r}
+name <- "alice"
+```
+
+## Factors
+
+- Represent categorical data with limited values
+
+```{r}
+colors <- factor(c("red", "blue", "green"))
+```
+
+## Ordered Factors
+
+- Factors with and without inherent order
+
+```{r}
+education_levels <- c("high school", "bachelor", "master", "ph.d.")
+education_factor_no_order <- factor(education_levels, ordered = FALSE)
+education_factor <- factor(education_levels, ordered = TRUE)
+education_ordered_explicit <- factor(education_levels, levels = education_levels, ordered = TRUE)
+```
+
+- Operations with ordered factors
+
+```{r}
+edu1 <- ordered("bachelor", levels = education_levels)
+edu2 <- ordered("master", levels = education_levels)
+edu2 > edu1 # logical comparison
+```
+
+- Modifying ordered factors
+
+```{r}
+new_levels <- c("primary school", "high school", "bachelor", "master", "ph.d.")
+education_updated <- factor(education_levels, levels = new_levels, ordered = TRUE)
+str(education_updated)
+table(education_updated)
+```
+
+## Strings
+
+- Sequences of characters
+
+```{r}
+you <- 'world!'
+greeting <- paste("hello,", you)
+# hello world
+greeting
+```
+
+## Vectors
+
+- Fundamental data structure in R
+
+```{r}
+numeric_vector <- c(1, 2, 3, 4, 5)
+character_vector <- c("apple", "banana", "cherry")
+logical_vector <- c(TRUE, FALSE, TRUE, FALSE)
+```
+
+- Manipulating vectors
+
+```{r}
+vector_sum <- numeric_vector + 10
+vector_multiplication <- numeric_vector * 2
+vector_greater_than_three <- numeric_vector > 3
+```
+
+
+## `table()` Function
+
+- Generates frequency tables for categorical data
+
+```{r}
+table(vector_greater_than_three)
+```
+
+## Dataframes
+
+- Creating and manipulating data frames
+
+```{r} 
+# clear previous `df` object (if any)
+rm(df)
+df <- data.frame(
+  name = c("alice", "bob", "charlie"),
+  age = c(25, 30, 35),
+  gender = c("female", "male", "male")
+)
+# look at structure
+head(df)
+str(df)
+table(df$gender)
+table(df$age)
+table(df$name)
+```
+
+## Access Data Frame Elements
+
+- By column name and row/column indexing
+
+```{r}
+# by column name
+names <- df$name
+# by row and column
+second_person <- df[2, ]
+age_column <- df[, "age"]
+```
+
+## Using `subset()` Function
+
+- Extracting rows based on conditions
+
+```{r}
+very_old_people <- subset(df, age > 25)
+summary(very_old_people$age)
+mean(very_old_people$age)
+min(very_old_people$age)
+```
+
+## Explore Data Frames
+
+- Using `head()`, `tail()`, and `str()`
+
+```{r}
+head(df)
+tail(df)
+str(df)
+```
+
+## Modify Data Frames
+
+- Add and modify columns and rows
+
+```{r}
+# add columns
+df$employed <- c(TRUE, TRUE, FALSE)
+# add rows
+new_person <- data.frame(name = "diana", age = 28, gender = "female", employed = TRUE)
+df <- rbind(df, new_person)
+# modify values
+df[4, "age"] <- 26
+df
+```
+
+## `rbind()` and `cbind()`
+
+- Adding rows and columns to data frames
+
+```{r}
+# add rows with `rbind()`
+new_person <- data.frame(name = "eve", age = 32, gender = "female", employed = TRUE)
+df <- rbind(df, new_person)
+# add columns with `cbind()`
+occupation_vector <- c("engineer", "doctor", "artist", "teacher", "doctor")
+df <- cbind(df, occupation_vector)
+df
+```
+
+## Data Structure View
+
+- Using `summary()`, `str()`, `head()`, and `tail()`
+
+```{r}
+str(iris)
+summary(iris)
+head(iris)
+tail(iris)
+```
+
+## Statistical Functions
+
+- `mean()`, `sd()`, `min()`, `max()`, and `table()`
+
+```{r}
+#  seed for reproducibility
+set.seed(12345)
+vector <- rnorm(n = 40, mean = 0, sd = 1)
+mean(vector)  # calculates mean
+sd(vector)  # computes standard deviation
+min(vector)  # finds minimum value
+max(vector)  # finds maximum value
+```
+
+## Introduction to `ggplot2`
+
+- Visualizing data with `ggplot2`
+
+```{r}
+#  seed for reproducibility
+set.seed(12345)
+# ensure ggplot2 is installed and loaded
+if (!require(ggplot2)) install.packages("ggplot2")
+library(ggplot2)
+# simulate student data
+student_data <- data.frame(
+  name = c("alice", "bob", "charlie", "diana", "ethan", "fiona", "george", "hannah"),
+  score = sample(80:100, 8, replace = TRUE),
+  stringsasfactors = FALSE
+)
+student_data$passed <- ifelse(student_data$score >= 90, "passed", "failed")
+student_data$passed <- factor(student_data$passed, levels = c("failed", "passed"))
+student_data$study_hours <- sample(5:15, 8, replace = TRUE)
+```
+
+## ggplot2 Barplot:  score for each name
+```{r}
+ggplot(student_data, aes(x = name, y = score)) +
+  geom_bar(stat = "identity")
+```
+
+- enhanced bar plot with titles, axis labels, and modified colours
+
+```{r}
+ggplot(student_data, aes(x = name, y = score, fill = passed)) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = c("TRUE" = "blue", "FALSE" = "red")) +
+  labs(title = "student scores", x = "student name", y = "score") +
+  theme_minimal()
+```
+
+## ggplot2 Scatterplot:  student scores against study hours
+
+```{r}
+ggplot(student_data, aes(x = study_hours, y = score, color = passed)) +
+  geom_point(size = 4) +
+  labs(title = "student scores vs. study hours", x = "study hours", y = "score") +
+  theme_minimal() +
+  scale_color_manual(values = c("failed" = "red", "passed" = "blue"))
+```
+
+## ggplot2 Boxplot: scores by pass/fail status
+
+```{r}
+ggplot(student_data, aes(x = passed, y = score, fill = passed)) +
+  geom_boxplot() +
+  labs(title = "score distribution by pass/fail status", x = "status", y = "score") +
+  theme_minimal() +
+  scale_fill_manual(values = c("failed" = "red", "passed" = "blue"))
+```
+
+::: {.notes}
+# median (Q2/50th percentile): divides the dataset into two halves.
+# first quartile (Q1/25th percentile): lower edge indicating that 25% of the data falls below this value.
+# third quartile (Q3/75th percentile): upper edge of the box represents the third quartile, showing that 75% of the data is below this value.
+# interquartile range (IQR): height of the box represents the IQR: distance between the first and third quartiles (Q3 - Q1) / middle 50% of the data.
+# whiskers: The lines extending from the top and bottom of the box (the "whiskers") indicate the range of the data, typically to the smallest and largest values within 1.5 * IQR from the first and third quartiles, respectively. Points outside this range are often considered outliers and can be plotted individually.
+# outliers: points that lie beyond the whiskers
+:::
+
+## ggplot2 Histogram:  distribution of scores
+
+```{r}
+ggplot(student_data, aes(x = score, fill = passed)) +
+  geom_histogram(binwidth = 5, color = "black", alpha = 0.7) +
+  labs(title = "histogram of scores", x = "score", y = "count") +
+  theme_minimal() +
+  scale_fill_manual(values = c("failed" = "red", "passed" = "blue"))
+```
+
+## ggplot2 Lineplot
+
+```{r}
+# prep data
+months <- factor(month.abb[1:8], levels = month.abb[1:8])
+study_hours <- c(0, 3, 15, 30, 35, 120, 18, 15)
+study_data <- data.frame(month = months, study_hours = study_hours)
+
+# line plot
+ggplot(study_data, aes(x = month, y = study_hours, group = 1)) +
+  geom_line(linewidth = 1, color = "blue") +
+  geom_point(color = "red", size = 1) +
+  labs(title = "monthly study hours", x = "month", y = "study hours") +
+  theme_minimal()
+```
+
+
+
+## Base R Scatter Plot: scores vs. study hours
+
+```{r}
+# scatter plot
+plot(student_data$study_hours, student_data$score,
+     main = "scatter plot of scores vs. study hours",
+     xlab = "study hours", ylab = "score",
+     pch = 19, col = ifelse(student_data$passed == "passed", "blue", "red"))
+```
+
+## Base R Histogram
+
+- histogram to visualise distribution of student scores
+
+```{r}
+# histogram 
+hist(student_data$score,
+     breaks = 5,
+     col = "skyblue",
+     main = "histogram of student scores",
+     xlab = "scores",
+     border = "white")
+```
+
+## Base R Boxplots: Distribution by Pass/Fail
+
+
+```{r}
+# boxplot
+boxplot(score ~ passed, data = student_data,
+        main = "score distribution by pass/fail status",
+        xlab = "status", ylab = "scores",
+        col = c("red", "blue"))
+```
+::: {.notes}
+# median (Q2/50th percentile): divides the dataset into two halves.
+# first quartile (Q1/25th percentile): lower edge indicating that 25% of the data falls below this value.
+# third quartile (Q3/75th percentile): upper edge of the box represents the third quartile, showing that 75% of the data is below this value.
+# interquartile range (IQR): height of the box represents the IQR: distance between the first and third quartiles (Q3 - Q1) / middle 50% of the data.
+# whiskers: The lines extending from the top and bottom of the box (the "whiskers") indicate the range of the data, typically to the smallest and largest values within 1.5 * IQR from the first and third quartiles, respectively. Points outside this range are often considered outliers and can be plotted individually.
+# outliers: points that lie beyond the whiskers
+:::
+
+## Base R Barplot: Score Distributions
+
+```{r}
+# prep data for the barplot
+scores_table <- table(student_data$score)
+barplot(scores_table,
+        main = "Barplot of Scores",
+        xlab = "Scores",
+        ylab = "Frequency",
+        col = "skyblue",
+        border = "white")
+```
+
+## Base R Line Plot
+
+```{r}
+# convert 'month' to a numeric scale for plotting positions
+months_num <- 1:length(study_data$month) # Simple numeric sequence
+
+# Plotting points with suppressed x-axis
+plot(months_num, study_data$study_hours, 
+     type = "p", # Points
+     pch = 19,   # Type of point
+     col = "red", 
+     xlab = "Month", 
+     ylab = "Study Hours", 
+     main = "Monthly Study Hours",
+     xaxt = "n") # Suppress the x-axis
+
+# add lines between points
+lines(months_num, study_data$study_hours, 
+      col = "blue", 
+      lwd = 1) # Line width
+
+# add custom month labels to the x-axis at appropriate positions
+axis(1, at = months_num, labels = study_data$month, las=2) # `las=2` makes labels perpendicular to axis
+```
+
+## What have your learned? 
+
+
+
+1.  You have Base R and R-studio Downloaded on your machine
+2.  You are able able to use R for basic analysis and graphing
+3.  You will need to practice, and will have lots of opporunity.
+
+
+## Where to Get Help
+
+1. **Large Language Models (LLMs):** LLMs are trained on extensive datasets. They are extremely good coding tutors. Open AI's GPT-4 considerably outperforms GPT-3.5.  However GPT 3.5 should be good enough. Gemini has a two-month free trial. LLM's are rapidly evolving. However, presently, to use these tools, and to spot their errors, you will need to know how to code.  Which is fortunate because coding makes you smarter!
+
+**Note:** you will not be assessed for R-code. Help from LLM's for *coding* does not consitute a breach of academic integrity in this course. Your tests are in-class; no LLM's allowed.  For your final report, you will need to cite all sources, and how you used them, including LLMs. 
+
+2. [Stack Overflow](https://stackoverflow.com/questions/tagged/r): an outstanding resource for most problems. Great community. 
+
+3. [Cross-validated](https://stats.stackexchange.com/) the best place to go for stats advice. (LLM's are only safe for standard statistics. They do not perform well for causal inference.)
+
+4. **Developer Websites and GitHub Pages:** [Tidyverse](https://github.com/tidyverse)
+
+4.  Your tutors and course coordinator. We care. We’re here to help you!
+
+
+## References
+
+- Wickham, H., & Grolemund, G. (2016). *R for Data Science*. O'Reilly Media. [Available online](https://r4ds.had.co.nz
+
+
+- A helpful resource for learning R is Megan Hall's lecture available at: [https://meghan.rbind.io/talk/neair/](https://meghan.rbind.io/talk/neair/).
+
+- RStudio has compiled numerous accessible materials for learning R, which can be found here: [https://education.rstudio.com/learn/beginner/](https://education.rstudio.com/learn/beginner/).
