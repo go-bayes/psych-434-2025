@@ -37,7 +37,7 @@ library("tinytex")
 ::: {.callout-tip}
 ### Accessing Lectures and Readings
 
-- **Seminar Time/Location**: Tuesdays, 9:00-11:50am **Easterfield Building Room 406**
+- **Seminar Time/Location**: Tuesdays, 9:00-11:50am **Easterfield Building Room: EA201**
 
 - **Course Outline**: find a detailed schedule of topics, readings, and assignments in the `Course Outline` tab.
 
@@ -99,7 +99,7 @@ my_data <- tibble(
   Assessment = c(
     "Class participation",
     "Test 1",
-    "Test 2",
+    "Take Home Assignment",
     "Research Report"
   ),
   CLOs = c("1,2,3", "2", "2", "1,2,3"),
@@ -177,24 +177,26 @@ my_data %>%
 
 ### Assessment 1: Class Participation
 
-- **Attendance and Participation**:
-    - (a) Class attendance and active participation.
-    - (b) Lab attendance and active participation.
+
+  - (a) Class attendance and active participation.
+  - (b) Lab attendance and active participation.
+  - (c) Presentation (Week 10)
 
 ### Assessment 2: In-class Test
 
 ## Test Guidelines
-- Test duration is under an hour. The allocated time is nearly two hours.
+
+- Test duration is one hour. The allocated time is nearly two hours.
 
 ::: {.callout-important}
 - **THE TEST IS IN CLASS** (i.e. come to class with a writing instrument).
 :::
 
-- Each lecture starts and ends with key concept definitions and reviews for the test.
-- R or RStudio knowledge isn't part of the test. R support aims to enhance research report skills.
-- Tests are conducted in the lecture room without the aids of notes, a computer, or a phone.
-- Required: pen/pencil. 
-- ** Test (50 minutes, total time allowed: 1 hour 50 minutes)**:
+  - Each lecture starts and ends with key concept definitions and reviews for the test.
+  - R or RStudio knowledge isn't part of the test. R support aims to enhance research report skills.
+  - Tests are conducted in the lecture room without the aids of notes, a computer, or a phone.
+  - Required: pen/pencil. 
+  - **Test (50 minutes, total time allowed: 1 hour 50 minutes)**:
     - Focuses on revising core statistical and methodological concepts.
     - Aims to refresh basic statistical knowledge foundational for later course material.
 
@@ -382,13 +384,14 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
 
 - **Extensions**:
     - Negotiate a new due date by writing (email) before **March 11th, 2025**, if necessary.
+    - Every reasonable request will be accepted (e.g. too many assignments falling in the same week, you want another week to complete.)
 
 - **Penalties**:
-    - Late submissions incur a one-grade-per-day penalty.
+    - Late submissions incur a one full grade-per-week penalty, e.g. if late by one day, B $\to$ C, one week later, C $\to$ D.
     - Over-length assignments will be penalised.
 
 - **Unforeseeable Events**:
-    - Extensions post-March 10 require evidence (e.g., medical certificate).
+    - Extensions after March 11th will require evidence (e.g., medical certificate).
 
 ### Materials and Equipment
 
