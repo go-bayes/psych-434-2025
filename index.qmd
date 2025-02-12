@@ -107,7 +107,7 @@ my_data <- tibble(
   Due = c(
     "Weekly",
      "25 March (w5)",
-     "6 May (w9)",
+     "6 May (w10)",
      "3 June (w12)"
   )
   
