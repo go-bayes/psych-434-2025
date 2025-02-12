@@ -381,7 +381,7 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
 ### Extensions and Penalties
 
 - **Extensions**:
-    - Negotiate a new due date by writing (email) before **March 10th, 2024**, if necessary.
+    - Negotiate a new due date by writing (email) before **March 11th, 2025**, if necessary.
 
 - **Penalties**:
     - Late submissions incur a one-grade-per-day penalty.
