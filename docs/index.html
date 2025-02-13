@@ -319,8 +319,8 @@ Accessing Lectures and Readings
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item" id="htmlwidget-b6bccf927ab22f989f24" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-b6bccf927ab22f989f24">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-41.2889,174.7681,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Easterfield",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-41.2889,-41.2889],"lng":[174.7681,174.7681]}},"evals":[],"jsHooks":[]}</script>
+<div class="leaflet html-widget html-fill-item" id="htmlwidget-04f52df692b9f2d42a89" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-04f52df692b9f2d42a89">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"https://openstreetmap.org/copyright/\">OpenStreetMap<\/a>,  <a href=\"https://opendatacommons.org/licenses/odbl/\">ODbL<\/a>"}]},{"method":"addMarkers","args":[-41.2889,174.7681,null,null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Easterfield",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[-41.2889,-41.2889],"lng":[174.7681,174.7681]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -552,25 +552,28 @@ Important
 </section>
 <section id="identifying-the-estimand" class="level4">
 <h4 class="anchored" data-anchor-id="identifying-the-estimand">Identifying the Estimand</h4>
-<p><strong>Note</strong>: Do not be alarmed by this math if you are reading this material before I have introduced these concepts. All will be made clear, I promise.</p>
 <ul>
-<li><strong>Causal Estimand:</strong> Is your causal estimand one of the following:</li>
+<li>What is the casual contrast?</li>
+<li>How will you estimate heterogeneity?</li>
 </ul>
-<p><span class="math display">ATE_{G,(A,A')} = E[Y(1) - Y(0)|G, L]</span></p>
-<p><span class="math display">ATE_{G,(A/A')} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}</span></p>
-<p>A modified treatment policy, e.g.</p>
-<p><span class="math display">
-\mathbf{d}^\lambda (a_1) = \begin{cases} 4 &amp; \text{if } a_1 &lt; 4 \\
-a_1 &amp; \text{otherwise} \end{cases}
-</span> <span class="math display">
-\mathbf{d}^\phi (a_1) = \begin{cases} 0 &amp; \text{if } a_1 &gt; 0 \\
-a_1 &amp; \text{otherwise} \end{cases}
-</span></p>
-<p><span class="math display"> g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] </span></p>
-<p><span class="math display"> g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] </span></p>
-<p><span class="math display">
-{\delta}(g) ={g'} - {g''}
-</span></p>
+<!-- **Note**: Do not be alarmed by this math if you are reading this material before I have introduced these concepts. All will be made clear, I promise.  -->
+<!-- -   **Causal Estimand:** Is your causal estimand one of the following: -->
+<!-- $$ATE_{G,(A,A')} = E[Y(1) - Y(0)|G, L]$$ -->
+<!-- $$ATE_{G,(A/A')} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}$$ -->
+<!-- A modified treatment policy, e.g. -->
+<!-- $$ -->
+<!-- \mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\  -->
+<!-- a_1 & \text{otherwise} \end{cases} -->
+<!-- $$ -->
+<!-- $$ -->
+<!-- \mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\  -->
+<!-- a_1 & \text{otherwise} \end{cases} -->
+<!-- $$ -->
+<!-- $$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
+<!-- $$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
+<!-- $$ -->
+<!-- {\delta}(g) ={g'} - {g''} -->
+<!-- $$ -->
 </section>
 <section id="understanding-source-and-target-populations" class="level4">
 <h4 class="anchored" data-anchor-id="understanding-source-and-target-populations">Understanding Source and Target Populations</h4>

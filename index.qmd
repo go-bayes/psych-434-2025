@@ -264,32 +264,35 @@ my_data %>%
 
 #### Identifying the Estimand
 
-**Note**: Do not be alarmed by this math if you are reading this material before I have introduced these concepts. All will be made clear, I promise. 
+- What is the casual contrast? 
+- How will you estimate heterogeneity? 
 
--   **Causal Estimand:** Is your causal estimand one of the following:
+<!-- **Note**: Do not be alarmed by this math if you are reading this material before I have introduced these concepts. All will be made clear, I promise.  -->
 
-$$ATE_{G,(A,A')} = E[Y(1) - Y(0)|G, L]$$
+<!-- -   **Causal Estimand:** Is your causal estimand one of the following: -->
 
-$$ATE_{G,(A/A')} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}$$
+<!-- $$ATE_{G,(A,A')} = E[Y(1) - Y(0)|G, L]$$ -->
 
-A modified treatment policy, e.g.
+<!-- $$ATE_{G,(A/A')} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}$$ -->
 
-$$
-\mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\ 
-a_1 & \text{otherwise} \end{cases}
-$$
-$$
-\mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\ 
-a_1 & \text{otherwise} \end{cases}
-$$
+<!-- A modified treatment policy, e.g. -->
 
-$$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
+<!-- $$ -->
+<!-- \mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\  -->
+<!-- a_1 & \text{otherwise} \end{cases} -->
+<!-- $$ -->
+<!-- $$ -->
+<!-- \mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\  -->
+<!-- a_1 & \text{otherwise} \end{cases} -->
+<!-- $$ -->
 
-$$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
+<!-- $$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
 
-$$
-{\delta}(g) ={g'} - {g''}
-$$
+<!-- $$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
+
+<!-- $$ -->
+<!-- {\delta}(g) ={g'} - {g''} -->
+<!-- $$ -->
 
 
 
