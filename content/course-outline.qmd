@@ -22,9 +22,8 @@ editor_options:
 
 ##### Readings
 
-##### Optional Readings
+- No Readings
 
-- [@bulbulia2022] [link]()
 
 ## Week 2 - Causal Diagrams: Five Elementary Causal Structures
 
@@ -58,14 +57,15 @@ editor_options:
 
 #### Readings
 
-- [@hernan2024WHATIF] Chapter 6 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+- [@bulbulia2023] [link](https://www.cambridge.org/core/journals/evolutionary-human-sciences/article/methods-in-causal-inference-part-1-causal-diagrams-and-confounding/E734F72109F1BE99836E268DF3AA0359)
+
+- see [simplified reading](https://osf.io/preprints/psyarxiv/tbjx8_v1)
 
 ##### Optional Readings
 
 - [@suzuki2020] [link](https://www.dropbox.com/scl/fi/4midxwr9ltg9oce02e0ss/suzuki-causal-diagrams.pdf?rlkey=uktzf3nurtgpbj8m4h0xz82dn&dl=0)
-- [@bulbulia2023] [link](https://osf.io/preprints/psyarxiv/b23k7)
-- [@neal2020introduction] Chapter 3 [link]()
-
+- [@neal2020introduction] Chapter 3 [link](https://www.bradyneal.com/Introduction_to_Causal_Inference-Dec17_2020-Neal.pdf)
+- [@hernan2024WHATIF] Chapter 6 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
 
 ## Week 4 - Causal Diagrams: The Structures of Interaction/Effect Modification, Measurement Bias, Selection Bias
@@ -82,7 +82,8 @@ editor_options:
 
 #### Readings
 
-- [@hernan2024WHATIF] Chapter 6-9 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+- [@bulbulia2023] [link](https://www.cambridge.org/core/journals/evolutionary-human-sciences/article/methods-in-causal-inference-part-1-causal-diagrams-and-confounding/E734F72109F1BE99836E268DF3AA0359)
+
 
 ##### Optional Readings
 
@@ -90,6 +91,7 @@ editor_options:
 - [@hernan2017SELECTIONWITHOUTCOLLIDER] [link](https://www.dropbox.com/scl/fi/zr3tk7ngsutjprqr18bbg/hernan-selection-without-colliders.pdf?rlkey=vfluyl3a7zksfphqepao04fix&dl=0)
 - [@hernan2009MEASUREMENT] [link](https://www.dropbox.com/scl/fi/ip8nil6uc5l0x9xw14mbr/hernan_cole_Measure_causal_diagrams.pdf?rlkey=wkj3ayen8xb6ncog46sps2g49&dl=0)
 - [@vanderweele2012MEASUREMENT] [link](https://www.dropbox.com/scl/fi/wtqoibuyitdwm5nlpjuu7/vander_hernan_measurement_error_vanderweel.pdf?rlkey=e4znxaqdfzf2vg6sj4ui799bb&dl=0)
+- [@hernan2024WHATIF] Chapter 6-9 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
 ## Week 5 - Quiz/Test **IN CLASS** (25%)
 
@@ -110,9 +112,14 @@ editor_options:
 - Application of regression and simulation in R to obtain ATE estimation
 
 #### Readings
+
+
 - [@hernan2024WHATIF] Chapters 1-3 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
+
 ##### Extra Readings
+
+
 - [@neal2020introduction] Chapter 1-2 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
 
@@ -125,6 +132,8 @@ editor_options:
 - [@hernan2024WHATIF] Chapters 4-5 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
 ##### Optional Readings
+
+- [@bulbulia2024swigstime][link](https://www.cambridge.org/core/journals/evolutionary-human-sciences/article/methods-in-causal-inference-part-2-interaction-mediation-and-timevarying-treatments/D7FD95D3ED64FE0FBBEC37AC6CEAFBC1)
 
 - [@vanderweele2007FOURTYPESOFEFFECT] [link](https://www.dropbox.com/scl/fi/drytp2ui2b8o9jplh4bm9/four_types_of_effect_modification__a.6.pdf?rlkey=mb9nl599v93m6kyyo69iv5nz1&dl=0)
 - [@vanderweele2009distinction] [link](https://www.dropbox.com/scl/fi/srpynr0dvjcndveplcydn/OutcomeWide_StatisticalScience.pdf?rlkey=h4fv32oyjegdfl3jq9u1fifc3&dl=0)
@@ -215,7 +224,9 @@ editor_options:
 
 #### Readings
 
-- [@vanderweele2022]  [link](https://www.dropbox.com/scl/fi/mmyguc0hrci8wtyyfkv6w/tyler-vanderweele-contruct-measures.pdf?rlkey=o18fiyajdqqpyjgssyh6mz6qm&dl=0)
+- [@vanderweele2022][link](https://www.dropbox.com/scl/fi/mmyguc0hrci8wtyyfkv6w/tyler-vanderweele-contruct-measures.pdf?rlkey=o18fiyajdqqpyjgssyh6mz6qm&dl=0)
+
+- [@bulbulia2024wierd][link](https://www.cambridge.org/core/journals/evolutionary-human-sciences/article/methods-in-causal-inference-part-3-measurement-error-and-external-validity-threats/4D35FFDECF32B2EFF7557EC26075175F)
 
 ##### Suggested Readings
 
