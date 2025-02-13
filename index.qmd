@@ -264,8 +264,8 @@ my_data %>%
 
 #### Identifying the Estimand
 
-- What is the casual contrast? 
-- How will you estimate heterogeneity? 
+- What is your casual contrast?
+- Have you stated your causal contrast clearly? 
 
 <!-- **Note**: Do not be alarmed by this math if you are reading this material before I have introduced these concepts. All will be made clear, I promise.  -->
 
