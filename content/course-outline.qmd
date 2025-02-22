@@ -93,18 +93,7 @@ editor_options:
 - [@vanderweele2012MEASUREMENT] [link](https://www.dropbox.com/scl/fi/wtqoibuyitdwm5nlpjuu7/vander_hernan_measurement_error_vanderweel.pdf?rlkey=e4znxaqdfzf2vg6sj4ui799bb&dl=0)
 - [@hernan2024WHATIF] Chapter 6-9 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
-## Week 5 - Quiz/Test **IN CLASS** (25%)
-
-#### Focus
-
-- Assessment covering key terms and concepts taught so far
-
-<!-- - Terms include node, edge, arrow, conditional independence, d-separation, d-connection, confounding, over-adjustment bias, collider bias, the five elemental structural relationships, effect-modification, interaction, measurement error bias, selection bias, collider bias, M-bias, external validity, internal validity, target population, transportability. -->
-
-#### No Lab
-
-
-## Week 6 - Causal Inference: Average Treatment (Marginal) Effects
+## Week 5 - Causal Inference: Average Treatment Effects
 
 #### Focus
 
@@ -112,8 +101,6 @@ editor_options:
 - Application of regression and simulation in R to obtain ATE estimation
 
 #### Readings
-
-
 - [@hernan2024WHATIF] Chapters 1-3 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
 
@@ -126,6 +113,17 @@ editor_options:
 #### Lab
 
 - Regression and simulation exercises in R focussed on estimating the ATE
+
+
+## Week 6 - Quiz/Test **IN CLASS** (25%)
+
+#### Focus
+
+- Assessment covering key terms and concepts taught so far
+
+<!-- - Terms include node, edge, arrow, conditional independence, d-separation, d-connection, confounding, over-adjustment bias, collider bias, the five elemental structural relationships, effect-modification, interaction, measurement error bias, selection bias, collider bias, M-bias, external validity, internal validity, target population, transportability. -->
+
+#### No Lab
 
 ## Week 7 - Causal Inference and Effect Modification
 
