@@ -154,8 +154,7 @@ Open in browser [here](/slides/01-slides-lab.html){target="_blank"}
 
 - You'll need it for your final report.
 - Supports your psychology coursework.
-- Enhances your coding skills. Presently all buzz is about AI. Amateur coders can greatly accelerate their abilities -- but you still need to have some coding. If you have no coding skills, you will lose out to those that do. 
-- Coding can become as enjoyable as music or languages, really!
+- Enhances your coding skills. 
 
 ## Installing R
 
