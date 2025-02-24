@@ -98,15 +98,15 @@ library(kableExtra)
 my_data <- tibble(
   Assessment = c(
     "Class participation",
-    "Test 1",
-    "Take Home Assignment",
-    "Research Report"
+    "In-class Test",
+    "Introduction/Methods Research Report",
+    "Full Research Report"
   ),
   CLOs = c("1,2,3", "2", "2", "1,2,3"),
   Percent = c("10", "25", "25", "40"),
   Due = c(
     "Weekly",
-     "25 March (w5)",
+     "8 April (w6)",
      "6 May (w10)",
      "3 June (w12)"
   )
@@ -153,17 +153,17 @@ library(kableExtra)
 my_data <- tibble(
   Assessment = c(
     "Class participation",
-    "Test (1)",
-    "Take Home (2)",
-    "Research Report"
+    "In-class Test",
+    "Introduction/Methods Research Report",
+    "Full Research Report"
   ),
   CLOs = c("1,2,3", "2", "2", "1,2,3"),
   Percent = c("10", "25", "25", "40"),
   Due = c(
     "Weekly",
-     "25 March (w5)",
-     "13 May (w10)",
-     "3 June (w13)"
+     "8 April (w6)",
+     "6 May (w10)",
+     "3 June (w12)"
   )
   
 )
@@ -202,9 +202,9 @@ my_data %>%
 
 
 
-## Take-Home Assessment
+## Introduction and methods section for your report (Take-Home Assessment)
 
-- Take Home Asssessment (~6 Hours) due March 12**:
+- Take Home Asssessment (~6 Hours) due May 06**:
 - Builds upon the course concepts, emphasising the application of basic conceptual, statistical, and theoretical knowledge as applied to your research question.
 - Specifically, how to formulate a research question and develop a strategy for answering it.
 
