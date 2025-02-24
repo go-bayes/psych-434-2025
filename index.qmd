@@ -108,7 +108,7 @@ my_data <- tibble(
     "Weekly",
      "8 April (w7)",
      "20 May (w11)",
-     "3 June (w13)"
+     "30 May (end of w12)"
   )
   
 )
@@ -163,7 +163,7 @@ my_data <- tibble(
     "Weekly",
      "8 April (w7)",
      "20 May (w11)",
-     "3 June (w13)"
+     "30 May (end of w12)"
   )
   
 )
@@ -386,7 +386,8 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
     - Clarity of theoretical framework, research question, and design.
     - Validity of confounding control strategy.
     - Discussion on assumptions and statistical models.
-    - Organisation and presentation quality.
+    - Presentation quality (10%)
+      - clearly and efficiently presents study 
 
 ### Extensions and Penalties
 
@@ -399,7 +400,7 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
     - Over-length assignments will be penalised.
 
 - **Unforeseeable Events**:
-    - Extensions after March 11th will require evidence (e.g., medical certificate).
+    - Extensions will require evidence (e.g., medical certificate).
 
 ### Materials and Equipment
 
