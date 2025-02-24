@@ -106,9 +106,9 @@ my_data <- tibble(
   Percent = c("10", "25", "25", "40"),
   Due = c(
     "Weekly",
-     "8 April (w6)",
-     "6 May (w10)",
-     "3 June (w12)"
+     "8 April (w7)",
+     "20 May (w11)",
+     "3 June (w13)"
   )
   
 )
@@ -161,9 +161,9 @@ my_data <- tibble(
   Percent = c("10", "25", "25", "40"),
   Due = c(
     "Weekly",
-     "8 April (w6)",
-     "6 May (w10)",
-     "3 June (w12)"
+     "8 April (w7)",
+     "20 May (w11)",
+     "3 June (w13)"
   )
   
 )

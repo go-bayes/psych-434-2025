@@ -43,7 +43,7 @@ editor_options:
 
 - Practical exercises in R: Using the interface and simulating data
 
-## Week 3: March 11 - Causal Diagrams: The Structures of Confounding Bias
+## Week 3 - Causal Diagrams: The Structures of Confounding Bias
 
 #### Focus
 
@@ -115,17 +115,8 @@ editor_options:
 - Regression and simulation exercises in R focussed on estimating the ATE
 
 
-## Week 6 - Quiz/Test **IN CLASS** (25%)
 
-#### Focus
-
-- Assessment covering key terms and concepts taught so far
-
-<!-- - Terms include node, edge, arrow, conditional independence, d-separation, d-connection, confounding, over-adjustment bias, collider bias, the five elemental structural relationships, effect-modification, interaction, measurement error bias, selection bias, collider bias, M-bias, external validity, internal validity, target population, transportability. -->
-
-#### No Lab
-
-## Week 7 - Causal Inference and Effect Modification
+## Week 6 - Causal Inference and Effect Modification
 
 - [@hernan2024WHATIF] Chapters 4-5 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 
@@ -147,7 +138,14 @@ editor_options:
 - Analysis step 1: data wrangling and descriptive tables/graphs
 
 
-## Week 8 - Causal Inference: Marginal Structural Models; Inverse Probability of Treatment Weighting; Conditional Average Treatment Effects; IPTW when Groups are Compared.
+## Week 7 - **IN CLASS TEST** (25%)
+
+#### Focus
+
+- Assessment covering key terms and concepts taught so far.
+
+
+## Week 8 - Causal Inference: ESTIMATING Marginal Structural Models; Inverse Probability of Treatment Weighting; Conditional Average Treatment Effects; IPTW when Groups are Compared.
 
 #### Focus
 
@@ -171,7 +169,8 @@ editor_options:
 
 - Estimation ATE; CATE
 
-## Week 9 - Hands On Analysis (and TAKE HOME Assessment (25%)) 
+
+## Week 9 - Hands On Analysis 
 
 #### Focus
 
@@ -182,19 +181,20 @@ editor_options:
 
 - Preparing your analysis: Hands On Study!
 
-## Week 10: May 13 - Hands On Working With Quarto Manuscript
+## Week 10 - Hands On Working With Quarto Manuscript
 
 - No readings, do your take-home assignment (see course details). 
 
-## Labs
+## Lab
 
 - Creating and managing Quarto documents for publication quality research workflows
 
 
-## Week 11: May 20 - Measurement Matters
+## Week 11 - Measurement Matters
 
+
+### Part 1: Classical Measurement Models
 #### Focus
-
 - Factor analysis, confirmatory factor analysis (CFA), multigroup CFA, partial invariance
 - Worked example on configural, metric, and scalar equivalence
 
@@ -208,15 +208,10 @@ editor_options:
 - [@he2012] [link](https://www.dropbox.com/scl/fi/zuv4odmxbz8dbtdjfap3e/He-BiasandEquivalence.pdf?rlkey=wezprklb4jm6rgvvx0g58nw1n&dl=0ā)
 - [@Harkness2003TRANSALTION] [link](https://www.dropbox.com/scl/fi/hmmje9vbunmcu3oiahaa5/Harkness_CC_translation.pdf?rlkey=6vqq3ap5n52qp7t1e570ubpgt&dl=0)
 
-#### Lab
 
-- R exercises focusing on measurement theory applications and graphing
-
-
-## Week 12: May 27 - Measurement + External Validity in Causal Inference
+### Part 2 Problems With Classical Measurement Models: External Validity in Causal Inference
 
 #### Focus
-
 - Understanding causal assumptions of measurement theory
 - Guidance on your final assessment.
 
@@ -231,13 +226,8 @@ editor_options:
 - [@harkness2003questionnaire] [link](https://www.dropbox.com/scl/fi/uhj73050r1i7rznn6i57f/HarknessvandeVijver2003_Chapter-2.pdf?rlkey=ijxobrh7czj3rfnq9air342d2&dl=0)
 
 
-#### Lab
 
-- R programming using causal inference to examine failure modes in measurement models
-
-
-## Week 13: June 3: No Seminar: Comparative Report Due (40%)
-  - You assess a questions: do cultural groups vary in response to interventions on well-beings? 
+## Week 12: Student Presentations 
 
 
 
