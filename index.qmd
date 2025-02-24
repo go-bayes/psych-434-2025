@@ -380,6 +380,7 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
     - Follow APA style for citations and references.
     - Include tables/figures as needed.
     - Submit as a single PDF, including R code in an appendix.
+    - Presentations of Study in Week 12 (or by arrangement.)
 
 - **Evaluation Criteria**:
     - Clarity of theoretical framework, research question, and design.
@@ -390,7 +391,7 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
 ### Extensions and Penalties
 
 - **Extensions**:
-    - Negotiate a new due date by writing (email) before **March 11th, 2025**, if necessary.
+    - Negotiate a new due date by writing (email) before **April 08th, 2025**, if necessary.
     - Every reasonable request will be accepted (e.g. too many assignments falling in the same week, you want another week to complete.)
 
 - **Penalties**:

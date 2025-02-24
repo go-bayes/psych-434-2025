@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.5">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Joseph Bulbulia">
-<meta name="dcterms.date" content="2025-04-01">
+<meta name="dcterms.date" content="2025-03-25">
 
 <title>Causal Inference: Average Treatment Effects – PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025</title>
 <style>
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-cb64309e6bcb4fe4e8f7b1d812ed84fe.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-5dbef85374e00b74dcda297261b8f55d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ebb6838dc08a669b2ff582ce1331d571.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5455681f842773dfff0ee4080218ff98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -224,10 +224,13 @@ window.Quarto = {
     <a class="dropdown-item" href="../content/05-content.html">
  <span class="dropdown-text">Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)</span></a>
   </li>  
-        <li class="dropdown-header">Week 6: In Class Test</li>
         <li>
-    <a class="dropdown-item" href="../content/07-content.html">
- <span class="dropdown-text">Week 7: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/06-content.html">
+ <span class="dropdown-text">Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/07-quiz.html">
+ <span class="dropdown-text">Week 7: In Class Test</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/08-content.html">
@@ -286,7 +289,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">April 1, 2025</p>
+        <p class="date">March 25, 2025</p>
       </div>
     </div>
     
@@ -846,7 +849,7 @@ Hernan, M. A., and J. M. Robins. 2023. <em>Causal Inference</em>. Chapman &amp; 
 <div class="cell-output cell-output-stdout">
 <pre><code>Parameter          | Coefficient |       SE |       95% CI | t(11539) |      p
 ------------------------------------------------------------------------------
-t1 perfectionism z |        0.22 | 9.34e-03 | [0.20, 0.24] |    23.22 | &lt; .001</code></pre>
+t1 perfectionism z |        0.22 | 9.36e-03 | [0.20, 0.24] |    23.32 | &lt; .001</code></pre>
 </div>
 </div>
 </section>
@@ -912,7 +915,7 @@ t1 perfectionism z |        0.22 | 9.34e-03 | [0.20, 0.24] |    23.22 | &lt; .00
 <span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(sim_est)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                            Estimate 2.5 % 97.5 %
-E[dY/d(t1_perfectionism_z)]    0.219 0.201  0.237</code></pre>
+E[dY/d(t1_perfectionism_z)]    0.221 0.202  0.239</code></pre>
 </div>
 </div>
 </section>
@@ -937,7 +940,7 @@ E[dY/d(t1_perfectionism_z)]    0.219 0.201  0.237</code></pre>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.1 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
+<pre><code>  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.0 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
   - Chang W (2023). _extrafont: Tools for Using Fonts_. R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.
   - Greifer N, Worthington S, Iacus S, King G (2024). _clarify: Simulation-Based Inference for Regression Models_. R package version 0.2.1, &lt;https://CRAN.R-project.org/package=clarify&gt;.
   - Grolemund G, Wickham H (2011). "Dates and Times Made Easy with lubridate." _Journal of Statistical Software_, *40*(3), 1-25. &lt;https://www.jstatsoft.org/v40/i03/&gt;.
@@ -953,7 +956,7 @@ E[dY/d(t1_perfectionism_z)]    0.219 0.201  0.237</code></pre>
   - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). "Welcome to the tidyverse." _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.
   - Wickham H, Bryan J, Barrett M, Teucher A (2024). _usethis: Automate Package and Project Setup_. R package version 3.1.0, &lt;https://CRAN.R-project.org/package=usethis&gt;.
   - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.
-  - Wickham H, Henry L (2025). _purrr: Functional Programming Tools_. R package version 1.0.4, &lt;https://CRAN.R-project.org/package=purrr&gt;.
+  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2, &lt;https://CRAN.R-project.org/package=purrr&gt;.
   - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.
   - Wickham H, Hester J, Chang W, Bryan J (2022). _devtools: Tools to Make Developing R Packages Easier_. R package version 2.4.5, &lt;https://CRAN.R-project.org/package=devtools&gt;.
   - Wickham H, Miller E, Smith D (2023). _haven: Import and Export 'SPSS', 'Stata' and 'SAS' Files_. R package version 2.5.4, &lt;https://CRAN.R-project.org/package=haven&gt;.
@@ -1053,6 +1056,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1214,6 +1219,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1441,7 +1447,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb22" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Causal Inference: Average Treatment Effects"</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-APRIL-01"</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-March-25"</span></span>
 <span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> /Users/joseph/GIT/templates/bib/references.bib</span></span>
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: console</span></span>

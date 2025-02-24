@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.5">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-cb64309e6bcb4fe4e8f7b1d812ed84fe.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-5dbef85374e00b74dcda297261b8f55d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ebb6838dc08a669b2ff582ce1331d571.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5455681f842773dfff0ee4080218ff98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -220,14 +220,17 @@ window.Quarto = {
     <a class="dropdown-item" href="../content/04-content.html">
  <span class="dropdown-text">Week 4: Causal Diagrams - Interaction, Measurement Bias, Selection Bias - R (regression/simulation)</span></a>
   </li>  
-        <li class="dropdown-header">Week 5: Quiz - R (regression/simulation/reporting)</li>
         <li>
-    <a class="dropdown-item" href="../content/06-content.html">
- <span class="dropdown-text">Week 6: Causal Inference - Key Concepts ATE - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/05-content.html">
+ <span class="dropdown-text">Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../content/07-content.html">
- <span class="dropdown-text">Week 7: Causal Inference - Key Concept CATE - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/06-content.html">
+ <span class="dropdown-text">Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/07-quiz.html">
+ <span class="dropdown-text">Week 7: In Class Test</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/08-content.html">
@@ -235,19 +238,19 @@ window.Quarto = {
   </li>  
         <li>
     <a class="dropdown-item" href="../content/09-content.html">
- <span class="dropdown-text">Week 9: Hands On: Full Analysis in R</span></a>
+ <span class="dropdown-text">Week 9: Hands On: A Full Study Analysis in R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/10-content.html">
- <span class="dropdown-text">Week 10: Working with Quarto Documents</span></a>
+ <span class="dropdown-text">Week 10: Hands On: Writing Up Your Analysis: Quarto Documents</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/11-content.html">
- <span class="dropdown-text">Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance</span></a>
+ <span class="dropdown-text">Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance/ And How These Approaches Fail</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/12-content.html">
- <span class="dropdown-text">Week 12: Measurement: Conceptual Problems</span></a>
+ <span class="dropdown-text">Week 12: Student Presentations</span></a>
   </li>  
     </ul>
   </li>
@@ -1111,9 +1114,9 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="gt_col_headings header">
+<tr class="gt_col_headings">
 <th id="Parameter" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Parameter</th>
 <th id="Coefficient" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Coefficient</th>
 <th id="SE" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">SE</th>
@@ -1123,7 +1126,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 </tr>
 </thead>
 <tbody class="gt_table_body">
-<tr class="odd">
+<tr>
 <td class="gt_row gt_left" headers="Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">(Intercept)</td>
 <td class="gt_row gt_center" headers="Coefficient">0.19</td>
 <td class="gt_row gt_center" headers="SE">0.10</td>
@@ -1131,7 +1134,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td class="gt_row gt_center" headers="t(97)">2.04</td>
 <td class="gt_row gt_center" headers="p">0.044</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="gt_row gt_left" headers="Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">x s</td>
 <td class="gt_row gt_center" headers="Coefficient">0.77</td>
 <td class="gt_row gt_center" headers="SE">0.13</td>
@@ -1139,7 +1142,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td class="gt_row gt_center" headers="t(97)">6.00</td>
 <td class="gt_row gt_center" headers="p">&lt; .001</td>
 </tr>
-<tr class="odd">
+<tr>
 <td class="gt_row gt_left" headers="Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">m s</td>
 <td class="gt_row gt_center" headers="Coefficient">1.33</td>
 <td class="gt_row gt_center" headers="SE">0.13</td>
@@ -1148,7 +1151,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td class="gt_row gt_center" headers="p">&lt; .001</td>
 </tr>
 </tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
+<tr>
 <td colspan="6" class="gt_sourcenote"></td>
 </tr>
 </tfoot>
@@ -1613,9 +1616,9 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="gt_col_headings header">
+<tr class="gt_col_headings">
 <th id="Parameter" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Parameter</th>
 <th id="Coefficient" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Coefficient</th>
 <th id="SE" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">SE</th>
@@ -1625,7 +1628,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 </tr>
 </thead>
 <tbody class="gt_table_body">
-<tr class="odd">
+<tr>
 <td class="gt_row gt_left" headers="Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">(Intercept)</td>
 <td class="gt_row gt_center" headers="Coefficient">0.19</td>
 <td class="gt_row gt_center" headers="SE">0.14</td>
@@ -1633,7 +1636,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td class="gt_row gt_center" headers="t(98)">1.41</td>
 <td class="gt_row gt_center" headers="p">0.161</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="gt_row gt_left" headers="Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">x s</td>
 <td class="gt_row gt_center" headers="Coefficient">1.66</td>
 <td class="gt_row gt_center" headers="SE">0.14</td>
@@ -1642,7 +1645,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td class="gt_row gt_center" headers="p">&lt; .001</td>
 </tr>
 </tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
+<tr>
 <td colspan="6" class="gt_sourcenote"></td>
 </tr>
 </tfoot>
@@ -1699,45 +1702,45 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cohesion =</span> cohesion )</span>
 <span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(d)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display page-columns page-full">
-<table class="table table-sm table-striped small">
+<table>
 
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Name</td>
 <td style="text-align: left;">d</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">Number of rows</td>
 <td style="text-align: left;">100</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Number of columns</td>
 <td style="text-align: left;">4</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">_______________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Column type frequency:</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">numeric</td>
 <td style="text-align: left;">4</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">________________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">Group variables</td>
 <td style="text-align: left;">None</td>
 </tr>
 </tbody>
 </table>
 <div class="quarto-table-caption margin-caption">Data summary</div><p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table style="width:100%;">
 <colgroup>
 <col style="width: 16%">
 <col style="width: 12%">
@@ -1752,7 +1755,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <col style="width: 7%">
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">skim_variable</th>
 <th style="text-align: right;">n_missing</th>
 <th style="text-align: right;">complete_rate</th>
@@ -1767,7 +1770,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">c0</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -1780,7 +1783,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td style="text-align: right;">14.37</td>
 <td style="text-align: left;">▁▃▇▅▂</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">c1</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -1793,7 +1796,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td style="text-align: right;">14.99</td>
 <td style="text-align: left;">▂▆▇▆▂</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">ritual</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -1806,7 +1809,7 @@ x s         |        1.66 | 0.14 | [ 1.38, 1.93] | 12.00 | &lt; .001</code></pre
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▇▁▁▁▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">cohesion</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -2756,7 +2759,7 @@ trustworthiness     -0.7318408       1.0000000</code></pre>
   - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version 1.5.1, &lt;https://CRAN.R-project.org/package=stringr&gt;.
   - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). "Welcome to the tidyverse." _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.
   - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.
-  - Wickham H, Henry L (2025). _purrr: Functional Programming Tools_. R package version 1.0.4, &lt;https://CRAN.R-project.org/package=purrr&gt;.
+  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2, &lt;https://CRAN.R-project.org/package=purrr&gt;.
   - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.
   - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.
   - Xie Y (2024). _tinytex: Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents_. R package version 0.54, &lt;https://github.com/rstudio/tinytex&gt;. Xie Y (2019). "TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX Live." _TUGboat_, *40*(1), 30-32. &lt;https://tug.org/TUGboat/Contents/contents40-1.html&gt;.</code></pre>
@@ -2855,6 +2858,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -3016,6 +3021,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -3243,7 +3249,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
 <div class="sourceCode" id="cb65" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Causal Diagrams: The Structures of Interaction/Effect Modification, Measurement Bias, Selection Bias"</span></span>
-<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2024-MAR-18"</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-MAR-18"</span></span>
 <span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> /Users/joseph/GIT/templates/bib/references.bib</span></span>
 <span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="an">editor_options:</span><span class="co"> </span></span>
 <span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a><span class="co">  chunk_output_type: console</span></span>
@@ -3517,16 +3523,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb65-292"><a href="#cb65-292" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-293"><a href="#cb65-293" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-294"><a href="#cb65-294" aria-hidden="true" tabindex="-1"></a><span class="in">```{r echo = FALSE, include = FALSE}</span></span>
-<span id="cb65-295"><a href="#cb65-295" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb65-296"><a href="#cb65-296" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb65-297"><a href="#cb65-297" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N)<span class="co"># sim x</span></span>
-<span id="cb65-298"><a href="#cb65-298" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N , x) <span class="co"># sim X -&gt; M</span></span>
-<span id="cb65-299"><a href="#cb65-299" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N , x <span class="sc">+</span> m) <span class="co"># sim M -&gt; Y</span></span>
-<span id="cb65-300"><a href="#cb65-300" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, m, y)</span>
+<span id="cb65-295"><a href="#cb65-295" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(123)</span></span>
+<span id="cb65-296"><a href="#cb65-296" aria-hidden="true" tabindex="-1"></a><span class="in">N &lt;- 100</span></span>
+<span id="cb65-297"><a href="#cb65-297" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- rnorm(N)# sim x</span></span>
+<span id="cb65-298"><a href="#cb65-298" aria-hidden="true" tabindex="-1"></a><span class="in">m &lt;- rnorm(N , x) # sim X -&gt; M</span></span>
+<span id="cb65-299"><a href="#cb65-299" aria-hidden="true" tabindex="-1"></a><span class="in">y &lt;- rnorm(N , x + m) # sim M -&gt; Y</span></span>
+<span id="cb65-300"><a href="#cb65-300" aria-hidden="true" tabindex="-1"></a><span class="in">df &lt;- data.frame(x, m, y)</span></span>
 <span id="cb65-301"><a href="#cb65-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-302"><a href="#cb65-302" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb65-303"><a href="#cb65-303" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">x_s =</span> <span class="fu">scale</span>(x),</span>
-<span id="cb65-304"><a href="#cb65-304" aria-hidden="true" tabindex="-1"></a>                <span class="at">m_s =</span> <span class="fu">scale</span>(m))</span>
+<span id="cb65-302"><a href="#cb65-302" aria-hidden="true" tabindex="-1"></a><span class="in">df &lt;- df |&gt;</span></span>
+<span id="cb65-303"><a href="#cb65-303" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::mutate(x_s = scale(x),</span></span>
+<span id="cb65-304"><a href="#cb65-304" aria-hidden="true" tabindex="-1"></a><span class="in">                m_s = scale(m))</span></span>
 <span id="cb65-305"><a href="#cb65-305" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb65-306"><a href="#cb65-306" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-307"><a href="#cb65-307" aria-hidden="true" tabindex="-1"></a></span>
@@ -3715,16 +3721,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb65-518"><a href="#cb65-518" aria-hidden="true" tabindex="-1"></a>This presents us with the following graph</span>
 <span id="cb65-519"><a href="#cb65-519" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-520"><a href="#cb65-520" aria-hidden="true" tabindex="-1"></a><span class="in">```{r code_folding = TRUE}</span></span>
-<span id="cb65-521"><a href="#cb65-521" aria-hidden="true" tabindex="-1"></a>dag_sd <span class="ot">&lt;-</span> <span class="fu">dagify</span>(S <span class="sc">~</span> N,</span>
-<span id="cb65-522"><a href="#cb65-522" aria-hidden="true" tabindex="-1"></a>                 S <span class="sc">~</span> T,</span>
-<span id="cb65-523"><a href="#cb65-523" aria-hidden="true" tabindex="-1"></a>                 <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"S"</span> <span class="ot">=</span> <span class="st">"Selection"</span>,</span>
-<span id="cb65-524"><a href="#cb65-524" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"N"</span> <span class="ot">=</span> <span class="st">"Newsworthy"</span>,</span>
-<span id="cb65-525"><a href="#cb65-525" aria-hidden="true" tabindex="-1"></a>                            <span class="st">"T"</span> <span class="ot">=</span> <span class="st">"Trustworthy"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb65-526"><a href="#cb65-526" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy_dagitty</span>(<span class="at">layout =</span> <span class="st">"nicely"</span>)</span>
+<span id="cb65-521"><a href="#cb65-521" aria-hidden="true" tabindex="-1"></a><span class="in">dag_sd &lt;- dagify(S ~ N,</span></span>
+<span id="cb65-522"><a href="#cb65-522" aria-hidden="true" tabindex="-1"></a><span class="in">                 S ~ T,</span></span>
+<span id="cb65-523"><a href="#cb65-523" aria-hidden="true" tabindex="-1"></a><span class="in">                 labels = c("S" = "Selection",</span></span>
+<span id="cb65-524"><a href="#cb65-524" aria-hidden="true" tabindex="-1"></a><span class="in">                            "N" = "Newsworthy",</span></span>
+<span id="cb65-525"><a href="#cb65-525" aria-hidden="true" tabindex="-1"></a><span class="in">                            "T" = "Trustworthy")) |&gt;</span></span>
+<span id="cb65-526"><a href="#cb65-526" aria-hidden="true" tabindex="-1"></a><span class="in">  tidy_dagitty(layout = "nicely")</span></span>
 <span id="cb65-527"><a href="#cb65-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-528"><a href="#cb65-528" aria-hidden="true" tabindex="-1"></a><span class="co"># Graph</span></span>
-<span id="cb65-529"><a href="#cb65-529" aria-hidden="true" tabindex="-1"></a>dag_sd <span class="sc">|&gt;</span></span>
-<span id="cb65-530"><a href="#cb65-530" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggdag</span>(<span class="at">text =</span> <span class="cn">FALSE</span>, <span class="at">use_labels =</span> <span class="st">"label"</span>) <span class="sc">+</span> <span class="fu">theme_dag_blank</span>()</span>
+<span id="cb65-528"><a href="#cb65-528" aria-hidden="true" tabindex="-1"></a><span class="in"># Graph</span></span>
+<span id="cb65-529"><a href="#cb65-529" aria-hidden="true" tabindex="-1"></a><span class="in">dag_sd |&gt;</span></span>
+<span id="cb65-530"><a href="#cb65-530" aria-hidden="true" tabindex="-1"></a><span class="in">  ggdag(text = FALSE, use_labels = "label") + theme_dag_blank()</span></span>
 <span id="cb65-531"><a href="#cb65-531" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb65-532"><a href="#cb65-532" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-533"><a href="#cb65-533" aria-hidden="true" tabindex="-1"></a>When two arrows enter into an variable, it opens a path of information between the two variables.</span>
@@ -3732,14 +3738,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb65-535"><a href="#cb65-535" aria-hidden="true" tabindex="-1"></a>Very often this openning of information has disasterous implications. *In the human sciences, included variable bias is a woefully underrated problem*.</span>
 <span id="cb65-536"><a href="#cb65-536" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-537"><a href="#cb65-537" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  code_folding = TRUE}</span></span>
-<span id="cb65-538"><a href="#cb65-538" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdag_dseparated</span>(</span>
-<span id="cb65-539"><a href="#cb65-539" aria-hidden="true" tabindex="-1"></a>  dag_sd,</span>
-<span id="cb65-540"><a href="#cb65-540" aria-hidden="true" tabindex="-1"></a>  <span class="at">from =</span> <span class="st">"T"</span>,</span>
-<span id="cb65-541"><a href="#cb65-541" aria-hidden="true" tabindex="-1"></a>  <span class="at">to =</span> <span class="st">"N"</span>,</span>
-<span id="cb65-542"><a href="#cb65-542" aria-hidden="true" tabindex="-1"></a>  <span class="at">controlling_for =</span> <span class="st">"S"</span>,</span>
-<span id="cb65-543"><a href="#cb65-543" aria-hidden="true" tabindex="-1"></a>  <span class="at">text =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb65-544"><a href="#cb65-544" aria-hidden="true" tabindex="-1"></a>  <span class="at">use_labels =</span> <span class="st">"label"</span></span>
-<span id="cb65-545"><a href="#cb65-545" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span> <span class="fu">theme_dag_blank</span>()</span>
+<span id="cb65-538"><a href="#cb65-538" aria-hidden="true" tabindex="-1"></a><span class="in">ggdag_dseparated(</span></span>
+<span id="cb65-539"><a href="#cb65-539" aria-hidden="true" tabindex="-1"></a><span class="in">  dag_sd,</span></span>
+<span id="cb65-540"><a href="#cb65-540" aria-hidden="true" tabindex="-1"></a><span class="in">  from = "T",</span></span>
+<span id="cb65-541"><a href="#cb65-541" aria-hidden="true" tabindex="-1"></a><span class="in">  to = "N",</span></span>
+<span id="cb65-542"><a href="#cb65-542" aria-hidden="true" tabindex="-1"></a><span class="in">  controlling_for = "S",</span></span>
+<span id="cb65-543"><a href="#cb65-543" aria-hidden="true" tabindex="-1"></a><span class="in">  text = FALSE,</span></span>
+<span id="cb65-544"><a href="#cb65-544" aria-hidden="true" tabindex="-1"></a><span class="in">  use_labels = "label"</span></span>
+<span id="cb65-545"><a href="#cb65-545" aria-hidden="true" tabindex="-1"></a><span class="in">) + theme_dag_blank()</span></span>
 <span id="cb65-546"><a href="#cb65-546" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb65-547"><a href="#cb65-547" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-548"><a href="#cb65-548" aria-hidden="true" tabindex="-1"></a>We can use the <span class="in">`ggdag package`</span> to find colliders among our variables:</span>
@@ -3757,22 +3763,22 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb65-562"><a href="#cb65-562" aria-hidden="true" tabindex="-1"></a>First simulated uncorrelated variables and a process of selection for sub-populations score high on both indicators.</span>
 <span id="cb65-563"><a href="#cb65-563" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-564"><a href="#cb65-564" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  code_folding = TRUE}</span></span>
-<span id="cb65-565"><a href="#cb65-565" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate selection distortion effect, following Solomon Kurz</span></span>
-<span id="cb65-566"><a href="#cb65-566" aria-hidden="true" tabindex="-1"></a><span class="co"># https://bookdown.org/content/4857/the-haunted-dag-the-causal-terror.html</span></span>
-<span id="cb65-567"><a href="#cb65-567" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb65-568"><a href="#cb65-568" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">1000</span>  <span class="co"># number of grant proposals</span></span>
-<span id="cb65-569"><a href="#cb65-569" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fl">0.05</span>  <span class="co"># proportion to select</span></span>
+<span id="cb65-565"><a href="#cb65-565" aria-hidden="true" tabindex="-1"></a><span class="in"># simulate selection distortion effect, following Solomon Kurz</span></span>
+<span id="cb65-566"><a href="#cb65-566" aria-hidden="true" tabindex="-1"></a><span class="in"># https://bookdown.org/content/4857/the-haunted-dag-the-causal-terror.html</span></span>
+<span id="cb65-567"><a href="#cb65-567" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(123)</span></span>
+<span id="cb65-568"><a href="#cb65-568" aria-hidden="true" tabindex="-1"></a><span class="in">n &lt;- 1000  # number of grant proposals</span></span>
+<span id="cb65-569"><a href="#cb65-569" aria-hidden="true" tabindex="-1"></a><span class="in">p &lt;- 0.05  # proportion to select</span></span>
 <span id="cb65-570"><a href="#cb65-570" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-571"><a href="#cb65-571" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span></span>
-<span id="cb65-572"><a href="#cb65-572" aria-hidden="true" tabindex="-1"></a>  <span class="co"># uncorrelated newsworthiness and trustworthiness</span></span>
-<span id="cb65-573"><a href="#cb65-573" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb65-574"><a href="#cb65-574" aria-hidden="true" tabindex="-1"></a>    <span class="at">newsworthiness  =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>),</span>
-<span id="cb65-575"><a href="#cb65-575" aria-hidden="true" tabindex="-1"></a>    <span class="at">trustworthiness =</span> <span class="fu">rnorm</span>(n, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
-<span id="cb65-576"><a href="#cb65-576" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb65-577"><a href="#cb65-577" aria-hidden="true" tabindex="-1"></a>  <span class="co"># total_score</span></span>
-<span id="cb65-578"><a href="#cb65-578" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">total_score =</span> newsworthiness <span class="sc">+</span> trustworthiness) <span class="sc">|&gt;</span></span>
-<span id="cb65-579"><a href="#cb65-579" aria-hidden="true" tabindex="-1"></a>  <span class="co"># select top 10% of combined scores</span></span>
-<span id="cb65-580"><a href="#cb65-580" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">selected =</span> <span class="fu">ifelse</span>(total_score <span class="sc">&gt;=</span> <span class="fu">quantile</span>(total_score, <span class="dv">1</span> <span class="sc">-</span> p), <span class="cn">TRUE</span>, <span class="cn">FALSE</span>))</span>
+<span id="cb65-571"><a href="#cb65-571" aria-hidden="true" tabindex="-1"></a><span class="in">d &lt;-</span></span>
+<span id="cb65-572"><a href="#cb65-572" aria-hidden="true" tabindex="-1"></a><span class="in">  # uncorrelated newsworthiness and trustworthiness</span></span>
+<span id="cb65-573"><a href="#cb65-573" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::tibble(</span></span>
+<span id="cb65-574"><a href="#cb65-574" aria-hidden="true" tabindex="-1"></a><span class="in">    newsworthiness  = rnorm(n, mean = 0, sd = 1),</span></span>
+<span id="cb65-575"><a href="#cb65-575" aria-hidden="true" tabindex="-1"></a><span class="in">    trustworthiness = rnorm(n, mean = 0, sd = 1)</span></span>
+<span id="cb65-576"><a href="#cb65-576" aria-hidden="true" tabindex="-1"></a><span class="in">  ) |&gt;</span></span>
+<span id="cb65-577"><a href="#cb65-577" aria-hidden="true" tabindex="-1"></a><span class="in">  # total_score</span></span>
+<span id="cb65-578"><a href="#cb65-578" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::mutate(total_score = newsworthiness + trustworthiness) |&gt;</span></span>
+<span id="cb65-579"><a href="#cb65-579" aria-hidden="true" tabindex="-1"></a><span class="in">  # select top 10% of combined scores</span></span>
+<span id="cb65-580"><a href="#cb65-580" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::mutate(selected = ifelse(total_score &gt;= quantile(total_score, 1 - p), TRUE, FALSE))</span></span>
 <span id="cb65-581"><a href="#cb65-581" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb65-582"><a href="#cb65-582" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-583"><a href="#cb65-583" aria-hidden="true" tabindex="-1"></a>Next filter out the high scoring examples, and assess their correlation.</span>
@@ -3789,36 +3795,36 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb65-596"><a href="#cb65-596" aria-hidden="true" tabindex="-1"></a>This makes it seems as if there is a relationship between Trustworthiness and Newsworthiness in science, even when there isn't any.</span>
 <span id="cb65-597"><a href="#cb65-597" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-598"><a href="#cb65-598" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  code_folding = TRUE}</span></span>
-<span id="cb65-599"><a href="#cb65-599" aria-hidden="true" tabindex="-1"></a><span class="co"># we'll need this for the annotation</span></span>
-<span id="cb65-600"><a href="#cb65-600" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb65-601"><a href="#cb65-601" aria-hidden="true" tabindex="-1"></a>text <span class="ot">&lt;-</span></span>
-<span id="cb65-602"><a href="#cb65-602" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb65-603"><a href="#cb65-603" aria-hidden="true" tabindex="-1"></a>    <span class="at">newsworthiness  =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>),</span>
-<span id="cb65-604"><a href="#cb65-604" aria-hidden="true" tabindex="-1"></a>    <span class="at">trustworthiness =</span> <span class="fu">c</span>(<span class="fl">2.25</span>, <span class="sc">-</span><span class="fl">2.5</span>),</span>
-<span id="cb65-605"><a href="#cb65-605" aria-hidden="true" tabindex="-1"></a>    <span class="at">selected        =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
-<span id="cb65-606"><a href="#cb65-606" aria-hidden="true" tabindex="-1"></a>    <span class="at">label           =</span> <span class="fu">c</span>(<span class="st">"selected"</span>, <span class="st">"rejected"</span>)</span>
-<span id="cb65-607"><a href="#cb65-607" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb65-599"><a href="#cb65-599" aria-hidden="true" tabindex="-1"></a><span class="in"># we'll need this for the annotation</span></span>
+<span id="cb65-600"><a href="#cb65-600" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb65-601"><a href="#cb65-601" aria-hidden="true" tabindex="-1"></a><span class="in">text &lt;-</span></span>
+<span id="cb65-602"><a href="#cb65-602" aria-hidden="true" tabindex="-1"></a><span class="in">  dplyr::tibble(</span></span>
+<span id="cb65-603"><a href="#cb65-603" aria-hidden="true" tabindex="-1"></a><span class="in">    newsworthiness  = c(2, 1),</span></span>
+<span id="cb65-604"><a href="#cb65-604" aria-hidden="true" tabindex="-1"></a><span class="in">    trustworthiness = c(2.25, -2.5),</span></span>
+<span id="cb65-605"><a href="#cb65-605" aria-hidden="true" tabindex="-1"></a><span class="in">    selected        = c(TRUE, FALSE),</span></span>
+<span id="cb65-606"><a href="#cb65-606" aria-hidden="true" tabindex="-1"></a><span class="in">    label           = c("selected", "rejected")</span></span>
+<span id="cb65-607"><a href="#cb65-607" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
 <span id="cb65-608"><a href="#cb65-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-609"><a href="#cb65-609" aria-hidden="true" tabindex="-1"></a>d <span class="sc">|&gt;</span></span>
-<span id="cb65-610"><a href="#cb65-610" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> newsworthiness, <span class="at">y =</span> trustworthiness, <span class="at">color =</span> selected)) <span class="sc">+</span></span>
-<span id="cb65-611"><a href="#cb65-611" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> selected), <span class="at">alpha =</span> <span class="dv">3</span> <span class="sc">/</span> <span class="dv">4</span>) <span class="sc">+</span></span>
-<span id="cb65-612"><a href="#cb65-612" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_text</span>(<span class="at">data =</span> text,</span>
-<span id="cb65-613"><a href="#cb65-613" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label =</span> label)) <span class="sc">+</span></span>
-<span id="cb65-614"><a href="#cb65-614" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">geom_smooth</span>(</span>
-<span id="cb65-615"><a href="#cb65-615" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> d <span class="sc">|&gt;</span> <span class="fu">filter</span>(selected <span class="sc">==</span> <span class="cn">TRUE</span>),</span>
-<span id="cb65-616"><a href="#cb65-616" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>,</span>
-<span id="cb65-617"><a href="#cb65-617" aria-hidden="true" tabindex="-1"></a>    <span class="at">fullrange =</span> T,</span>
-<span id="cb65-618"><a href="#cb65-618" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"lightblue"</span>,</span>
-<span id="cb65-619"><a href="#cb65-619" aria-hidden="true" tabindex="-1"></a>    <span class="at">se =</span> F,</span>
-<span id="cb65-620"><a href="#cb65-620" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">1</span></span>
-<span id="cb65-621"><a href="#cb65-621" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb65-622"><a href="#cb65-622" aria-hidden="true" tabindex="-1"></a>  <span class="co"># scale_color_manual(values = c("black", "lightblue")) +</span></span>
-<span id="cb65-623"><a href="#cb65-623" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_shape_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">19</span>)) <span class="sc">+</span></span>
-<span id="cb65-624"><a href="#cb65-624" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="fl">3.9</span>), <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb65-625"><a href="#cb65-625" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">range</span>(d<span class="sc">$</span>trustworthiness)) <span class="sc">+</span></span>
-<span id="cb65-626"><a href="#cb65-626" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb65-627"><a href="#cb65-627" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">xlab</span>(<span class="st">"Newsworthy"</span>) <span class="sc">+</span></span>
-<span id="cb65-628"><a href="#cb65-628" aria-hidden="true" tabindex="-1"></a>  ggplot2<span class="sc">::</span><span class="fu">ylab</span>(<span class="st">"Trustworthy"</span>) <span class="sc">+</span> <span class="fu">theme_bw</span>()</span>
+<span id="cb65-609"><a href="#cb65-609" aria-hidden="true" tabindex="-1"></a><span class="in">d |&gt;</span></span>
+<span id="cb65-610"><a href="#cb65-610" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::ggplot(aes(x = newsworthiness, y = trustworthiness, color = selected)) +</span></span>
+<span id="cb65-611"><a href="#cb65-611" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::geom_point(aes(shape = selected), alpha = 3 / 4) +</span></span>
+<span id="cb65-612"><a href="#cb65-612" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::geom_text(data = text,</span></span>
+<span id="cb65-613"><a href="#cb65-613" aria-hidden="true" tabindex="-1"></a><span class="in">            aes(label = label)) +</span></span>
+<span id="cb65-614"><a href="#cb65-614" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::geom_smooth(</span></span>
+<span id="cb65-615"><a href="#cb65-615" aria-hidden="true" tabindex="-1"></a><span class="in">    data = d |&gt; filter(selected == TRUE),</span></span>
+<span id="cb65-616"><a href="#cb65-616" aria-hidden="true" tabindex="-1"></a><span class="in">    method = "lm",</span></span>
+<span id="cb65-617"><a href="#cb65-617" aria-hidden="true" tabindex="-1"></a><span class="in">    fullrange = T,</span></span>
+<span id="cb65-618"><a href="#cb65-618" aria-hidden="true" tabindex="-1"></a><span class="in">    color = "lightblue",</span></span>
+<span id="cb65-619"><a href="#cb65-619" aria-hidden="true" tabindex="-1"></a><span class="in">    se = F,</span></span>
+<span id="cb65-620"><a href="#cb65-620" aria-hidden="true" tabindex="-1"></a><span class="in">    size = 1</span></span>
+<span id="cb65-621"><a href="#cb65-621" aria-hidden="true" tabindex="-1"></a><span class="in">  ) +</span></span>
+<span id="cb65-622"><a href="#cb65-622" aria-hidden="true" tabindex="-1"></a><span class="in">  # scale_color_manual(values = c("black", "lightblue")) +</span></span>
+<span id="cb65-623"><a href="#cb65-623" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::scale_shape_manual(values = c(1, 19)) +</span></span>
+<span id="cb65-624"><a href="#cb65-624" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::scale_x_continuous(limits = c(-3, 3.9), expand = c(0, 0)) +</span></span>
+<span id="cb65-625"><a href="#cb65-625" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::coord_cartesian(ylim = range(d$trustworthiness)) +</span></span>
+<span id="cb65-626"><a href="#cb65-626" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::theme(legend.position = "none") +</span></span>
+<span id="cb65-627"><a href="#cb65-627" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::xlab("Newsworthy") +</span></span>
+<span id="cb65-628"><a href="#cb65-628" aria-hidden="true" tabindex="-1"></a><span class="in">  ggplot2::ylab("Trustworthy") + theme_bw()</span></span>
 <span id="cb65-629"><a href="#cb65-629" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb65-630"><a href="#cb65-630" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-631"><a href="#cb65-631" aria-hidden="true" tabindex="-1"></a>Once we know a proposal has been selected, if it is newsworthy we can predict that it is less trustworthy. Our simulation produces this prediction even though we simulated a world in which there is no relationship between trustworthiness and newsworthiness.</span>
@@ -3830,25 +3836,25 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb65-637"><a href="#cb65-637" aria-hidden="true" tabindex="-1"></a>We noted that conditioning on a post-treatment variable can induce bias by blocking the path between the experimental manipulation and the outcome. However, such conditioning can open a path even when there is no experimental effect.</span>
 <span id="cb65-638"><a href="#cb65-638" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-639"><a href="#cb65-639" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  code_folding = TRUE}</span></span>
-<span id="cb65-640"><a href="#cb65-640" aria-hidden="true" tabindex="-1"></a>dag_ex2 <span class="ot">&lt;-</span> <span class="fu">dagify</span>(</span>
-<span id="cb65-641"><a href="#cb65-641" aria-hidden="true" tabindex="-1"></a>  C1 <span class="sc">~</span> C0 <span class="sc">+</span> U,</span>
-<span id="cb65-642"><a href="#cb65-642" aria-hidden="true" tabindex="-1"></a>  Ch <span class="sc">~</span> U <span class="sc">+</span> R,</span>
-<span id="cb65-643"><a href="#cb65-643" aria-hidden="true" tabindex="-1"></a>  <span class="at">labels =</span> <span class="fu">c</span>(</span>
-<span id="cb65-644"><a href="#cb65-644" aria-hidden="true" tabindex="-1"></a>    <span class="st">"R"</span> <span class="ot">=</span> <span class="st">"Ritual"</span>,</span>
-<span id="cb65-645"><a href="#cb65-645" aria-hidden="true" tabindex="-1"></a>    <span class="st">"C1"</span> <span class="ot">=</span> <span class="st">"Charity-post"</span>,</span>
-<span id="cb65-646"><a href="#cb65-646" aria-hidden="true" tabindex="-1"></a>    <span class="st">"C0"</span> <span class="ot">=</span> <span class="st">"Charity-pre"</span>,</span>
-<span id="cb65-647"><a href="#cb65-647" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ch"</span> <span class="ot">=</span> <span class="st">"Cohesion"</span>,</span>
-<span id="cb65-648"><a href="#cb65-648" aria-hidden="true" tabindex="-1"></a>    <span class="st">"U"</span> <span class="ot">=</span> <span class="st">"Religiousness (Unmeasured)"</span></span>
-<span id="cb65-649"><a href="#cb65-649" aria-hidden="true" tabindex="-1"></a>  ),</span>
-<span id="cb65-650"><a href="#cb65-650" aria-hidden="true" tabindex="-1"></a>  <span class="at">exposure =</span> <span class="st">"R"</span>,</span>
-<span id="cb65-651"><a href="#cb65-651" aria-hidden="true" tabindex="-1"></a>  <span class="at">outcome =</span> <span class="st">"C1"</span>,</span>
-<span id="cb65-652"><a href="#cb65-652" aria-hidden="true" tabindex="-1"></a>  <span class="at">latent =</span> <span class="st">"U"</span></span>
-<span id="cb65-653"><a href="#cb65-653" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span></span>
-<span id="cb65-654"><a href="#cb65-654" aria-hidden="true" tabindex="-1"></a>  <span class="fu">control_for</span>(<span class="fu">c</span>(<span class="st">"Ch"</span>,<span class="st">"C0"</span>))  </span>
+<span id="cb65-640"><a href="#cb65-640" aria-hidden="true" tabindex="-1"></a><span class="in">dag_ex2 &lt;- dagify(</span></span>
+<span id="cb65-641"><a href="#cb65-641" aria-hidden="true" tabindex="-1"></a><span class="in">  C1 ~ C0 + U,</span></span>
+<span id="cb65-642"><a href="#cb65-642" aria-hidden="true" tabindex="-1"></a><span class="in">  Ch ~ U + R,</span></span>
+<span id="cb65-643"><a href="#cb65-643" aria-hidden="true" tabindex="-1"></a><span class="in">  labels = c(</span></span>
+<span id="cb65-644"><a href="#cb65-644" aria-hidden="true" tabindex="-1"></a><span class="in">    "R" = "Ritual",</span></span>
+<span id="cb65-645"><a href="#cb65-645" aria-hidden="true" tabindex="-1"></a><span class="in">    "C1" = "Charity-post",</span></span>
+<span id="cb65-646"><a href="#cb65-646" aria-hidden="true" tabindex="-1"></a><span class="in">    "C0" = "Charity-pre",</span></span>
+<span id="cb65-647"><a href="#cb65-647" aria-hidden="true" tabindex="-1"></a><span class="in">    "Ch" = "Cohesion",</span></span>
+<span id="cb65-648"><a href="#cb65-648" aria-hidden="true" tabindex="-1"></a><span class="in">    "U" = "Religiousness (Unmeasured)"</span></span>
+<span id="cb65-649"><a href="#cb65-649" aria-hidden="true" tabindex="-1"></a><span class="in">  ),</span></span>
+<span id="cb65-650"><a href="#cb65-650" aria-hidden="true" tabindex="-1"></a><span class="in">  exposure = "R",</span></span>
+<span id="cb65-651"><a href="#cb65-651" aria-hidden="true" tabindex="-1"></a><span class="in">  outcome = "C1",</span></span>
+<span id="cb65-652"><a href="#cb65-652" aria-hidden="true" tabindex="-1"></a><span class="in">  latent = "U"</span></span>
+<span id="cb65-653"><a href="#cb65-653" aria-hidden="true" tabindex="-1"></a><span class="in">) |&gt;</span></span>
+<span id="cb65-654"><a href="#cb65-654" aria-hidden="true" tabindex="-1"></a><span class="in">  control_for(c("Ch","C0"))  </span></span>
 <span id="cb65-655"><a href="#cb65-655" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-656"><a href="#cb65-656" aria-hidden="true" tabindex="-1"></a>dag_ex2 <span class="sc">|&gt;</span></span>
-<span id="cb65-657"><a href="#cb65-657" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggdag</span>( <span class="at">text =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb65-658"><a href="#cb65-658" aria-hidden="true" tabindex="-1"></a>    <span class="at">use_labels =</span> <span class="st">"label"</span>)</span>
+<span id="cb65-656"><a href="#cb65-656" aria-hidden="true" tabindex="-1"></a><span class="in">dag_ex2 |&gt;</span></span>
+<span id="cb65-657"><a href="#cb65-657" aria-hidden="true" tabindex="-1"></a><span class="in">  ggdag( text = FALSE,</span></span>
+<span id="cb65-658"><a href="#cb65-658" aria-hidden="true" tabindex="-1"></a><span class="in">    use_labels = "label")</span></span>
 <span id="cb65-659"><a href="#cb65-659" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb65-660"><a href="#cb65-660" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb65-661"><a href="#cb65-661" aria-hidden="true" tabindex="-1"></a>How do we avoid collider-bias here?</span>

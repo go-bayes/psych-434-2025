@@ -1,6 +1,6 @@
 ---
 title: "Causal inference: a step by step guide"
-date: "2025-MAY-13"
+date: "2025-MAY-06"
 bibliography: /Users/joseph/GIT/templates/bib/references.bib
 editor_options: 
   chunk_output_type: console

@@ -1,6 +1,6 @@
 ---
 title: "Causal Diagrams: The Structures of Interaction/Effect Modification, Measurement Bias, Selection Bias"
-date: "2024-MAR-18"
+date: "2025-MAR-18"
 bibliography: /Users/joseph/GIT/templates/bib/references.bib
 editor_options: 
   chunk_output_type: console

@@ -1,6 +1,6 @@
 ---
-title: "Student Presentations and Hands On Working With Quarto Manuscript"
-date: "2025-MAY-20"
+title: "Hands On Working With Quarto Manuscript"
+date: "2025-MAY-13"
 bibliography: /Users/joseph/GIT/templates/bib/references.bib
 editor_options: 
   chunk_output_type: console
@@ -21,10 +21,7 @@ cap-location: margin
 code-block-border-left: true
 ---
 
-## Part 1: Student Presentations
-
-
-## Part 2: Quarto manuscripts
+## Part 1: Quarto manuscripts
 
 ```{r}
 #| include: false

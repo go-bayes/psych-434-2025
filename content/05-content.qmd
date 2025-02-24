@@ -1,6 +1,6 @@
 ---
 title: "Causal Inference: Average Treatment Effects"
-date: "2025-APRIL-01"
+date: "2025-March-25"
 bibliography: /Users/joseph/GIT/templates/bib/references.bib
 editor_options: 
   chunk_output_type: console

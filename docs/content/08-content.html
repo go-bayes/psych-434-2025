@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.5">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Joseph Bulbulia">
 <meta name="dcterms.date" content="2025-04-29">
 
-<title>Causal Inference: Estimation of ATE and CATE – PSYC 434 Conducting Research Across Cultures: Trimester 1, 2024</title>
+<title>Causal Inference: Estimation of ATE and CATE – PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-cb64309e6bcb4fe4e8f7b1d812ed84fe.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-5dbef85374e00b74dcda297261b8f55d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ebb6838dc08a669b2ff582ce1331d571.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5455681f842773dfff0ee4080218ff98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -178,7 +178,7 @@ window.Quarto = {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="../index.html">
-    <span class="navbar-title">PSYC 434 Conducting Research Across Cultures: Trimester 1, 2024</span>
+    <span class="navbar-title">PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -220,14 +220,17 @@ window.Quarto = {
     <a class="dropdown-item" href="../content/04-content.html">
  <span class="dropdown-text">Week 4: Causal Diagrams - Interaction, Measurement Bias, Selection Bias - R (regression/simulation)</span></a>
   </li>  
-        <li class="dropdown-header">Week 5: Quiz - R (regression/simulation/reporting)</li>
         <li>
-    <a class="dropdown-item" href="../content/06-content.html">
- <span class="dropdown-text">Week 6: Causal Inference - Key Concepts ATE - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/05-content.html">
+ <span class="dropdown-text">Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../content/07-content.html">
- <span class="dropdown-text">Week 7: Causal Inference - Key Concept CATE - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/06-content.html">
+ <span class="dropdown-text">Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/07-quiz.html">
+ <span class="dropdown-text">Week 7: In Class Test</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/08-content.html">
@@ -235,11 +238,11 @@ window.Quarto = {
   </li>  
         <li>
     <a class="dropdown-item" href="../content/09-content.html">
- <span class="dropdown-text">Week 9: Hands On: Full Analysis in R</span></a>
+ <span class="dropdown-text">Week 9: Hands On: A Full Study Analysis in R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/10-content.html">
- <span class="dropdown-text">Week 10: Working with Quarto Documents</span></a>
+ <span class="dropdown-text">Week 10: Hands On: Writing Up Your Analysis: Quarto Documents</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/11-content.html">
@@ -746,49 +749,49 @@ E[Y^a] = \beta_0 + \beta_1a
 <span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co"># check missing values</span></span>
 <span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(df_nz) <span class="sc">|&gt;</span> <span class="fu">arrange</span>(n_missing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display page-columns page-full">
-<table class="table table-sm table-striped small">
+<table>
 
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Name</td>
 <td style="text-align: left;">df_nz</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">Number of rows</td>
 <td style="text-align: left;">60000</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Number of columns</td>
 <td style="text-align: left;">130</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">_______________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Column type frequency:</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">factor</td>
 <td style="text-align: left;">6</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">numeric</td>
 <td style="text-align: left;">124</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">________________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Group variables</td>
 <td style="text-align: left;">None</td>
 </tr>
 </tbody>
 </table>
 <div class="quarto-table-caption margin-caption">Data summary</div><p><strong>Variable type: factor</strong></p>
-<table class="table table-sm table-striped small">
+<table>
 <colgroup>
 <col style="width: 25%">
 <col style="width: 8%">
@@ -798,7 +801,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <col style="width: 39%">
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">skim_variable</th>
 <th style="text-align: right;">n_missing</th>
 <th style="text-align: right;">complete_rate</th>
@@ -808,7 +811,7 @@ E[Y^a] = \beta_0 + \beta_1a
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">id</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1.00</td>
@@ -816,7 +819,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">20000</td>
 <td style="text-align: left;">1: 3, 2: 3, 3: 3, 4: 3</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">wave</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1.00</td>
@@ -824,7 +827,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">3</td>
 <td style="text-align: left;">201: 20000, 201: 20000, 202: 20000</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">gen_cohort</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1.00</td>
@@ -832,7 +835,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">5</td>
 <td style="text-align: left;">gen: 24828, gen: 19965, gen: 11664, gen: 2280</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">eth_cat</td>
 <td style="text-align: right;">786</td>
 <td style="text-align: right;">0.99</td>
@@ -840,7 +843,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4</td>
 <td style="text-align: left;">eur: 47556, mao: 6843, asi: 3321, pac: 1494</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">religion_bigger_denominations</td>
 <td style="text-align: right;">12562</td>
 <td style="text-align: right;">0.79</td>
@@ -848,7 +851,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">11</td>
 <td style="text-align: left;">not: 30926, chr: 5557, cat: 3632, ang: 2274</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">alert_level_combined_lead</td>
 <td style="text-align: right;">20784</td>
 <td style="text-align: right;">0.65</td>
@@ -859,7 +862,7 @@ E[Y^a] = \beta_0 + \beta_1a
 </tbody>
 </table>
 <p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table>
 <colgroup>
 <col style="width: 32%">
 <col style="width: 7%">
@@ -874,7 +877,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <col style="width: 4%">
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">skim_variable</th>
 <th style="text-align: right;">n_missing</th>
 <th style="text-align: right;">complete_rate</th>
@@ -889,7 +892,7 @@ E[Y^a] = \beta_0 + \beta_1a
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">male</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1.00</td>
@@ -902,7 +905,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▇▁▁▁▅</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">sample_frame</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1.00</td>
@@ -915,7 +918,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.90</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">sample_frame_opt_in</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1.00</td>
@@ -928,7 +931,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">year_measured</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1.00</td>
@@ -941,7 +944,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▁▁▂▁▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">rural_gch_2018_l</td>
 <td style="text-align: right;">578</td>
 <td style="text-align: right;">0.99</td>
@@ -954,7 +957,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">5.00</td>
 <td style="text-align: left;">▇▂▂▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">regc_2022_l</td>
 <td style="text-align: right;">593</td>
 <td style="text-align: right;">0.99</td>
@@ -967,7 +970,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">99.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">nz_dep2018</td>
 <td style="text-align: right;">596</td>
 <td style="text-align: right;">0.99</td>
@@ -980,7 +983,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.00</td>
 <td style="text-align: left;">▇▇▆▅▃</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">born_nz</td>
 <td style="text-align: right;">702</td>
 <td style="text-align: right;">0.99</td>
@@ -993,7 +996,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▂▁▁▁▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">edu</td>
 <td style="text-align: right;">1523</td>
 <td style="text-align: right;">0.97</td>
@@ -1006,7 +1009,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.00</td>
 <td style="text-align: left;">▃▃▃▇▂</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">nzsei_13_l</td>
 <td style="text-align: right;">4500</td>
 <td style="text-align: right;">0.92</td>
@@ -1019,7 +1022,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">90.00</td>
 <td style="text-align: left;">▁▃▅▇▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">age</td>
 <td style="text-align: right;">12229</td>
 <td style="text-align: right;">0.80</td>
@@ -1032,7 +1035,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">97.90</td>
 <td style="text-align: left;">▂▅▇▂▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">sample_weights</td>
 <td style="text-align: right;">12229</td>
 <td style="text-align: right;">0.80</td>
@@ -1045,7 +1048,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">19.96</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">sfhealth</td>
 <td style="text-align: right;">12242</td>
 <td style="text-align: right;">0.80</td>
@@ -1058,7 +1061,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▃▇▅</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">perfectionism</td>
 <td style="text-align: right;">12247</td>
 <td style="text-align: right;">0.80</td>
@@ -1071,7 +1074,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▇▅▃▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">gratitude</td>
 <td style="text-align: right;">12248</td>
 <td style="text-align: right;">0.80</td>
@@ -1084,7 +1087,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▅▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">forgiveness</td>
 <td style="text-align: right;">12255</td>
 <td style="text-align: right;">0.80</td>
@@ -1097,7 +1100,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▃▇▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">vengeful_rumin</td>
 <td style="text-align: right;">12255</td>
 <td style="text-align: right;">0.80</td>
@@ -1110,7 +1113,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▇▃▂▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">lifemeaning</td>
 <td style="text-align: right;">12261</td>
 <td style="text-align: right;">0.80</td>
@@ -1123,7 +1126,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▃▅▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">support</td>
 <td style="text-align: right;">12268</td>
 <td style="text-align: right;">0.80</td>
@@ -1136,7 +1139,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">nwi</td>
 <td style="text-align: right;">12306</td>
 <td style="text-align: right;">0.79</td>
@@ -1149,7 +1152,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.00</td>
 <td style="text-align: left;">▁▃▇▆▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">sfhealth_get_sick_easier_reversed</td>
 <td style="text-align: right;">12344</td>
 <td style="text-align: right;">0.79</td>
@@ -1162,7 +1165,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▁▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">meaning_sense</td>
 <td style="text-align: right;">12380</td>
 <td style="text-align: right;">0.79</td>
@@ -1175,7 +1178,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">parent</td>
 <td style="text-align: right;">12398</td>
 <td style="text-align: right;">0.79</td>
@@ -1188,7 +1191,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▃▁▁▁▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">self_control_wish_more_reversed</td>
 <td style="text-align: right;">12398</td>
 <td style="text-align: right;">0.79</td>
@@ -1201,7 +1204,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▆▅▃▆</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pwb_your_future_security</td>
 <td style="text-align: right;">12403</td>
 <td style="text-align: right;">0.79</td>
@@ -1214,7 +1217,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.00</td>
 <td style="text-align: left;">▂▃▆▇▆</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">emotion_regulation_hide_neg_emotions</td>
 <td style="text-align: right;">12408</td>
 <td style="text-align: right;">0.79</td>
@@ -1227,7 +1230,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▆▅▆▇▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pwb_your_health</td>
 <td style="text-align: right;">12442</td>
 <td style="text-align: right;">0.79</td>
@@ -1240,7 +1243,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.00</td>
 <td style="text-align: left;">▁▂▅▇▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pwb_standard_living</td>
 <td style="text-align: right;">12457</td>
 <td style="text-align: right;">0.79</td>
@@ -1253,7 +1256,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.00</td>
 <td style="text-align: left;">▁▁▂▅▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pwb_your_relationships</td>
 <td style="text-align: right;">12460</td>
 <td style="text-align: right;">0.79</td>
@@ -1266,7 +1269,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">10.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">neighbourhood_community</td>
 <td style="text-align: right;">12461</td>
 <td style="text-align: right;">0.79</td>
@@ -1279,7 +1282,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▆▅▆▇▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">power_no_control_composite</td>
 <td style="text-align: right;">12469</td>
 <td style="text-align: right;">0.79</td>
@@ -1292,7 +1295,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▅▆▂▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">power_no_control_composite_reversed</td>
 <td style="text-align: right;">12469</td>
 <td style="text-align: right;">0.79</td>
@@ -1305,7 +1308,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▆▅▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">sfhealth_expect_worse_health_reversed</td>
 <td style="text-align: right;">12478</td>
 <td style="text-align: right;">0.79</td>
@@ -1318,7 +1321,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▆▆▆▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">employed</td>
 <td style="text-align: right;">12558</td>
 <td style="text-align: right;">0.79</td>
@@ -1331,7 +1334,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▂▁▁▁▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">religion_religious</td>
 <td style="text-align: right;">12561</td>
 <td style="text-align: right;">0.79</td>
@@ -1344,7 +1347,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▇▁▁▁▅</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">conscientiousness</td>
 <td style="text-align: right;">12616</td>
 <td style="text-align: right;">0.79</td>
@@ -1357,7 +1360,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▅▇▅</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">extraversion</td>
 <td style="text-align: right;">12618</td>
 <td style="text-align: right;">0.79</td>
@@ -1370,7 +1373,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▆▇▅▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">openness</td>
 <td style="text-align: right;">12622</td>
 <td style="text-align: right;">0.79</td>
@@ -1383,7 +1386,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▆▇▅</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">agreeableness</td>
 <td style="text-align: right;">12626</td>
 <td style="text-align: right;">0.79</td>
@@ -1396,7 +1399,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▃▇▆</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">belong</td>
 <td style="text-align: right;">12626</td>
 <td style="text-align: right;">0.79</td>
@@ -1409,7 +1412,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▃▇▅</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">honesty_humility</td>
 <td style="text-align: right;">12627</td>
 <td style="text-align: right;">0.79</td>
@@ -1422,7 +1425,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▃▆▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">neuroticism</td>
 <td style="text-align: right;">12628</td>
 <td style="text-align: right;">0.79</td>
@@ -1435,7 +1438,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▃▇▇▃▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">self_esteem</td>
 <td style="text-align: right;">12633</td>
 <td style="text-align: right;">0.79</td>
@@ -1448,7 +1451,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▃▇▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">power_self_nocontrol</td>
 <td style="text-align: right;">12642</td>
 <td style="text-align: right;">0.79</td>
@@ -1461,7 +1464,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▂▂▂▂</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">kessler6_sum</td>
 <td style="text-align: right;">12650</td>
 <td style="text-align: right;">0.79</td>
@@ -1474,7 +1477,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">24.00</td>
 <td style="text-align: left;">▇▆▂▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">kessler_latent_depression</td>
 <td style="text-align: right;">12654</td>
 <td style="text-align: right;">0.79</td>
@@ -1487,7 +1490,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▇▂▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">kessler_latent_anxiety</td>
 <td style="text-align: right;">12656</td>
 <td style="text-align: right;">0.79</td>
@@ -1500,7 +1503,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▇▇▆▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">lifesat</td>
 <td style="text-align: right;">12666</td>
 <td style="text-align: right;">0.79</td>
@@ -1513,7 +1516,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▃▆▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">support_turnto</td>
 <td style="text-align: right;">12688</td>
 <td style="text-align: right;">0.79</td>
@@ -1526,7 +1529,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">emotion_regulation_out_control</td>
 <td style="text-align: right;">12701</td>
 <td style="text-align: right;">0.79</td>
@@ -1539,7 +1542,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▂▂▂▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">modesty</td>
 <td style="text-align: right;">12709</td>
 <td style="text-align: right;">0.79</td>
@@ -1552,7 +1555,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_honestyhumility_seen_expensivecar</td>
 <td style="text-align: right;">12737</td>
 <td style="text-align: right;">0.79</td>
@@ -1565,7 +1568,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">belong_beliefs</td>
 <td style="text-align: right;">12741</td>
 <td style="text-align: right;">0.79</td>
@@ -1578,7 +1581,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▂▆▇▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">hlth_weight</td>
 <td style="text-align: right;">12742</td>
 <td style="text-align: right;">0.79</td>
@@ -1591,7 +1594,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">209.99</td>
 <td style="text-align: left;">▅▇▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_honestyhumility_deserve_more</td>
 <td style="text-align: right;">12743</td>
 <td style="text-align: right;">0.79</td>
@@ -1604,7 +1607,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▂▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">hlth_fatigue</td>
 <td style="text-align: right;">12756</td>
 <td style="text-align: right;">0.79</td>
@@ -1617,7 +1620,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▃▇▇▃▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">kessler_depressed</td>
 <td style="text-align: right;">12765</td>
 <td style="text-align: right;">0.79</td>
@@ -1630,7 +1633,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▇▂▁▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">belong_routside_reversed</td>
 <td style="text-align: right;">12767</td>
 <td style="text-align: right;">0.79</td>
@@ -1643,7 +1646,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▂▂▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_agreeable_sympathise_others</td>
 <td style="text-align: right;">12767</td>
 <td style="text-align: right;">0.79</td>
@@ -1656,7 +1659,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_honestyhumility_pleasure_expensivegoods</td>
 <td style="text-align: right;">12767</td>
 <td style="text-align: right;">0.79</td>
@@ -1669,7 +1672,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▂▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">bodysat</td>
 <td style="text-align: right;">12768</td>
 <td style="text-align: right;">0.79</td>
@@ -1682,7 +1685,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▅▅▅▆▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">rumination</td>
 <td style="text-align: right;">12768</td>
 <td style="text-align: right;">0.79</td>
@@ -1695,7 +1698,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▇▅▂▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">kessler_restless</td>
 <td style="text-align: right;">12779</td>
 <td style="text-align: right;">0.79</td>
@@ -1708,7 +1711,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▅▇▆▂▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">kessler_nervous</td>
 <td style="text-align: right;">12785</td>
 <td style="text-align: right;">0.79</td>
@@ -1721,7 +1724,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▆▇▅▂▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">kessler_worthless</td>
 <td style="text-align: right;">12788</td>
 <td style="text-align: right;">0.79</td>
@@ -1734,7 +1737,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▇▂▁▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">selfesteem_failure_reversed</td>
 <td style="text-align: right;">12791</td>
 <td style="text-align: right;">0.79</td>
@@ -1747,7 +1750,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▂▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">kessler_effort</td>
 <td style="text-align: right;">12794</td>
 <td style="text-align: right;">0.79</td>
@@ -1760,7 +1763,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▅▇▅▂▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">hlth_height</td>
 <td style="text-align: right;">12795</td>
 <td style="text-align: right;">0.79</td>
@@ -1773,7 +1776,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">2.10</td>
 <td style="text-align: left;">▁▂▇▃▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">kessler_hopeless</td>
 <td style="text-align: right;">12797</td>
 <td style="text-align: right;">0.79</td>
@@ -1786,7 +1789,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">4.00</td>
 <td style="text-align: left;">▇▅▃▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">selfesteem_satself</td>
 <td style="text-align: right;">12797</td>
 <td style="text-align: right;">0.79</td>
@@ -1799,7 +1802,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_conscientious_chores_done</td>
 <td style="text-align: right;">12808</td>
 <td style="text-align: right;">0.79</td>
@@ -1812,7 +1815,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▃▅▆▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_conscientious_forget_putback</td>
 <td style="text-align: right;">12812</td>
 <td style="text-align: right;">0.79</td>
@@ -1825,7 +1828,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▂▂▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">belong_accept</td>
 <td style="text-align: right;">12814</td>
 <td style="text-align: right;">0.79</td>
@@ -1838,7 +1841,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_agreeable_no_interest_others</td>
 <td style="text-align: right;">12819</td>
 <td style="text-align: right;">0.79</td>
@@ -1851,7 +1854,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_extraversion_talk_peopleparties</td>
 <td style="text-align: right;">12820</td>
 <td style="text-align: right;">0.79</td>
@@ -1864,7 +1867,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▅▆▅▆</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_extraversion_life_party</td>
 <td style="text-align: right;">12828</td>
 <td style="text-align: right;">0.79</td>
@@ -1877,7 +1880,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▆▇▅▂</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">selfesteem_postiveself</td>
 <td style="text-align: right;">12830</td>
 <td style="text-align: right;">0.79</td>
@@ -1890,7 +1893,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▃▅▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_neuroticism_upset_easily</td>
 <td style="text-align: right;">12843</td>
 <td style="text-align: right;">0.79</td>
@@ -1903,7 +1906,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▅▅▃▂</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_neuroticism_mostly_relaxed</td>
 <td style="text-align: right;">12844</td>
 <td style="text-align: right;">0.79</td>
@@ -1916,7 +1919,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▇▆▃▂</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_neuroticism_mood_swings</td>
 <td style="text-align: right;">12847</td>
 <td style="text-align: right;">0.79</td>
@@ -1929,7 +1932,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▃▃▂▂</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_neuroticism_seldom_blue</td>
 <td style="text-align: right;">12851</td>
 <td style="text-align: right;">0.79</td>
@@ -1942,7 +1945,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▅▆▆▆</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_conscientious_like_order</td>
 <td style="text-align: right;">12853</td>
 <td style="text-align: right;">0.79</td>
@@ -1955,7 +1958,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_extraversion_keepbackground</td>
 <td style="text-align: right;">12854</td>
 <td style="text-align: right;">0.79</td>
@@ -1968,7 +1971,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▆▆▇▆▅</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_agreeable_feel_others_emotions</td>
 <td style="text-align: right;">12859</td>
 <td style="text-align: right;">0.79</td>
@@ -1981,7 +1984,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_agreeable_no_interest_others_probs</td>
 <td style="text-align: right;">12870</td>
 <td style="text-align: right;">0.79</td>
@@ -1994,7 +1997,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▂▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_honestyhumility_feel_entitled</td>
 <td style="text-align: right;">12873</td>
 <td style="text-align: right;">0.79</td>
@@ -2007,7 +2010,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_openness_vivid_imagination</td>
 <td style="text-align: right;">12882</td>
 <td style="text-align: right;">0.79</td>
@@ -2020,7 +2023,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▃▅▆▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_extraversion_dont_talkalot</td>
 <td style="text-align: right;">12894</td>
 <td style="text-align: right;">0.79</td>
@@ -2033,7 +2036,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▅▅▇▆▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_conscientious_make_mess</td>
 <td style="text-align: right;">12897</td>
 <td style="text-align: right;">0.79</td>
@@ -2046,7 +2049,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_openness_good_imagination</td>
 <td style="text-align: right;">12904</td>
 <td style="text-align: right;">0.78</td>
@@ -2059,7 +2062,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▂▃▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">lifesat_satlife</td>
 <td style="text-align: right;">12917</td>
 <td style="text-align: right;">0.78</td>
@@ -2072,7 +2075,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">pers_openness_difficult_abstraction</td>
 <td style="text-align: right;">12918</td>
 <td style="text-align: right;">0.78</td>
@@ -2085,7 +2088,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▂▃▃▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pers_openness_interested_abstraction</td>
 <td style="text-align: right;">13013</td>
 <td style="text-align: right;">0.78</td>
@@ -2098,7 +2101,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▃▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">hlth_bmi</td>
 <td style="text-align: right;">13016</td>
 <td style="text-align: right;">0.78</td>
@@ -2111,7 +2114,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">75.56</td>
 <td style="text-align: left;">▆▇▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">smoker</td>
 <td style="text-align: right;">13077</td>
 <td style="text-align: right;">0.78</td>
@@ -2124,7 +2127,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">self_control_have_lots</td>
 <td style="text-align: right;">13107</td>
 <td style="text-align: right;">0.78</td>
@@ -2137,7 +2140,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▂▂▅▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">religion_identification_level</td>
 <td style="text-align: right;">13120</td>
 <td style="text-align: right;">0.78</td>
@@ -2150,7 +2153,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▁▁▁▂</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">meaning_purpose</td>
 <td style="text-align: right;">13302</td>
 <td style="text-align: right;">0.78</td>
@@ -2163,7 +2166,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▅▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">support_help</td>
 <td style="text-align: right;">13303</td>
 <td style="text-align: right;">0.78</td>
@@ -2176,7 +2179,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▁▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">partner</td>
 <td style="text-align: right;">13333</td>
 <td style="text-align: right;">0.78</td>
@@ -2189,7 +2192,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▂▁▁▁▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">permeability_individual</td>
 <td style="text-align: right;">13371</td>
 <td style="text-align: right;">0.78</td>
@@ -2202,7 +2205,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▃▆▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">support_noguidance_reversed</td>
 <td style="text-align: right;">13373</td>
 <td style="text-align: right;">0.78</td>
@@ -2215,7 +2218,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▁▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">impermeability_group</td>
 <td style="text-align: right;">13408</td>
 <td style="text-align: right;">0.78</td>
@@ -2228,7 +2231,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▆▇▆▃</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">alcohol_frequency</td>
 <td style="text-align: right;">13462</td>
 <td style="text-align: right;">0.78</td>
@@ -2241,7 +2244,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">5.00</td>
 <td style="text-align: left;">▇▇▇▇▃</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">hours_charity</td>
 <td style="text-align: right;">13563</td>
 <td style="text-align: right;">0.77</td>
@@ -2254,7 +2257,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">168.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">hours_exercise</td>
 <td style="text-align: right;">13565</td>
 <td style="text-align: right;">0.77</td>
@@ -2267,7 +2270,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">168.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">religion_believe_god</td>
 <td style="text-align: right;">13809</td>
 <td style="text-align: right;">0.77</td>
@@ -2280,7 +2283,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▇▁▁▁▆</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">religion_believe_spirit</td>
 <td style="text-align: right;">13809</td>
 <td style="text-align: right;">0.77</td>
@@ -2293,7 +2296,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">1.00</td>
 <td style="text-align: left;">▃▁▁▁▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">sfhealth_your_health</td>
 <td style="text-align: right;">13942</td>
 <td style="text-align: right;">0.77</td>
@@ -2306,7 +2309,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">power_others_control</td>
 <td style="text-align: right;">14051</td>
 <td style="text-align: right;">0.77</td>
@@ -2319,7 +2322,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▂▂▂▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">emotion_regulation_change_thinking_to_calm</td>
 <td style="text-align: right;">14177</td>
 <td style="text-align: right;">0.76</td>
@@ -2332,7 +2335,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▂▅▇▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">lifesat_ideal</td>
 <td style="text-align: right;">14186</td>
 <td style="text-align: right;">0.76</td>
@@ -2345,7 +2348,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▂▃▆▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">religion_perceive_religious_discrim</td>
 <td style="text-align: right;">14198</td>
 <td style="text-align: right;">0.76</td>
@@ -2358,7 +2361,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">hlth_sleep_hours</td>
 <td style="text-align: right;">14277</td>
 <td style="text-align: right;">0.76</td>
@@ -2371,7 +2374,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">20.00</td>
 <td style="text-align: left;">▁▇▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">charity_donate</td>
 <td style="text-align: right;">14501</td>
 <td style="text-align: right;">0.76</td>
@@ -2384,7 +2387,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">650000.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">alcohol_intensity</td>
 <td style="text-align: right;">14605</td>
 <td style="text-align: right;">0.76</td>
@@ -2397,7 +2400,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">36.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">political_conservative</td>
 <td style="text-align: right;">14644</td>
 <td style="text-align: right;">0.76</td>
@@ -2410,7 +2413,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▆▅▇▃▂</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">household_inc</td>
 <td style="text-align: right;">14744</td>
 <td style="text-align: right;">0.75</td>
@@ -2423,7 +2426,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">3000000.00</td>
 <td style="text-align: left;">▇▁▁▁▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">pol_wing</td>
 <td style="text-align: right;">15139</td>
 <td style="text-align: right;">0.75</td>
@@ -2436,7 +2439,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▅▅▇▃▂</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">sexual_satisfaction</td>
 <td style="text-align: right;">15680</td>
 <td style="text-align: right;">0.74</td>
@@ -2449,7 +2452,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▃▂▅▅▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">emp_job_sat</td>
 <td style="text-align: right;">23630</td>
 <td style="text-align: right;">0.61</td>
@@ -2462,7 +2465,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▂▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">emp_job_secure</td>
 <td style="text-align: right;">23677</td>
 <td style="text-align: right;">0.61</td>
@@ -2475,7 +2478,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▁▁▁▂▇</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">emp_job_valued</td>
 <td style="text-align: right;">23912</td>
 <td style="text-align: right;">0.60</td>
@@ -2488,7 +2491,7 @@ E[Y^a] = \beta_0 + \beta_1a
 <td style="text-align: right;">7.00</td>
 <td style="text-align: left;">▂▁▂▃▇</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">home_owner</td>
 <td style="text-align: right;">27754</td>
 <td style="text-align: right;">0.54</td>
@@ -4074,12 +4077,12 @@ Ordered variable created successfully 👍
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  - Analytics R, Weston S (2022). _iterators: Provides Iterator Construct_. R package version 1.0.14, &lt;https://CRAN.R-project.org/package=iterators&gt;.
-  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.1 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
+  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.0 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
   - Chang W (2023). _extrafont: Tools for Using Fonts_. R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.
   - Chen T, He T, Benesty M, Khotilovich V, Tang Y, Cho H, Chen K, Mitchell R, Cano I, Zhou T, Li M, Xie J, Lin M, Geng Y, Li Y, Yuan J (2024). _xgboost: Extreme Gradient Boosting_. R package version 1.7.8.1, &lt;https://CRAN.R-project.org/package=xgboost&gt;.
   - Corporation M, Weston S (2022). _doParallel: Foreach Parallel Adaptor for the 'parallel' Package_. R package version 1.0.17, &lt;https://CRAN.R-project.org/package=doParallel&gt;.
-  - Csárdi G (2024). _cli: Helpers for Developing Command Line Interfaces_. R package version 3.6.3, &lt;https://CRAN.R-project.org/package=cli&gt;.
   - Csárdi G (2024). _crayon: Colored Terminal Output_. R package version 1.5.3, &lt;https://CRAN.R-project.org/package=crayon&gt;.
+  - Csárdi G (2025). _cli: Helpers for Developing Command Line Interfaces_. R package version 3.6.3.9002, commit 8320914f110ddaa5f3004f2a4421535661b18ea1, &lt;https://github.com/r-lib/cli&gt;.
   - Greifer N (2024). _cobalt: Covariate Balance Tables and Plots_. R package version 4.5.5, &lt;https://CRAN.R-project.org/package=cobalt&gt;.
   - Greifer N (2024). _WeightIt: Weighting for Covariate Balance in Observational Studies_. R package version 1.3.2, &lt;https://CRAN.R-project.org/package=WeightIt&gt;.
   - Greifer N, Worthington S, Iacus S, King G (2024). _clarify: Simulation-Based Inference for Regression Models_. R package version 0.2.1, &lt;https://CRAN.R-project.org/package=clarify&gt;.
@@ -4100,7 +4103,7 @@ Ordered variable created successfully 👍
   - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version 1.5.1, &lt;https://CRAN.R-project.org/package=stringr&gt;.
   - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). "Welcome to the tidyverse." _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.
   - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.
-  - Wickham H, Henry L (2025). _purrr: Functional Programming Tools_. R package version 1.0.4, &lt;https://CRAN.R-project.org/package=purrr&gt;.
+  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2, &lt;https://CRAN.R-project.org/package=purrr&gt;.
   - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.
   - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.
   - Williams N, Díaz I (2023). "lmtp: An R package for estimating the causal effects of modified treatment policies." _Observational Studies_. &lt;https://muse.jhu.edu/article/883479&gt;. Díaz I, Williams N, Hoffman K, Schneck E (2021). "Non-parametric causal effects based on longitudinal modified treatment policies." _Journal of the American Statistical Association_. doi:10.1080/01621459.2021.1955691 &lt;https://doi.org/10.1080/01621459.2021.1955691&gt;.
@@ -4201,6 +4204,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -4362,6 +4367,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {

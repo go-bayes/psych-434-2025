@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.5">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-cb64309e6bcb4fe4e8f7b1d812ed84fe.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-5dbef85374e00b74dcda297261b8f55d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ebb6838dc08a669b2ff582ce1331d571.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5455681f842773dfff0ee4080218ff98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -224,10 +224,13 @@ window.Quarto = {
     <a class="dropdown-item" href="../content/05-content.html">
  <span class="dropdown-text">Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)</span></a>
   </li>  
-        <li class="dropdown-header">Week 6: In Class Test</li>
         <li>
-    <a class="dropdown-item" href="../content/07-content.html">
- <span class="dropdown-text">Week 7: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/06-content.html">
+ <span class="dropdown-text">Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/07-quiz.html">
+ <span class="dropdown-text">Week 7: In Class Test</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/08-content.html">
@@ -1547,7 +1550,7 @@ $group
   - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version 1.5.1, &lt;https://CRAN.R-project.org/package=stringr&gt;.
   - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). "Welcome to the tidyverse." _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.
   - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.
-  - Wickham H, Henry L (2025). _purrr: Functional Programming Tools_. R package version 1.0.4, &lt;https://CRAN.R-project.org/package=purrr&gt;.
+  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2, &lt;https://CRAN.R-project.org/package=purrr&gt;.
   - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.
   - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.
   - Xie Y (2024). _tinytex: Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents_. R package version 0.54, &lt;https://github.com/rstudio/tinytex&gt;. Xie Y (2019). "TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX Live." _TUGboat_, *40*(1), 30-32. &lt;https://tug.org/TUGboat/Contents/contents40-1.html&gt;.</code></pre>
@@ -1646,6 +1649,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1807,6 +1812,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -2458,96 +2464,96 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb62-436"><a href="#cb62-436" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-437"><a href="#cb62-437" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-438"><a href="#cb62-438" aria-hidden="true" tabindex="-1"></a><span class="in">```{r simulate-data}</span></span>
-<span id="cb62-439"><a href="#cb62-439" aria-hidden="true" tabindex="-1"></a><span class="co">#|fig-cap: "Box plot of simulated scores by groups."</span></span>
-<span id="cb62-440"><a href="#cb62-440" aria-hidden="true" tabindex="-1"></a><span class="co"># note: running this code will do no harm if the libraries are already installed.</span></span>
-<span id="cb62-441"><a href="#cb62-441" aria-hidden="true" tabindex="-1"></a><span class="co"># install (if necessary) libraries</span></span>
-<span id="cb62-442"><a href="#cb62-442" aria-hidden="true" tabindex="-1"></a><span class="co"># load libraries</span></span>
-<span id="cb62-443"><a href="#cb62-443" aria-hidden="true" tabindex="-1"></a><span class="co"># libraries</span></span>
-<span id="cb62-444"><a href="#cb62-444" aria-hidden="true" tabindex="-1"></a><span class="co"># graphs</span></span>
-<span id="cb62-445"><a href="#cb62-445" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(ggplot2)) {</span>
-<span id="cb62-446"><a href="#cb62-446" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"ggplot2"</span>)</span>
-<span id="cb62-447"><a href="#cb62-447" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb62-448"><a href="#cb62-448" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb62-449"><a href="#cb62-449" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggplot2)</span>
-<span id="cb62-450"><a href="#cb62-450" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-439"><a href="#cb62-439" aria-hidden="true" tabindex="-1"></a><span class="in">#|fig-cap: "Box plot of simulated scores by groups."</span></span>
+<span id="cb62-440"><a href="#cb62-440" aria-hidden="true" tabindex="-1"></a><span class="in"># note: running this code will do no harm if the libraries are already installed.</span></span>
+<span id="cb62-441"><a href="#cb62-441" aria-hidden="true" tabindex="-1"></a><span class="in"># install (if necessary) libraries</span></span>
+<span id="cb62-442"><a href="#cb62-442" aria-hidden="true" tabindex="-1"></a><span class="in"># load libraries</span></span>
+<span id="cb62-443"><a href="#cb62-443" aria-hidden="true" tabindex="-1"></a><span class="in"># libraries</span></span>
+<span id="cb62-444"><a href="#cb62-444" aria-hidden="true" tabindex="-1"></a><span class="in"># graphs</span></span>
+<span id="cb62-445"><a href="#cb62-445" aria-hidden="true" tabindex="-1"></a><span class="in">if (!require(ggplot2)) {</span></span>
+<span id="cb62-446"><a href="#cb62-446" aria-hidden="true" tabindex="-1"></a><span class="in">  install.packages("ggplot2")</span></span>
+<span id="cb62-447"><a href="#cb62-447" aria-hidden="true" tabindex="-1"></a><span class="in">  library(ggplot2)</span></span>
+<span id="cb62-448"><a href="#cb62-448" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb62-449"><a href="#cb62-449" aria-hidden="true" tabindex="-1"></a><span class="in">  library(ggplot2)</span></span>
+<span id="cb62-450"><a href="#cb62-450" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
 <span id="cb62-451"><a href="#cb62-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-452"><a href="#cb62-452" aria-hidden="true" tabindex="-1"></a><span class="co"># data wrangling</span></span>
-<span id="cb62-453"><a href="#cb62-453" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(tidyverse)) {</span>
-<span id="cb62-454"><a href="#cb62-454" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"tidyverse"</span>)</span>
-<span id="cb62-455"><a href="#cb62-455" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse)</span>
-<span id="cb62-456"><a href="#cb62-456" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb62-457"><a href="#cb62-457" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(tidyverse)</span>
-<span id="cb62-458"><a href="#cb62-458" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-452"><a href="#cb62-452" aria-hidden="true" tabindex="-1"></a><span class="in"># data wrangling</span></span>
+<span id="cb62-453"><a href="#cb62-453" aria-hidden="true" tabindex="-1"></a><span class="in">if (!require(tidyverse)) {</span></span>
+<span id="cb62-454"><a href="#cb62-454" aria-hidden="true" tabindex="-1"></a><span class="in">  install.packages("tidyverse")</span></span>
+<span id="cb62-455"><a href="#cb62-455" aria-hidden="true" tabindex="-1"></a><span class="in">  library(tidyverse)</span></span>
+<span id="cb62-456"><a href="#cb62-456" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb62-457"><a href="#cb62-457" aria-hidden="true" tabindex="-1"></a><span class="in">  library(tidyverse)</span></span>
+<span id="cb62-458"><a href="#cb62-458" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
 <span id="cb62-459"><a href="#cb62-459" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-460"><a href="#cb62-460" aria-hidden="true" tabindex="-1"></a><span class="co"># tables</span></span>
-<span id="cb62-461"><a href="#cb62-461" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(parameters)) {</span>
-<span id="cb62-462"><a href="#cb62-462" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"parameters"</span>)</span>
-<span id="cb62-463"><a href="#cb62-463" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(parameters)</span>
-<span id="cb62-464"><a href="#cb62-464" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb62-465"><a href="#cb62-465" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(parameters)</span>
-<span id="cb62-466"><a href="#cb62-466" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-460"><a href="#cb62-460" aria-hidden="true" tabindex="-1"></a><span class="in"># tables</span></span>
+<span id="cb62-461"><a href="#cb62-461" aria-hidden="true" tabindex="-1"></a><span class="in">if (!require(parameters)) {</span></span>
+<span id="cb62-462"><a href="#cb62-462" aria-hidden="true" tabindex="-1"></a><span class="in">  install.packages("parameters")</span></span>
+<span id="cb62-463"><a href="#cb62-463" aria-hidden="true" tabindex="-1"></a><span class="in">  library(parameters)</span></span>
+<span id="cb62-464"><a href="#cb62-464" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb62-465"><a href="#cb62-465" aria-hidden="true" tabindex="-1"></a><span class="in">  library(parameters)</span></span>
+<span id="cb62-466"><a href="#cb62-466" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
 <span id="cb62-467"><a href="#cb62-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-468"><a href="#cb62-468" aria-hidden="true" tabindex="-1"></a><span class="co"># reporting</span></span>
-<span id="cb62-469"><a href="#cb62-469" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(report)) {</span>
-<span id="cb62-470"><a href="#cb62-470" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"report"</span>)</span>
-<span id="cb62-471"><a href="#cb62-471" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(report)</span>
-<span id="cb62-472"><a href="#cb62-472" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb62-473"><a href="#cb62-473" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(report)</span>
-<span id="cb62-474"><a href="#cb62-474" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-468"><a href="#cb62-468" aria-hidden="true" tabindex="-1"></a><span class="in"># reporting</span></span>
+<span id="cb62-469"><a href="#cb62-469" aria-hidden="true" tabindex="-1"></a><span class="in">if (!require(report)) {</span></span>
+<span id="cb62-470"><a href="#cb62-470" aria-hidden="true" tabindex="-1"></a><span class="in">  install.packages("report")</span></span>
+<span id="cb62-471"><a href="#cb62-471" aria-hidden="true" tabindex="-1"></a><span class="in">  library(report)</span></span>
+<span id="cb62-472"><a href="#cb62-472" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb62-473"><a href="#cb62-473" aria-hidden="true" tabindex="-1"></a><span class="in">  library(report)</span></span>
+<span id="cb62-474"><a href="#cb62-474" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
 <span id="cb62-475"><a href="#cb62-475" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-476"><a href="#cb62-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-477"><a href="#cb62-477" aria-hidden="true" tabindex="-1"></a><span class="co"># predictive graphs</span></span>
-<span id="cb62-478"><a href="#cb62-478" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(ggeffects)) {</span>
-<span id="cb62-479"><a href="#cb62-479" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"ggeffects"</span>)</span>
-<span id="cb62-480"><a href="#cb62-480" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggeffects)</span>
-<span id="cb62-481"><a href="#cb62-481" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb62-482"><a href="#cb62-482" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(ggeffects)</span>
-<span id="cb62-483"><a href="#cb62-483" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-477"><a href="#cb62-477" aria-hidden="true" tabindex="-1"></a><span class="in"># predictive graphs</span></span>
+<span id="cb62-478"><a href="#cb62-478" aria-hidden="true" tabindex="-1"></a><span class="in">if (!require(ggeffects)) {</span></span>
+<span id="cb62-479"><a href="#cb62-479" aria-hidden="true" tabindex="-1"></a><span class="in">  install.packages("ggeffects")</span></span>
+<span id="cb62-480"><a href="#cb62-480" aria-hidden="true" tabindex="-1"></a><span class="in">  library(ggeffects)</span></span>
+<span id="cb62-481"><a href="#cb62-481" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb62-482"><a href="#cb62-482" aria-hidden="true" tabindex="-1"></a><span class="in">  library(ggeffects)</span></span>
+<span id="cb62-483"><a href="#cb62-483" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
 <span id="cb62-484"><a href="#cb62-484" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-485"><a href="#cb62-485" aria-hidden="true" tabindex="-1"></a><span class="co"># assembling graphs</span></span>
-<span id="cb62-486"><a href="#cb62-486" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(patchwork)) {</span>
-<span id="cb62-487"><a href="#cb62-487" aria-hidden="true" tabindex="-1"></a>  <span class="fu">install.packages</span>(<span class="st">"patchwork"</span>)</span>
-<span id="cb62-488"><a href="#cb62-488" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(patchwork)</span>
-<span id="cb62-489"><a href="#cb62-489" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb62-490"><a href="#cb62-490" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(patchwork)</span>
-<span id="cb62-491"><a href="#cb62-491" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb62-485"><a href="#cb62-485" aria-hidden="true" tabindex="-1"></a><span class="in"># assembling graphs</span></span>
+<span id="cb62-486"><a href="#cb62-486" aria-hidden="true" tabindex="-1"></a><span class="in">if (!require(patchwork)) {</span></span>
+<span id="cb62-487"><a href="#cb62-487" aria-hidden="true" tabindex="-1"></a><span class="in">  install.packages("patchwork")</span></span>
+<span id="cb62-488"><a href="#cb62-488" aria-hidden="true" tabindex="-1"></a><span class="in">  library(patchwork)</span></span>
+<span id="cb62-489"><a href="#cb62-489" aria-hidden="true" tabindex="-1"></a><span class="in">} else {</span></span>
+<span id="cb62-490"><a href="#cb62-490" aria-hidden="true" tabindex="-1"></a><span class="in">  library(patchwork)</span></span>
+<span id="cb62-491"><a href="#cb62-491" aria-hidden="true" tabindex="-1"></a><span class="in">}</span></span>
 <span id="cb62-492"><a href="#cb62-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-493"><a href="#cb62-493" aria-hidden="true" tabindex="-1"></a><span class="co"># if libraries are already install, start here</span></span>
-<span id="cb62-494"><a href="#cb62-494" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb62-495"><a href="#cb62-495" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb62-496"><a href="#cb62-496" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb62-497"><a href="#cb62-497" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parameters)</span>
-<span id="cb62-498"><a href="#cb62-498" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(report)</span>
+<span id="cb62-493"><a href="#cb62-493" aria-hidden="true" tabindex="-1"></a><span class="in"># if libraries are already install, start here</span></span>
+<span id="cb62-494"><a href="#cb62-494" aria-hidden="true" tabindex="-1"></a><span class="in">library(tidyverse)</span></span>
+<span id="cb62-495"><a href="#cb62-495" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb62-496"><a href="#cb62-496" aria-hidden="true" tabindex="-1"></a><span class="in">library(patchwork)</span></span>
+<span id="cb62-497"><a href="#cb62-497" aria-hidden="true" tabindex="-1"></a><span class="in">library(parameters)</span></span>
+<span id="cb62-498"><a href="#cb62-498" aria-hidden="true" tabindex="-1"></a><span class="in">library(report)</span></span>
 <span id="cb62-499"><a href="#cb62-499" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-500"><a href="#cb62-500" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-501"><a href="#cb62-501" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># reproducibility</span></span>
-<span id="cb62-502"><a href="#cb62-502" aria-hidden="true" tabindex="-1"></a>groupA_scores <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">15</span>) <span class="co"># simulate scores for group A</span></span>
-<span id="cb62-503"><a href="#cb62-503" aria-hidden="true" tabindex="-1"></a>groupB_scores <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> <span class="dv">105</span>, <span class="at">sd =</span> <span class="dv">15</span>) <span class="co"># simulate scores for group B</span></span>
+<span id="cb62-501"><a href="#cb62-501" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(123) # reproducibility</span></span>
+<span id="cb62-502"><a href="#cb62-502" aria-hidden="true" tabindex="-1"></a><span class="in">groupA_scores &lt;- rnorm(100, mean = 100, sd = 15) # simulate scores for group A</span></span>
+<span id="cb62-503"><a href="#cb62-503" aria-hidden="true" tabindex="-1"></a><span class="in">groupB_scores &lt;- rnorm(100, mean = 105, sd = 15) # simulate scores for group B</span></span>
 <span id="cb62-504"><a href="#cb62-504" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-505"><a href="#cb62-505" aria-hidden="true" tabindex="-1"></a><span class="co"># ombine into a data frame</span></span>
-<span id="cb62-506"><a href="#cb62-506" aria-hidden="true" tabindex="-1"></a>df_scores <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>), <span class="at">each =</span> <span class="dv">100</span>), <span class="at">scores =</span> <span class="fu">c</span>(groupA_scores, groupB_scores))</span>
+<span id="cb62-505"><a href="#cb62-505" aria-hidden="true" tabindex="-1"></a><span class="in"># ombine into a data frame</span></span>
+<span id="cb62-506"><a href="#cb62-506" aria-hidden="true" tabindex="-1"></a><span class="in">df_scores &lt;- data.frame(group = rep(c("A", "B"), each = 100), scores = c(groupA_scores, groupB_scores))</span></span>
 <span id="cb62-507"><a href="#cb62-507" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-508"><a href="#cb62-508" aria-hidden="true" tabindex="-1"></a><span class="co"># commands to view data</span></span>
-<span id="cb62-509"><a href="#cb62-509" aria-hidden="true" tabindex="-1"></a> <span class="co">#str(df_scores)</span></span>
+<span id="cb62-508"><a href="#cb62-508" aria-hidden="true" tabindex="-1"></a><span class="in"># commands to view data</span></span>
+<span id="cb62-509"><a href="#cb62-509" aria-hidden="true" tabindex="-1"></a><span class="in"> #str(df_scores)</span></span>
 <span id="cb62-510"><a href="#cb62-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-511"><a href="#cb62-511" aria-hidden="true" tabindex="-1"></a><span class="co"># summary of columns</span></span>
-<span id="cb62-512"><a href="#cb62-512" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(df_scores)</span></span>
+<span id="cb62-511"><a href="#cb62-511" aria-hidden="true" tabindex="-1"></a><span class="in"># summary of columns</span></span>
+<span id="cb62-512"><a href="#cb62-512" aria-hidden="true" tabindex="-1"></a><span class="in">#summary(df_scores)</span></span>
 <span id="cb62-513"><a href="#cb62-513" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-514"><a href="#cb62-514" aria-hidden="true" tabindex="-1"></a><span class="co"># top rows (uncomment)</span></span>
-<span id="cb62-515"><a href="#cb62-515" aria-hidden="true" tabindex="-1"></a><span class="co"># head(df_scores)</span></span>
+<span id="cb62-514"><a href="#cb62-514" aria-hidden="true" tabindex="-1"></a><span class="in"># top rows (uncomment)</span></span>
+<span id="cb62-515"><a href="#cb62-515" aria-hidden="true" tabindex="-1"></a><span class="in"># head(df_scores)</span></span>
 <span id="cb62-516"><a href="#cb62-516" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-517"><a href="#cb62-517" aria-hidden="true" tabindex="-1"></a><span class="co"># bottom rows  (uncomment)</span></span>
-<span id="cb62-518"><a href="#cb62-518" aria-hidden="true" tabindex="-1"></a><span class="co"># tail(df_scores)</span></span>
+<span id="cb62-517"><a href="#cb62-517" aria-hidden="true" tabindex="-1"></a><span class="in"># bottom rows  (uncomment)</span></span>
+<span id="cb62-518"><a href="#cb62-518" aria-hidden="true" tabindex="-1"></a><span class="in"># tail(df_scores)</span></span>
 <span id="cb62-519"><a href="#cb62-519" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-520"><a href="#cb62-520" aria-hidden="true" tabindex="-1"></a><span class="co"># check structure of data  (uncomment)</span></span>
-<span id="cb62-521"><a href="#cb62-521" aria-hidden="true" tabindex="-1"></a><span class="co"># str(df_scores)</span></span>
+<span id="cb62-520"><a href="#cb62-520" aria-hidden="true" tabindex="-1"></a><span class="in"># check structure of data  (uncomment)</span></span>
+<span id="cb62-521"><a href="#cb62-521" aria-hidden="true" tabindex="-1"></a><span class="in"># str(df_scores)</span></span>
 <span id="cb62-522"><a href="#cb62-522" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-523"><a href="#cb62-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-524"><a href="#cb62-524" aria-hidden="true" tabindex="-1"></a><span class="co"># make group a factor (not strictly necessary here, but useful in outher applications)</span></span>
-<span id="cb62-525"><a href="#cb62-525" aria-hidden="true" tabindex="-1"></a>df_scores_1 <span class="ot">&lt;-</span> df_scores <span class="sc">|&gt;</span> </span>
-<span id="cb62-526"><a href="#cb62-526" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">as.factor</span>(group))</span>
+<span id="cb62-524"><a href="#cb62-524" aria-hidden="true" tabindex="-1"></a><span class="in"># make group a factor (not strictly necessary here, but useful in outher applications)</span></span>
+<span id="cb62-525"><a href="#cb62-525" aria-hidden="true" tabindex="-1"></a><span class="in">df_scores_1 &lt;- df_scores |&gt; </span></span>
+<span id="cb62-526"><a href="#cb62-526" aria-hidden="true" tabindex="-1"></a><span class="in">  mutate(group = as.factor(group))</span></span>
 <span id="cb62-527"><a href="#cb62-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-528"><a href="#cb62-528" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df_scores_1)</span>
+<span id="cb62-528"><a href="#cb62-528" aria-hidden="true" tabindex="-1"></a><span class="in">head(df_scores_1)</span></span>
 <span id="cb62-529"><a href="#cb62-529" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-530"><a href="#cb62-530" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-531"><a href="#cb62-531" aria-hidden="true" tabindex="-1"></a><span class="fu">## Visualising Our Simulated Data</span></span>
@@ -2555,11 +2561,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb62-533"><a href="#cb62-533" aria-hidden="true" tabindex="-1"></a>Understanding your data visually is as important as the statistical analysis itself. Let's create a simple plot to compare the score distributions between the two groups.</span>
 <span id="cb62-534"><a href="#cb62-534" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-535"><a href="#cb62-535" aria-hidden="true" tabindex="-1"></a><span class="in">```{r visualize-data, fig.cap="Score Distribution by Group"}</span></span>
-<span id="cb62-536"><a href="#cb62-536" aria-hidden="true" tabindex="-1"></a><span class="co"># plot your data</span></span>
-<span id="cb62-537"><a href="#cb62-537" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_scores_1, <span class="fu">aes</span>(<span class="at">x =</span> group, <span class="at">y =</span> scores, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb62-538"><a href="#cb62-538" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
-<span id="cb62-539"><a href="#cb62-539" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb62-540"><a href="#cb62-540" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Score Distribution by Group"</span>, <span class="at">x =</span> <span class="st">"Group"</span>, <span class="at">y =</span> <span class="st">"Scores"</span>)</span>
+<span id="cb62-536"><a href="#cb62-536" aria-hidden="true" tabindex="-1"></a><span class="in"># plot your data</span></span>
+<span id="cb62-537"><a href="#cb62-537" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(df_scores_1, aes(x = group, y = scores, fill = group)) +</span></span>
+<span id="cb62-538"><a href="#cb62-538" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_boxplot() +</span></span>
+<span id="cb62-539"><a href="#cb62-539" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_minimal() +</span></span>
+<span id="cb62-540"><a href="#cb62-540" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(title = "Score Distribution by Group", x = "Group", y = "Scores")</span></span>
 <span id="cb62-541"><a href="#cb62-541" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb62-542"><a href="#cb62-542" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-543"><a href="#cb62-543" aria-hidden="true" tabindex="-1"></a></span>

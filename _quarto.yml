@@ -30,18 +30,19 @@ website:
           href: content/04-content.qmd
         - text: "Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)"
           href: content/05-content.qmd
-        - text: "Week 6: In Class Test"
-        - text: "Week 7: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)"
-          href: content/07-content.qmd
+        - text: "Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)"
+          href: content/06-content.qmd
+        - text: "Week 7: In Class Test"
+          href: content/07-quiz.qmd
         - text: "Week 8: Causal Inference - Estimation of ATE and CATE - R and LaTeX"
           href: content/08-content.qmd
         - text: "Week 9: Hands On: A Full Study Analysis in R"
           href: content/09-content.qmd
         - text: "Week 10: Hands On: Writing Up Your Analysis: Quarto Documents"
           href: content/10-content.qmd
-        - text: "Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance "
+        - text: "Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance/ And How These Approaches Fail "
           href: content/11-content.qmd
-        - text: "Week 12: Measurement: Conceptual Problems"
+        - text: "Week 12: Student Presentations"
           href: content/12-content.qmd
 format:
   html:

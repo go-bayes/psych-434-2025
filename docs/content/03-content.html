@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.5">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -91,10 +91,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-cb64309e6bcb4fe4e8f7b1d812ed84fe.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-5dbef85374e00b74dcda297261b8f55d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-ebb6838dc08a669b2ff582ce1331d571.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5455681f842773dfff0ee4080218ff98.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -227,10 +227,13 @@ window.Quarto = {
     <a class="dropdown-item" href="../content/05-content.html">
  <span class="dropdown-text">Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)</span></a>
   </li>  
-        <li class="dropdown-header">Week 6: In Class Test</li>
         <li>
-    <a class="dropdown-item" href="../content/07-content.html">
- <span class="dropdown-text">Week 7: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/06-content.html">
+ <span class="dropdown-text">Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/07-quiz.html">
+ <span class="dropdown-text">Week 7: In Class Test</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/08-content.html">
@@ -730,29 +733,29 @@ Bulbulia, J. A. 2024. <span>“Methods in Causal Inference Part 1: Causal Diagra
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#write the model and get a nice table for it</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(<span class="fu">lm</span>(draws_10 <span class="sc">~</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Dependent variable</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">171.49</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">157.85&nbsp;–&nbsp;185.14</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">10</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.000 / 0.000</td>
 </tr>
@@ -766,29 +769,29 @@ Bulbulia, J. A. 2024. <span>“Methods in Causal Inference Part 1: Causal Diagra
 <div class="cell page-columns page-full">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(<span class="fu">lm</span>(draws_100 <span class="sc">~</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Dependent variable</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">171.81</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">168.19&nbsp;–&nbsp;175.43</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">100</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.000 / 0.000</td>
 </tr>
@@ -802,29 +805,29 @@ Bulbulia, J. A. 2024. <span>“Methods in Causal Inference Part 1: Causal Diagra
 <div class="cell page-columns page-full">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(<span class="fu">lm</span>(draws_10000 <span class="sc">~</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Dependent variable</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">170.02</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">169.90&nbsp;–&nbsp;170.14</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">100000</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.000 / 0.000</td>
 </tr>
@@ -840,15 +843,15 @@ Bulbulia, J. A. 2024. <span>“Methods in Causal Inference Part 1: Causal Diagra
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">lm</span>(draws_100 <span class="sc">~</span> <span class="dv">1</span>),</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">lm</span>(draws_10000 <span class="sc">~</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Dependent variable</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Dependent variable</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">Dependent variable</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
@@ -860,7 +863,7 @@ Bulbulia, J. A. 2024. <span>“Methods in Causal Inference Part 1: Causal Diagra
 <td style="text-align: center;">CI</td>
 <td style="text-align: center;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">171.49</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">157.85&nbsp;–&nbsp;185.14</td>
@@ -872,13 +875,13 @@ Bulbulia, J. A. 2024. <span>“Methods in Causal Inference Part 1: Causal Diagra
 <td style="text-align: center;">169.90&nbsp;–&nbsp;170.14</td>
 <td style="text-align: center;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">10</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">100</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">100000</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.000 / 0.000</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.000 / 0.000</td>
@@ -919,45 +922,45 @@ Pearson, Karl, and Alice Lee. 1903. <span>“On the Laws of Inheritance in Man: 
 <span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(df_pearson_lee_centered)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left page-columns page-full">
-<table class="table table-sm table-striped small">
+<table>
 
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Name</td>
 <td style="text-align: left;">df_pearson_lee_centered</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">Number of rows</td>
 <td style="text-align: left;">5524</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Number of columns</td>
 <td style="text-align: left;">3</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">_______________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">Column type frequency:</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">numeric</td>
 <td style="text-align: left;">3</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">________________________</td>
 <td style="text-align: left;"></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">Group variables</td>
 <td style="text-align: left;">None</td>
 </tr>
 </tbody>
 </table>
 <div class="quarto-table-caption margin-caption">Data summary</div><p><strong>Variable type: numeric</strong></p>
-<table class="table table-sm table-striped small">
+<table style="width:100%;">
 <colgroup>
 <col style="width: 19%">
 <col style="width: 12%">
@@ -972,7 +975,7 @@ Pearson, Karl, and Alice Lee. 1903. <span>“On the Laws of Inheritance in Man: 
 <col style="width: 7%">
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th style="text-align: left;">skim_variable</th>
 <th style="text-align: right;">n_missing</th>
 <th style="text-align: right;">complete_rate</th>
@@ -987,7 +990,7 @@ Pearson, Karl, and Alice Lee. 1903. <span>“On the Laws of Inheritance in Man: 
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">daughter_height</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -1000,7 +1003,7 @@ Pearson, Karl, and Alice Lee. 1903. <span>“On the Laws of Inheritance in Man: 
 <td style="text-align: right;">73.5</td>
 <td style="text-align: left;">▁▂▇▅▁</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">mother_height</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -1013,7 +1016,7 @@ Pearson, Karl, and Alice Lee. 1903. <span>“On the Laws of Inheritance in Man: 
 <td style="text-align: right;">70.5</td>
 <td style="text-align: left;">▁▂▇▇▁</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">mother_height_c</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
@@ -1060,35 +1063,35 @@ Pearson, Karl, and Alice Lee. 1903. <span>“On the Laws of Inheritance in Man: 
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># graph</span></span>
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">daughter height</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">29.80</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">28.25&nbsp;–&nbsp;31.35</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">mother height</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.54</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.52&nbsp;–&nbsp;0.57</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">5524</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.252 / 0.252</td>
 </tr>
@@ -1362,14 +1365,14 @@ x [3rd degree] |       13.33 | 0.04 | [13.26, 13.40] | 368.37 | &lt; .001</code>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co"># compare the models</span></span>
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(fit_raw, fit_centered)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">daughter height</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">daughter height</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
@@ -1378,7 +1381,7 @@ x [3rd degree] |       13.33 | 0.04 | [13.26, 13.40] | 368.37 | &lt; .001</code>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
 <td style="text-align: center;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">29.80</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">28.25&nbsp;–&nbsp;31.35</td>
@@ -1387,7 +1390,7 @@ x [3rd degree] |       13.33 | 0.04 | [13.26, 13.40] | 368.37 | &lt; .001</code>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">63.80&nbsp;–&nbsp;63.92</td>
 <td style="text-align: center;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">mother height</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.54</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.52&nbsp;–&nbsp;0.57</td>
@@ -1396,7 +1399,7 @@ x [3rd degree] |       13.33 | 0.04 | [13.26, 13.40] | 368.37 | &lt; .001</code>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"></td>
 <td style="text-align: center;"></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">mother height c</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"></td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"></td>
@@ -1405,12 +1408,12 @@ x [3rd degree] |       13.33 | 0.04 | [13.26, 13.40] | 368.37 | &lt; .001</code>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.52&nbsp;–&nbsp;0.57</td>
 <td style="text-align: center;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">5524</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">5524</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.252 / 0.252</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.252 / 0.252</td>
@@ -1587,7 +1590,7 @@ Important
 <li><p><strong>Analysis and Comparison</strong>: the analysis compares the estimated effects of <span class="math inline">A</span> on <span class="math inline">Y</span> under both model specifications. By including <span class="math inline">L</span> as a predictor in Model 1, we induce mediation bias. Whereas Model 2 correctly excludes <span class="math inline">L</span> from the model.</p></li>
 <li><p><strong>Presentation</strong>: the results are displayed in a comparative table formatted for publication. The table contrasts the regression coefficients and significance levels obtained under each model.</p></li>
 </ol>
-<div class="cell page-columns page-full" data-tbl-cap="Code for a simulation of a data generating process in which the effect of exercise (L) fully mediates the effect of greenspace (A) on happiness (Y).">
+<div class="cell page-columns page-full">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulation seed</span></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co">#  reproducibility</span></span>
 <span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1634,7 +1637,7 @@ Important
 <span id="cb38-44"><a href="#cb38-44" aria-hidden="true" tabindex="-1"></a><span class="co"># print markdown table (note, you might prefer "latex" or another format)                                </span></span>
 <span id="cb38-45"><a href="#cb38-45" aria-hidden="true" tabindex="-1"></a>markdown_table_0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left page-columns page-full">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="NAborder-bottom: 0;">
 
 <colgroup>
 <col style="width: 14%">
@@ -1646,7 +1649,7 @@ Important
 <col style="width: 14%">
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th data-quarto-table-cell-role="th" style="text-align: left; empty-cells: hide; border-bottom: hidden;"></th>
 <th colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
 Model: Wealth assumed confounder
@@ -1655,7 +1658,7 @@ Model: Wealth assumed confounder
 Model: Wealth assumed to be a mediator
 </div></th>
 </tr>
-<tr class="even">
+<tr>
 <th style="text-align: left;" data-quarto-table-cell-role="th">Characteristic</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">Beta</th>
 <th style="text-align: center;" data-quarto-table-cell-role="th">95% CI</th>
@@ -1666,7 +1669,7 @@ Model: Wealth assumed to be a mediator
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td style="text-align: left;">A</td>
 <td style="text-align: center;">-0.27</td>
 <td style="text-align: center;">-0.53, -0.01</td>
@@ -1675,7 +1678,7 @@ Model: Wealth assumed to be a mediator
 <td style="text-align: center;">2.6, 3.2</td>
 <td style="text-align: center;">&lt;0.001</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left;">L</td>
 <td style="text-align: center;">1.6</td>
 <td style="text-align: center;">1.5, 1.7</td>
@@ -1685,7 +1688,7 @@ Model: Wealth assumed to be a mediator
 <td style="text-align: center;"></td>
 </tr>
 </tbody><tfoot>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0;"><sup>1</sup> CI = Confidence Interval</td>
 <td style="text-align: center;"></td>
 <td style="text-align: center;"></td>
@@ -1768,7 +1771,7 @@ Important
 <li><p><strong>Analysis and Comparison</strong>: compare models.</p></li>
 <li><p><strong>Presentation</strong>: a table.</p></li>
 </ol>
-<div class="cell page-columns page-full" data-tbl-cap="L is a collider of A and Y.">
+<div class="cell page-columns page-full">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># simulation seed</span></span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co">#  reproducibility</span></span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2282,7 +2285,7 @@ F-statistic:   582 on 2 and 997 DF,  p-value: &lt; 2.2e-16</code></pre>
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table" style="width:100%;" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 
 <colgroup>
 <col style="width: 14%">
@@ -2294,7 +2297,7 @@ F-statistic:   582 on 2 and 997 DF,  p-value: &lt; 2.2e-16</code></pre>
 <col style="width: 14%">
 </colgroup>
 <thead>
-<tr class="gt_col_headings gt_spanner_row header">
+<tr class="gt_col_headings gt_spanner_row">
 <th rowspan="2" id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
 <th colspan="3" id="Model: Wealth assumed confounder" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><div class="gt_column_spanner">
 Model: Wealth assumed confounder
@@ -2303,7 +2306,7 @@ Model: Wealth assumed confounder
 Model: Wealth not assumed to be a mediator
 </div></th>
 </tr>
-<tr class="gt_col_headings even">
+<tr class="gt_col_headings">
 <th id="estimate_1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>Beta</strong></th>
 <th id="conf.low_1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>95% CI</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
 <th id="p.value_1" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>p-value</strong></th>
@@ -2313,7 +2316,7 @@ Model: Wealth not assumed to be a mediator
 </tr>
 </thead>
 <tbody class="gt_table_body">
-<tr class="odd">
+<tr>
 <td class="gt_row gt_left" headers="label">A</td>
 <td class="gt_row gt_center" headers="estimate_1">-0.48</td>
 <td class="gt_row gt_center" headers="conf.low_1">-0.57, -0.39</td>
@@ -2322,7 +2325,7 @@ Model: Wealth not assumed to be a mediator
 <td class="gt_row gt_center" headers="conf.low_2">-0.12, 0.13</td>
 <td class="gt_row gt_center" headers="p.value_2">&gt;0.9</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="gt_row gt_left" headers="label">L</td>
 <td class="gt_row gt_center" headers="estimate_1">0.51</td>
 <td class="gt_row gt_center" headers="conf.low_1">0.48, 0.54</td>
@@ -2335,7 +2338,7 @@ Model: Wealth not assumed to be a mediator
 </td>
 </tr>
 </tbody><tfoot class="gt_footnotes">
-<tr class="odd">
+<tr>
 <td colspan="7" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> CI = Confidence Interval</td>
 </tr>
 </tfoot>
@@ -3002,32 +3005,32 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2020. <em>Regression and Other S
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="gt_col_headings header">
+<tr class="gt_col_headings">
 <th id="label" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col"><strong>Characteristic</strong></th>
 <th id="stat_0" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col"><strong>N = 20,000</strong><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span></th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
-<tr class="odd">
+<tr>
 <td class="gt_row gt_left" headers="label" style="font-weight: bold">weight</td>
 <td class="gt_row gt_center" headers="stat_0">79.24 (18.42)</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;(Missing)</td>
 <td class="gt_row gt_center" headers="stat_0">5,655</td>
 </tr>
-<tr class="odd">
+<tr>
 <td class="gt_row gt_left" headers="label" style="font-weight: bold">height</td>
 <td class="gt_row gt_center" headers="stat_0">1.70 (0.10)</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="gt_row gt_left" headers="label">&nbsp;&nbsp;&nbsp;&nbsp;(Missing)</td>
 <td class="gt_row gt_center" headers="stat_0">5,655</td>
 </tr>
 </tbody><tfoot class="gt_footnotes">
-<tr class="odd">
+<tr>
 <td colspan="2" class="gt_footnote"><span class="gt_footnote_marks" style="white-space:nowrap;font-style:italic;font-weight:normal;line-height:0;"><sup>1</sup></span> Mean (SD)</td>
 </tr>
 </tfoot>
@@ -3057,48 +3060,48 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2020. <em>Regression and Other S
 <span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a>table1<span class="sc">::</span><span class="fu">table1</span>(<span class="sc">~</span> hlth_weight <span class="sc">+</span> hlth_height, <span class="at">data =</span> df_nz_1)     </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
 <div class="Rtable1">
-<table class="Rtable1 table table-sm table-striped small" data-quarto-postprocess="true">
+<table class="Rtable1" data-quarto-postprocess="true">
 <colgroup>
 <col style="width: 50%">
 <col style="width: 50%">
 </colgroup>
 <thead>
-<tr class="header">
+<tr>
 <th class="rowlabel firstrow lastrow" data-quarto-table-cell-role="th"></th>
 <th class="firstrow lastrow" data-quarto-table-cell-role="th"><span class="stratlabel">Overall<br>
 <span class="stratn">(N=20000)</span></span></th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
+<tr>
 <td class="rowlabel firstrow">Weight</td>
 <td class="firstrow"></td>
 </tr>
-<tr class="even">
+<tr>
 <td class="rowlabel">Mean (SD)</td>
 <td>79.2 (18.4)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td class="rowlabel">Median [Min, Max]</td>
 <td>77.0 [38.0, 200]</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="rowlabel lastrow">Missing</td>
 <td class="lastrow">5655 (28.3%)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td class="rowlabel firstrow">Height</td>
 <td class="firstrow"></td>
 </tr>
-<tr class="even">
+<tr>
 <td class="rowlabel">Mean (SD)</td>
 <td>1.70 (0.100)</td>
 </tr>
-<tr class="odd">
+<tr>
 <td class="rowlabel">Median [Min, Max]</td>
 <td>1.69 [1.26, 2.04]</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="rowlabel lastrow">Missing</td>
 <td class="lastrow">5655 (28.3%)</td>
 </tr>
@@ -3635,27 +3638,27 @@ Gelman, Andrew, Jennifer Hill, and Aki Vehtari. 2020. <em>Regression and Other S
 }
 </style>
 
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="gt_col_headings header">
+<tr class="gt_col_headings">
 <th id="Parameter" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Parameter</th>
 <th id="Estimate" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Estimate</th>
 <th id="a(ci)" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">95% CI</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
-<tr class="odd">
+<tr>
 <td class="gt_row gt_left" headers="Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">(Intercept)</td>
 <td class="gt_row gt_center" headers="Estimate">1.70***</td>
 <td class="gt_row gt_center" headers="(ci)">(1.70, 1.70)</td>
 </tr>
-<tr class="even">
+<tr>
 <td class="gt_row gt_left" headers="Parameter" style="border-right-width: 1px; border-right-style: solid; border-right-color: #d3d3d3">weight c</td>
 <td class="gt_row gt_center" headers="Estimate">2.23e-03***</td>
 <td class="gt_row gt_center" headers="(ci)">(2.15e-03, 2.31e-03)</td>
 </tr>
 </tbody><tfoot class="gt_sourcenotes">
-<tr class="odd">
+<tr>
 <td colspan="3" class="gt_sourcenote"></td>
 </tr>
 </tfoot>
@@ -3710,35 +3713,35 @@ computed using a Wald t-distribution approximation.</code></pre>
 <span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>fit_2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(hlth_height <span class="sc">~</span> male, <span class="at">data =</span> df_nz)</span>
 <span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(fit_2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">hlth height</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">1.65</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">1.65&nbsp;–&nbsp;1.65</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">male</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.13</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">0.13&nbsp;–&nbsp;0.13</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">47205</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.388 / 0.388</td>
 </tr>
@@ -3792,7 +3795,8 @@ computed using a Wald t-distribution approximation.</code></pre>
 </section>
 <section id="solution-q4.-regression-to-predict" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="solution-q4.-regression-to-predict">Solution Q4. Regression to predict</h2>
-<p><strong>Using the regression coefficients from the Pearson and Lee 1903 dataset, predict the heights of daughters of women in the <code>nz</code> dataset.</strong> ::: {.cell}</p>
+<p><strong>Using the regression coefficients from the Pearson and Lee 1903 dataset, predict the heights of daughters of women in the <code>nz</code> dataset.</strong></p>
+<div class="cell page-columns page-full">
 <div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># model for daughter height from mother height</span></span>
 <span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>fit_3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(daughter_height <span class="sc">~</span> mother_height, <span class="at">data =</span> df_pearson_lee)</span>
 <span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -3852,7 +3856,7 @@ computed using a Wald t-distribution approximation.</code></pre>
 </figure>
 </div>
 </div>
-<p>:::</p>
+</div>
 </section>
 <section id="solution-q6.-bonus" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="solution-q6.-bonus">Solution Q6. Bonus</h2>
@@ -3922,35 +3926,35 @@ computed using a Wald t-distribution approximation.</code></pre>
 <span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="co"># table</span></span>
 <span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>sjPlot<span class="sc">::</span><span class="fu">tab_model</span>(fit_4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display column-column-page-left">
-<table data-quarto-postprocess="true" class="table table-sm table-striped small">
+<table data-quarto-postprocess="true" style="border-collapse:collapse; border:none;">
 <tbody>
-<tr class="odd">
+<tr>
 <td data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">&nbsp;</td>
 <td colspan="3" data-quarto-table-cell-role="th" style="text-align: center; border-top: double; font-style: normal; font-weight: bold; padding: 0.2cm;">f height</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Predictors</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">Estimates</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">CI</td>
 <td style="text-align: center; border-bottom: 1px solid; font-style: italic; font-weight: normal;">p</td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">(Intercept)</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">63.18</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">63.12&nbsp;–&nbsp;63.23</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">year is [2019]</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">6.97</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;">6.90&nbsp;–&nbsp;7.04</td>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top;"><strong>&lt;0.001</strong></td>
 </tr>
-<tr class="odd">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">Observations</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm; border-top: 1px solid;">28422</td>
 </tr>
-<tr class="even">
+<tr>
 <td style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">R<sup>2</sup> / R<sup>2</sup> adjusted</td>
 <td colspan="3" style="text-align: left; padding: 0.2cm; vertical-align: top; padding-top: 0.1cm; padding-bottom: 0.1cm;">0.569 / 0.569</td>
 </tr>
@@ -4073,7 +4077,7 @@ year_is | Predicted |       95% CI
 <div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  - Anderson D, Heiss A, Sumners J (2024). _equatiomatic: Transform Models into 'LaTeX' Equations_. R package version 0.3.3, &lt;https://CRAN.R-project.org/package=equatiomatic&gt;.
-  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.1 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
+  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.0 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
   - Chang W (2023). _extrafont: Tools for Using Fonts_. R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.
   - Grolemund G, Wickham H (2011). "Dates and Times Made Easy with lubridate." _Journal of Statistical Software_, *40*(3), 1-25. &lt;https://www.jstatsoft.org/v40/i03/&gt;.
   - Lüdecke D (2018). "ggeffects: Tidy Data Frames of Marginal Effects from Regression Models." _Journal of Open Source Software_, *3*(26), 772. doi:10.21105/joss.00772 &lt;https://doi.org/10.21105/joss.00772&gt;.
@@ -4093,7 +4097,7 @@ year_is | Predicted |       95% CI
   - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). "Welcome to the tidyverse." _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.
   - Wickham H, Bryan J, Barrett M, Teucher A (2024). _usethis: Automate Package and Project Setup_. R package version 3.1.0, &lt;https://CRAN.R-project.org/package=usethis&gt;.
   - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.
-  - Wickham H, Henry L (2025). _purrr: Functional Programming Tools_. R package version 1.0.4, &lt;https://CRAN.R-project.org/package=purrr&gt;.
+  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2, &lt;https://CRAN.R-project.org/package=purrr&gt;.
   - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.
   - Wickham H, Hester J, Chang W, Bryan J (2022). _devtools: Tools to Make Developing R Packages Easier_. R package version 2.4.5, &lt;https://CRAN.R-project.org/package=devtools&gt;.
   - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.
@@ -4194,6 +4198,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -4355,6 +4361,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -5093,24 +5100,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb88-545"><a href="#cb88-545" aria-hidden="true" tabindex="-1"></a>Joyte Amge is the world's shortest woman at 25 inches. Sandy Allen was the world's tallest woman at 91 inches. What are the expected heights of their daughter and of every intermediary woman in between?</span>
 <span id="cb88-546"><a href="#cb88-546" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-547"><a href="#cb88-547" aria-hidden="true" tabindex="-1"></a><span class="in">```{r code_folding = FALSE}</span></span>
-<span id="cb88-548"><a href="#cb88-548" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: false</span></span>
+<span id="cb88-548"><a href="#cb88-548" aria-hidden="true" tabindex="-1"></a><span class="in">#| code-fold: false</span></span>
 <span id="cb88-549"><a href="#cb88-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-550"><a href="#cb88-550" aria-hidden="true" tabindex="-1"></a><span class="co"># use the `expand.grid` command to create a sequence of points for mother's height</span></span>
-<span id="cb88-551"><a href="#cb88-551" aria-hidden="true" tabindex="-1"></a>df_expand_grid <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">mother_height =</span> <span class="fu">c</span>(<span class="dv">25</span><span class="sc">:</span><span class="dv">91</span>))</span>
+<span id="cb88-550"><a href="#cb88-550" aria-hidden="true" tabindex="-1"></a><span class="in"># use the `expand.grid` command to create a sequence of points for mother's height</span></span>
+<span id="cb88-551"><a href="#cb88-551" aria-hidden="true" tabindex="-1"></a><span class="in">df_expand_grid &lt;- expand.grid(mother_height = c(25:91))</span></span>
 <span id="cb88-552"><a href="#cb88-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-553"><a href="#cb88-553" aria-hidden="true" tabindex="-1"></a><span class="co"># use the `predict` function to create a new response</span></span>
-<span id="cb88-554"><a href="#cb88-554" aria-hidden="true" tabindex="-1"></a>df_predict <span class="ot">&lt;-</span></span>
-<span id="cb88-555"><a href="#cb88-555" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(m1,</span>
-<span id="cb88-556"><a href="#cb88-556" aria-hidden="true" tabindex="-1"></a>          <span class="at">type =</span> <span class="st">"response"</span>,</span>
-<span id="cb88-557"><a href="#cb88-557" aria-hidden="true" tabindex="-1"></a>          <span class="at">interval =</span> <span class="st">"confidence"</span>,</span>
-<span id="cb88-558"><a href="#cb88-558" aria-hidden="true" tabindex="-1"></a>          <span class="at">newdata =</span> df_expand_grid)</span>
+<span id="cb88-553"><a href="#cb88-553" aria-hidden="true" tabindex="-1"></a><span class="in"># use the `predict` function to create a new response</span></span>
+<span id="cb88-554"><a href="#cb88-554" aria-hidden="true" tabindex="-1"></a><span class="in">df_predict &lt;-</span></span>
+<span id="cb88-555"><a href="#cb88-555" aria-hidden="true" tabindex="-1"></a><span class="in">  predict(m1,</span></span>
+<span id="cb88-556"><a href="#cb88-556" aria-hidden="true" tabindex="-1"></a><span class="in">          type = "response",</span></span>
+<span id="cb88-557"><a href="#cb88-557" aria-hidden="true" tabindex="-1"></a><span class="in">          interval = "confidence",</span></span>
+<span id="cb88-558"><a href="#cb88-558" aria-hidden="true" tabindex="-1"></a><span class="in">          newdata = df_expand_grid)</span></span>
 <span id="cb88-559"><a href="#cb88-559" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-560"><a href="#cb88-560" aria-hidden="true" tabindex="-1"></a><span class="co"># have a look at the object</span></span>
-<span id="cb88-561"><a href="#cb88-561" aria-hidden="true" tabindex="-1"></a><span class="co">#dplyr::glimpse(df_predict)</span></span>
+<span id="cb88-560"><a href="#cb88-560" aria-hidden="true" tabindex="-1"></a><span class="in"># have a look at the object</span></span>
+<span id="cb88-561"><a href="#cb88-561" aria-hidden="true" tabindex="-1"></a><span class="in">#dplyr::glimpse(df_predict)</span></span>
 <span id="cb88-562"><a href="#cb88-562" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-563"><a href="#cb88-563" aria-hidden="true" tabindex="-1"></a><span class="co"># create a new dataframe for the new sequence of points for mother's height and the predicted data</span></span>
-<span id="cb88-564"><a href="#cb88-564" aria-hidden="true" tabindex="-1"></a>newdata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(df_expand_grid, df_predict)</span>
-<span id="cb88-565"><a href="#cb88-565" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(newdata)</span>
+<span id="cb88-563"><a href="#cb88-563" aria-hidden="true" tabindex="-1"></a><span class="in"># create a new dataframe for the new sequence of points for mother's height and the predicted data</span></span>
+<span id="cb88-564"><a href="#cb88-564" aria-hidden="true" tabindex="-1"></a><span class="in">newdata &lt;- data.frame(df_expand_grid, df_predict)</span></span>
+<span id="cb88-565"><a href="#cb88-565" aria-hidden="true" tabindex="-1"></a><span class="in">head(newdata)</span></span>
 <span id="cb88-566"><a href="#cb88-566" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb88-567"><a href="#cb88-567" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-568"><a href="#cb88-568" aria-hidden="true" tabindex="-1"></a>Graph the predicted results</span>
@@ -5142,10 +5149,10 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb88-596"><a href="#cb88-596" aria-hidden="true" tabindex="-1"></a>A simple method for obtaining the predicted values from your fitted model is to obtain the effects output without producing a graph.</span>
 <span id="cb88-597"><a href="#cb88-597" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-598"><a href="#cb88-598" aria-hidden="true" tabindex="-1"></a><span class="in">```{r code_folding = FALSE}</span></span>
-<span id="cb88-599"><a href="#cb88-599" aria-hidden="true" tabindex="-1"></a><span class="co"># prediction plots</span></span>
-<span id="cb88-600"><a href="#cb88-600" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggeffects)</span>
-<span id="cb88-601"><a href="#cb88-601" aria-hidden="true" tabindex="-1"></a><span class="co"># predicted values of mother height on daughter height</span></span>
-<span id="cb88-602"><a href="#cb88-602" aria-hidden="true" tabindex="-1"></a>ggeffects<span class="sc">::</span><span class="fu">ggpredict</span>(m1, <span class="at">terms =</span> <span class="st">"mother_height"</span>)</span>
+<span id="cb88-599"><a href="#cb88-599" aria-hidden="true" tabindex="-1"></a><span class="in"># prediction plots</span></span>
+<span id="cb88-600"><a href="#cb88-600" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggeffects)</span></span>
+<span id="cb88-601"><a href="#cb88-601" aria-hidden="true" tabindex="-1"></a><span class="in"># predicted values of mother height on daughter height</span></span>
+<span id="cb88-602"><a href="#cb88-602" aria-hidden="true" tabindex="-1"></a><span class="in">ggeffects::ggpredict(m1, terms = "mother_height")</span></span>
 <span id="cb88-603"><a href="#cb88-603" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb88-604"><a href="#cb88-604" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-605"><a href="#cb88-605" aria-hidden="true" tabindex="-1"></a><span class="fu">### Non-linear relationships</span></span>
@@ -5155,21 +5162,21 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb88-609"><a href="#cb88-609" aria-hidden="true" tabindex="-1"></a>Consider the following example:</span>
 <span id="cb88-610"><a href="#cb88-610" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-611"><a href="#cb88-611" aria-hidden="true" tabindex="-1"></a><span class="in">```{r code_folding = FALSE}</span></span>
-<span id="cb88-612"><a href="#cb88-612" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate nonlinear relationship between x and y</span></span>
-<span id="cb88-613"><a href="#cb88-613" aria-hidden="true" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="fl">0.75</span>)</span>
-<span id="cb88-614"><a href="#cb88-614" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
-<span id="cb88-615"><a href="#cb88-615" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
-<span id="cb88-616"><a href="#cb88-616" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">12</span>)</span>
-<span id="cb88-617"><a href="#cb88-617" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="at">mean =</span> b[<span class="dv">1</span>] <span class="sc">*</span> <span class="fu">exp</span>(b[<span class="dv">2</span>] <span class="sc">*</span> x))</span>
-<span id="cb88-618"><a href="#cb88-618" aria-hidden="true" tabindex="-1"></a>dat1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(x, y)</span>
+<span id="cb88-612"><a href="#cb88-612" aria-hidden="true" tabindex="-1"></a><span class="in"># simulate nonlinear relationship between x and y</span></span>
+<span id="cb88-613"><a href="#cb88-613" aria-hidden="true" tabindex="-1"></a><span class="in">b &lt;- c(2, 0.75)</span></span>
+<span id="cb88-614"><a href="#cb88-614" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(12)</span></span>
+<span id="cb88-615"><a href="#cb88-615" aria-hidden="true" tabindex="-1"></a><span class="in">x &lt;- rnorm(100)</span></span>
+<span id="cb88-616"><a href="#cb88-616" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(12)</span></span>
+<span id="cb88-617"><a href="#cb88-617" aria-hidden="true" tabindex="-1"></a><span class="in">y &lt;- rnorm(100, mean = b[1] * exp(b[2] * x))</span></span>
+<span id="cb88-618"><a href="#cb88-618" aria-hidden="true" tabindex="-1"></a><span class="in">dat1 &lt;- data.frame(x, y)</span></span>
 <span id="cb88-619"><a href="#cb88-619" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-620"><a href="#cb88-620" aria-hidden="true" tabindex="-1"></a>ot1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data  =</span> dat1)</span>
-<span id="cb88-621"><a href="#cb88-621" aria-hidden="true" tabindex="-1"></a><span class="co"># performance::check_model(ot1)</span></span>
+<span id="cb88-620"><a href="#cb88-620" aria-hidden="true" tabindex="-1"></a><span class="in">ot1 &lt;- lm(y ~ x, data  = dat1)</span></span>
+<span id="cb88-621"><a href="#cb88-621" aria-hidden="true" tabindex="-1"></a><span class="in"># performance::check_model(ot1)</span></span>
 <span id="cb88-622"><a href="#cb88-622" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-623"><a href="#cb88-623" aria-hidden="true" tabindex="-1"></a><span class="co"># plot linear effect</span></span>
-<span id="cb88-624"><a href="#cb88-624" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ggeffects<span class="sc">::</span><span class="fu">ggpredict</span>(ot1, <span class="at">terms =</span> <span class="st">"x"</span>,</span>
-<span id="cb88-625"><a href="#cb88-625" aria-hidden="true" tabindex="-1"></a>     <span class="at">add.data =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb88-626"><a href="#cb88-626" aria-hidden="true" tabindex="-1"></a>     <span class="at">dot.alpha =</span> .<span class="dv">4</span>))</span>
+<span id="cb88-623"><a href="#cb88-623" aria-hidden="true" tabindex="-1"></a><span class="in"># plot linear effect</span></span>
+<span id="cb88-624"><a href="#cb88-624" aria-hidden="true" tabindex="-1"></a><span class="in">plot(ggeffects::ggpredict(ot1, terms = "x",</span></span>
+<span id="cb88-625"><a href="#cb88-625" aria-hidden="true" tabindex="-1"></a><span class="in">     add.data = TRUE,</span></span>
+<span id="cb88-626"><a href="#cb88-626" aria-hidden="true" tabindex="-1"></a><span class="in">     dot.alpha = .4))</span></span>
 <span id="cb88-627"><a href="#cb88-627" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb88-628"><a href="#cb88-628" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-629"><a href="#cb88-629" aria-hidden="true" tabindex="-1"></a>Non-linear relationship as modelled by a polynomial regression:</span>
@@ -5267,16 +5274,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb88-731"><a href="#cb88-731" aria-hidden="true" tabindex="-1"></a>We can use the <span class="in">`performance`</span> package to generate a table that compares model fits.</span>
 <span id="cb88-732"><a href="#cb88-732" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-733"><a href="#cb88-733" aria-hidden="true" tabindex="-1"></a><span class="in">```{r code_foldign = FALSE, code_folding =FALSE}</span></span>
-<span id="cb88-734"><a href="#cb88-734" aria-hidden="true" tabindex="-1"></a><span class="co"># load library </span></span>
-<span id="cb88-735"><a href="#cb88-735" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb88-736"><a href="#cb88-736" aria-hidden="true" tabindex="-1"></a><span class="co"># intercept only</span></span>
-<span id="cb88-737"><a href="#cb88-737" aria-hidden="true" tabindex="-1"></a>fig_intercept_only <span class="ot">&lt;-</span> <span class="fu">lm</span>(daughter_height <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> df_pearson_lee)</span>
+<span id="cb88-734"><a href="#cb88-734" aria-hidden="true" tabindex="-1"></a><span class="in"># load library </span></span>
+<span id="cb88-735"><a href="#cb88-735" aria-hidden="true" tabindex="-1"></a><span class="in">library(performance)</span></span>
+<span id="cb88-736"><a href="#cb88-736" aria-hidden="true" tabindex="-1"></a><span class="in"># intercept only</span></span>
+<span id="cb88-737"><a href="#cb88-737" aria-hidden="true" tabindex="-1"></a><span class="in">fig_intercept_only &lt;- lm(daughter_height ~ 1, data = df_pearson_lee)</span></span>
 <span id="cb88-738"><a href="#cb88-738" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-739"><a href="#cb88-739" aria-hidden="true" tabindex="-1"></a><span class="co"># covariate added</span></span>
-<span id="cb88-740"><a href="#cb88-740" aria-hidden="true" tabindex="-1"></a>fig_covariate <span class="ot">&lt;-</span> <span class="fu">lm</span>(daughter_height <span class="sc">~</span> mother_height, <span class="at">data =</span> df_pearson_lee)</span>
+<span id="cb88-739"><a href="#cb88-739" aria-hidden="true" tabindex="-1"></a><span class="in"># covariate added</span></span>
+<span id="cb88-740"><a href="#cb88-740" aria-hidden="true" tabindex="-1"></a><span class="in">fig_covariate &lt;- lm(daughter_height ~ mother_height, data = df_pearson_lee)</span></span>
 <span id="cb88-741"><a href="#cb88-741" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-742"><a href="#cb88-742" aria-hidden="true" tabindex="-1"></a><span class="co"># evaluate</span></span>
-<span id="cb88-743"><a href="#cb88-743" aria-hidden="true" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">compare_performance</span>(fig_intercept_only, fig_covariate)</span>
+<span id="cb88-742"><a href="#cb88-742" aria-hidden="true" tabindex="-1"></a><span class="in"># evaluate</span></span>
+<span id="cb88-743"><a href="#cb88-743" aria-hidden="true" tabindex="-1"></a><span class="in">performance::compare_performance(fig_intercept_only, fig_covariate)</span></span>
 <span id="cb88-744"><a href="#cb88-744" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb88-745"><a href="#cb88-745" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-746"><a href="#cb88-746" aria-hidden="true" tabindex="-1"></a>What was the model "improvement?"</span>
@@ -5294,13 +5301,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb88-760"><a href="#cb88-760" aria-hidden="true" tabindex="-1"></a>For example:</span>
 <span id="cb88-761"><a href="#cb88-761" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-762"><a href="#cb88-762" aria-hidden="true" tabindex="-1"></a><span class="in">```{r code_folding = FALSE,}</span></span>
-<span id="cb88-763"><a href="#cb88-763" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">report_statistics</span>(fig_covariate)</span>
+<span id="cb88-763"><a href="#cb88-763" aria-hidden="true" tabindex="-1"></a><span class="in">report::report_statistics(fig_covariate)</span></span>
 <span id="cb88-764"><a href="#cb88-764" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb88-765"><a href="#cb88-765" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-766"><a href="#cb88-766" aria-hidden="true" tabindex="-1"></a>Or, if you want a longer report:</span>
 <span id="cb88-767"><a href="#cb88-767" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-768"><a href="#cb88-768" aria-hidden="true" tabindex="-1"></a><span class="in">```{r code_folding = FALSE, eval=FALSE}</span></span>
-<span id="cb88-769"><a href="#cb88-769" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">report</span>(fig_covariate)</span>
+<span id="cb88-769"><a href="#cb88-769" aria-hidden="true" tabindex="-1"></a><span class="in">report::report(fig_covariate)</span></span>
 <span id="cb88-770"><a href="#cb88-770" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb88-771"><a href="#cb88-771" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-772"><a href="#cb88-772" aria-hidden="true" tabindex="-1"></a>Use <span class="in">`statistically significant`</span> in place of <span class="in">`significant`</span>. This will avoid misleading your audience into thinking your result is important when what you intend to communicate is that it is reliable.</span>
@@ -5652,14 +5659,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb88-1136"><a href="#cb88-1136" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-1137"><a href="#cb88-1137" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-1138"><a href="#cb88-1138" aria-hidden="true" tabindex="-1"></a><span class="in">```{r  libraries}</span></span>
-<span id="cb88-1139"><a href="#cb88-1139" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: libs_for_problemset</span></span>
+<span id="cb88-1139"><a href="#cb88-1139" aria-hidden="true" tabindex="-1"></a><span class="in">#| label: libs_for_problemset</span></span>
 <span id="cb88-1140"><a href="#cb88-1140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb88-1141"><a href="#cb88-1141" aria-hidden="true" tabindex="-1"></a><span class="do">### libraries</span></span>
-<span id="cb88-1142"><a href="#cb88-1142" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"tidyverse"</span>)</span>
-<span id="cb88-1143"><a href="#cb88-1143" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"patchwork"</span>)</span>
-<span id="cb88-1144"><a href="#cb88-1144" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"lubridate"</span>)</span>
-<span id="cb88-1145"><a href="#cb88-1145" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"kableExtra"</span>)</span>
-<span id="cb88-1146"><a href="#cb88-1146" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"gtsummary"</span>)</span>
+<span id="cb88-1141"><a href="#cb88-1141" aria-hidden="true" tabindex="-1"></a><span class="in">### libraries</span></span>
+<span id="cb88-1142"><a href="#cb88-1142" aria-hidden="true" tabindex="-1"></a><span class="in">library("tidyverse")</span></span>
+<span id="cb88-1143"><a href="#cb88-1143" aria-hidden="true" tabindex="-1"></a><span class="in">library("patchwork")</span></span>
+<span id="cb88-1144"><a href="#cb88-1144" aria-hidden="true" tabindex="-1"></a><span class="in">library("lubridate")</span></span>
+<span id="cb88-1145"><a href="#cb88-1145" aria-hidden="true" tabindex="-1"></a><span class="in">library("kableExtra")</span></span>
+<span id="cb88-1146"><a href="#cb88-1146" aria-hidden="true" tabindex="-1"></a><span class="in">library("gtsummary")</span></span>
 <span id="cb88-1147"><a href="#cb88-1147" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb88-1148"><a href="#cb88-1148" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb88-1151"><a href="#cb88-1151" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>

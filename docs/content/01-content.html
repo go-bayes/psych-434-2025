@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.5">
+<meta name="generator" content="quarto-1.6.32">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-cb64309e6bcb4fe4e8f7b1d812ed84fe.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-5dbef85374e00b74dcda297261b8f55d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-77de44bb6a52b004703a96ffd6f79862.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-25eb9fb8d16e1bd9707dc75df2223802.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -161,10 +161,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <a class="dropdown-item" href="../content/05-content.html">
  <span class="dropdown-text">Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)</span></a>
   </li>  
-        <li class="dropdown-header">Week 6: In Class Test</li>
         <li>
-    <a class="dropdown-item" href="../content/07-content.html">
- <span class="dropdown-text">Week 7: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+    <a class="dropdown-item" href="../content/06-content.html">
+ <span class="dropdown-text">Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/07-quiz.html">
+ <span class="dropdown-text">Week 7: In Class Test</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/08-content.html">
@@ -180,11 +183,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
         <li>
     <a class="dropdown-item" href="../content/11-content.html">
- <span class="dropdown-text">Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance</span></a>
+ <span class="dropdown-text">Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance/ And How These Approaches Fail</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/12-content.html">
- <span class="dropdown-text">Week 12: Measurement: Conceptual Problems</span></a>
+ <span class="dropdown-text">Week 12: Student Presentations</span></a>
   </li>  
     </ul>
   </li>
@@ -2452,6 +2455,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -2613,6 +2618,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
+      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -2956,13 +2962,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb201-120"><a href="#cb201-120" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb201-121"><a href="#cb201-121" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">PREVIEW</span><span class="co">](/slides/01-slides.html)</span></span>
 <span id="cb201-122"><a href="#cb201-122" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-123"><a href="#cb201-123" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb201-123"><a href="#cb201-123" aria-hidden="true" tabindex="-1"></a>&lt;div&gt;</span>
 <span id="cb201-124"><a href="#cb201-124" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb201-125"><a href="#cb201-125" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
 <span id="cb201-126"><a href="#cb201-126" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;iframe class="slide-deck" src="/slides/01-slides.html"&gt;&lt;/iframe&gt;</span></span>
 <span id="cb201-127"><a href="#cb201-127" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb201-128"><a href="#cb201-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-129"><a href="#cb201-129" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb201-129"><a href="#cb201-129" aria-hidden="true" tabindex="-1"></a>&lt;/div&gt;</span>
 <span id="cb201-130"><a href="#cb201-130" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb201-131"><a href="#cb201-131" aria-hidden="true" tabindex="-1"></a>Open in browser <span class="co">[</span><span class="ot">here</span><span class="co">](/slides/01-slides.html)</span>{target="_blank"}</span>
 <span id="cb201-132"><a href="#cb201-132" aria-hidden="true" tabindex="-1"></a></span>
@@ -2978,13 +2984,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb201-142"><a href="#cb201-142" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb201-143"><a href="#cb201-143" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">PREVIEW</span><span class="co">](/slides/01-slides-lab.html)</span></span>
 <span id="cb201-144"><a href="#cb201-144" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-145"><a href="#cb201-145" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb201-145"><a href="#cb201-145" aria-hidden="true" tabindex="-1"></a>&lt;div&gt;</span>
 <span id="cb201-146"><a href="#cb201-146" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb201-147"><a href="#cb201-147" aria-hidden="true" tabindex="-1"></a><span class="in">```{=html}</span></span>
 <span id="cb201-148"><a href="#cb201-148" aria-hidden="true" tabindex="-1"></a><span class="in">&lt;iframe class="slide-deck" src="/slides/01-slides-lab.html"&gt;&lt;/iframe&gt;</span></span>
 <span id="cb201-149"><a href="#cb201-149" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb201-150"><a href="#cb201-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-151"><a href="#cb201-151" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span>
+<span id="cb201-151"><a href="#cb201-151" aria-hidden="true" tabindex="-1"></a>&lt;/div&gt;</span>
 <span id="cb201-152"><a href="#cb201-152" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb201-153"><a href="#cb201-153" aria-hidden="true" tabindex="-1"></a>Open in browser <span class="co">[</span><span class="ot">here</span><span class="co">](/slides/01-slides-lab.html)</span>{target="_blank"}</span>
 <span id="cb201-154"><a href="#cb201-154" aria-hidden="true" tabindex="-1"></a></span>
