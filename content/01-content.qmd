@@ -104,7 +104,7 @@ Once you have successfully installed R and RStudio:
 
 5. Save the new R script file in your project directory for easy access during the lab.
 
-[Download the R script for Lab 01](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/laboratory/01-lab.R)
+[Download the R script for Lab 01](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/01-lab.R)
 :::
 
 

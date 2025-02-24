@@ -1094,294 +1094,294 @@
   {
     "objectID": "slides/01-slides-lab.html#introduction",
     "href": "slides/01-slides-lab.html#introduction",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Introduction",
     "text": "Introduction\n\nWhy learn R?\nYou’ll need it for your final report.\nSupports your psychology coursework.\nEnhances your coding skills."
   },
   {
     "objectID": "slides/01-slides-lab.html#install-r",
     "href": "slides/01-slides-lab.html#install-r",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Install R",
     "text": "Install R\n\nVisit the comprehensive r archive network (cran) at https://cran.r-project.org/\nSelect the version of r suitable for your operating system (windows, mac, or linux)\nDownload and install it by following the on-screen instructions"
   },
   {
     "objectID": "slides/01-slides-lab.html#install-rstudio",
     "href": "slides/01-slides-lab.html#install-rstudio",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Install RStudio",
     "text": "Install RStudio\n\nVisit rstudio download page at https://www.rstudio.com/products/rstudio/download/\nChoose the free version of rstudio desktop,\nDownload it for your operating system\nInstall and open"
   },
   {
     "objectID": "slides/01-slides-lab.html#create-new-project",
     "href": "slides/01-slides-lab.html#create-new-project",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Create new project",
     "text": "Create new project\n\nfile &gt; new project\nChoose new directory\nSpecify the location where the project folder will be created\nClick create project"
   },
   {
     "objectID": "slides/01-slides-lab.html#exercise-1-install-tidyverse",
     "href": "slides/01-slides-lab.html#exercise-1-install-tidyverse",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Exercise 1: Install tidyverse",
     "text": "Exercise 1: Install tidyverse\n\nOpen rstudio: launch rstudio on your computer\ntools &gt; install packages\nType tidyverse\nClick on the install button\nType library(tidyverse) in the console and press enter"
   },
   {
     "objectID": "slides/01-slides-lab.html#execut-code",
     "href": "slides/01-slides-lab.html#execut-code",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Execut Code",
     "text": "Execut Code\n\nUse Ctrl + Enter (Windows/Linux) or Cmd + Enter (Mac)."
   },
   {
     "objectID": "slides/01-slides-lab.html#assignment-operator",
     "href": "slides/01-slides-lab.html#assignment-operator",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Assignment Operator",
     "text": "Assignment Operator\nThe assignment operator in R is &lt;-. This operator assigns values to variables.\n\nx &lt;- 10 # assigns the value 10 to x\ny &lt;- 5  # assigns the value 5 to y\n\nAlternative assignment:\n\nx = 10\ny = 5\n\nComparing values:\n\n10 == 5 # returns FALSE\n\n[1] FALSE"
   },
   {
     "objectID": "slides/01-slides-lab.html#rstudio-assignment-operator-shortcut",
     "href": "slides/01-slides-lab.html#rstudio-assignment-operator-shortcut",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "RStudio Assignment Operator Shortcut",
     "text": "RStudio Assignment Operator Shortcut\n\nFor macOS: Option + - inserts &lt;-.\nFor Windows and Linux: Alt + - inserts &lt;-."
   },
   {
     "objectID": "slides/01-slides-lab.html#keyboard-shortcuts",
     "href": "slides/01-slides-lab.html#keyboard-shortcuts",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Keyboard Shortcuts",
     "text": "Keyboard Shortcuts\nExplore keyboard shortcuts in RStudio through Tools -&gt; Keyboard Shortcuts Help."
   },
   {
     "objectID": "slides/01-slides-lab.html#concatenation",
     "href": "slides/01-slides-lab.html#concatenation",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Concatenation",
     "text": "Concatenation\nThe c() function combines multiple elements into a vector.\n\nnumbers &lt;- c(1, 2, 3, 4, 5) # a vector of numbers\nprint(numbers)\n\n[1] 1 2 3 4 5"
   },
   {
     "objectID": "slides/01-slides-lab.html#arithmetic-operations",
     "href": "slides/01-slides-lab.html#arithmetic-operations",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Arithmetic Operations",
     "text": "Arithmetic Operations\nAddition and subtraction in R:\n\nsum &lt;- x + y\nprint(sum)\n\n[1] 15\n\ndifference &lt;- x - y\nprint(difference)\n\n[1] 5"
   },
   {
     "objectID": "slides/01-slides-lab.html#multiplication-and-division",
     "href": "slides/01-slides-lab.html#multiplication-and-division",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Multiplication and Division",
     "text": "Multiplication and Division\n\n# Scalar operations\nproduct &lt;- x * y\nquotient &lt;- x / y\n\n\n# vector multiplication and division\nvector1 &lt;- c(1, 2, 3)\nvector2 &lt;- c(4, 5, 6)\n\n# Vector operations\nvector_product &lt;- vector1 * vector2\nvector_division &lt;- vector1 / vector2\n\nBe cautious with division by zero:\n\nresult &lt;- 10 / 0 # Inf\nzero_division &lt;- 0 / 0 # NaN\n\nInteger division and modulo operation:\n\ninteger_division &lt;- 10 %/% 3\nremainder &lt;- 10 %% 3"
   },
   {
     "objectID": "slides/01-slides-lab.html#logical-operators",
     "href": "slides/01-slides-lab.html#logical-operators",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Logical Operators",
     "text": "Logical Operators\nExamples of NOT, NOT EQUAL, and EQUAL operations:\n\nx_not_y &lt;- x != y\nx_equal_10 &lt;- x == 10\n\nOR and AND operations:\n\nvector_or &lt;- c(TRUE, FALSE) | c(FALSE, TRUE)\nsingle_or &lt;- TRUE || FALSE\n\nvector_and &lt;- c(TRUE, FALSE) & c(FALSE, TRUE)\nsingle_and &lt;- TRUE && FALSE"
   },
   {
     "objectID": "slides/01-slides-lab.html#integers",
     "href": "slides/01-slides-lab.html#integers",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Integers",
     "text": "Integers\n\nWhole numbers without decimal points, defined with an L suffix\n\n\nx &lt;- 42L\nstr(x) # check type\n\n int 42\n\n\n\nConversion to numeric\n\n\ny &lt;- as.numeric(x)\nstr(y)\n\n num 42"
   },
   {
     "objectID": "slides/01-slides-lab.html#characters",
     "href": "slides/01-slides-lab.html#characters",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Characters",
     "text": "Characters\n\nText strings enclosed in quotes\n\n\nname &lt;- \"alice\""
   },
   {
     "objectID": "slides/01-slides-lab.html#factors",
     "href": "slides/01-slides-lab.html#factors",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Factors",
     "text": "Factors\n\nRepresent categorical data with limited values\n\n\ncolors &lt;- factor(c(\"red\", \"blue\", \"green\"))"
   },
   {
     "objectID": "slides/01-slides-lab.html#ordered-factors",
     "href": "slides/01-slides-lab.html#ordered-factors",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Ordered Factors",
     "text": "Ordered Factors\n\nFactors with and without inherent order\n\n\neducation_levels &lt;- c(\"high school\", \"bachelor\", \"master\", \"ph.d.\")\neducation_factor_no_order &lt;- factor(education_levels, ordered = FALSE)\neducation_factor &lt;- factor(education_levels, ordered = TRUE)\neducation_ordered_explicit &lt;- factor(education_levels, levels = education_levels, ordered = TRUE)\n\n\nOperations with ordered factors\n\n\nedu1 &lt;- ordered(\"bachelor\", levels = education_levels)\nedu2 &lt;- ordered(\"master\", levels = education_levels)\nedu2 &gt; edu1 # logical comparison\n\n[1] TRUE\n\n\n\nModifying ordered factors\n\n\nnew_levels &lt;- c(\"primary school\", \"high school\", \"bachelor\", \"master\", \"ph.d.\")\neducation_updated &lt;- factor(education_levels, levels = new_levels, ordered = TRUE)\nstr(education_updated)\n\n Ord.factor w/ 5 levels \"primary school\"&lt;..: 2 3 4 5\n\ntable(education_updated)\n\neducation_updated\nprimary school    high school       bachelor         master          ph.d. \n             0              1              1              1              1"
   },
   {
     "objectID": "slides/01-slides-lab.html#strings",
     "href": "slides/01-slides-lab.html#strings",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Strings",
     "text": "Strings\n\nSequences of characters\n\n\nyou &lt;- 'world!'\ngreeting &lt;- paste(\"hello,\", you)\n# hello world\ngreeting\n\n[1] \"hello, world!\""
   },
   {
     "objectID": "slides/01-slides-lab.html#vectors",
     "href": "slides/01-slides-lab.html#vectors",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Vectors",
     "text": "Vectors\n\nFundamental data structure in R\n\n\nnumeric_vector &lt;- c(1, 2, 3, 4, 5)\ncharacter_vector &lt;- c(\"apple\", \"banana\", \"cherry\")\nlogical_vector &lt;- c(TRUE, FALSE, TRUE, FALSE)\n\n\nManipulating vectors\n\n\nvector_sum &lt;- numeric_vector + 10\nvector_multiplication &lt;- numeric_vector * 2\nvector_greater_than_three &lt;- numeric_vector &gt; 3"
   },
   {
     "objectID": "slides/01-slides-lab.html#table-function",
     "href": "slides/01-slides-lab.html#table-function",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "table() Function",
     "text": "table() Function\n\nGenerates frequency tables for categorical data\n\n\ntable(vector_greater_than_three)\n\nvector_greater_than_three\nFALSE  TRUE \n    3     2"
   },
   {
     "objectID": "slides/01-slides-lab.html#dataframes",
     "href": "slides/01-slides-lab.html#dataframes",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Dataframes",
     "text": "Dataframes\n\nCreating and manipulating data frames\n\n\n# clear previous `df` object (if any)\nrm(df)\ndf &lt;- data.frame(\n  name = c(\"alice\", \"bob\", \"charlie\"),\n  age = c(25, 30, 35),\n  gender = c(\"female\", \"male\", \"male\")\n)\n# look at structure\nhead(df)\n\n     name age gender\n1   alice  25 female\n2     bob  30   male\n3 charlie  35   male\n\nstr(df)\n\n'data.frame':   3 obs. of  3 variables:\n $ name  : chr  \"alice\" \"bob\" \"charlie\"\n $ age   : num  25 30 35\n $ gender: chr  \"female\" \"male\" \"male\"\n\ntable(df$gender)\n\n\nfemale   male \n     1      2 \n\ntable(df$age)\n\n\n25 30 35 \n 1  1  1 \n\ntable(df$name)\n\n\n  alice     bob charlie \n      1       1       1"
   },
   {
     "objectID": "slides/01-slides-lab.html#access-data-frame-elements",
     "href": "slides/01-slides-lab.html#access-data-frame-elements",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Access Data Frame Elements",
     "text": "Access Data Frame Elements\n\nBy column name and row/column indexing\n\n\n# by column name\nnames &lt;- df$name\n# by row and column\nsecond_person &lt;- df[2, ]\nage_column &lt;- df[, \"age\"]"
   },
   {
     "objectID": "slides/01-slides-lab.html#using-subset-function",
     "href": "slides/01-slides-lab.html#using-subset-function",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Using subset() Function",
     "text": "Using subset() Function\n\nExtracting rows based on conditions\n\n\nvery_old_people &lt;- subset(df, age &gt; 25)\nsummary(very_old_people$age)\n\n   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. \n  30.00   31.25   32.50   32.50   33.75   35.00 \n\nmean(very_old_people$age)\n\n[1] 32.5\n\nmin(very_old_people$age)\n\n[1] 30"
   },
   {
     "objectID": "slides/01-slides-lab.html#explore-data-frames",
     "href": "slides/01-slides-lab.html#explore-data-frames",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Explore Data Frames",
     "text": "Explore Data Frames\n\nUsing head(), tail(), and str()\n\n\nhead(df)\n\n     name age gender\n1   alice  25 female\n2     bob  30   male\n3 charlie  35   male\n\ntail(df)\n\n     name age gender\n1   alice  25 female\n2     bob  30   male\n3 charlie  35   male\n\nstr(df)\n\n'data.frame':   3 obs. of  3 variables:\n $ name  : chr  \"alice\" \"bob\" \"charlie\"\n $ age   : num  25 30 35\n $ gender: chr  \"female\" \"male\" \"male\""
   },
   {
     "objectID": "slides/01-slides-lab.html#modify-data-frames",
     "href": "slides/01-slides-lab.html#modify-data-frames",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Modify Data Frames",
     "text": "Modify Data Frames\n\nAdd and modify columns and rows\n\n\n# add columns\ndf$employed &lt;- c(TRUE, TRUE, FALSE)\n# add rows\nnew_person &lt;- data.frame(name = \"diana\", age = 28, gender = \"female\", employed = TRUE)\ndf &lt;- rbind(df, new_person)\n# modify values\ndf[4, \"age\"] &lt;- 26\ndf\n\n     name age gender employed\n1   alice  25 female     TRUE\n2     bob  30   male     TRUE\n3 charlie  35   male    FALSE\n4   diana  26 female     TRUE"
   },
   {
     "objectID": "slides/01-slides-lab.html#rbind-and-cbind",
     "href": "slides/01-slides-lab.html#rbind-and-cbind",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "rbind() and cbind()",
     "text": "rbind() and cbind()\n\nAdding rows and columns to data frames\n\n\n# add rows with `rbind()`\nnew_person &lt;- data.frame(name = \"eve\", age = 32, gender = \"female\", employed = TRUE)\ndf &lt;- rbind(df, new_person)\n# add columns with `cbind()`\noccupation_vector &lt;- c(\"engineer\", \"doctor\", \"artist\", \"teacher\", \"doctor\")\ndf &lt;- cbind(df, occupation_vector)\ndf\n\n     name age gender employed occupation_vector\n1   alice  25 female     TRUE          engineer\n2     bob  30   male     TRUE            doctor\n3 charlie  35   male    FALSE            artist\n4   diana  26 female     TRUE           teacher\n5     eve  32 female     TRUE            doctor"
   },
   {
     "objectID": "slides/01-slides-lab.html#data-structure-view",
     "href": "slides/01-slides-lab.html#data-structure-view",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Data Structure View",
     "text": "Data Structure View\n\nUsing summary(), str(), head(), and tail()\n\n\nstr(iris)\n\n'data.frame':   150 obs. of  5 variables:\n $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...\n $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...\n $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...\n $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...\n $ Species     : Factor w/ 3 levels \"setosa\",\"versicolor\",..: 1 1 1 1 1 1 1 1 1 1 ...\n\nsummary(iris)\n\n  Sepal.Length    Sepal.Width     Petal.Length    Petal.Width   \n Min.   :4.300   Min.   :2.000   Min.   :1.000   Min.   :0.100  \n 1st Qu.:5.100   1st Qu.:2.800   1st Qu.:1.600   1st Qu.:0.300  \n Median :5.800   Median :3.000   Median :4.350   Median :1.300  \n Mean   :5.843   Mean   :3.057   Mean   :3.758   Mean   :1.199  \n 3rd Qu.:6.400   3rd Qu.:3.300   3rd Qu.:5.100   3rd Qu.:1.800  \n Max.   :7.900   Max.   :4.400   Max.   :6.900   Max.   :2.500  \n       Species  \n setosa    :50  \n versicolor:50  \n virginica :50  \n                \n                \n                \n\nhead(iris)\n\n  Sepal.Length Sepal.Width Petal.Length Petal.Width Species\n1          5.1         3.5          1.4         0.2  setosa\n2          4.9         3.0          1.4         0.2  setosa\n3          4.7         3.2          1.3         0.2  setosa\n4          4.6         3.1          1.5         0.2  setosa\n5          5.0         3.6          1.4         0.2  setosa\n6          5.4         3.9          1.7         0.4  setosa\n\ntail(iris)\n\n    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species\n145          6.7         3.3          5.7         2.5 virginica\n146          6.7         3.0          5.2         2.3 virginica\n147          6.3         2.5          5.0         1.9 virginica\n148          6.5         3.0          5.2         2.0 virginica\n149          6.2         3.4          5.4         2.3 virginica\n150          5.9         3.0          5.1         1.8 virginica"
   },
   {
     "objectID": "slides/01-slides-lab.html#statistical-functions",
     "href": "slides/01-slides-lab.html#statistical-functions",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Statistical Functions",
     "text": "Statistical Functions\n\nmean(), sd(), min(), max(), and table()\n\n\n#  seed for reproducibility\nset.seed(12345)\nvector &lt;- rnorm(n = 40, mean = 0, sd = 1)\nmean(vector)  # calculates mean\n\n[1] 0.2401853\n\nsd(vector)  # computes standard deviation\n\n[1] 1.038425\n\nmin(vector)  # finds minimum value\n\n[1] -1.817956\n\nmax(vector)  # finds maximum value\n\n[1] 2.196834"
   },
   {
     "objectID": "slides/01-slides-lab.html#introduction-to-ggplot2",
     "href": "slides/01-slides-lab.html#introduction-to-ggplot2",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Introduction to ggplot2",
     "text": "Introduction to ggplot2\n\nVisualizing data with ggplot2\n\n\n#  seed for reproducibility\nset.seed(12345)\n# ensure ggplot2 is installed and loaded\nif (!require(ggplot2)) install.packages(\"ggplot2\")\nlibrary(ggplot2)\n# simulate student data\nstudent_data &lt;- data.frame(\n  name = c(\"alice\", \"bob\", \"charlie\", \"diana\", \"ethan\", \"fiona\", \"george\", \"hannah\"),\n  score = sample(80:100, 8, replace = TRUE),\n  stringsasfactors = FALSE\n)\nstudent_data$passed &lt;- ifelse(student_data$score &gt;= 90, \"passed\", \"failed\")\nstudent_data$passed &lt;- factor(student_data$passed, levels = c(\"failed\", \"passed\"))\nstudent_data$study_hours &lt;- sample(5:15, 8, replace = TRUE)"
   },
   {
     "objectID": "slides/01-slides-lab.html#ggplot2-barplot-score-for-each-name",
     "href": "slides/01-slides-lab.html#ggplot2-barplot-score-for-each-name",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "ggplot2 Barplot: score for each name",
     "text": "ggplot2 Barplot: score for each name\n\nggplot(student_data, aes(x = name, y = score)) +\n  geom_bar(stat = \"identity\")\n\n\n\n\n\n\n\n\n\nenhanced bar plot with titles, axis labels, and modified colours\n\n\nggplot(student_data, aes(x = name, y = score, fill = passed)) +\n  geom_bar(stat = \"identity\") +\n  scale_fill_manual(values = c(\"TRUE\" = \"blue\", \"FALSE\" = \"red\")) +\n  labs(title = \"student scores\", x = \"student name\", y = \"score\") +\n  theme_minimal()"
   },
   {
     "objectID": "slides/01-slides-lab.html#ggplot2-scatterplot-student-scores-against-study-hours",
     "href": "slides/01-slides-lab.html#ggplot2-scatterplot-student-scores-against-study-hours",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "ggplot2 Scatterplot: student scores against study hours",
     "text": "ggplot2 Scatterplot: student scores against study hours\n\nggplot(student_data, aes(x = study_hours, y = score, color = passed)) +\n  geom_point(size = 4) +\n  labs(title = \"student scores vs. study hours\", x = \"study hours\", y = \"score\") +\n  theme_minimal() +\n  scale_color_manual(values = c(\"failed\" = \"red\", \"passed\" = \"blue\"))"
   },
   {
     "objectID": "slides/01-slides-lab.html#ggplot2-boxplot-scores-by-passfail-status",
     "href": "slides/01-slides-lab.html#ggplot2-boxplot-scores-by-passfail-status",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "ggplot2 Boxplot: scores by pass/fail status",
     "text": "ggplot2 Boxplot: scores by pass/fail status\n\nggplot(student_data, aes(x = passed, y = score, fill = passed)) +\n  geom_boxplot() +\n  labs(title = \"score distribution by pass/fail status\", x = \"status\", y = \"score\") +\n  theme_minimal() +\n  scale_fill_manual(values = c(\"failed\" = \"red\", \"passed\" = \"blue\"))"
   },
   {
     "objectID": "slides/01-slides-lab.html#ggplot2-histogram-distribution-of-scores",
     "href": "slides/01-slides-lab.html#ggplot2-histogram-distribution-of-scores",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "ggplot2 Histogram: distribution of scores",
     "text": "ggplot2 Histogram: distribution of scores\n\nggplot(student_data, aes(x = score, fill = passed)) +\n  geom_histogram(binwidth = 5, color = \"black\", alpha = 0.7) +\n  labs(title = \"histogram of scores\", x = \"score\", y = \"count\") +\n  theme_minimal() +\n  scale_fill_manual(values = c(\"failed\" = \"red\", \"passed\" = \"blue\"))"
   },
   {
     "objectID": "slides/01-slides-lab.html#ggplot2-lineplot",
     "href": "slides/01-slides-lab.html#ggplot2-lineplot",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "ggplot2 Lineplot",
     "text": "ggplot2 Lineplot\n\n# prep data\nmonths &lt;- factor(month.abb[1:8], levels = month.abb[1:8])\nstudy_hours &lt;- c(0, 3, 15, 30, 35, 120, 18, 15)\nstudy_data &lt;- data.frame(month = months, study_hours = study_hours)\n\n# line plot\nggplot(study_data, aes(x = month, y = study_hours, group = 1)) +\n  geom_line(linewidth = 1, color = \"blue\") +\n  geom_point(color = \"red\", size = 1) +\n  labs(title = \"monthly study hours\", x = \"month\", y = \"study hours\") +\n  theme_minimal()"
   },
   {
     "objectID": "slides/01-slides-lab.html#base-r-scatter-plot-scores-vs.-study-hours",
     "href": "slides/01-slides-lab.html#base-r-scatter-plot-scores-vs.-study-hours",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Base R Scatter Plot: scores vs. study hours",
     "text": "Base R Scatter Plot: scores vs. study hours\n\n# scatter plot\nplot(student_data$study_hours, student_data$score,\n     main = \"scatter plot of scores vs. study hours\",\n     xlab = \"study hours\", ylab = \"score\",\n     pch = 19, col = ifelse(student_data$passed == \"passed\", \"blue\", \"red\"))"
   },
   {
     "objectID": "slides/01-slides-lab.html#base-r-histogram",
     "href": "slides/01-slides-lab.html#base-r-histogram",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Base R Histogram",
     "text": "Base R Histogram\n\nhistogram to visualise distribution of student scores\n\n\n# histogram \nhist(student_data$score,\n     breaks = 5,\n     col = \"skyblue\",\n     main = \"histogram of student scores\",\n     xlab = \"scores\",\n     border = \"white\")"
   },
   {
     "objectID": "slides/01-slides-lab.html#base-r-boxplots-distribution-by-passfail",
     "href": "slides/01-slides-lab.html#base-r-boxplots-distribution-by-passfail",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Base R Boxplots: Distribution by Pass/Fail",
     "text": "Base R Boxplots: Distribution by Pass/Fail\n\n# boxplot\nboxplot(score ~ passed, data = student_data,\n        main = \"score distribution by pass/fail status\",\n        xlab = \"status\", ylab = \"scores\",\n        col = c(\"red\", \"blue\"))"
   },
   {
     "objectID": "slides/01-slides-lab.html#base-r-barplot-score-distributions",
     "href": "slides/01-slides-lab.html#base-r-barplot-score-distributions",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Base R Barplot: Score Distributions",
     "text": "Base R Barplot: Score Distributions\n\n# prep data for the barplot\nscores_table &lt;- table(student_data$score)\nbarplot(scores_table,\n        main = \"Barplot of Scores\",\n        xlab = \"Scores\",\n        ylab = \"Frequency\",\n        col = \"skyblue\",\n        border = \"white\")"
   },
   {
     "objectID": "slides/01-slides-lab.html#base-r-line-plot",
     "href": "slides/01-slides-lab.html#base-r-line-plot",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Base R Line Plot",
     "text": "Base R Line Plot\n\n# convert 'month' to a numeric scale for plotting positions\nmonths_num &lt;- 1:length(study_data$month) # Simple numeric sequence\n\n# Plotting points with suppressed x-axis\nplot(months_num, study_data$study_hours, \n     type = \"p\", # Points\n     pch = 19,   # Type of point\n     col = \"red\", \n     xlab = \"Month\", \n     ylab = \"Study Hours\", \n     main = \"Monthly Study Hours\",\n     xaxt = \"n\") # Suppress the x-axis\n\n# add lines between points\nlines(months_num, study_data$study_hours, \n      col = \"blue\", \n      lwd = 1) # Line width\n\n# add custom month labels to the x-axis at appropriate positions\naxis(1, at = months_num, labels = study_data$month, las=2) # `las=2` makes labels perpendicular to axis"
   },
   {
     "objectID": "slides/01-slides-lab.html#what-have-your-learned",
     "href": "slides/01-slides-lab.html#what-have-your-learned",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "What have your learned?",
     "text": "What have your learned?\n\nYou have Base R and R-studio Downloaded on your machine\nYou are able able to use R for basic analysis and graphing\nYou will need to practice, and will have lots of opporunity."
   },
   {
     "objectID": "slides/01-slides-lab.html#where-to-get-help",
     "href": "slides/01-slides-lab.html#where-to-get-help",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "Where to Get Help",
     "text": "Where to Get Help\n\nLarge Language Models (LLMs): LLMs are trained on extensive datasets. They are extremely good coding tutors. Open AI’s GPT-4 considerably outperforms GPT-3.5. However GPT 3.5 should be good enough. Gemini has a two-month free trial. LLM’s are rapidly evolving. However, presently, to use these tools, and to spot their errors, you will need to know how to code. Which is fortunate because coding makes you smarter!\n\nNote: you will not be assessed for R-code. Help from LLM’s for coding does not consitute a breach of academic integrity in this course. Your tests are in-class; no LLM’s allowed. For your final report, you will need to cite all sources, and how you used them, including LLMs.\n\nStack Overflow: an outstanding resource for most problems. Great community.\nCross-validated the best place to go for stats advice. (LLM’s are only safe for standard statistics. They do not perform well for causal inference.)\nDeveloper Websites and GitHub Pages: Tidyverse\nYour tutors and course coordinator. We care. We’re here to help you!"
   },
   {
     "objectID": "slides/01-slides-lab.html#references",
     "href": "slides/01-slides-lab.html#references",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "References",
     "text": "References\n\nWickham, H., & Grolemund, G. (2016). R for Data Science. O’Reilly Media. [Available online](https://r4ds.had.co.nz\nA helpful resource for learning R is Megan Hall’s lecture available at: https://meghan.rbind.io/talk/neair/.\nRStudio has compiled numerous accessible materials for learning R, which can be found here: https://education.rstudio.com/learn/beginner/."
   },
@@ -2042,5 +2042,383 @@
     "title": "Hands on Measurement: Exploratory Factor Analysis, Confirmatory Factor Analysis (CFA), Multigroup Confirmatory Factor Analysis, Partial Invariance (Configural, Metric, and Scalar equivalence).",
     "section": "Lab: Advice on Your Final Report",
     "text": "Lab: Advice on Your Final Report"
+  },
+  {
+    "objectID": "slides/01-slides.html#goals",
+    "href": "slides/01-slides.html#goals",
+    "title": "Seminar 1",
+    "section": "Goals",
+    "text": "Goals\nBy the end of this seminar you will be able to:\n\nUnderstand the special problems that cultural research presents for measurement.\nUnderstand the deeper, and prior concept of confounding.\n\nKey Concepts\n\nMeasurement\nValidity\nA confounder"
+  },
+  {
+    "objectID": "slides/01-slides.html#where-does-psychology-start",
+    "href": "slides/01-slides.html#where-does-psychology-start",
+    "title": "Seminar 1",
+    "section": "Where Does Psychology Start?",
+    "text": "Where Does Psychology Start?\nPsychology starts with a question about how people think or behave."
+  },
+  {
+    "objectID": "slides/01-slides.html#examples-of-psychological-questions",
+    "href": "slides/01-slides.html#examples-of-psychological-questions",
+    "title": "Seminar 1",
+    "section": "Examples of Psychological Questions?",
+    "text": "Examples of Psychological Questions?\n\nHow does early childhood experience affect personality and behaviour?\nWhat are the effects of social media on self-esteem?\nWhy do some people believe in a God or gods and others do not?\nWhy are some people motivated to sacrifice for others?\nDoes marriage make people happy?"
+  },
+  {
+    "objectID": "slides/01-slides.html#example-of-psychological-questions-in-cross-cultural-psychology",
+    "href": "slides/01-slides.html#example-of-psychological-questions-in-cross-cultural-psychology",
+    "title": "Seminar 1",
+    "section": "Example of Psychological Questions in Cross-Cultural Psychology",
+    "text": "Example of Psychological Questions in Cross-Cultural Psychology\n\nHow do early childhood experiences differ across cultures, and how do these differences impact personality and behavior development?\nAre there cultural differences in the way social media use affects self-esteem and body image?\nHow do cultural and religious beliefs shape individual attitudes towards the concept of God or gods?\nWhat are the cultural and individual factors that motivate people to engage in acts of altruism or sacrifice for others, and how do these factors vary across cultures?\nAre there cultural differences in the factors that contribute to marital satisfaction and happiness, and how do cultural expectations and values surrounding marriage play a role?"
+  },
+  {
+    "objectID": "slides/01-slides.html#how-might-psychological-scientists-answer-whether-marriage-makes-people-happy",
+    "href": "slides/01-slides.html#how-might-psychological-scientists-answer-whether-marriage-makes-people-happy",
+    "title": "Seminar 1",
+    "section": "How might Psychological Scientists answer whether marriage makes people happy?",
+    "text": "How might Psychological Scientists answer whether marriage makes people happy?"
+  },
+  {
+    "objectID": "slides/01-slides.html#wrong-answers-only",
+    "href": "slides/01-slides.html#wrong-answers-only",
+    "title": "Seminar 1",
+    "section": "Wrong Answers Only",
+    "text": "Wrong Answers Only\n\n“Ask my married parents if they are happy.”\n“Consult a palm reader.”\nAssert: “Yes marriage always makes people happy”; “No marriage can’t possibly make anyone happy”\nIntuit: “It depends on the gender of the individual. Men are always happier in marriage, while women are never happier.”\nIntuition: “It depends on the cultural background of the individuals. Couples from Western cultures are always happier in marriage, while couples from Eastern cultures are never happier.”\nConduct a literature review of previous research on the association between marriage and happiness, including cross-cultural studies that compare different cultural attitudes and practices regarding marriage and their relationship to happiness.\nConduct a survey of a large and diverse sample of individuals to assess their happiness levels, as well as their marital status assess the relationship."
+  },
+  {
+    "objectID": "slides/01-slides.html#conduct-a-literature-review",
+    "href": "slides/01-slides.html#conduct-a-literature-review",
+    "title": "Seminar 1",
+    "section": "Conduct a Literature Review",
+    "text": "Conduct a Literature Review\n\nWhat would this tell us?\n\nwhat other researchers have found.\n\nWhat would this not tell us?\n\nwhat other researchers have not found.\nwhat other researchers got wrong."
+  },
+  {
+    "objectID": "slides/01-slides.html#conduct-a-survey-with-a-large-and-diverse-sample-of-individuals",
+    "href": "slides/01-slides.html#conduct-a-survey-with-a-large-and-diverse-sample-of-individuals",
+    "title": "Seminar 1",
+    "section": "Conduct a Survey with a Large and Diverse Sample of Individuals",
+    "text": "Conduct a Survey with a Large and Diverse Sample of Individuals\n\nWhere to begin?"
+  },
+  {
+    "objectID": "slides/01-slides.html#measurement",
+    "href": "slides/01-slides.html#measurement",
+    "title": "Seminar 1",
+    "section": "Measurement",
+    "text": "Measurement\nDefinitions:\n\n“Measurement is the numerical quantifcation of the attributes of an object or event, which can be used to compare with other objects or events” [Conventional]\n“Measurement is the assignment of numerals to objects or events according to rules.” [Psychological]\n“Measurement is the process of experimentally obtaining one or more quantity values that can reasonably be attributed to a quantity.” [Metrological] from (Briggs 2021)"
+  },
+  {
+    "objectID": "slides/01-slides.html#on-a-scale-of-1-7-how-happy-are-you",
+    "href": "slides/01-slides.html#on-a-scale-of-1-7-how-happy-are-you",
+    "title": "Seminar 1",
+    "section": "“On a scale of 1-7, how happy are you?”",
+    "text": "“On a scale of 1-7, how happy are you?”\nHow might this go wrong?\n\nAmbiguity: Respondents may interpret “happiness” in different ways. -e.g. Some people may equate happiness with a momentary positive emotion -e.g. Others may think of happiness as a long-term state of contentment.\nSocial Desirability Bias: Respondents may want to tell you what they think you want to hear. Others might want to frustrate you.\nMood: the context in which the question is asked and the respondent’s current mood might affect the answer (reliability)\nLimited range of scale\nWhat do the endpoints mean?\nCultural Differences:\n\nin meanings\nin constructs themselves"
+  },
+  {
+    "objectID": "slides/01-slides.html#in-survey-research",
+    "href": "slides/01-slides.html#in-survey-research",
+    "title": "Seminar 1",
+    "section": "In Survey Research",
+    "text": "In Survey Research\nConstruct: e.g. Happiness - a subjective experience of positive emotions, such as joy, contentment, and satisfaction with life/\nItem: A question or statement used to measure an aspect of happiness. Example: “I feel content with my life.”\nScale: A collection of items designed to measure a construct. Example: a happiness scale might consist of items rated on a Likert-type scale, with an overall score reflecting the level of happiness being measured. Example:\n\n“In general, how happy do you feel?” (rated on a scale from 1 - not at all happy to 5 - extremely happy)\n“How often do you feel positive emotions, such as joy or contentment?” (rated on a scale from 1 - very rarely or never to 5 - very often or always)\n“How satisfied are you with your life as a whole?” (rated on a scale from 1 - very dissatisfied to 5 - very satisfied)"
+  },
+  {
+    "objectID": "slides/01-slides.html#concept-of-validity-in-psychometric-research",
+    "href": "slides/01-slides.html#concept-of-validity-in-psychometric-research",
+    "title": "Seminar 1",
+    "section": "Concept of Validity in Psychometric Research",
+    "text": "Concept of Validity in Psychometric Research\n\nContent Validity: The degree an instrument measures what it is intended to measure (the “construct”).\nConstruct Validity: Whether the construct assumed to measure is accurately defined and operationalised.\nCriterion Validity: Whether an instrument accurately predicts performance.\nFace Validity: whether an instrument measure what it is intended to measure, as assessed by experts.\nEcological Validity: whether an instrument accurately reflects real-world situations and behavior (Bandalos 2018)\n\n\nMetric equivalence: Factor loadings are similar across groups. Configural equivalence: The factor structure is the same across groups in a multi-group confirmatory factor analysis. Scalar equivalence: Values/Means are also equivalent across groups."
+  },
+  {
+    "objectID": "slides/01-slides.html#what-else-might-go-wrong",
+    "href": "slides/01-slides.html#what-else-might-go-wrong",
+    "title": "Seminar 1",
+    "section": "What else might go wrong?",
+    "text": "What else might go wrong?\nSuppose we are confident in measurement, administer survey, and find an relationship.\n\nDoes marriage cause happiness cross culturally?"
+  },
+  {
+    "objectID": "slides/01-slides.html#what-might-go-wrong",
+    "href": "slides/01-slides.html#what-might-go-wrong",
+    "title": "Seminar 1",
+    "section": "What might go wrong?",
+    "text": "What might go wrong?\nHappiness might cause marriage"
+  },
+  {
+    "objectID": "slides/01-slides.html#what-else-might-go-wrong-1",
+    "href": "slides/01-slides.html#what-else-might-go-wrong-1",
+    "title": "Seminar 1",
+    "section": "What else might go wrong?",
+    "text": "What else might go wrong?\nAge might a common cause of both marriage and happiness"
+  },
+  {
+    "objectID": "slides/01-slides.html#many-psychologists-will-simply-control-for-income-but-what-if-happiness-and-marriage-cause-income",
+    "href": "slides/01-slides.html#many-psychologists-will-simply-control-for-income-but-what-if-happiness-and-marriage-cause-income",
+    "title": "Seminar 1",
+    "section": "Many psychologists will simply “control for” income, but what if happiness and marriage cause income?",
+    "text": "Many psychologists will simply “control for” income, but what if happiness and marriage cause income?\n\nSimulate data in which happiness and marriage cause income\nControlling for income makes it look as though happiness and marriage are negatively related.\nBut we simulated data with no relationship!\nThis is called ‘collider bias’, we will consider how it works in the upcoming weeks.\nMeantime, even if we measure people without error, cross-cultural studies might select people with different incomes, leading to bias even in the absence of measurement error bias (and even if we do not control for income!)\n\n\n\nCode\n## simulate data\n# reproducability\nset.seed(123)\nsim_fun_B &lt;- function() {\n  n &lt;- 10000\n  H &lt;- rnorm(n, 1) # simulates Happiness,\n  M &lt;- rnorm(n, 1) #  simulates Marriage, nothing to do with happiness\n  I &lt;- rnorm(n, .2 * H + .5 * M) # simulate marriage as a function of age + happiness\n\n\n  # simulate dataframe from function\n  simdat_B &lt;- data.frame(\n    H = H,\n    I = I,\n    M = M\n  )\n\n  #  model in which marriage \"predicts\" happiness controlling for age\n  sim_B &lt;- lm(H ~ M + I, data = simdat_B)\n  sim_B # returns output\n}\n\n# replicate 100 times\nr_lm_B &lt;- NA\nr_lm_B &lt;- replicate(100, sim_fun_B(), simplify = FALSE)\n\n# print model results: marriage looks negatively related to happiness!\nparameters::pool_parameters(r_lm_B)\n\n\n# Fixed Effects\n\nParameter   | Coefficient |   SE |         95% CI | Statistic |     df |      p\n-------------------------------------------------------------------------------\n(Intercept) |        0.96 | 0.02 | [ 0.92,  1.00] |     46.96 | 322.51 | &lt; .001\nM           |       -0.10 | 0.02 | [-0.13, -0.07] |     -6.11 | 324.10 | &lt; .001\nI           |        0.19 | 0.01 | [ 0.17,  0.22] |     13.71 | 320.53 | &lt; .001"
+  },
+  {
+    "objectID": "slides/01-slides.html#the-problem-is-confounding-what-can-we-do-about-it",
+    "href": "slides/01-slides.html#the-problem-is-confounding-what-can-we-do-about-it",
+    "title": "Seminar 1",
+    "section": "The problem is confounding: what can we do about it?",
+    "text": "The problem is confounding: what can we do about it?\n\nWeeks 2-4: Causal Diagrams"
+  },
+  {
+    "objectID": "slides/01-slides.html#our-approach",
+    "href": "slides/01-slides.html#our-approach",
+    "title": "Seminar 1",
+    "section": "Our Approach:",
+    "text": "Our Approach:\nExternal Validity\n\nDefinition: the extent to which the findings of a study can be generalised to other situations, people, settings, and time periods.\nImportance: we want to know if our findings carry beyond the people in our study\nChallenges: how can we know?\n\nInternal Validity\n\nDefinition: the degree to which a study can demonstrate that a causal relationship exists between the ‘independent’ and ‘dependent’ variables, free of confounding.\nWe will use the term ‘outcome’ and ‘treatment’ in place of independent and dependent. This is because causality occurs in time.\nImportance: we cannot interpret the associations we recover if they do not have a causal interpretation.\nChallenges: internal validity requires balance in the confounders that might afffect the treatement and outcome, and observational data do not give us ballance.\nThe Special Challenges in Cross-Cultural Research:\n\nThe concept of measurement itself has causal underpinnings (VanderWeele 2022).\nIn cross-cultural research, we have stronger challengs from measurement validity, which, as we shall see, encompasses both external and internal validity.\nWe consider measurment validity within classical framework of external and internal validity\nEthical challenges, which science needs to consider.\nForemost among these ethical challenges, I believe, is doing our best to get inference right!"
+  },
+  {
+    "objectID": "slides/01-slides.html#the-hope",
+    "href": "slides/01-slides.html#the-hope",
+    "title": "Seminar 1",
+    "section": "The Hope",
+    "text": "The Hope\n\nThere has been tremendous progress in the health and computer sciences in addressing problems of external and internal validity from a causal perspective\nYou will be among the first to apply these methods to questions in cross-cultural psychology.\nIn doing so, much of what has been confusing to you about psychological research design, data-analysis, ultimately scientific inference will be clearer."
+  },
+  {
+    "objectID": "slides/01-slides.html#what-have-we-learned",
+    "href": "slides/01-slides.html#what-have-we-learned",
+    "title": "Seminar 1",
+    "section": "What have we learned?",
+    "text": "What have we learned?\n\n\nMeasurement: attaching magnitudes to features of the world.\nValidity: obtaining accurate scientific inference: a complex set of interrelated problems.\nConfounding; association in data is spurious"
+  },
+  {
+    "objectID": "slides/01-slides.html#references",
+    "href": "slides/01-slides.html#references",
+    "title": "Seminar 1",
+    "section": "References",
+    "text": "References\nFor an account of the history of measurement in psychological research, see: (Briggs 2021)\nFor an account of key concepts and current debates in psychometrics, see: (Bandalos 2018)\n\nFor an accessible introduction to causal inference and its history see: (Pearl and Mackenzie 2018)\nBibliography\n\n\n\n\nBandalos, Deborah L. 2018. Measurement Theory and Applications for the Social Sciences. Guilford Publications.\n\n\nBriggs, Derek C. 2021. Historical and Conceptual Foundations of Measurement in the Human Sciences: Credos and Controversies. Routledge.\n\n\nPearl, Judea, and Dana Mackenzie. 2018. The Book of Why: The New Science of Cause and Effect. Basic books.\n\n\nVanderWeele, Tyler J. 2022. “Constructed Measures and Causal Inference: Towards a New Model of Measurement for Psychosocial Constructs.” Epidemiology 33 (1): 141. https://doi.org/10.1097/EDE.0000000000001434."
+  },
+  {
+    "objectID": "slides/07-slides.html#goals",
+    "href": "slides/07-slides.html#goals",
+    "title": "Introduction to Causal Inference",
+    "section": "Goals",
+    "text": "Goals\nBy the end of this seminaryou will be able to:\n\nUnderstand the definition of “causality” as it is used in the human and health sciences.\nUnderstand the assumptions required for consistently estimating causal effects.\nUnderstand how to use causal diagrammes to assess these assumptions.\n\nKey Concepts\n\nCause/Effect\nConfounder\nCollider"
+  },
+  {
+    "objectID": "slides/07-slides.html#where-does-psychology-start",
+    "href": "slides/07-slides.html#where-does-psychology-start",
+    "title": "Introduction to Causal Inference",
+    "section": "0Where does psychology start?",
+    "text": "0Where does psychology start?\n\nPsychology starts with a question about how people think or behave."
+  },
+  {
+    "objectID": "slides/07-slides.html#group-discussion",
+    "href": "slides/07-slides.html#group-discussion",
+    "title": "Introduction to Causal Inference",
+    "section": "Group discussion",
+    "text": "Group discussion\n\nWe know that bilingual children tend to perform better on various cognitive tasks. Why might this be the case?\nHow can we know whether it is bilingualism that causes better performance on various cognitive tasks?"
+  },
+  {
+    "objectID": "slides/07-slides.html#humes-definitions-of-a-causality",
+    "href": "slides/07-slides.html#humes-definitions-of-a-causality",
+    "title": "Introduction to Causal Inference",
+    "section": "Hume’s definitions of a causality",
+    "text": "Hume’s definitions of a causality\n\n“we may define a cause to be an object followed by another, and where all the objects, similar to the first, are followed by objects similar to the second [definition 1]. Or, in other words, where, if the first object had not been, the second never would have existed [definition 2].” - David Hume, Enquiries Concerning Human Understanding, and Concerning the Principles of Morals, Section VII"
+  },
+  {
+    "objectID": "slides/07-slides.html#individual-causal-effects",
+    "href": "slides/07-slides.html#individual-causal-effects",
+    "title": "Introduction to Causal Inference",
+    "section": "Individual causal effects",
+    "text": "Individual causal effects\nY_i^{a = 1}: The cognitive ability of child i if they were bilingual. This is the counterfactual outcome when A = 1.\nY_i^{a = 0}: The cognitive ability of child i if they were monolingual. This is the counterfactual outcome when A = 0.\n\n\\text{Causal Effect}_i = Y^{a = 1} - Y^{a = 0}"
+  },
+  {
+    "objectID": "slides/07-slides.html#individual-causal-quantities",
+    "href": "slides/07-slides.html#individual-causal-quantities",
+    "title": "Introduction to Causal Inference",
+    "section": "Individual causal quantities",
+    "text": "Individual causal quantities\nWe say there is a causal effect for individual i if:\n\nY_i^{a=1} - Y_i^{a=0}  \\neq 0"
+  },
+  {
+    "objectID": "slides/07-slides.html#what-is-the-problem",
+    "href": "slides/07-slides.html#what-is-the-problem",
+    "title": "Introduction to Causal Inference",
+    "section": "What is the problem?",
+    "text": "What is the problem?\n\nThese data required to compute this quantity is generally not available."
+  },
+  {
+    "objectID": "slides/07-slides.html#two-roads-diverge-in-a-yellow-wood",
+    "href": "slides/07-slides.html#two-roads-diverge-in-a-yellow-wood",
+    "title": "Introduction to Causal Inference",
+    "section": "Two Roads Diverge in a Yellow Wood",
+    "text": "Two Roads Diverge in a Yellow Wood\nRobert Frost writes,\n\nTwo roads diverged in a yellow wood,\n\n\nAnd sorry I could not travel both\u000b\n\n\nAnd be one traveler, long I stood\u000b\n\n\nAnd looked down one as far as I could\u000b\n\n\nTo where it bent in the undergrowth;\u000b\n\n\nThen took the other, as just as fair,\u000b\n\n\nAnd having perhaps the better claim,\u000b\n\n\nBecause it was grassy and wanted wear;\u000b\n\n\nThough as for that the passing there\u000b\n\n\nHad worn them really about the same,\u000b \u000b\n\n\nAnd both that morning equally lay\u000b\n\n\nIn leaves no step had trodden black.\u000b\n\n\nOh, I kept the first for another day!\u000b\n\n\nYet knowing how way leads on to way,\u000b\n\n\nI doubted if I should ever come back.\u000b\n\n\nI shall be telling this with a sigh\u000b\n\n\nSomewhere ages and ages hence:\u000b\n\n\nTwo roads diverged in a wood, and I—\u000b\n\n\nI took the one less traveled by,\u000b\n\n\nAnd that has made all the difference.\n\n\nRobert Frost, The Road Not Taken"
+  },
+  {
+    "objectID": "slides/07-slides.html#how-can-we-identify-causal-effects",
+    "href": "slides/07-slides.html#how-can-we-identify-causal-effects",
+    "title": "Introduction to Causal Inference",
+    "section": "How can we identify causal effects?",
+    "text": "How can we identify causal effects?\n\nRecall the answers you proposed to bilingual causal question\n\ne.g. experiment: random assigment to bilingual training.\n\nHow does this work?\n\nConfounders equally distributed\nCount up results\nTake the average of the differences in the two groups."
+  },
+  {
+    "objectID": "slides/07-slides.html#average-treatement-effect-in-a-randomised-experiment",
+    "href": "slides/07-slides.html#average-treatement-effect-in-a-randomised-experiment",
+    "title": "Introduction to Causal Inference",
+    "section": "Average Treatement Effect in a Randomised Experiment",
+    "text": "Average Treatement Effect in a Randomised Experiment\n\\begin{align}\nE(\\delta) = E(Y^{a=1} - Y^{a=0})\\\\\n          ~  = E(Y^{a=1}) - E(Y^{a=0}) \\\\\n          ~  = ATE\n\\end{align}\n\n\nE(\\delta) is the “estimand” or causal quantity of interest (the expected difference between the means of two randomised groups, or equivalentally, the mean of the differences)"
+  },
+  {
+    "objectID": "slides/07-slides.html#assumptions-required-for-estimating-causal-effects-from-data",
+    "href": "slides/07-slides.html#assumptions-required-for-estimating-causal-effects-from-data",
+    "title": "Introduction to Causal Inference",
+    "section": "Assumptions Required for Estimating Causal Effects From Data",
+    "text": "Assumptions Required for Estimating Causal Effects From Data\n\nCausal Consistency: The values of exposure under comparisons correspond to well-defined interventions that, in turn, correspond to the versions of treatment in the data.(see: Chatton, Hernan & Robbins)\nPositivity: The probability of receiving every value of the exposure within all strata of co-variates is greater than zero\nExchangeablility:The conditional probability of receiving every value of an exposure level, though not decided by the investigators, depends only on the measured covariates (see: Chatton, Hernan & Robbins)"
+  },
+  {
+    "objectID": "slides/07-slides.html#causal-consistency-assumption",
+    "href": "slides/07-slides.html#causal-consistency-assumption",
+    "title": "Introduction to Causal Inference",
+    "section": "Causal Consistency assumption",
+    "text": "Causal Consistency assumption\n\nThe values of exposure under comparisons correspond to well-defined interventions that, in turn, correspond to the versions of treatment in the data.\n\n\\begin{equation}\nY^{obs} = AY^{a=1} + (1-A)Y^{a=0}\n\\end{equation}"
+  },
+  {
+    "objectID": "slides/07-slides.html#causal-consistency-gets-from-observations-to-counterfactuals",
+    "href": "slides/07-slides.html#causal-consistency-gets-from-observations-to-counterfactuals",
+    "title": "Introduction to Causal Inference",
+    "section": "Causal Consistency gets from observations to counterfactuals",
+    "text": "Causal Consistency gets from observations to counterfactuals\nFor individuals with exposure level A = 1:\n\\begin{equation}\n\\begin{split}\n(Y^{obs}|A = 1) &= 1 \\times A  \\times Y^{a=1} + (1-1) \\times Y^{a=0}\\\\\n& = 1 \\times Y^{a=1} + 0 \\times  Y^{a=0} \\\\\n& =  Y^{a=1}\n\\end{split}\n\\end{equation}\nFor individuals with exposure level A = 0:\n\\begin{equation}\n\\begin{split}\n(Y^{obs}|A = 0) &= 0 \\times A  \\times Y^{a=1} + (1-0) \\times Y^{a=0}\\\\\n& = 0 \\times Y^{a=1} + 1 \\times  Y^{a=0} \\\\\n& =  Y^{a=0}\n\\end{split}\n\\end{equation}\nWhich implies:\n\\begin{equation}\n\\begin{split}\nY_i &= Y_i^{a=1}~~~\\text{if}~ A_i = 1\\\\\nY_i &= Y_i^{a=0}~~~ \\text{if}~  A_i = 0\n\\end{split}\n\\end{equation}"
+  },
+  {
+    "objectID": "slides/07-slides.html#positivity",
+    "href": "slides/07-slides.html#positivity",
+    "title": "Introduction to Causal Inference",
+    "section": "Positivity",
+    "text": "Positivity\n\nThe probability of receiving every value of the exposure within all strata of co-variates is greater than zero\n\n\\begin{equation}\n0 &lt; \\Pr(A=a|L)&lt;1, ~ \\forall a \\in A, ~ \\forall a \\in L\n\\end{equation}\n\nTwo types of positivity violations\n\nRandom non-positivity: the casual effect of aging with observations missing at ages 40-41 (we use parametric models as a work around.)\nDeterministic non-positivity: the causal effect of hysterectomy in biological males (assumption violated)."
+  },
+  {
+    "objectID": "slides/07-slides.html#conditional-exchangeability",
+    "href": "slides/07-slides.html#conditional-exchangeability",
+    "title": "Introduction to Causal Inference",
+    "section": "Conditional Exchangeability",
+    "text": "Conditional Exchangeability\n\nThe conditional probability of receiving every value of an exposure level, though not decided by the investigators, depends only on the measured covariates\n\ndef: \\coprod means “independent of”, a|b translates to “a conditional on b”\n\\begin{equation}\nY^{a=1},Y^{a=0}\\coprod A|L\n\\end{equation}\nor equivalently\n\\begin{equation}\nA \\coprod Y^{a=1},Y^{a=0}|L\n\\end{equation}\nWhere L is the set of co-variates sufficient to ensure the independence of the counterfactual outcomes and the exposure."
+  },
+  {
+    "objectID": "slides/07-slides.html#average-treatement-effect-in-observational-studies",
+    "href": "slides/07-slides.html#average-treatement-effect-in-observational-studies",
+    "title": "Introduction to Causal Inference",
+    "section": "Average Treatement Effect in Observational Studies",
+    "text": "Average Treatement Effect in Observational Studies\nWhere L is observed:\n\n\\begin{aligned}\nATE = E[Y^{a=1}|L = l] - E[Y^{a=0}|L = l] ~ \\text{for any value}~l\n\\end{aligned}"
+  },
+  {
+    "objectID": "slides/07-slides.html#causal-graphs",
+    "href": "slides/07-slides.html#causal-graphs",
+    "title": "Introduction to Causal Inference",
+    "section": "Causal Graphs",
+    "text": "Causal Graphs\nPsychology starts with a question. “Does A cause Y?”\n\ncg-1"
+  },
+  {
+    "objectID": "slides/07-slides.html#question",
+    "href": "slides/07-slides.html#question",
+    "title": "Introduction to Causal Inference",
+    "section": "Question:",
+    "text": "Question:\n\ncg-2"
+  },
+  {
+    "objectID": "slides/07-slides.html#one-problem",
+    "href": "slides/07-slides.html#one-problem",
+    "title": "Introduction to Causal Inference",
+    "section": "One Problem",
+    "text": "One Problem\n\ncg-3"
+  },
+  {
+    "objectID": "slides/07-slides.html#solution-collect-time-series-data",
+    "href": "slides/07-slides.html#solution-collect-time-series-data",
+    "title": "Introduction to Causal Inference",
+    "section": "Solution: collect time-series data",
+    "text": "Solution: collect time-series data\n\ncg-4"
+  },
+  {
+    "objectID": "slides/07-slides.html#why-time-series-data-are-critical",
+    "href": "slides/07-slides.html#why-time-series-data-are-critical",
+    "title": "Introduction to Causal Inference",
+    "section": "Why time series data are critical",
+    "text": "Why time series data are critical\n\ncg-5"
+  },
+  {
+    "objectID": "slides/07-slides.html#another-problem-common-causes-of-a-an-y-d-separation",
+    "href": "slides/07-slides.html#another-problem-common-causes-of-a-an-y-d-separation",
+    "title": "Introduction to Causal Inference",
+    "section": "Another problem: common causes of A an Y (D-separation)",
+    "text": "Another problem: common causes of A an Y (D-separation)\n\ncg-6"
+  },
+  {
+    "objectID": "slides/07-slides.html#solution-condition-on-common-causes-to-ensure-d-separation",
+    "href": "slides/07-slides.html#solution-condition-on-common-causes-to-ensure-d-separation",
+    "title": "Introduction to Causal Inference",
+    "section": "Solution: condition on common causes to ensure d-separation",
+    "text": "Solution: condition on common causes to ensure d-separation\n\ncg-8"
+  },
+  {
+    "objectID": "slides/07-slides.html#another-problem-conditioning-on-a-mediator",
+    "href": "slides/07-slides.html#another-problem-conditioning-on-a-mediator",
+    "title": "Introduction to Causal Inference",
+    "section": "Another problem: conditioning on a mediator",
+    "text": "Another problem: conditioning on a mediator\n\ncg-7"
+  },
+  {
+    "objectID": "slides/07-slides.html#conditioning-on-a-mediator-is-a-common-problem",
+    "href": "slides/07-slides.html#conditioning-on-a-mediator-is-a-common-problem",
+    "title": "Introduction to Causal Inference",
+    "section": "Conditioning on a mediator is a common problem",
+    "text": "Conditioning on a mediator is a common problem\n\ncg-9"
+  },
+  {
+    "objectID": "slides/07-slides.html#forshadowing-in-the-weeks-ahead-we-will-discuss-inferring-mediated-causal-effects",
+    "href": "slides/07-slides.html#forshadowing-in-the-weeks-ahead-we-will-discuss-inferring-mediated-causal-effects",
+    "title": "Introduction to Causal Inference",
+    "section": "Forshadowing: in the weeks ahead we will discuss inferring mediated causal effects",
+    "text": "Forshadowing: in the weeks ahead we will discuss inferring mediated causal effects"
+  },
+  {
+    "objectID": "slides/07-slides.html#collider-bias",
+    "href": "slides/07-slides.html#collider-bias",
+    "title": "Introduction to Causal Inference",
+    "section": "Collider bias",
+    "text": "Collider bias\n\ncg-13"
+  },
+  {
+    "objectID": "slides/07-slides.html#collider-bias-solution-do-not-condition-on-a-collider",
+    "href": "slides/07-slides.html#collider-bias-solution-do-not-condition-on-a-collider",
+    "title": "Introduction to Causal Inference",
+    "section": "Collider bias: solution do not condition on a collider",
+    "text": "Collider bias: solution do not condition on a collider\n\ncg-13"
+  },
+  {
+    "objectID": "slides/07-slides.html#conditioning-on-descendants",
+    "href": "slides/07-slides.html#conditioning-on-descendants",
+    "title": "Introduction to Causal Inference",
+    "section": "Conditioning on descendants",
+    "text": "Conditioning on descendants\n\ncg-14"
+  },
+  {
+    "objectID": "slides/07-slides.html#summary",
+    "href": "slides/07-slides.html#summary",
+    "title": "Introduction to Causal Inference",
+    "section": "Summary",
+    "text": "Summary\n\ncg-15"
+  },
+  {
+    "objectID": "slides/07-slides.html#clear-advice-for-drawing-causal-graphs",
+    "href": "slides/07-slides.html#clear-advice-for-drawing-causal-graphs",
+    "title": "Introduction to Causal Inference",
+    "section": "Clear Advice for Drawing Causal Graphs",
+    "text": "Clear Advice for Drawing Causal Graphs\n\nEnsure that causes come before effects. Assign time indices to your variables.\nOrganize your variables chronologically.\nSimplify your graph by removing unnecessary nodes that don’t impact the assessment of bias between an exposure and an outcome.\nKeep in mind that Directed Acyclic Graphs (DAGs) are qualitative tools. They don’t represent non-linear associations or interactions.\nAvoid depicting interactions by crossing arrows.\nRemember that DAGs are distinct from graphs used in Structural Equation Modeling (SEM). Be cautious of SEM literature, as it often overlooks the assumptions needed for causal inference."
+  },
+  {
+    "objectID": "slides/07-slides.html#summary-drawing-causal-graphs-dags",
+    "href": "slides/07-slides.html#summary-drawing-causal-graphs-dags",
+    "title": "Introduction to Causal Inference",
+    "section": "Summary: Drawing Causal Graphs (DAGs)",
+    "text": "Summary: Drawing Causal Graphs (DAGs)\n\nDirected Acyclic Graphs (DAGs) help visualize sources of bias.\nThere are five main sources of bias:\n\nTemporal order ambiguity: Uncertainty about whether causes precede effects. Solution: Collect time series data or clarify assumptions when unavailable.\nCommon causes of exposure and outcome: Address this by including common causes in your statistical model (e.g., using regression).\nConditioning on a mediator: Avoid this unless mediation is of interest.\nConditioning on a collider: Refrain from doing this.\nBias induced by conditioning on a confounder’s descendant: Draw your DAG and follow guidelines for points 1-4.\n\nImportant Note 1: In observational studies, it’s impossible to guarantee complete control for confounding. Always conduct sensitivity analyses. Techniques for sensitivity analyses will be discussed next week.\nImportant Note 2: Methods for computing causal effects for group comparisons will be covered in the following week’s lecture."
+  },
+  {
+    "objectID": "slides/07-slides.html#what-have-we-learned",
+    "href": "slides/07-slides.html#what-have-we-learned",
+    "title": "Introduction to Causal Inference",
+    "section": "What have we learned?",
+    "text": "What have we learned?\n\nCause/Effect: a contrast between the world under different interventions, at most one of which is realised.\nConfounding: failure to condition on a common cause.\nCollider bias: conditioning on a common effect\n\n\nMetric equivalence: Factor loadings are similar across groups. Configural equivalence: The factor structure is the same across groups in a multi-group confirmatory factor analysis. Scalar equivalence: Values/Means are also equivalent across groups."
   }
 ]

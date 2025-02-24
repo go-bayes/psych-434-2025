@@ -1,5 +1,5 @@
 ---
-title: "Week 1: Intalling and Using R"
+title: "Week 1: Installing and Using R"
 format:
   revealjs: 
     slide-number: true
