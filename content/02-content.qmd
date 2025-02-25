@@ -99,7 +99,7 @@ Example:
 7. Bring your computer to the lab.  
 
 
-Note: you may also download the lab here [Download the R script for Lab 02](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/laboratory/02-lab.R)
+Note: you may also download the lab here [Download the R script for Lab 02](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/02-lab.R)
 
 :::
 
