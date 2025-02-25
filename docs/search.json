@@ -907,7 +907,7 @@
     "href": "index.html",
     "title": "Psych 434: Conducting Research Across Cultures",
     "section": "",
-    "text": "Accessing Lectures and Readings\n\n\n\n\nSeminar Time/Location: Tuesdays, 9:00-11:50am Easterfield Building Room: EA201\nCourse Outline: find a detailed schedule of topics, readings, and assignments in the Course Outline tab.\nReadings: links to readings are directly within the Course Outline tab, essential for lecture preparation.\nLecture Materials: access slides, video recordings, and more under the Content tab, organised by week for ease of use.\nTests: in the same room as the seminar\n\n\n\n\n\nTest/Quiz Location IN CLASS\n\n\n\nThe Contents tab offers direct access to weekly seminar and lab materials, including lecture outlines and lab resources.\n\nAccess it from the top right of the course platform by selecting the appropriate week.\nLab materials are available one week before the lecture; seminar review materials post-seminar.\n\n\n\n\n\n\n\n\n\n\nCourse Coordinator Prof Joseph Bulbulia joseph.bulbulia@vuw.ac.nz\nCourse Coordinator’s Office EA324\nR Help from  Dr.Inkuk Kim inkuk.kim@vuw.ac.nz\n\n\n\n\n\n\n\n\nAssessment\nCLOs\nPercent\nDue\n\n\n\n\nClass participation\n1,2,3\n10\nWeekly\n\n\nIn-class Test\n2\n25\n8 April (w7)\n\n\nIntroduction/Methods Research Report\n2\n25\n20 May (w11)\n\n\nFull Research Report\n1,2,3\n40\n30 May (end of w12)\n\n\n\n\n\n\n\n\n\n\nThe official description:\nThis course will focus on theoretical and practical challenges for conducting research involving individuals from more than one cultural background or ethnicity. Topics are likely to include defining and measuring culture; developing culture-sensitive studies, choice of language and translation; communication styles and bias; questionnaire and interview design; qualitative and quantitative data analysis for cultural and cross-cultural research; minorities, power and ethics in cross-cultural research; and ethno-methodologies and indigenous research methodologies. Appropriate background for this course: PSYC 338.\n\n\n\nPreamble: in this advanced course, students will develop foundational skills in cross-cultural psychological research with a strong emphasis on causal inference, a new and critical methodological approach.\n\nProgramming in R students will learn the basics of programming in the statistical language R, gaining essential computational tools for psychological research. The skills you acquire will lay the foundation for applying data analysis techniques in a causal inference framework and beyond.\nUnderstanding Causal Inference. students will develop a robust understanding of causal inference concepts and approaches, with particular emphasis on how they mitigate common pitfalls in cross-cultural research. We will focus on designing studies, analysing data, and drawing strong conclusions about cause-and-effect relationships across cultures.\nUnderstanding Measurement in Comparative Settings. students will learn techniques for constructing and validating psychometrically sound measures across diverse cultures. We will examine how to ensure measurements are reliable, cross-culturally valid, and aligned with theoretical constructs while focusing strongly on causal reasoning.\n\n\n\n\n\n\n\n\n\nAssessment\nCLOs\nPercent\nDue\n\n\n\n\nClass participation\n1,2,3\n10\nWeekly\n\n\nIn-class Test\n2\n25\n8 April (w7)\n\n\nIntroduction/Methods Research Report\n2\n25\n20 May (w11)\n\n\nFull Research Report\n1,2,3\n40\n30 May (end of w12)\n\n\n\n\n\n\n\n\n\n\n\nClass attendance and active participation.\n\n\nLab attendance and active participation.\n\n\nPresentation (Week 10)\n\n\n\n\n\n\n\n\n\n\nTest duration is one hour. The allocated time is nearly two hours.\n\n\n\n\n\n\n\nImportant\n\n\n\n\nTHE TEST IS IN CLASS (i.e. come to class with a writing instrument).\n\n\n\n\nEach lecture starts and ends with key concept definitions and reviews for the test.\nR or RStudio knowledge isn’t part of the test. R support aims to enhance research report skills.\nTests are conducted in the lecture room without the aids of notes, a computer, or a phone.\nRequired: pen/pencil.\nTest (50 minutes, total time allowed: 1 hour 50 minutes):\n\nFocuses on revising core statistical and methodological concepts.\nAims to refresh basic statistical knowledge foundational for later course material.\n\n\n\n\n\n\nTake Home Asssessment (~6 Hours) due May 06**:\nBuilds upon the course concepts, emphasising the application of basic conceptual, statistical, and theoretical knowledge as applied to your research question.\nSpecifically, how to formulate a research question and develop a strategy for answering it.\n\nTask\n\nWrite a draft Introduction to your final writing assessment.\nWrite a draft Method section for your writing assessment.\nPrepare an in-class presentation of 10 minutes summaring your study.\nYou are encouraged to use AI.\nHowever, be warned: I will mark hallucinations and errors harshly, so you’ll need to to internalise understanding!\nAlthough I encourage you to use AI, I also encourage you to you write in your own voice. Cultivating your self-expression will make you interesting, and employable.\n(* Note that even the best AI models make mistakes and hallucinate, particularly in causal inference)\n\n\n\n\n\n\nState your question: is your question clearly stated?\nRelevance: have you explained its scientific importance?\nCausality: Is your question causal?\nSubgroup analysis: does your question involve a subgroups (e.g., cultural group)? Which?\nExplain the framework: Have you explained the causal inference framework in a way that is comprehensible to non-specialists?\nEthics/Policy interests have you explained how this question might practically affect people?\nData source: are your data from the NZAVS simulated data set? (if not, consult with me)\nData waves: are your data using three waves?\n\n\n\n\n\nOutcome variable: is your outcome variable Y well-defined?\nMultiple outcomes: do you assess multiple outcomes are are these well-defined?\nOutcome relevance: can you explain how the outcome variable/s relate to your question?\nOutcome type: is your outcome binary and rare? … etc.\nOutcome timing: does your outcome appear after your exposure?\n\n\n\n\n\nExposure variable: is your exposure variable A well-defined?\nMultiple exposures: are there multiple exposures? (If yes, for this study, reassess).\nExposure relevance: have you explained how the exposure variable relates to your question?\nPositivity: can we intervene on the exposure at all levels of the covariates?\nConsistency: can we interpret what it means to intervene on the exposure?\nExchangeability: are there different versions of the exposure conditionally exchangeable given measured baseline confounders?\nExposure type: is the exposure binary or continuous?\nShift intervention: do you contrast static interventions or modified treatment policies?\nExposure timing: does your exposure appear before the outcome? (It should.)\n\n\n\n\n\nBaseline confounders: Have you defined your baseline confounders L?\nJustification: Can you explain how the baseline confounders could affect both A and Y?\nTiming: Are the baseline confounders measured before the exposure?\nInclusion: Is the baseline measure of the exposure and the baseline outcome included in the set of baseline confounders?\nSufficiency: Are the baseline confounders sufficient to ensure balance on the exposure, such that A is independent of Y given L? If not, explain your sensitivity analysis (E-values)\nConfounder type: Are the confounders continuous or binary? If so, consider converting them to z-scores. If they are categorical with three or more levels, do not convert them to z-scores, but rather use one-hot encoding (see lecture 9.)\n\n\n\n\n\nCausal diagram: Have you drawn a causal diagram (DAG) to highlight both measured and unmeasured sources of confounding?\nMeasurement error: Have you described potential biases from measurement errors?\nTemporal order: Does your DAG have time indicators to ensure correct temporal order?\nTime consistency: Is your DAG organized so that time follows in a consistent direction?\n\n\n\n\n\nWhat is your casual contrast?\nHave you stated your causal contrast clearly?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPopulations identified: Have you explained how your sample relates to your target populations?\n\n\n\n\n\nCriteria stated: Have you stated the eligibility criteria for the study?\n\n\n\n\n\nDescriptive statistics: have you provided descriptive statistics for demographic information taken at baseline?\nExposure change: Have you described the magnitudes of change in the exposure from baseline to the exposure interval\nReferences: Have you included references for more information about the sample (e.g. the NZAVS website)? I should have.\nDATA ARE SIMULATED: Have you made it clear you are working with simulated data?\n\n\n\n\n\nMissing data checks: Have you checked for missing data?\nMissing data plan: If there are missing data, have you described how you will address the problem? (IPCW, see week 9)\n\n\n\n\n\nApproach decision: G-computation, IPTW, or Doubly-Robust Estimation?\nModel specification: Model Specification?\nMachine Learning: have you explained how machine learning works?\nOutcome Specifics: If the outcome is rare and binary, have you specified logistic regression? If it’s continuous, have I considered converting it to z-scores?\nSensitivity analysis: Have you described your sensitivity analysis (e.g. E-values.)\n\nNote most of these tasks can be ticked off in a sentence or two, but all need to be covered.\nLength: ~ 1,000 - 2,000 words (note it is a draft introduction and draft methods section).\n\n\n\n\n\n\n\n\n\n\nResearch Report Instructions\n\n\n\n\nWe will supply the data.\nLab sessions are designed to support you in this assignment.\nWe assume no statistical background.\n\n\n\n\nTitle: “Causal Inference in Cultural Psychology: Examining Exposure Effects on Dimensions of Well-being Modified by Cultural or Sociodemographic Categories”.\nObjective:\n\nTo quantify the causal effect of a specific exposure on well-being dimensions, modified by sociodemographic categories (born_nz, eth_cat, big_doms, gen_cohort) using the NZAVS longitudinal synthetic dataset.\n\nInstructions:\n\nTheoretical Interest and Research Question:\n\nDescribe the significance of your chosen exposure and its potential impact on the selected outcomes, modified by the cultural or sociodemographic category.\nState the research question clearly.\n\nDirected Acyclic Graph (DAG):\n\nConstruct a DAG illustrating the relationships between exposure, outcomes, sociodemographic category, and potential bias sources. Ensure clarity in labelling.\n\nConfounding Control Strategy:\n\nOutline your strategy for confounding control, justifying the chosen confounders.\n\nMeasurement Biases:\n\nAddress and analyse measurement biases as relevant.\n\nAssumptions and Statistical Models:\n\nDiscuss the assumptions of your causal inference approach and your statistical model, including their limitations.\n\n\nRequirements:\n\nIntroduction: 1,500 words limit.\nConclusion: 1,500 words limit.\nMethod and Results sections should be concise; no specific word limit.\nUse any useful sources, citing appropriately to avoid academic misconduct.\nFollow APA style for citations and references.\nInclude tables/figures as needed.\nSubmit as a single PDF, including R code in an appendix.\nPresentations of Study in Week 12 (or by arrangement.)\n\nEvaluation Criteria:\n\nClarity of theoretical framework, research question, and design.\nValidity of confounding control strategy.\nDiscussion on assumptions and statistical models.\nPresentation quality (10%)\n\nclearly and efficiently presents study\n\n\n\n\n\n\n\nExtensions:\n\nNegotiate a new due date by writing (email) before April 08th, 2025, if necessary.\nEvery reasonable request will be accepted (e.g. too many assignments falling in the same week, you want another week to complete.)\n\nPenalties:\n\nLate submissions incur a one full grade-per-week penalty, e.g. if late by one day, B \\to C, one week later, C \\to D.\nOver-length assignments will be penalised.\n\nUnforeseeable Events:\n\nExtensions will require evidence (e.g., medical certificate).\n\n\n\n\n\n\nBring a laptop with R and RStudio installed for data analysis sessions. Contact the instructor if you lack computer access.\nFor in-class tests, bring a writing utensil. Again, electronic devices are not permitted."
+    "text": "Accessing Lectures and Readings\n\n\n\n\nSeminar Time/Location: Tuesdays, 9:00-11:50am Easterfield Building Room: EA201\nCourse Outline: find a detailed schedule of topics, readings, and assignments in the Course Outline tab.\nReadings: links to readings are directly within the Course Outline tab, essential for lecture preparation.\nLecture Materials: access slides, video recordings, and more under the Content tab, organised by week for ease of use.\nTests: in the same room as the seminar\n\n\n\n\n\nTest/Quiz Location IN CLASS\n\n\n\nThe Contents tab offers direct access to weekly seminar and lab materials, including lecture outlines and lab resources.\n\nAccess it from the top right of the course platform by selecting the appropriate week.\nLab materials are available one week before the lecture; seminar review materials post-seminar.\n\n\n\n\n\n\n\n\n\n\nCourse Coordinator Prof Joseph Bulbulia joseph.bulbulia@vuw.ac.nz\nCourse Coordinator’s Office EA324\nR Help from  Dr.Inkuk Kim inkuk.kim@vuw.ac.nz\n\n\n\n\n\n\n\n\nAssessment\nCLOs\nPercent\nDue\n\n\n\n\nClass participation\n1,2,3\n10\nWeekly\n\n\nIn-class Test\n2\n25\n8 April (w7)\n\n\nIntroduction/Methods Research Report\n2\n25\n20 May (w11)\n\n\nFull Research Report\n1,2,3\n40\n30 May (end of w12)\n\n\n\n\n\n\n\n\n\n\nThe official description:\nThis course will focus on theoretical and practical challenges for conducting research involving individuals from more than one cultural background or ethnicity. Topics are likely to include defining and measuring culture; developing culture-sensitive studies, choice of language and translation; communication styles and bias; questionnaire and interview design; qualitative and quantitative data analysis for cultural and cross-cultural research; minorities, power and ethics in cross-cultural research; and ethno-methodologies and indigenous research methodologies. Appropriate background for this course: PSYC 338.\n\n\n\nPreamble: in this advanced course, students will develop foundational skills in cross-cultural psychological research with a strong emphasis on causal inference, a new and critical methodological approach.\n\nProgramming in R students will learn the basics of programming in the statistical language R, gaining essential computational tools for psychological research. The skills you acquire will lay the foundation for applying data analysis techniques in a causal inference framework and beyond.\nUnderstanding Causal Inference. students will develop a robust understanding of causal inference concepts and approaches, with particular emphasis on how they mitigate common pitfalls in cross-cultural research. We will focus on designing studies, analysing data, and drawing strong conclusions about cause-and-effect relationships across cultures.\nUnderstanding Measurement in Comparative Settings. students will learn techniques for constructing and validating psychometrically sound measures across diverse cultures. We will examine how to ensure measurements are reliable, cross-culturally valid, and aligned with theoretical constructs while focusing strongly on causal reasoning.\n\n\n\n\n\n\n\n\n\nAssessment\nCLOs\nPercent\nDue\n\n\n\n\nClass participation\n1,2,3\n10\nWeekly\n\n\nIn-class Test\n2\n25\n8 April (w7)\n\n\nIntroduction/Methods Research Report\n2\n25\n20 May (w11)\n\n\nFull Research Report\n1,2,3\n40\n30 May (end of w12)\n\n\n\n\n\n\n\n\n\n\n\nClass attendance and active participation.\n\n\nLab attendance and active participation.\n\n\nPresentation (Week 12)\n\n\n\n\n\n\n\n\n\n\nTest duration is one hour. The allocated time is nearly two hours.\n\n\n\n\n\n\n\nImportant\n\n\n\n\nTHE TEST IS IN CLASS (i.e. come to class with a writing instrument).\n\n\n\n\nEach lecture starts and ends with key concept definitions and reviews for the test.\nR or RStudio knowledge isn’t part of the test. R support aims to enhance research report skills.\nTests are conducted in the lecture room without the aids of notes, a computer, or a phone.\nRequired: pen/pencil.\nTest (50 minutes, total time allowed: 1 hour 50 minutes):\n\nFocuses on revising core statistical and methodological concepts.\nAims to refresh basic statistical knowledge foundational for later course material.\n\n\n\n\n\n\nTake Home Asssessment (~6 Hours) due May 06**:\nBuilds upon the course concepts, emphasising the application of basic conceptual, statistical, and theoretical knowledge as applied to your research question.\nSpecifically, how to formulate a research question and develop a strategy for answering it.\n\nTask\n\nWrite a draft Introduction to your final writing assessment.\nWrite a draft Method section for your writing assessment.\nPrepare an in-class presentation of 10 minutes summaring your study.\nYou are encouraged to use AI.\nHowever, be warned: I will mark hallucinations and errors harshly, so you’ll need to to internalise understanding!\nAlthough I encourage you to use AI, I also encourage you to you write in your own voice. Cultivating your self-expression will make you interesting, and employable.\n(* Note that even the best AI models make mistakes and hallucinate, particularly in causal inference)\n\n\n\n\n\n\nState your question: is your question clearly stated?\nRelevance: have you explained its scientific importance?\nCausality: Is your question causal?\nSubgroup analysis: does your question involve a subgroups (e.g., cultural group)? Which?\nExplain the framework: Have you explained the causal inference framework in a way that is comprehensible to non-specialists?\nEthics/Policy interests have you explained how this question might practically affect people?\nData source: are your data from the NZAVS simulated data set? (if not, consult with me)\nData waves: are your data using three waves?\n\n\n\n\n\nOutcome variable: is your outcome variable Y well-defined?\nMultiple outcomes: do you assess multiple outcomes are are these well-defined?\nOutcome relevance: can you explain how the outcome variable/s relate to your question?\nOutcome type: is your outcome binary and rare? … etc.\nOutcome timing: does your outcome appear after your exposure?\n\n\n\n\n\nExposure variable: is your exposure variable A well-defined?\nMultiple exposures: are there multiple exposures? (If yes, for this study, reassess).\nExposure relevance: have you explained how the exposure variable relates to your question?\nPositivity: can we intervene on the exposure at all levels of the covariates?\nConsistency: can we interpret what it means to intervene on the exposure?\nExchangeability: are there different versions of the exposure conditionally exchangeable given measured baseline confounders?\nExposure type: is the exposure binary or continuous?\nShift intervention: do you contrast static interventions or modified treatment policies?\nExposure timing: does your exposure appear before the outcome? (It should.)\n\n\n\n\n\nBaseline confounders: Have you defined your baseline confounders L?\nJustification: Can you explain how the baseline confounders could affect both A and Y?\nTiming: Are the baseline confounders measured before the exposure?\nInclusion: Is the baseline measure of the exposure and the baseline outcome included in the set of baseline confounders?\nSufficiency: Are the baseline confounders sufficient to ensure balance on the exposure, such that A is independent of Y given L? If not, explain your sensitivity analysis (E-values)\nConfounder type: Are the confounders continuous or binary? If so, consider converting them to z-scores. If they are categorical with three or more levels, do not convert them to z-scores, but rather use one-hot encoding (see lecture 9.)\n\n\n\n\n\nCausal diagram: Have you drawn a causal diagram (DAG) to highlight both measured and unmeasured sources of confounding?\nMeasurement error: Have you described potential biases from measurement errors?\nTemporal order: Does your DAG have time indicators to ensure correct temporal order?\nTime consistency: Is your DAG organized so that time follows in a consistent direction?\n\n\n\n\n\nWhat is your casual contrast?\nHave you stated your causal contrast clearly?\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPopulations identified: Have you explained how your sample relates to your target populations?\n\n\n\n\n\nCriteria stated: Have you stated the eligibility criteria for the study?\n\n\n\n\n\nDescriptive statistics: have you provided descriptive statistics for demographic information taken at baseline?\nExposure change: Have you described the magnitudes of change in the exposure from baseline to the exposure interval\nReferences: Have you included references for more information about the sample (e.g. the NZAVS website)? I should have.\nDATA ARE SIMULATED: Have you made it clear you are working with simulated data?\n\n\n\n\n\nMissing data checks: Have you checked for missing data?\nMissing data plan: If there are missing data, have you described how you will address the problem? (IPCW, see week 9)\n\n\n\n\n\nApproach decision: G-computation, IPTW, or Doubly-Robust Estimation?\nModel specification: Model Specification?\nMachine Learning: have you explained how machine learning works?\nOutcome Specifics: If the outcome is rare and binary, have you specified logistic regression? If it’s continuous, have I considered converting it to z-scores?\nSensitivity analysis: Have you described your sensitivity analysis (e.g. E-values.)\n\nNote most of these tasks can be ticked off in a sentence or two, but all need to be covered.\nLength: ~ 1,000 - 2,000 words (note it is a draft introduction and draft methods section).\n\n\n\n\n\n\n\n\n\n\nResearch Report Instructions\n\n\n\n\nWe will supply the data.\nLab sessions are designed to support you in this assignment.\nWe assume no statistical background.\n\n\n\n\nTitle: “Causal Inference in Cultural Psychology: Examining Exposure Effects on Dimensions of Well-being Modified by Cultural or Sociodemographic Categories”.\nObjective:\n\nTo quantify the causal effect of a specific exposure on well-being dimensions, modified by sociodemographic categories (born_nz, eth_cat, big_doms, gen_cohort) using the NZAVS longitudinal synthetic dataset.\n\nInstructions:\n\nTheoretical Interest and Research Question:\n\nDescribe the significance of your chosen exposure and its potential impact on the selected outcomes, modified by the cultural or sociodemographic category.\nState the research question clearly.\n\nDirected Acyclic Graph (DAG):\n\nConstruct a DAG illustrating the relationships between exposure, outcomes, sociodemographic category, and potential bias sources. Ensure clarity in labelling.\n\nConfounding Control Strategy:\n\nOutline your strategy for confounding control, justifying the chosen confounders.\n\nMeasurement Biases:\n\nAddress and analyse measurement biases as relevant.\n\nAssumptions and Statistical Models:\n\nDiscuss the assumptions of your causal inference approach and your statistical model, including their limitations.\n\n\nRequirements:\n\nIntroduction: 1,500 words limit.\nConclusion: 1,500 words limit.\nMethod and Results sections should be concise; no specific word limit.\nUse any useful sources, citing appropriately to avoid academic misconduct.\nFollow APA style for citations and references.\nInclude tables/figures as needed.\nSubmit as a single PDF, including R code in an appendix.\nPresentations of Study in Week 12 (or by arrangement.)\n\nEvaluation Criteria:\n\nClarity of theoretical framework, research question, and design.\nValidity of confounding control strategy.\nDiscussion on assumptions and statistical models.\nPresentation quality (10%)\n\nclearly and efficiently presents study\n\n\n\n\n\n\n\nExtensions:\n\nNegotiate a new due date by writing (email) before April 08th, 2025, if necessary.\nEvery reasonable request will be accepted (e.g. too many assignments falling in the same week, you want another week to complete.)\n\nPenalties:\n\nLate submissions incur a one full grade-per-week penalty, e.g. if late by one day, B \\to C, one week later, C \\to D.\nOver-length assignments will be penalised.\n\nUnforeseeable Events:\n\nExtensions will require evidence (e.g., medical certificate).\n\n\n\n\n\n\nBring a laptop with R and RStudio installed for data analysis sessions. Contact the instructor if you lack computer access.\nFor in-class tests, bring a writing utensil. Again, electronic devices are not permitted."
   },
   {
     "objectID": "index.html#class-times-and-locations",
@@ -956,7 +956,7 @@
     "href": "index.html#assignments-and-due-dates-1",
     "title": "Psych 434: Conducting Research Across Cultures",
     "section": "",
-    "text": "Assessment\nCLOs\nPercent\nDue\n\n\n\n\nClass participation\n1,2,3\n10\nWeekly\n\n\nIn-class Test\n2\n25\n8 April (w7)\n\n\nIntroduction/Methods Research Report\n2\n25\n20 May (w11)\n\n\nFull Research Report\n1,2,3\n40\n30 May (end of w12)\n\n\n\n\n\n\n\n\n\n\n\nClass attendance and active participation.\n\n\nLab attendance and active participation.\n\n\nPresentation (Week 10)"
+    "text": "Assessment\nCLOs\nPercent\nDue\n\n\n\n\nClass participation\n1,2,3\n10\nWeekly\n\n\nIn-class Test\n2\n25\n8 April (w7)\n\n\nIntroduction/Methods Research Report\n2\n25\n20 May (w11)\n\n\nFull Research Report\n1,2,3\n40\n30 May (end of w12)\n\n\n\n\n\n\n\n\n\n\n\nClass attendance and active participation.\n\n\nLab attendance and active participation.\n\n\nPresentation (Week 12)"
   },
   {
     "objectID": "index.html#take-home-assessment",
@@ -1087,7 +1087,7 @@
   {
     "objectID": "slides/01-slides-lab.html",
     "href": "slides/01-slides-lab.html",
-    "title": "Week 1: Intalling and Using R",
+    "title": "Week 1: Installing and Using R",
     "section": "",
     "text": "Have R and R-studio Downloaded on your machine\nBe able to use R for basic analysis and graphing"
   },
@@ -1565,7 +1565,7 @@
     "href": "content/02-content.html#appendix-d-causal-inference-glossary",
     "title": "Causal diagrams: Five Elementary Structures",
     "section": "Appendix D: Causal Inference Glossary",
-    "text": "Appendix D: Causal Inference Glossary\nNote, as of yet, we have only encountered several of the terms in this glossary.\nGlossary of key terms in causal inference\n\nPackages\n\nreport::cite_packages()\n\n  - Chang W (2023). _extrafont: Tools for Using Fonts_. R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.\n  - Grolemund G, Wickham H (2011). \"Dates and Times Made Easy with lubridate.\" _Journal of Statistical Software_, *40*(3), 1-25. &lt;https://www.jstatsoft.org/v40/i03/&gt;.\n  - Lüdecke D (2018). \"ggeffects: Tidy Data Frames of Marginal Effects from Regression Models.\" _Journal of Open Source Software_, *3*(26), 772. doi:10.21105/joss.00772 &lt;https://doi.org/10.21105/joss.00772&gt;.\n  - Lüdecke D, Ben-Shachar M, Patil I, Makowski D (2020). \"Extracting, Computing and Exploring the Parameters of Statistical Models using R.\" _Journal of Open Source Software_, *5*(53), 2445. doi:10.21105/joss.02445 &lt;https://doi.org/10.21105/joss.02445&gt;.\n  - Makowski D, Lüdecke D, Patil I, Thériault R, Ben-Shachar M, Wiernik B (2023). \"Automated Results Reporting as a Practical Tool to Improve Reproducibility and Methodological Best Practices Adoption.\" _CRAN_. &lt;https://easystats.github.io/report/&gt;.\n  - Müller K, Wickham H (2023). _tibble: Simple Data Frames_. R package version 3.2.1, &lt;https://CRAN.R-project.org/package=tibble&gt;.\n  - Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.3.0, &lt;https://CRAN.R-project.org/package=patchwork&gt;.\n  - R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. &lt;https://www.R-project.org/&gt;.\n  - Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN 978-3-319-24277-4, &lt;https://ggplot2.tidyverse.org&gt;.\n  - Wickham H (2023). _forcats: Tools for Working with Categorical Variables (Factors)_. R package version 1.0.0, &lt;https://CRAN.R-project.org/package=forcats&gt;.\n  - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version 1.5.1, &lt;https://CRAN.R-project.org/package=stringr&gt;.\n  - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). \"Welcome to the tidyverse.\" _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.\n  - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.\n  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2, &lt;https://CRAN.R-project.org/package=purrr&gt;.\n  - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.\n  - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.\n  - Xie Y (2024). _tinytex: Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents_. R package version 0.54, &lt;https://github.com/rstudio/tinytex&gt;. Xie Y (2019). \"TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX Live.\" _TUGboat_, *40*(1), 30-32. &lt;https://tug.org/TUGboat/Contents/contents40-1.html&gt;."
+    "text": "Appendix D: Causal Inference Glossary\nNote, as of yet, we have only encountered several of the terms in this glossary.\nGlossary of key terms in causal inference\n\nPackages\n\nreport::cite_packages()\n\n  - Chang W (2023). _extrafont: Tools for Using Fonts_. R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.\n  - Grolemund G, Wickham H (2011). \"Dates and Times Made Easy with lubridate.\" _Journal of Statistical Software_, *40*(3), 1-25. &lt;https://www.jstatsoft.org/v40/i03/&gt;.\n  - Lüdecke D (2018). \"ggeffects: Tidy Data Frames of Marginal Effects from Regression Models.\" _Journal of Open Source Software_, *3*(26), 772. doi:10.21105/joss.00772 &lt;https://doi.org/10.21105/joss.00772&gt;.\n  - Lüdecke D, Ben-Shachar M, Patil I, Makowski D (2020). \"Extracting, Computing and Exploring the Parameters of Statistical Models using R.\" _Journal of Open Source Software_, *5*(53), 2445. doi:10.21105/joss.02445 &lt;https://doi.org/10.21105/joss.02445&gt;.\n  - Makowski D, Lüdecke D, Patil I, Thériault R, Ben-Shachar M, Wiernik B (2023). \"Automated Results Reporting as a Practical Tool to Improve Reproducibility and Methodological Best Practices Adoption.\" _CRAN_. &lt;https://easystats.github.io/report/&gt;.\n  - Müller K, Wickham H (2023). _tibble: Simple Data Frames_. R package version 3.2.1, &lt;https://CRAN.R-project.org/package=tibble&gt;.\n  - Pedersen T (2024). _patchwork: The Composer of Plots_. R package version 1.3.0, &lt;https://CRAN.R-project.org/package=patchwork&gt;.\n  - R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. &lt;https://www.R-project.org/&gt;.\n  - Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN 978-3-319-24277-4, &lt;https://ggplot2.tidyverse.org&gt;.\n  - Wickham H (2023). _forcats: Tools for Working with Categorical Variables (Factors)_. R package version 1.0.0, &lt;https://CRAN.R-project.org/package=forcats&gt;.\n  - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version 1.5.1, &lt;https://CRAN.R-project.org/package=stringr&gt;.\n  - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). \"Welcome to the tidyverse.\" _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.\n  - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.\n  - Wickham H, Henry L (2025). _purrr: Functional Programming Tools_. R package version 1.0.4, &lt;https://CRAN.R-project.org/package=purrr&gt;.\n  - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.\n  - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.\n  - Xie Y (2024). _tinytex: Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents_. R package version 0.54, &lt;https://github.com/rstudio/tinytex&gt;. Xie Y (2019). \"TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX Live.\" _TUGboat_, *40*(1), 30-32. &lt;https://tug.org/TUGboat/Contents/contents40-1.html&gt;."
   },
   {
     "objectID": "content/04-content.html",
@@ -2047,8 +2047,8 @@
     "objectID": "slides/01-slides.html#goals",
     "href": "slides/01-slides.html#goals",
     "title": "Seminar 1",
-    "section": "Goals",
-    "text": "Goals\nBy the end of this seminar you will be able to:\n\nUnderstand the special problems that cultural research presents for measurement.\nUnderstand the deeper, and prior concept of confounding.\n\nKey Concepts\n\nMeasurement\nValidity\nA confounder"
+    "section": "",
+    "text": "Understand the special problems that cultural research presents for measurement.\nUnderstand the deeper, and prior concept of confounding.\n\n\n\n\n\nMeasurement\nValidity\nA confounder"
   },
   {
     "objectID": "slides/01-slides.html#where-does-psychology-start",
@@ -2104,7 +2104,7 @@
     "href": "slides/01-slides.html#measurement",
     "title": "Seminar 1",
     "section": "Measurement",
-    "text": "Measurement\nDefinitions:\n\n“Measurement is the numerical quantifcation of the attributes of an object or event, which can be used to compare with other objects or events” [Conventional]\n“Measurement is the assignment of numerals to objects or events according to rules.” [Psychological]\n“Measurement is the process of experimentally obtaining one or more quantity values that can reasonably be attributed to a quantity.” [Metrological] from (Briggs 2021)"
+    "text": "Measurement\nDefinitions:\n\n“Measurement is the numerical quantifcation of the attributes of an object or event, which can be used to compare with other objects or events” [Conventional]\n“Measurement is the assignment of numerals to objects or events according to rules.” [Psychological]\n“Measurement is the process of experimentally obtaining one or more quantity values that can reasonably be attributed to a quantity.” [Metrological] from [@briggs2021]"
   },
   {
     "objectID": "slides/01-slides.html#on-a-scale-of-1-7-how-happy-are-you",
@@ -2125,7 +2125,7 @@
     "href": "slides/01-slides.html#concept-of-validity-in-psychometric-research",
     "title": "Seminar 1",
     "section": "Concept of Validity in Psychometric Research",
-    "text": "Concept of Validity in Psychometric Research\n\nContent Validity: The degree an instrument measures what it is intended to measure (the “construct”).\nConstruct Validity: Whether the construct assumed to measure is accurately defined and operationalised.\nCriterion Validity: Whether an instrument accurately predicts performance.\nFace Validity: whether an instrument measure what it is intended to measure, as assessed by experts.\nEcological Validity: whether an instrument accurately reflects real-world situations and behavior (Bandalos 2018)\n\n\nMetric equivalence: Factor loadings are similar across groups. Configural equivalence: The factor structure is the same across groups in a multi-group confirmatory factor analysis. Scalar equivalence: Values/Means are also equivalent across groups."
+    "text": "Concept of Validity in Psychometric Research\n\nContent Validity: The degree an instrument measures what it is intended to measure (the “construct”).\nConstruct Validity: Whether the construct assumed to measure is accurately defined and operationalised.\nCriterion Validity: Whether an instrument accurately predicts performance.\nFace Validity: whether an instrument measure what it is intended to measure, as assessed by experts.\nEcological Validity: whether an instrument accurately reflects real-world situations and behavior [@bandalos2018]\n\n\nMetric equivalence: Factor loadings are similar across groups. Configural equivalence: The factor structure is the same across groups in a multi-group confirmatory factor analysis. Scalar equivalence: Values/Means are also equivalent across groups."
   },
   {
     "objectID": "slides/01-slides.html#what-else-might-go-wrong",
@@ -2139,21 +2139,21 @@
     "href": "slides/01-slides.html#what-might-go-wrong",
     "title": "Seminar 1",
     "section": "What might go wrong?",
-    "text": "What might go wrong?\nHappiness might cause marriage"
+    "text": "What might go wrong?\n\nHappiness might cause marriage"
   },
   {
     "objectID": "slides/01-slides.html#what-else-might-go-wrong-1",
     "href": "slides/01-slides.html#what-else-might-go-wrong-1",
     "title": "Seminar 1",
     "section": "What else might go wrong?",
-    "text": "What else might go wrong?\nAge might a common cause of both marriage and happiness"
+    "text": "What else might go wrong?\n\nAge might a common cause of both marriage and happiness"
   },
   {
     "objectID": "slides/01-slides.html#many-psychologists-will-simply-control-for-income-but-what-if-happiness-and-marriage-cause-income",
     "href": "slides/01-slides.html#many-psychologists-will-simply-control-for-income-but-what-if-happiness-and-marriage-cause-income",
     "title": "Seminar 1",
     "section": "Many psychologists will simply “control for” income, but what if happiness and marriage cause income?",
-    "text": "Many psychologists will simply “control for” income, but what if happiness and marriage cause income?\n\nSimulate data in which happiness and marriage cause income\nControlling for income makes it look as though happiness and marriage are negatively related.\nBut we simulated data with no relationship!\nThis is called ‘collider bias’, we will consider how it works in the upcoming weeks.\nMeantime, even if we measure people without error, cross-cultural studies might select people with different incomes, leading to bias even in the absence of measurement error bias (and even if we do not control for income!)\n\n\n\nCode\n## simulate data\n# reproducability\nset.seed(123)\nsim_fun_B &lt;- function() {\n  n &lt;- 10000\n  H &lt;- rnorm(n, 1) # simulates Happiness,\n  M &lt;- rnorm(n, 1) #  simulates Marriage, nothing to do with happiness\n  I &lt;- rnorm(n, .2 * H + .5 * M) # simulate marriage as a function of age + happiness\n\n\n  # simulate dataframe from function\n  simdat_B &lt;- data.frame(\n    H = H,\n    I = I,\n    M = M\n  )\n\n  #  model in which marriage \"predicts\" happiness controlling for age\n  sim_B &lt;- lm(H ~ M + I, data = simdat_B)\n  sim_B # returns output\n}\n\n# replicate 100 times\nr_lm_B &lt;- NA\nr_lm_B &lt;- replicate(100, sim_fun_B(), simplify = FALSE)\n\n# print model results: marriage looks negatively related to happiness!\nparameters::pool_parameters(r_lm_B)\n\n\n# Fixed Effects\n\nParameter   | Coefficient |   SE |         95% CI | Statistic |     df |      p\n-------------------------------------------------------------------------------\n(Intercept) |        0.96 | 0.02 | [ 0.92,  1.00] |     46.96 | 322.51 | &lt; .001\nM           |       -0.10 | 0.02 | [-0.13, -0.07] |     -6.11 | 324.10 | &lt; .001\nI           |        0.19 | 0.01 | [ 0.17,  0.22] |     13.71 | 320.53 | &lt; .001"
+    "text": "Many psychologists will simply “control for” income, but what if happiness and marriage cause income?\n\nSimulate data in which happiness and marriage cause income\nControlling for income makes it look as though happiness and marriage are negatively related.\nBut we simulated data with no relationship!\nThis is called ‘collider bias’, we will consider how it works in the upcoming weeks.\nMeantime, even if we measure people without error, cross-cultural studies might select people with different incomes, leading to bias even in the absence of measurement error bias (and even if we do not control for income!)\n\n\n## simulate data\n# reproducability\nset.seed(123)\nsim_fun_B &lt;- function() {\n  n &lt;- 10000\n  H &lt;- rnorm(n, 1) # simulates Happiness,\n  M &lt;- rnorm(n, 1) #  simulates Marriage, nothing to do with happiness\n  I &lt;- rnorm(n, .2 * H + .5 * M) # simulate marriage as a function of age + happiness\n\n\n  # simulate dataframe from function\n  simdat_B &lt;- data.frame(\n    H = H,\n    I = I,\n    M = M\n  )\n\n  #  model in which marriage \"predicts\" happiness controlling for age\n  sim_B &lt;- lm(H ~ M + I, data = simdat_B)\n  sim_B # returns output\n}\n\n# replicate 100 times\nr_lm_B &lt;- NA\nr_lm_B &lt;- replicate(100, sim_fun_B(), simplify = FALSE)\n\n# print model results: marriage looks negatively related to happiness!\nparameters::pool_parameters(r_lm_B)\n\n# Fixed Effects\n\nParameter   | Coefficient |   SE |         95% CI | Statistic |     df |      p\n-------------------------------------------------------------------------------\n(Intercept) |        0.96 | 0.02 | [ 0.92,  1.00] |     46.96 | 322.51 | &lt; .001\nM           |       -0.10 | 0.02 | [-0.13, -0.07] |     -6.11 | 324.10 | &lt; .001\nI           |        0.19 | 0.01 | [ 0.17,  0.22] |     13.71 | 320.53 | &lt; .001"
   },
   {
     "objectID": "slides/01-slides.html#the-problem-is-confounding-what-can-we-do-about-it",
@@ -2167,7 +2167,7 @@
     "href": "slides/01-slides.html#our-approach",
     "title": "Seminar 1",
     "section": "Our Approach:",
-    "text": "Our Approach:\nExternal Validity\n\nDefinition: the extent to which the findings of a study can be generalised to other situations, people, settings, and time periods.\nImportance: we want to know if our findings carry beyond the people in our study\nChallenges: how can we know?\n\nInternal Validity\n\nDefinition: the degree to which a study can demonstrate that a causal relationship exists between the ‘independent’ and ‘dependent’ variables, free of confounding.\nWe will use the term ‘outcome’ and ‘treatment’ in place of independent and dependent. This is because causality occurs in time.\nImportance: we cannot interpret the associations we recover if they do not have a causal interpretation.\nChallenges: internal validity requires balance in the confounders that might afffect the treatement and outcome, and observational data do not give us ballance.\nThe Special Challenges in Cross-Cultural Research:\n\nThe concept of measurement itself has causal underpinnings (VanderWeele 2022).\nIn cross-cultural research, we have stronger challengs from measurement validity, which, as we shall see, encompasses both external and internal validity.\nWe consider measurment validity within classical framework of external and internal validity\nEthical challenges, which science needs to consider.\nForemost among these ethical challenges, I believe, is doing our best to get inference right!"
+    "text": "Our Approach:\n\nExternal Validity\n\nDefinition: the extent to which the findings of a study can be generalised to other situations, people, settings, and time periods.\nImportance: we want to know if our findings carry beyond the people in our study\nChallenges: how can we know?\n\n\n\nInternal Validity\n\nDefinition: the degree to which a study can demonstrate that a causal relationship exists between the ‘independent’ and ‘dependent’ variables, free of confounding.\nWe will use the term ‘outcome’ and ‘treatment’ in place of independent and dependent. This is because causality occurs in time.\nImportance: we cannot interpret the associations we recover if they do not have a causal interpretation.\nChallenges: internal validity requires balance in the confounders that might afffect the treatement and outcome, and observational data do not give us ballance.\nThe Special Challenges in Cross-Cultural Research:\n\nThe concept of measurement itself has causal underpinnings [@vanderweele2022].\nIn cross-cultural research, we have stronger challengs from measurement validity, which, as we shall see, encompasses both external and internal validity.\nWe consider measurment validity within classical framework of external and internal validity\nEthical challenges, which science needs to consider.\nForemost among these ethical challenges, I believe, is doing our best to get inference right!"
   },
   {
     "objectID": "slides/01-slides.html#the-hope",
@@ -2188,14 +2188,14 @@
     "href": "slides/01-slides.html#references",
     "title": "Seminar 1",
     "section": "References",
-    "text": "References\nFor an account of the history of measurement in psychological research, see: (Briggs 2021)\nFor an account of key concepts and current debates in psychometrics, see: (Bandalos 2018)\n\nFor an accessible introduction to causal inference and its history see: (Pearl and Mackenzie 2018)\nBibliography\n\n\n\n\nBandalos, Deborah L. 2018. Measurement Theory and Applications for the Social Sciences. Guilford Publications.\n\n\nBriggs, Derek C. 2021. Historical and Conceptual Foundations of Measurement in the Human Sciences: Credos and Controversies. Routledge.\n\n\nPearl, Judea, and Dana Mackenzie. 2018. The Book of Why: The New Science of Cause and Effect. Basic books.\n\n\nVanderWeele, Tyler J. 2022. “Constructed Measures and Causal Inference: Towards a New Model of Measurement for Psychosocial Constructs.” Epidemiology 33 (1): 141. https://doi.org/10.1097/EDE.0000000000001434."
+    "text": "References\nFor an account of the history of measurement in psychological research, see: [@briggs2021]\nFor an account of key concepts and current debates in psychometrics, see: [@bandalos2018]\n\nFor an accessible introduction to causal inference and its history see: [@pearl2018]\n\nBibliography"
   },
   {
     "objectID": "slides/07-slides.html#goals",
     "href": "slides/07-slides.html#goals",
     "title": "Introduction to Causal Inference",
-    "section": "Goals",
-    "text": "Goals\nBy the end of this seminaryou will be able to:\n\nUnderstand the definition of “causality” as it is used in the human and health sciences.\nUnderstand the assumptions required for consistently estimating causal effects.\nUnderstand how to use causal diagrammes to assess these assumptions.\n\nKey Concepts\n\nCause/Effect\nConfounder\nCollider"
+    "section": "",
+    "text": "Understand the definition of “causality” as it is used in the human and health sciences.\nUnderstand the assumptions required for consistently estimating causal effects.\nUnderstand how to use causal diagrammes to assess these assumptions.\n\n\n\n\n\nCause/Effect\nConfounder\nCollider"
   },
   {
     "objectID": "slides/07-slides.html#where-does-psychology-start",
@@ -2307,63 +2307,63 @@
     "href": "slides/07-slides.html#causal-graphs",
     "title": "Introduction to Causal Inference",
     "section": "Causal Graphs",
-    "text": "Causal Graphs\nPsychology starts with a question. “Does A cause Y?”\n\ncg-1"
+    "text": "Causal Graphs\nPsychology starts with a question. “Does A cause Y?”\n\n\n\ncg-1"
   },
   {
     "objectID": "slides/07-slides.html#question",
     "href": "slides/07-slides.html#question",
     "title": "Introduction to Causal Inference",
     "section": "Question:",
-    "text": "Question:\n\ncg-2"
+    "text": "Question:\n\n\n\ncg-2"
   },
   {
     "objectID": "slides/07-slides.html#one-problem",
     "href": "slides/07-slides.html#one-problem",
     "title": "Introduction to Causal Inference",
     "section": "One Problem",
-    "text": "One Problem\n\ncg-3"
+    "text": "One Problem\n\n\n\ncg-3"
   },
   {
     "objectID": "slides/07-slides.html#solution-collect-time-series-data",
     "href": "slides/07-slides.html#solution-collect-time-series-data",
     "title": "Introduction to Causal Inference",
     "section": "Solution: collect time-series data",
-    "text": "Solution: collect time-series data\n\ncg-4"
+    "text": "Solution: collect time-series data\n\n\n\ncg-4"
   },
   {
     "objectID": "slides/07-slides.html#why-time-series-data-are-critical",
     "href": "slides/07-slides.html#why-time-series-data-are-critical",
     "title": "Introduction to Causal Inference",
     "section": "Why time series data are critical",
-    "text": "Why time series data are critical\n\ncg-5"
+    "text": "Why time series data are critical\n\n\n\ncg-5"
   },
   {
     "objectID": "slides/07-slides.html#another-problem-common-causes-of-a-an-y-d-separation",
     "href": "slides/07-slides.html#another-problem-common-causes-of-a-an-y-d-separation",
     "title": "Introduction to Causal Inference",
     "section": "Another problem: common causes of A an Y (D-separation)",
-    "text": "Another problem: common causes of A an Y (D-separation)\n\ncg-6"
+    "text": "Another problem: common causes of A an Y (D-separation)\n\n\n\ncg-6"
   },
   {
     "objectID": "slides/07-slides.html#solution-condition-on-common-causes-to-ensure-d-separation",
     "href": "slides/07-slides.html#solution-condition-on-common-causes-to-ensure-d-separation",
     "title": "Introduction to Causal Inference",
     "section": "Solution: condition on common causes to ensure d-separation",
-    "text": "Solution: condition on common causes to ensure d-separation\n\ncg-8"
+    "text": "Solution: condition on common causes to ensure d-separation\n\n\n\ncg-8"
   },
   {
     "objectID": "slides/07-slides.html#another-problem-conditioning-on-a-mediator",
     "href": "slides/07-slides.html#another-problem-conditioning-on-a-mediator",
     "title": "Introduction to Causal Inference",
     "section": "Another problem: conditioning on a mediator",
-    "text": "Another problem: conditioning on a mediator\n\ncg-7"
+    "text": "Another problem: conditioning on a mediator\n\n\n\ncg-7"
   },
   {
     "objectID": "slides/07-slides.html#conditioning-on-a-mediator-is-a-common-problem",
     "href": "slides/07-slides.html#conditioning-on-a-mediator-is-a-common-problem",
     "title": "Introduction to Causal Inference",
     "section": "Conditioning on a mediator is a common problem",
-    "text": "Conditioning on a mediator is a common problem\n\ncg-9"
+    "text": "Conditioning on a mediator is a common problem\n\n\n\ncg-9"
   },
   {
     "objectID": "slides/07-slides.html#forshadowing-in-the-weeks-ahead-we-will-discuss-inferring-mediated-causal-effects",
@@ -2377,28 +2377,28 @@
     "href": "slides/07-slides.html#collider-bias",
     "title": "Introduction to Causal Inference",
     "section": "Collider bias",
-    "text": "Collider bias\n\ncg-13"
+    "text": "Collider bias\n\n\n\ncg-13"
   },
   {
     "objectID": "slides/07-slides.html#collider-bias-solution-do-not-condition-on-a-collider",
     "href": "slides/07-slides.html#collider-bias-solution-do-not-condition-on-a-collider",
     "title": "Introduction to Causal Inference",
     "section": "Collider bias: solution do not condition on a collider",
-    "text": "Collider bias: solution do not condition on a collider\n\ncg-13"
+    "text": "Collider bias: solution do not condition on a collider\n\n\n\ncg-13"
   },
   {
     "objectID": "slides/07-slides.html#conditioning-on-descendants",
     "href": "slides/07-slides.html#conditioning-on-descendants",
     "title": "Introduction to Causal Inference",
     "section": "Conditioning on descendants",
-    "text": "Conditioning on descendants\n\ncg-14"
+    "text": "Conditioning on descendants\n\n\n\ncg-14"
   },
   {
     "objectID": "slides/07-slides.html#summary",
     "href": "slides/07-slides.html#summary",
     "title": "Introduction to Causal Inference",
     "section": "Summary",
-    "text": "Summary\n\ncg-15"
+    "text": "Summary\n\n\n\ncg-15"
   },
   {
     "objectID": "slides/07-slides.html#clear-advice-for-drawing-causal-graphs",
@@ -2483,5 +2483,96 @@
     "title": "Psych 434: Conducting Research Across Cultures",
     "section": "",
     "text": "Confounding bias using causal diagrams\nApplication of regression and simulation in R\n\n\n\n\n\nPractical exercises in R: regression and ggdag\n\n\n\n\n\n(Bulbulia 2024b) link\nsee simplified reading\n\n\n\n\n(Suzuki, Shinozaki, and Yamamoto 2020) link\n(Neal 2020) Chapter 3 link\n(Hernan and Robins 2024) Chapter 6 link"
+  },
+  {
+    "objectID": "slides/01-slides.html",
+    "href": "slides/01-slides.html",
+    "title": "Seminar 1",
+    "section": "",
+    "text": "Understand the special problems that cultural research presents for measurement.\nUnderstand the deeper, and prior concept of confounding.\n\n\n\n\n\nMeasurement\nValidity\nA confounder"
+  },
+  {
+    "objectID": "slides/extra-slides.html",
+    "href": "slides/extra-slides.html",
+    "title": "How to ask a Why Question",
+    "section": "",
+    "text": "Why why?"
+  },
+  {
+    "objectID": "slides/extra-slides.html#why-questions",
+    "href": "slides/extra-slides.html#why-questions",
+    "title": "How to ask a Why Question",
+    "section": "",
+    "text": "Why why?"
+  },
+  {
+    "objectID": "slides/extra-slides.html#test",
+    "href": "slides/extra-slides.html#test",
+    "title": "How to ask a Why Question",
+    "section": "Test",
+    "text": "Test\nAt the core:\n[ Y|A=1 Y_{0} ]"
+  },
+  {
+    "objectID": "slides/extra-slides.html#dags",
+    "href": "slides/extra-slides.html#dags",
+    "title": "How to ask a Why Question",
+    "section": "Dags",
+    "text": "Dags\n\nlibrary(ggdag)\n\n\nAttaching package: 'ggdag'\n\n\nThe following object is masked from 'package:stats':\n\n    filter\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\ncoords &lt;- read.table(header = TRUE, text = \"\n  x y name\n  0 1 U\n  1 .1 L0\n  2 0 A0\n  3 0.1 Y0\n  4 0 A1\n  5 0.2 Y2\n\")\n\nd &lt;- dagify(\n  A0 ~ L0,\n  A1 ~ A0,\n  L0 ~ U,\n  Y0 ~ A0,\n  Y2 ~ A1 + L0,\n  Y2 ~ U + Y0,\n  coords = coords)\n\nggdag(d) +\n   theme_dag()"
+  },
+  {
+    "objectID": "slides/extra-slides.html#code",
+    "href": "slides/extra-slides.html#code",
+    "title": "How to ask a Why Question",
+    "section": "Code",
+    "text": "Code\nlibrary(ggdag)\nlibrary(dplyr)\n\n\ncoords &lt;- read.table(header = TRUE, text = \"\n  x y name\n  0 1 U\n  1 0 L0\n  2 0 A0\n  3 0 Y0\n  4 0 A1\n  5 0 Y2\n\")\n\nd &lt;- dagify(\n  A1 ~ L0 + A0,\n  L0 ~ U,\n  Y0 ~ U,\n  Y2 ~ A1,\n  Y2 ~ U + Y0,\n  coords = coords)\n\nggdag(d) +\n   theme_dag()"
+  },
+  {
+    "objectID": "slides/extra-slides.html#dag",
+    "href": "slides/extra-slides.html#dag",
+    "title": "How to ask a Why Question",
+    "section": "DAG",
+    "text": "DAG\n\nlibrary(dagitty)\nlibrary(ggdag)\n\n# coordinates for graph\ncoords &lt;- read.table(header = TRUE, text = \"\n  x y name\n  0 -1 U\n  0 1 L\n  2 0 A0\n  3 0 Y0\n  4 0 A1\n  6 0 Y2\n\")\n\n# make into daggity object\nd &lt;- dagify(\n  L ~ U,\n  A0 ~  L + U,\n  Y0 ~  L + U,\n  A1 ~  L + U ,\n  Y2 ~  L + U,\n  exposure = \"A1\",\n  outcome = \"Y2\",\n  latent = \"U\",\n  coords = coords)\n\n# plot\nggdag(d,  text = TRUE, node = FALSE, \n      text_size = 9,\n      text_col = \"black\") +\n   theme_dag()"
+  },
+  {
+    "objectID": "slides/extra-slides.html#check-confounding",
+    "href": "slides/extra-slides.html#check-confounding",
+    "title": "How to ask a Why Question",
+    "section": "Check confounding",
+    "text": "Check confounding\n\nggdag_adjustment_set(d) + theme_dag_blank()\n\nWarning in dag_adjustment_sets(., exposure = exposure, outcome = outcome, : Failed to close backdoor paths. Common reasons include:\n            * graph is not acyclic\n            * backdoor paths are not closeable with given set of variables\n            * necessary variables are unmeasured (latent)"
+  },
+  {
+    "objectID": "slides/extra-slides.html#visualise-confounding",
+    "href": "slides/extra-slides.html#visualise-confounding",
+    "title": "How to ask a Why Question",
+    "section": "Visualise confounding",
+    "text": "Visualise confounding\n\nggdag_dseparated(d,\n  controlling_for = c(\"L\", \"A0\", \"Y0\"),\n  text = TRUE, collider_lines = FALSE\n) + theme_dag()"
+  },
+  {
+    "objectID": "slides/extra-slides.html#test-dag",
+    "href": "slides/extra-slides.html#test-dag",
+    "title": "How to ask a Why Question",
+    "section": "test dag",
+    "text": "test dag\ninstall.packages(c(\"coda\",\"mvtnorm\",\"devtools\",\"loo\",\"dagitty\",\"shape\"))\ndevtools::install_github(\"rmcelreath/rethinking\")\nlibrary(rethinking)\ndrawdag(d, arrow = \"gray\",  Z=list(\"U\"))\n\n\nhttps://gist.github.com/andrewheiss/4ece621813a27dfdcaef7f1c2d773237"
+  },
+  {
+    "objectID": "laboratory/Readme.html",
+    "href": "laboratory/Readme.html",
+    "title": "PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025",
+    "section": "",
+    "text": "Structure is as follows:\n\n\n01-lab.R - introduction to R script: intsallation/basic commands/graphing"
+  },
+  {
+    "objectID": "laboratory/Readme.html#labs",
+    "href": "laboratory/Readme.html#labs",
+    "title": "PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025",
+    "section": "",
+    "text": "Structure is as follows:\n\n\n01-lab.R - introduction to R script: intsallation/basic commands/graphing"
+  },
+  {
+    "objectID": "slides/07-slides.html",
+    "href": "slides/07-slides.html",
+    "title": "Introduction to Causal Inference",
+    "section": "",
+    "text": "Understand the definition of “causality” as it is used in the human and health sciences.\nUnderstand the assumptions required for consistently estimating causal effects.\nUnderstand how to use causal diagrammes to assess these assumptions.\n\n\n\n\n\nCause/Effect\nConfounder\nCollider"
   }
 ]

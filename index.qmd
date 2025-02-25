@@ -180,7 +180,7 @@ my_data %>%
 
   - (a) Class attendance and active participation.
   - (b) Lab attendance and active participation.
-  - (c) Presentation (Week 10)
+  - (c) Presentation (Week 12)
 
 ### Assessment 2: In-class Test
 
