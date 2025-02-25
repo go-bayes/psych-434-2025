@@ -78,7 +78,7 @@ Assuming you have installed R and RStudio:
 
 3. In RStudio, create a new R script file by going to `File > New File > R Script`.
 
-4. Create a new`.R` file called `02-lab.R` and provide your name, contact, data, and a brief title such as "Rimulating the basic five basic causal structures in R" 
+4. Create a new`.R` file called `02-lab.R` and provide your name, contact, data, and a brief title such as "Simulating the basic five basic causal structures in R" 
 
 Example: 
 
