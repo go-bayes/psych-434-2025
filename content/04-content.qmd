@@ -48,9 +48,14 @@ loadfonts(device = "all")
 
 ::: {.callout-note}
 **Required**
-- [@hernan2024WHATIF] Chapter 6-9 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+- [@bulbulia2023] [link](https://www.cambridge.org/core/journals/evolutionary-human-sciences/article/methods-in-causal-inference-part-1-causal-diagrams-and-confounding/E734F72109F1BE99836E268DF3AA0359)
+
+- see [simplified reading](https://osf.io/preprints/psyarxiv/tbjx8_v1)
 
 **Optional**
+
+- [@hernan2024WHATIF] Chapter 6-9 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
 - [@hernan2004STRUCTURAL] [link](https://www.dropbox.com/scl/fi/qni0y1lstntmdw410m2nh/Heran2004StructuralSelectionBias.pdf?rlkey=0ob86mmx7vscxqmn3ipg9m94f&dl=0)
 - [@hernan2017SELECTIONWITHOUTCOLLIDER] [link](https://www.dropbox.com/scl/fi/zr3tk7ngsutjprqr18bbg/hernan-selection-without-colliders.pdf?rlkey=vfluyl3a7zksfphqepao04fix&dl=0)
 - [@hernan2009MEASUREMENT] [link](https://www.dropbox.com/scl/fi/ip8nil6uc5l0x9xw14mbr/hernan_cole_Measure_causal_diagrams.pdf?rlkey=wkj3ayen8xb6ncog46sps2g49&dl=0)
@@ -89,7 +94,7 @@ loadfonts(device = "all")
 ::: {#fig-time-solved}
 ![](common-causal-questions.pdf){fig-align="left" height=100% width=100%}
 
-This figure is adapted from [@bulbulia2023]
+This figure is adapted from [@bulbulia2024wierd]
 :::
 
 
@@ -98,16 +103,16 @@ This figure is adapted from [@bulbulia2023]
 ::: {#fig-time-solved}
 ![](measurementerrorbias.pdf){fig-align="left" height=100% width=100%}
 
-This figure is adapted from [@bulbulia2023]
+This figure is adapted from [@bulbulia2024wierd]
 :::
 
 
 ## Threats to External Validity 
 
 ::: {#fig-time-solved}
-![](externalvalidity.pdf){fig-align="left" height=100% width=100%}
+![](externalvalidity.pdf){fig-align="left" width=800px}
 
-This figure is adapted from [@bulbulia2023]
+This figure is adapted from [@bulbulia2024wierd][Download PDF](externalvalidity.pdf){.btn .btn-primary .btn-sm}
 :::
 
 
@@ -274,7 +279,7 @@ In other cases, d-connection will spoil the model. We have seen this for omitted
 To add some grit to our exploration of mediation lets simulate data that are consistent with our mediation DAG
 
 
-```{r echo = FALSE, include = FALSE}
+```{r echo = TRUE, include = TRUE}
 set.seed(123)
 N <- 100
 x <- rnorm(N)# sim x

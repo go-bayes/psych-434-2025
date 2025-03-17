@@ -63,6 +63,8 @@ editor_options:
 
 ##### Optional Readings
 
+- [@bulbulia2024wierd][link](https://www.cambridge.org/core/journals/evolutionary-human-sciences/article/methods-in-causal-inference-part-3-measurement-error-and-external-validity-threats/4D35FFDECF32B2EFF7557EC26075175F)
+
 - [@suzuki2020] [link](https://www.dropbox.com/scl/fi/4midxwr9ltg9oce02e0ss/suzuki-causal-diagrams.pdf?rlkey=uktzf3nurtgpbj8m4h0xz82dn&dl=0)
 - [@neal2020introduction] Chapter 3 [link](https://www.bradyneal.com/Introduction_to_Causal_Inference-Dec17_2020-Neal.pdf)
 - [@hernan2024WHATIF] Chapter 6 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
