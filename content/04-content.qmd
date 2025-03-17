@@ -119,6 +119,8 @@ This figure is adapted from [@bulbulia2024wierd][Download PDF](externalvalidity.
 
 # Lab 04 
 
+Note: you may also download the lab here [Download the R script for Lab 04](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/04-lab.R)
+
 ## Load libraries
 
 ```{r}

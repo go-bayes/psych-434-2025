@@ -71,6 +71,7 @@ loadfonts(device = "all")
 
 ::: {.callout-important}
 ## For the lab, copy and paste code chunks following the "LAB 3" section.
+Note: you may also download the lab here [Download the R script for Lab 03](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/03-lab.R)
 :::
 
 
