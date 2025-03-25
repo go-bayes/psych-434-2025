@@ -88,7 +88,7 @@ To answer a psychological question we must first ask it.
 ## Causal inference begins by stating a counterfactual contrast
 
 
-In the simpliest case, we calculate the contrast between two or more "treatments" or equivalently "exposures":
+In the simpliest case, we calculate the contrast between two or more "treatments" or equivalently "exposures"
 
 
 
@@ -98,28 +98,10 @@ $$
 
 
 
-### After Stating the Causal Interest, We State the Conditions Needed for Identifying This Effect from Data
-
-In observational studies, the next step is to identify this effect by controlling for common causes of both the treatment and outcome (or proxies of such common causes). The regression standardization formula is:
-
-$$
-\widehat{\text{ATE}} = \int \left( \mathbb{E}[Y(a^*) \mid L] - \mathbb{E}[Y(a) \mid L] \right) dP(L)
-$$
-
-Where:
-
-- **Statistical Estimand**: $\widehat{\text{ATE}}$, is the estimated average treatment effect.
-- **$\mathbb{E}[Y(a^*) \mid L]$**: is the expected value (mean) of the outcome variable $Y$ when the treatment $a^*$ is applied, given the confounders $L$.
-- **$\mathbb{E}[Y(a) \mid L]$**: is the expected value of $Y$ when the treatment $a$ is applied, given $L$.
-- **$\mathbb{E}[Y(a^*) \mid L] - \mathbb{E}[Y(a) \mid L]$**: is the difference in the expected treatments, controlling for $L$.
-- **$\int (...) dP(L)$**: $dP(L)$ is an integral (remember high school math?). Integrals give us areas under curves. Here the area is a distribution of probabilities. To obtain valid inference, the treatment effect is computed over all the probability distribution of $L$ in the population.
-
-### So, in the simplest possible terms
-
 Understanding causal inference is fundamentally about comparing what happened with what could have happened *an average* under different conditions or treatments *in some population*, while carefully accounting for factors that might confound or distort the comparison that interests us (i.e. that might give a false answer to the question we asked).
 
 
-##  What do the words "Moderation" and "Interaction" mean? 
+##  In Causal Inference, What do the words "Moderation" and "Interaction" mean? 
 
 
 We here these words used freely in psychology.  What do they mean?   Causal inference allows us to be precise. 
@@ -129,7 +111,6 @@ Let's set the term *moderation* to the side, and in its place consider "effect-m
 
 1. Interaction
 2. Effect-modification
-
 
 
 ## Interaction
@@ -488,7 +469,7 @@ This will allow you to save the outputs of models and other information, which w
 ### Set up a path to a folder in your directory 
 
 # create a folder called saved and make a path like this
-push_mods <- here::here('/Users/joseph/Library/CloudStorage/Dropbox-v-project/data/saved')
+push_mods <- here::here('/Users/joseph/v-project\ Dropbox/data/courses/25-psych-434')
 
 # view it (will be different for you)
 push_mods
@@ -520,6 +501,8 @@ Also see here: <https://github.com/go-bayes/templates/tree/main/method>
 
 ```{r}
 library(margot)
+library(tidyverse)
+library(table1)
 # eliminate haven labels
 df_nz <- as.data.frame(df_nz)
 df_nz <- haven::zap_formats(df_nz)
@@ -694,7 +677,6 @@ There are N = `r n_participants_did_it_work_question_mark` participants.
 
 
 ```{r}
-
 # for example 
 baseline_vars = c("age", "male", "edu", "eth_cat", "partner", "employed", "born_nz", "neighbourhood_community", "household_inc_log",
 "parent", "religion_religious", "rural_gch_2018_l","sample_weights", "employed", "alert_level_combined_lead")
@@ -704,189 +686,59 @@ exposure_var = c("perfectionism", "censored") # we will use the censored variabl
 
 # outcome, can be many
 outcome_vars = c("kessler_latent_anxiety", "kessler_latent_depression")
+
+# define waves
+baseline_wave = "2018"
+
+# exposure waves
+exposure_waves = c("2018","2019")
+
+#outcome wave
+outcome_wave = "2020"
+
+# exoposure
+name_exposure = "perfectionism"
 ```
 
 
 ### Make your baseline table
 
-```{r}
-library(gtsummary)
-# the setdiff command allows us to remove names from the baseline vars list that we do not want
-base_var <-
-  setdiff(baseline_vars, c("censored", "sample_weights", "alert_level_combined_lead", outcome_vars))
 
-
-#  we only want the data at baseline 
-
-# select only baseline wave
-dt_18 <- dat_long |> 
-  dplyr::filter(wave == 2018)
-
-
-# get only the baseline variables for the table
-selected_base_cols <-
-  dt_18 |> select(all_of(base_var))
-
-#check
-colnames_use <- colnames(selected_base_cols)
-colnames_use
-
-# # aside to get different names in lists
-# everything_better_cols <- c(colnames_use, "inkuk")
-# everything_better_cols
-# 
-# # get rid of name
-# everything_worse_cols <- setdiff(everything_better_cols, "inkuk")
-
-# baseline table
-library(gtsummary)
-
-
-# this is just a demo of another package, which can be useful for quick tables, less for your manuscripts
-no_miss_df <- df_nz |> 
-  drop_na()
-
-table1::table1( ~ perfectionism  | wave * eth_cat ,
-                data = no_miss_df,
-                overall = FALSE)
-
-
-
-
-table_baseline <- selected_base_cols |> 
-  janitor::clean_names(case = "title") |> 
-  tbl_summary(
-    missing = "ifany",
-    percent = "column",
-    statistic = list(
-      all_continuous() ~ c(
-        "{mean} ({sd})", # Mean and SD
-        "{min}, {max}", # Range (Min, Max)
-        "{p25}, {p75}" # IQR (25th percentile, 75th percentile)
-      )
-    ),
-    type = all_continuous() ~ "continuous2"
-  ) |>
-  modify_header(label = "**Exposure + Demographic Variables**") |> # update the column header
-  bold_labels() 
-
-
-# baseline
-table_baseline
-
-# save your baseline table
-margot::here_save(table_baseline, "table_baseline")
-```
-
-
-### Make exposure wave table
+### Make tables
 
 
 
 ```{r}
-# get first and second wave
-dt_18_19 <- dat_long |> 
-  dplyr::filter(wave == 2018 | wave == 2019) |> 
-  # we need to drop unused levels of the wave
-  droplevels()
 
-# get vars.
-selected_exposure_cols <-
-  dt_18_19 %>% select(
-    c(
-      "perfectionism",
-      "wave"
-    )
-  )
-
-# check
-#str(selected_exposure_cols)
+tables <- margot::margot_summary_tables(dat_long, exposure_waves = exposure_waves, baseline_wave = baseline_wave, outcome_wave = outcome_wave, name_exposure = name_exposure, baseline_vars = baseline_vars, outcome_vars = outcome_vars)
 
 
-library(gtsummary)
+# save tables
+# here_save(table_exposures, "table_exposures")
 
-table_exposures <- selected_exposure_cols %>%
-  janitor::clean_names(case = "title") %>% 
-  labelled::to_factor() %>%  # ensure consistent use of pipe operator
-  tbl_summary(
-    by = "Wave",  #specify the grouping variable. Adjust "Wave" to match the cleaned column name
-    missing = "always", 
-    percent = "column",
-    # statistic = list(all_continuous() ~ "{mean} ({sd})")  # Uncomment and adjust if needed for continuous variables
-  ) %>%
-  #  add_n() %>%  # Add column with total number of non-missing observations
-  modify_header(label = "**Exposure Variables by Wave**") %>%  # Update the column header
-  bold_labels()
-
-table_exposures
-
-
-# save baseline
-here_save(table_exposures, "table_exposures")
-
-table_exposures
 ```
 
-### Table for the outcome
+## Baseline table
 
 ```{r}
-# outcome table -----------------------------------------------------------
-dt_18_20 <- dat_long |> 
-  dplyr::filter(wave == 2018 | wave == 2020) |> 
-  droplevels()
-
-names_outcomes_tab <- setdiff(outcome_vars, dt_18_20)
-names_outcomes_sorted <- sort(names_outcomes_tab)
-names_outcomes_final <- names_outcomes_sorted # consistent workflow
-
-# better names if desirable
-selected_outcome_cols <-
-  dt_18_20 %>% select(all_of(names_outcomes_final),
-                      wave) 
-# |> # example if you want to rename your variables for the table
-#   rename(
-#     Social_belonging = belong,
-#     Annual_charity = charity_donate,
-#     Volunteering_hours = hours_charity,
-#     Community_gives_money_binary = community_money_binary,
-#     Community_gives_time_binary = community_time_binary,
-#     Family_gives_money_binary = family_money_binary,
-#     Family_gives_time_binary = family_time_binary,
-#     Friends_give_money_binary = friends_money_binary,
-#     Friends_give_time = friends_time_binary,
-#     Social_support = support,
-#     Sense_neighbourhood_community = neighbourhood_community
-#   )
-
-# order names correctly
-selected_outcome_cols <- selected_outcome_cols %>%
-  select(sort(names(selected_outcome_cols)))
-
-# checks
-# str(selected_outcome_cols)
-# colnames(selected_outcome_cols)
-
-table_outcomes <- selected_outcome_cols %>%
-  janitor::clean_names(case = "title") %>% 
-  labelled::to_factor() %>%  # ensure consistent use of pipe operator
-  tbl_summary(
-    by = "Wave",  #specify the grouping variable. Adjust "Wave" to match the cleaned column name
-    missing = "always", 
-    percent = "column",
-    # statistic = list(all_continuous() ~ "{mean} ({sd})")  # Uncomment and adjust if needed for continuous variables
-  ) %>%
-  #  add_n() %>%  # Add column with total number of non-missing observations
-  modify_header(label = "**Outcome Variables by Wave**") %>%  # Update the column header
-  bold_labels()
-
-
-# save
-margot::here_save(table_outcomes, "table_outcomes")
-
-# read if needed
-table_outcomes <- margot::here_read("table_outcomes")
-table_outcomes
+print(tables$baseline_table)
 ```
+
+## Exposure table
+
+```{r}
+print(tables$exposure_tables)
+```
+
+
+# Outcome table
+
+```{r}
+print(tables$outcome_table)
+```
+
+
+
 
 ### Inspect the distribution of the exposure in treatment wave
 
@@ -903,9 +755,8 @@ median_exposure <-median(dt_19$perfectionism, na.rm=TRUE)
 # check if you like
 # median_exposure
 # mean_exposure
-
-# # generate bar plot
-graph_density_of_exposure_up <- margot::coloured_histogram_shift(
+# generate bar plot
+graph_density_of_exposure_up <- margot::margot_plot_shift(
   dt_19,
   shift = "up",
   col_name = "perfectionism",
@@ -922,21 +773,6 @@ graph_density_of_exposure_up
 ```
 
 
-### Another Graph: Shift Interventions Up
-
-```{r}
-margot::coloured_histogram(
-  dt_19,
-  col_name = "perfectionism",
-  binwidth = .25,
-  unit_of_change = 1,
-  scale_min = 1,
-  scale_max = 7,
-  highlight_range = "both"
-)
-```
-
-
 
 ### Check for change in the treatment (Positivity )
 
@@ -948,26 +784,20 @@ dt_18_19_positivity <- dat_long |>
   dplyr::select(perfectionism_round, id, wave) |>
   droplevels()
 
-out <-margot::create_transition_matrix(data = dt_18_19_positivity, state_var = "perfectionism_round", id_var = "id")
+out <-margot::margot_transition_table(data = dt_18_19_positivity, state_var = "perfectionism_round", id_var = "id", wave_var = "wave")
 
-
-# t_tab_2_labels <- c("< weekly", ">= weekly")
-# transition table
-transition_table  <- margot::transition_table(out)
+# table
+out$tables[[1]]
 
 # for import later
 # margot::here_save(transition_table, "transition_table")
-
-
-print(transition_table$table)
-
 ```
 
 
 ### Explanation for the table
 
 ```{r}
-transition_table$explanation
+cat(out$explanation)
 ```
 
 
@@ -1155,7 +985,7 @@ summary(fit_std_weighted_sample_weights,
     reference = 0)
 
 
-# Moral of the story. When we marginalise over the entire sample we need to weight estimates to the target population. 
+# moral of the story. when we marginalise over the entire sample we need to weight estimates to the target population. 
 ```
 
 
