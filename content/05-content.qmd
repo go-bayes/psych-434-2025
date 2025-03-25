@@ -142,7 +142,7 @@ $$
 \text{Causal Effect}_i = Y_i(1) - Y_i(0).
 $$
 
-We say there is a causal effect of the bilingual exposure 
+We say there is a causal effect of the bilingual exposure if
 
 $$
 Y_i(1) - Y_i(0) \neq 0.
@@ -227,26 +227,23 @@ $$
 $$
 
 
-Here, $\mathbb{E}[Y(1)\mid A=1]$ is observable and  $\mathbb{E}[Y(0)\mid A=0]$, and  $\mathbb{E}[Y(1)\mid A=0]$ and $\mathbb{E}[Y(0)\mid A=1]$ remain unobservable, but are treated as if they equal their observed analogues under exchangeability. 
+We have it that $\mathbb{E}[Y\mid A=1]$ and  $\mathbb{E}[Y\mid A=0]$ and  $\mathbb{E}[Y(1)\mid A=0]$ are observed. If both consistency and exchangeability are satisifed then we may use these observed quantities to identify contrasts of counterfactual quanities. 
 
-Thus, although individual-level counterfactuals are missing, randomisation ensures that, on average, the observed data identify the effect of treatment. This effect is the Average Treatment Effect (also called the Marginal Effect).
-
-
-
-
-Exchangeability entails that potential outcomes are statistically independent of treatment assignment (given any measured confounders). In an idealised experiment, randomisation creates unconditional exchangeability by ensuring that treatment groups differ only by chance in factors that may affect the outcome.
+Thus, although individual-level counterfactuals are missing, the consistency assumptions and the exchangeability assumptions allow us to identify the average effect of treatment using observed data.  Randomised controlled experiments allow us to meet these assumptions. Randomisation warrents the exchangeability assumption. Control warrents the consistency asumption. 
 
 
 ### Fundamental Assumption 3: Positivity
 
-Positivity requires that, for every covariate pattern $L = l$, each individual has a non-zero probability of receiving either treatment level:
+There is one further assumption, called positivity. It states that treatment assignments cannot be deterministic. That is, for every covariate pattern $L = l$, each individual has a non-zero probability of receiving ever treatment level to be compared:
 
 
 $$
 P(A = a \mid L = l) > 0.
 $$
 
-Randomised experiments achieve positivity by design, ensuring that everyone could receive any treatment. In observational settings, violations occur if some subgroups almost never receive a particular treatment. Such violations force extrapolations beyond observed data and may invalidate causal inferences.  
+Randomised experiments achieve positivity by design -- at least for the sample that is selected into the study. In observational settings violations occur if some subgroups never receive a particular treatment. If treatments occur but are rare, we may have sufficient data from which to obtain convincing causal inferences. 
+
+Positivity is the only assumption that can be verified with data. We will consider how to assess this assumption using data when we develop our data analytic workflows in the second half of this course.
 
 
 ## Challenges with Observational Data
@@ -257,9 +254,9 @@ Below are some ways in which real-world complexities can violate causal consiste
 
 1.	**Cultural differences**: one group’s "second-language exposure" may differ qualitatively from another’s if cultural norms shape how, when, or by whom the second language is taught. For instance, a child in a bilingual community may receive diverse and immersive language experiences all of which are are coded as $A=1$. Yet the treatments might be quite different. We might be comparing apples with oranges.
 
-2.	 **Age of acquisition**: the developmental effect of learning a second language may vary by when the child is exposed. Comparing aquisition at age 2 with aquisition at age 12 might be comparing apples with oranges.
+2.	 **Age of acquisition**: the developmental effect of learning a second language may vary by when the child is exposed. Comparing aquisition at, say, age two with aquisition at say, age twelve, might be comparing apples with oranges.
 
-3.	**Language variation:** sign languages, highly tonal languages, or unwritten languages may demand different cognitive tasks than spoken, nontonal, or widely documented languages. Thus, lumping them together as "learning a second language" can obscure the fact that these distinct exposures might produce fundamentally different outcomes. Again, comparisons are of apples with oranges.
+3.	**Language variation:** sign languages, highly tonal languages, or unwritten languages may demand different cognitive tasks than spoken, nontonal, or widely documented languages. Thus, lumping them together as "learning a second language" can obscure the fact that these distinct exposures might produce fundamentally different outcomes. Again, comparisons here would be of apples with oranges.
 
 These sources of heterogeneity reveal why careful delineation of treatments is crucial. If the actual exposures differ across individuals, then consistency $(Y_i(a) = Y_i \mid A_i = a)$ may fail, because $A=a$ is not the same phenomenon for everyone.
 
