@@ -774,7 +774,7 @@ graph_density_of_exposure_up
 
 
 
-### Check for change in the treatment (Positivity )
+### Check for change in the treatment (Positivity)
 
 ```{r}
 #  select data from wave 18 and 19 
