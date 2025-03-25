@@ -68,235 +68,459 @@ loadfonts(device = "all")
 ## For the lab, copy and paste code chunks following the "LAB 6" section.
 :::
 
+::: {.callout-important}
+In these notes, we use the terms "counterfactual outcomes" and "potential outcomes" interchangeably.
+:::
 
 # Seminar
 
 ## Learning Outcomes
 
 - You will understand why causation is never directly observed.
-
 - You will understand how experiments address this "causal gap."
-
-- You will understand how the application of three principles from experimental research allow human scientists to close this "causal gap" when making inferences about a population as whole -- that is, inferences about "marginal effects."
-
+- You will understand how applying three principles from experimental research allows human scientists to close this "causal gap" when making inferences about a population as a whole — that is, inferences about "marginal effects."
 
 ## Opening 
 
 
-Robert Frost writes, 
+::: {.callout-quote}
+**Robert Frost writes:**
 
-> Two roads diverged in a yellow wood,
-And sorry I could not travel both
-And be one traveler, long I stood
-And looked down one as far as I could
-To where it bent in the undergrowth;
-
->Then took the other, as just as fair,
-And having perhaps the better claim,
-Because it was grassy and wanted wear;
-Though as for that the passing there
-Had worn them really about the same,
-
->And both that morning equally lay
-In leaves no step had trodden black.
-Oh, I kept the first for another day!
-Yet knowing how way leads on to way,
-I doubted if I should ever come back.
-
->I shall be telling this with a sigh
-Somewhere ages and ages hence:
-Two roads diverged in a wood, and I—
-I took the one less traveled by,
-And that has made all the difference. 
--- The Road Not Taken
-
+> Two roads diverged in a yellow wood,  
+> And sorry I could not travel both  
+> And be one traveler, long I stood  
+> And looked down one as far as I could  
+> To where it bent in the undergrowth;  
+> 
+> Then took the other, as just as fair,  
+> And having perhaps the better claim,  
+> Because it was grassy and wanted wear;  
+> Though as for that the passing there  
+> Had worn them really about the same,  
+> 
+> And both that morning equally lay  
+> In leaves no step had trodden black.  
+> Oh, I kept the first for another day!  
+> Yet knowing how way leads on to way,  
+> I doubted if I should ever come back.  
+> 
+> I shall be telling this with a sigh  
+> Somewhere ages and ages hence:  
+> Two roads diverged in a wood, and I—  
+> I took the one less traveled by,  
+> And that has made all the difference.
+> 
+> -- *The Road Not Taken*
+:::
 
 ## Introduction: Motivating Example
 
-Consider the following cross-cultural question: 
+Consider the following cross-cultural question:
 
-> Does bilingualism improve cognitive abilities in children? 
+> Does bilingualism improve cognitive abilities in children?
 
-There is evidence that bilingual children perform better oat cognitive tasks, but is learning more than one language a confounding factor? 
+There is evidence that bilingual children perform better at cognitive tasks, but is this improvement truly caused by learning more than one language, or is it confounded by other factors (e.g., cultural environment, parental influence)? How can we know? Each child might answer, like the traveller in Frost’s poem:
 
-How can we know?  Each child might respond as the traveller in Frost's poem:
-
-"And sorry I could not travel both. And be one traveller$\dots$"
-
+**"And sorry I could not travel both. And be one traveler $\dots$"**
 
 ## Part 1: The Fundamental Problem of Causal Inference as a Missing Data Problem 
 
-Humans think in images, words, and songs -- sometimes dance. However, a little mathematical notation helps to clarify the key concepts in causal inference.
+**The fundamental problem of causal inference** is that causality is never directly observed. 
 
-To understand **the fundamental problem of causal inference,** we first define two potential outcomes for each individual in our study:
+Let $Y$ and $A$ denote random variables.
 
-Let $Y$ and $A$ denote random variables. 
+We formulate a causal question by asking whether experiencing a exposure $A$, when this exposure is set to level $A = a$, would lead to a difference in $Y$, compared to what would have occurred had the exposure been set to a different level, say $A=a'$ will lead to a difference in outcome $Y$. For simplicity, we imagine binary exposure such that $A = 1$ denotes receiving the "bilingual" exposure and $A = 0$ denotes receiving the "monolingual" exposure. Assume these are the only two exposures of interest:
 
+Let: 
 
-Mathematically, we formulate a causal question by asking whether assignment to treatment $A = a$ will lead to a difference to the outcome $Y$.  
+  - $Y_i(a = 1)$ denote the cognitive ability of child $i$ if the child were bilingual (potential outcome when $A_i = 1$).
+  - $Y_i(a = 0)$ denote the cognitive ability of child $i$ if the child were monolingual (potential outcome when $A_i = 0$).
 
-Let $A = 1$ denote getting the "bilingual" treatment, and $A = 0$ denote getting the monolingual treatment. Assume these are the only two treatments of interest. 
-
-- $Y_i(a = 1)$ The cognitive ability of child $i$ if they were bilingual. This is the counterfactual outcome when treatement $A = (a  =  1)$.
-
-- $Y_i(a = 0)$:: The cognitive ability of child $i$ if they were monolingual. This is the counterfactual outcome when $A = (a = 0)$.
-
-Using this notation, we may define a quantitative causal effect of bilingualism on cognitive ability for individual $i$ as the difference between these potential outcomes:
-
+What does it mean to *quantify* a causal effect. We may define the individual-level causal effect of bilingualism on cognitive ability for child $i$ as the difference between two states of the world: one for which the child experiences a bilingual exposure and the other for which the child does not. We write this contrast by referring to the potential outcomes under different levels of exposure:
 
 $$
-\text{Causal Effect}_i = Y_i(1) - Y_i(0)
+\text{Causal Effect}_i = Y_i(1) - Y_i(0).
 $$
 
-We say there is a causal effect if: 
+We say there is a causal effect of the bilingual exposure 
 
 $$
-Y_i(1) - Y_i(0)  \neq 0
+Y_i(1) - Y_i(0) \neq 0.
 $$
 
-Writing out our contrast of interest this way makes it clear that, because individuals experience only **one** treatment condition, we cannot compute this contrast directly from any data we may observe.  We call the missing observation "counterfactual."
+Because each child experiences only **one** exposure condition in reality, we cannot directly compute this difference from any dataset — the missing observation is called the **counterfactual**:
+
+  - If $Y_i|A_i = 1$ is observed, then $Y_i(0)|A_i=1$ is counterfactual.
+  - If $Y_i|A_i = 0$ is observed, then $Y_i(1)|A_i=1$ is counterfactual.
+
+**"And sorry I could not travel both / And be one traveler, long I stood $\dots$"**
+
+In short, individuals cannot simultaneously experience both exposure conditions, so one outcome is inevitably missing. 
+
+## How can we make contrasts between counterfactual (potential) outcomes?
+
+### Fundamental Assumption 1: Causal Consistency
+
+Causal consistency means that the potential outcome corresponding to the exposure an individual actually receives is exactly what we observe. In other words, if individual $i$ receives exposure $a$, then the *potential outcome* (or equivalently the *counterfactual outcome* under a given level of exposure $A=a$ -- that is $Y_i(a)$ -- is equivalent to the *the observed outcome*: $Y_i \mid A_i \equiv a$. Where the symbol $\equiv$ means "equivalent to", when we assume that the causal consistency assumption is satisfied, we assume that:
+
+$$
+\begin{aligned}
+\underbrace{Y_i(1)}_{\text{counterfactual}} &\equiv \underbrace{(Y_i \mid A_i = 1)}_{\text{observable}}, \\
+\underbrace{Y_i(0)}_{\text{counterfactual}} &\equiv \underbrace{(Y_i \mid A_i = 0)}_{\text{observable}}.
+\end{aligned}
+$$
+
+Notice however that we cannot generally obtain individual causal effects because at any given time, each individual may only receive at most one leve of an exposure. Where the symbol $\implies$ means "implies," at any given time, receiving one level of an exposure precludes receiving any other level of that exposure:
 
 $$
 Y_i|A_i = 1 \implies Y_i(0)|A_i = 1~ \text{is counterfactual}
 $$
-Furthermore:
+Likewise:
 
 $$
 Y_i|A_i = 0 \implies Y_i(1)|A_i = 1~ \text{is counterfactual}
 $$
 
+Because of the laws of physics (above the atomic scale), an individual can experience only one exposure level at any moment. Consequently, we can observe only one of the two counterfactual outcomes needed to quantify a causal effect. This is the fundamental problem of causal inference. Counterfactual contrasts cannot be individually observed. 
+
+However, because of the causal consistency assumption, we can nevertheless recover half of the missing counterfactual (or “potential”) outcomes needed to estimate average treatment effects. We may do this if two other assumptions are satisfied.
 
 
-**And sorry I could not travel both And be one traveller, long I stood** $\dots$
+### Fundamental Assumption 2: Exchangeability
 
-
-
-
-### Average Treatment Effect in randomised controlled experiments work from assumptions
-
-
-Consider inherently missing observations in an experiment:
-
-
-
-::: {#tbl-01}
-
-$$
-\text{ATE} = \left[ \begin{aligned}
-&\left( \underbrace{\mathbb{E}[Y(1)|A = 1]}_{\text{observed}} + \textcolor{red}{\underbrace{\mathbb{E}[Y(1)|A = 0]}_{\text{unobserved}}} \right) \\
-&- \left( \underbrace{\mathbb{E}[Y(0)|A = 0]}_{\text{observed}} + \textcolor{red}{\underbrace{\mathbb{E}[Y(0)|A = 1]}_{\text{unobserved}}} \right)
-\end{aligned} \right]
-$$
-::: 
-
-In @tbl-01, the expression, $\mathbb{E}[Y(1)|A = 1]$ represents the average outcome when the treatment is given, which is observable. However, $\mathbb{E}[Y(1)|A = 0]$ represents the average outcome if the treatment had been given to those who were untreated, which remains unobservable. Similarly, the quantity $\mathbb{E}[Y(0)|A = 1]$ also remains unobservable.  Note that the problem isn't merely one of statistical analysis on the data. **The problem is that the relevant data to identify individual causal effects are missing.** Thus, it is evident that the fundamental problem of causal inference is an ever-present concern even in experiments!
-
-All the data we require for causal inferences at the individual level are missing, Nevertheless, because the treatments have been randomised, the data we observe from randomised controlled experiments can allow us to infer what would happen, **on average** if the treatment were applied to the population from which the participants were sampled. 
-
-We call this causal affect the "Average Treatment Effect" or equivalently, the "Marginal Effect of the Treatment." 
-
-
-### How do we obtain Average Treatment Effects from non-randomised observational data?
-
-Under stronger assumptions, we may sometimes infer causal effects from associations in data, even if the treatment variable $A$ has not been randomised. 
-
-
-$$
-\text{ATE} = \sum_{l} \large( \mathbb{E}[Y|A=1, \textcolor{blue}{L=l}] - \mathbb{E}[Y|A=0, \textcolor{blue}{L=l}] \large) \times \textcolor{blue}{\Pr(L=l)}
-$$
-
-Where $L$ denotes a set of measured covariates, we can express this principle of "no confounding" mathematically in two complementary ways. Recall our notation: $A \coprod B$ signifies that $A$ is independent of $B$, and vice versa:
-
-
-1. **Potential Outcomes Independent of Treatment (given L):** $Y(a) \coprod A \mid L$
-2. **Treatment Assignment Independent of Potential Outcomes (given L):** $A \coprod Y(a) \mid L$
-
-These formulations are crucial when working with causal diagrams, which visually encode these principles. The key idea is straightforward: ensuring a balance of confounders across treatment groups is fundamental to experimental and observational causal inference strategies. 
-
-With sufficiently large numbers of individuals, **randomisation facilitates this balance, achieving $A \coprod Y(a)$***
-
-
-
-### The Three Fundamental Assumptions of Causal Inference.
-
-Reviewing causal inference in experimental settings highlights three core assumptions essential for causal analysis.
-
-#### Fundamental Assumption 1: Conditional Exchangeability
-
-We say that conditional exchangability holds if the potential outcomes and treatment assignments are statistically independent, considering all measured confounders. This principle enables us to attribute observed group differences directly to the treatment. Randomisation provides *unconditional* exchangeability, simplifying the analytical process.
-
-
-Many experiments, such as child-hood bilingualism, cannot be performed.
-
-
-##### Challenge in Satisfying Conditional Exchangeability in Observational Settings
-
-Achieving conditional exchangability is challenging in observational studies. This condition requires the groups being compared to be similar in every aspect except for the treatment. Consider bilingualism. In real-world data, individuals with access to green spaces may differ from those without access in several ways:
-
-- **Socioeconomic status**: the economic capacity of individuals often determines their opportunities for education and language learning, thereby affecting cognitive development.
-- **Age demographics**: language development is not even throughout childhood; when one learns a second language may make a difference.
-- **Lifestyle choices**: Children who learn different language 
-- **Personal values and social connections**: environmental values and community ties may influence both the choice of residence and the utilisation of green spaces.
-
-These and other unmeasured factors can introduce biases, complicating the interpretation of causal relationships in observational studies.
-
-
-#### Fundamental Assumption 2: Causal Consistency
-
-We say that causal consistency holds if there is no heterogeneity in the treatments that would prevent us from assuming that the observed outcomes under treatments correspond to their potential outcomes. For an individual 'i', we must be able to assume:
-
-$$
-\begin{aligned}
-Y_{i}(1) &= (Y_{i}|A_{i} = 1) \quad \text{(Potential outcome if treated)} \\
-Y_{i}(0) &= (Y_{i}|A_{i} = 0) \quad \text{(Potential outcome if untreated)}
-\end{aligned}
-$$
-
-If this assumption holds, as well as the assumptions of conditional exchangeability and positivity (reviewed below), we can calculate the Average Treatment Effect (ATE) from observed data as:
+Exchangeability justifies recovering unobserved counterfactuals from observed outcomes and averaging them. By accepting that $Y_i(a) = Y_i$ if $A_i = a$, we can estimate population-level average potential outcomes. In an experiment where exposure groups are comparable, we define the Average Treatment Effect (ATE) as:
 
 $$
 \begin{aligned}
 \text{ATE} &= \mathbb{E}[Y(1)] - \mathbb{E}[Y(0)] \\
-&= \mathbb{E}(Y|A=1) - \mathbb{E}(Y|A=0)
+           &= \mathbb{E}(Y \mid A=1) \;-\; \mathbb{E}(Y \mid A=0).
 \end{aligned}
 $$
-
-This contrast assumes that the potential outcome under treatment is observable when the treatment is administered, setting $Y_i(a)$ to $Y_i|A_i=a$. 
-
-
-##### Challenges in Satisfying the Causal Consistency Assumption in Observational Settings
-
-The standardisation of treatments in randomised controlled experiments generally ensures the validity of the causal consistency assumption, which is seldom disputed. However, in observational settings, we cannot typically control the treatments that people receive. This fact imposes considerable challenges for satisfying this assumption. For example:
-
-- **Cultures**: the language one starts with, and the language one learns next, and the order of learning, may affect cognitive development.
-- **Parents**: the way in which one learns languages, either at schools or at home environments, may affect cognitive development.
-- **Language**: language impose different demands, consider the demands of a sign language (body-brain), a highly tonal language, the demands of different writing systems, the cognitive demands that arise in cultures with no written scripts...  
-
-
-Put another ways, causal inference does not merely require *randomisation*, it also requires *control*. 
-
-
-#### Fundamental Assumption 3: Positivity
-
-We must assume that there is a non-zero probability of receiving each treatment level within covariate-defined subgroups.
+Because randomisation ensures that missing counterfactuals are exchangeable with those observed, we can still estimate $\mathbb{E}[Y(a)]$. For instance, assume:
 
 $$
-P(A = a | L= l) > 0
+ \underbrace{\mathbb{E}[Y(1)\mid A=1]}_{\text{counterfactual}}  = \textcolor{red}{\underbrace{\mathbb{E}[Y(1)\mid A=0]}_{\text{unobservable}}}  =  \underbrace{(Y_i \mid A_i = 1)}_{\text{observed}}
 $$
 
-This assumption is also met by the *control* that experimentalists exert over randomised controlled experiments and is rarely stated explicitly. However, in observational settings, this condition must be verified to avoid extrapolating results beyond observed data.  
-
-##### Challenges in Satisfying The Positivity Assumption in Observational Settings: The Relevant Treatments Do Not Exist in The Data
-
-Positivity demands that each individual has the possibility of experiencing *every* level of the treatment to be compared. However, real-world constraints, such as the availability of bilingualism within different cultural settings, may preclude some groups from accessing bilinual learning. Where the treatments of interest are absent or scarcely represented in our dataset, the resulting causal inferences will lack empirical support. Consequently, any coefficients derived will represent extrapolations from statistical models, challenging the validity of our causal inferences [@westreich2010; @hernan2023].
+which lets us infer the average outcome if everyone were treated. Likewise, if
 
 
+$$
+ \underbrace{\mathbb{E}[Y(0)\mid A=0]}_{\text{counterfactual}}  = \textcolor{red}{\underbrace{\mathbb{E}[Y(1)\mid A=0]}_{\text{unobservable}}}  =  \underbrace{\mathbb{E}(Y \mid A_i = 0)}_{\text{observed}}
+$$
 
-### Summary 
+then we can infer the average outcome if everyone were given the control. The difference between these two quantities gives the ATE:
 
-We described the fundamental problem of causal inference, focusing on the critical distinction between correlation -- associations in the data, and causation -- the contrast between potential outcomes only one of which, at most, can be observed. We discussed how controlled experiments facilitate the estimation of average treatment effects (ATE) by systematically manipulating the variable of interest, allowing for the distribution of variables that might affect the outcome to be balanced across the treatment conditions. Our discussion then shifted to observational data, emphasising the challenges inherent in extracting causal relationships from data without the benefit of controlled interventions. We underscored the need to satisfy three key assumptions —- conditional exchangeability, causal consistency, and positivity—for inferring average treatment effects from observational data. These assumptions ensure that the treatment groups are comparable, the treatment effect is consistent across the population, and every individual has a non-zero probability of receiving each treatment level, respectively. 
 
-**A note on causal diagrams**: we have seen that causal diagrams are graphical tools offer a systematic approach to identifying and controlling for confounding variables -- for helping to understand the conditions in which the assumption of "no unmeasured confounding" or equivalently  of "balance in the confounders across treatments" may be satisfied. Causal diagrams, however, do not obviate the need for these assumptions; instead, they provide a framework for evaluating whether and how the first of the three assumptions -- conditional exchangeability -- may be satisfied in a given study.
+$$
+\text{ATE} = \Big[
+\overbrace{\mathbb{E}[Y(1)\mid A=1]}^{\substack{\text{by consistency:}\\ \equiv \text{ observed } \; \mathbb{E}[Y\mid A=1]}}
+\;+\;
+\overbrace{\textcolor{red}{\mathbb{E}[Y(1)\mid A=0]}}^{\substack{\text{by exchangeability:}\\ \text{unobservable, yet } \; \equiv \mathbb{E}[Y\mid A=1]}}
+\Big]
+-\,
+\Big[
+\overbrace{\mathbb{E}[Y(0)\mid A=0]}^{\substack{\text{by consistency:}\\ \equiv  \text{observed } \; \mathbb{E}[Y\mid A=0]}}
+\;+\;
+\overbrace{\textcolor{red}{\mathbb{E}[Y(0)\mid A=1]}}^{\substack{\text{by exchangeability:}\\ \text{unobservable, yet } \; \equiv \mathbb{E}[Y\mid A=0]}}
+\Big]
+$$
+
+
+Here, $\mathbb{E}[Y(1)\mid A=1]$ is observable and  $\mathbb{E}[Y(0)\mid A=0]$, and  $\mathbb{E}[Y(1)\mid A=0]$ and $\mathbb{E}[Y(0)\mid A=1]$ remain unobservable, but are treated as if they equal their observed analogues under exchangeability. 
+
+Thus, although individual-level counterfactuals are missing, randomisation ensures that, on average, the observed data identify the effect of treatment. This effect is the Average Treatment Effect (also called the Marginal Effect).
+
+
+
+
+Exchangeability entails that potential outcomes are statistically independent of treatment assignment (given any measured confounders). In an idealised experiment, randomisation creates unconditional exchangeability by ensuring that treatment groups differ only by chance in factors that may affect the outcome.
+
+
+### Fundamental Assumption 3: Positivity
+
+Positivity requires that, for every covariate pattern $L = l$, each individual has a non-zero probability of receiving either treatment level:
+
+
+$$
+P(A = a \mid L = l) > 0.
+$$
+
+Randomised experiments achieve positivity by design, ensuring that everyone could receive any treatment. In observational settings, violations occur if some subgroups almost never receive a particular treatment. Such violations force extrapolations beyond observed data and may invalidate causal inferences.  
+
+
+## Challenges with Observational Data
+
+### 1. Satisfying Causal Consistency is Difficult in Observational Settings
+
+Below are some ways in which real-world complexities can violate causal consistency in observational studies. For example, causal consistency requires there is no interference between units (also called "SUTVA" or "Stable Unit Treatment Value." Causal consistency also requires that each treatment level is well-defined and applied uniformly. If these conditions fail, then $Y(a)$ may not reflect a consistent exposures across individuals. We are then comparing apples with oranges. Consider some examples:
+
+1.	**Cultural differences**: one group’s "second-language exposure" may differ qualitatively from another’s if cultural norms shape how, when, or by whom the second language is taught. For instance, a child in a bilingual community may receive diverse and immersive language experiences all of which are are coded as $A=1$. Yet the treatments might be quite different. We might be comparing apples with oranges.
+
+2.	 **Age of acquisition**: the developmental effect of learning a second language may vary by when the child is exposed. Comparing aquisition at age 2 with aquisition at age 12 might be comparing apples with oranges.
+
+3.	**Language variation:** sign languages, highly tonal languages, or unwritten languages may demand different cognitive tasks than spoken, nontonal, or widely documented languages. Thus, lumping them together as "learning a second language" can obscure the fact that these distinct exposures might produce fundamentally different outcomes. Again, comparisons are of apples with oranges.
+
+These sources of heterogeneity reveal why careful delineation of treatments is crucial. If the actual exposures differ across individuals, then consistency $(Y_i(a) = Y_i \mid A_i = a)$ may fail, because $A=a$ is not the same phenomenon for everyone.
+
+
+### 2. Conditional Exchangeability (No Unmeasured Confounding) Is Difficult to Achieve
+
+In theory, we can identify a causal effect from observational data if all confounders $L$ are measured. Formally, we need the potential outcomes to be independent of treatment once we condition on $L$. One way to express this asssumption is: $Y(a) \coprod A \mid L$. If the potential outcomes are independent of treatment assignment, we can identify the Average Treatment Effect (ATE) as:
+$$
+\text{ATE} \;=\; \sum_{l}
+\Bigl[\mathbb{E}\bigl(Y \mid A=1, L=l\bigr) \;-\; \mathbb{E}\bigl(Y \mid A=0, L=l\bigr)\Bigr] \;\Pr(L=l).
+$$
+
+
+In randomised experiments, conditioning is automatic because $A$ is unrelated to potential outcomes by design. In observational studies, ensuring or approximating such **conditional exchangeability** is often difficult. For example, bilingualism research would need to consider:
+
+- **Cultural histories**: cultures that value language acquistion might also value knowledge acquistion. Associations might arise from Culture, not causation.
+- **Personal values**: families who place a high priority on bilingualism may also promote other developmental resources.
+
+If important confounders go unmeasured or are poorly measured, these differences can bias causal effect estimates.
+
+### 3. The Positivity Assumption May Fail: Treatments Might Not Exist for All
+
+Positivity requires that each individual could, in principle, receive *any* exposure level. But in real-world observational settings, some groups have no access to bilingual education (or no reason to be monolingual), making certain treatment levels impossible for them. If a treatment level does not appear in the data for a given subgroup, any causal effect estimate for that subgroup is purely an extrapolation [@westreich2010; @hernan2023]. 
+
+## Summary
+
+We introduced the fundamental problem of causal inference by distinguishing correlation (associations in the data) from causation (contrasts between potential outcomes, of which only one can be observed for each individual). 
+
+**Randomised experiments** address this problem by balancing confounding variables across treatment levels. Although individual causal effects are unobservable, random assignment allows us to infer **average** causal effects — also called *marginal* effects.
+
+In **observational data**, inferring average treatment effects demands that we satisfy three assumptions that are automatically satisfied in (well-conducted) experiments: **causal consistency**, **exchangeability**, and **positivity**. These assumptions ensure that we can compare like-with-like (that the population-level treatment effect is consistent across individuals), that there are no unmeasured common causes of the exposure and outcomes that may lead to associations in the absence of causality, and that every exposure level is a real possibility for each subgroup. 
+
+
+<!-- # Seminar -->
+
+<!-- ## Learning Outcomes -->
+
+<!-- - You will understand why causation is never directly observed. -->
+
+<!-- - You will understand how experiments address this "causal gap." -->
+
+<!-- - You will understand how the application of three principles from experimental research allow human scientists to close this "causal gap" when making inferences about a population as whole -- that is, inferences about "marginal effects." -->
+
+
+<!-- ## Opening  -->
+
+
+<!-- Robert Frost writes,  -->
+
+<!-- > Two roads diverged in a yellow wood, -->
+<!-- And sorry I could not travel both -->
+<!-- And be one traveler, long I stood -->
+<!-- And looked down one as far as I could -->
+<!-- To where it bent in the undergrowth; -->
+
+<!-- >Then took the other, as just as fair, -->
+<!-- And having perhaps the better claim, -->
+<!-- Because it was grassy and wanted wear; -->
+<!-- Though as for that the passing there -->
+<!-- Had worn them really about the same, -->
+
+<!-- >And both that morning equally lay -->
+<!-- In leaves no step had trodden black. -->
+<!-- Oh, I kept the first for another day! -->
+<!-- Yet knowing how way leads on to way, -->
+<!-- I doubted if I should ever come back. -->
+
+<!-- >I shall be telling this with a sigh -->
+<!-- Somewhere ages and ages hence: -->
+<!-- Two roads diverged in a wood, and I— -->
+<!-- I took the one less traveled by, -->
+<!-- And that has made all the difference.  -->
+<!-- -- The Road Not Taken -->
+
+
+<!-- ## Introduction: Motivating Example -->
+
+<!-- Consider the following cross-cultural question:  -->
+
+<!-- > Does bilingualism improve cognitive abilities in children?  -->
+
+<!-- There is evidence that bilingual children perform better oat cognitive tasks, but is learning more than one language a confounding factor?  -->
+
+<!-- How can we know?  Each child might respond as the traveller in Frost's poem: -->
+
+<!-- "And sorry I could not travel both. And be one traveller$\dots$" -->
+
+
+<!-- ## Part 1: The Fundamental Problem of Causal Inference as a Missing Data Problem  -->
+
+<!-- Humans think in images, words, and songs -- sometimes dance. However, a little mathematical notation helps to clarify the key concepts in causal inference. -->
+
+<!-- To understand **the fundamental problem of causal inference,** we first define two potential outcomes for each individual in our study: -->
+
+<!-- Let $Y$ and $A$ denote random variables.  -->
+
+
+<!-- Mathematically, we formulate a causal question by asking whether assignment to treatment $A = a$ will lead to a difference to the outcome $Y$.   -->
+
+<!-- Let $A = 1$ denote getting the "bilingual" treatment, and $A = 0$ denote getting the monolingual treatment. Assume these are the only two treatments of interest.  -->
+
+<!-- - $Y_i(a = 1)$ The cognitive ability of child $i$ if they were bilingual. This is the counterfactual outcome when treatement $A = (a  =  1)$. -->
+
+<!-- - $Y_i(a = 0)$:: The cognitive ability of child $i$ if they were monolingual. This is the counterfactual outcome when $A = (a = 0)$. -->
+
+<!-- Using this notation, we may define a quantitative causal effect of bilingualism on cognitive ability for individual $i$ as the difference between these potential outcomes: -->
+
+
+<!-- $$ -->
+<!-- \text{Causal Effect}_i = Y_i(1) - Y_i(0) -->
+<!-- $$ -->
+
+<!-- We say there is a causal effect if:  -->
+
+<!-- $$ -->
+<!-- Y_i(1) - Y_i(0)  \neq 0 -->
+<!-- $$ -->
+
+<!-- Writing out our contrast of interest this way makes it clear that, because individuals experience only **one** treatment condition, we cannot compute this contrast directly from any data we may observe.  We call the missing observation "counterfactual." -->
+
+<!-- $$ -->
+<!-- Y_i|A_i = 1 \implies Y_i(0)|A_i = 1~ \text{is counterfactual} -->
+<!-- $$ -->
+<!-- Furthermore: -->
+
+<!-- $$ -->
+<!-- Y_i|A_i = 0 \implies Y_i(1)|A_i = 1~ \text{is counterfactual} -->
+<!-- $$ -->
+
+
+
+<!-- **And sorry I could not travel both And be one traveller, long I stood** $\dots$ -->
+
+
+
+<!-- ## How can we make contrasts between counterfactual (potential) outcomes?  -->
+
+
+
+<!-- ### Fundamental Assumption 1: Causal Consistency -->
+
+<!-- We say that causal consistency holds if there is no heterogeneity in the treatments that would prevent us from assuming that the observed outcomes under treatments correspond to their potential outcomes. For an individual 'i', we must be able to assume: -->
+
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!-- Y_{i}(1) &= (Y_{i}|A_{i} = 1) \quad \text{(Potential outcome if treated)} \\ -->
+<!-- Y_{i}(0) &= (Y_{i}|A_{i} = 0) \quad \text{(Potential outcome if untreated)} -->
+<!-- \end{aligned} -->
+<!-- $$ -->
+
+<!-- If this assumption holds, as well as the assumptions of conditional exchangeability and positivity, we can calculate the Average Treatment Effect (ATE) from observed data as: -->
+
+<!-- $$ -->
+<!-- \begin{aligned} -->
+<!-- \text{ATE} &= \mathbb{E}[Y(1)] - \mathbb{E}[Y(0)] \\ -->
+<!-- &= \mathbb{E}(Y|A=1) - \mathbb{E}(Y|A=0) -->
+<!-- \end{aligned} -->
+<!-- $$ -->
+
+<!-- This contrast assumes that the potential outcome under treatment is observable when the treatment is administered, setting $Y_i(a)$ to $Y_i|A_i=a$.  -->
+
+
+
+<!-- ### Fundamental Assumption 2: Exchangeability -->
+
+<!-- We say that exchangability holds if the potential outcomes and treatment assignments are statistically independent, considering all measured confounders. This principle enables us to attribute observed group differences directly to the treatment. Randomisation provides *unconditional* exchangeability, simplifying the analytical process. -->
+
+
+<!-- #### Fundamental Assumption 3: Positivity -->
+
+<!-- We must assume that there is a non-zero probability of receiving each treatment level within covariate-defined subgroups. -->
+
+<!-- $$ -->
+<!-- P(A = a | L= l) > 0 -->
+<!-- $$ -->
+
+<!-- This assumption is also met by the *control* that experimentalists exert over randomised controlled experiments and is rarely stated explicitly. However, in observational settings, this condition must be verified to avoid extrapolating results beyond observed data.   -->
+
+
+<!-- ### Average Treatment Effect in randomised controlled experiments work from assumptions -->
+
+
+<!-- Consider inherently missing observations in an experiment: -->
+
+
+
+<!-- ::: {#tbl-01} -->
+
+<!-- $$ -->
+<!-- \text{ATE} = \left[ \begin{aligned} -->
+<!-- &\left( \underbrace{\mathbb{E}[Y(1)|A = 1]}_{\text{observed}} + \textcolor{red}{\underbrace{\mathbb{E}[Y(1)|A = 0]}_{\text{unobserved}}} \right) \\ -->
+<!-- &- \left( \underbrace{\mathbb{E}[Y(0)|A = 0]}_{\text{observed}} + \textcolor{red}{\underbrace{\mathbb{E}[Y(0)|A = 1]}_{\text{unobserved}}} \right) -->
+<!-- \end{aligned} \right] -->
+<!-- $$ -->
+<!-- :::  -->
+
+<!-- In @tbl-01, the expression, $\mathbb{E}[Y(1)|A = 1]$ represents the average outcome when the treatment is given, which is observable. However, $\mathbb{E}[Y(1)|A = 0]$ represents the average outcome if the treatment had been given to those who were untreated, which remains unobservable. Similarly, the quantity $\mathbb{E}[Y(0)|A = 1]$ also remains unobservable.  Note that the problem isn't merely one of statistical analysis on the data. **The problem is that the relevant data to identify individual causal effects are missing.** Thus, it is evident that the fundamental problem of causal inference is an ever-present concern even in experiments! -->
+
+<!-- All the data we require for causal inferences at the individual level are missing, Nevertheless, because the treatments have been randomised, the data we observe from randomised controlled experiments can allow us to infer what would happen, **on average** if the treatment were applied to the population from which the participants were sampled.  -->
+
+<!-- We call this causal affect the "Average Treatment Effect" or equivalently, the "Marginal Effect of the Treatment."  -->
+
+
+<!-- ### Challenges with Observational data -->
+
+<!-- #### 1. Causal Consistency is Challenging with Observational Data: "Treatments" are not adminsitered in a controlled way -->
+
+<!-- The standardisation of treatments in randomised controlled experiments generally ensures the validity of the causal consistency assumption, which is seldom disputed. However, in observational settings, we cannot typically control the treatments that people receive. This fact imposes considerable challenges for satisfying this assumption. For example: -->
+
+<!-- - **Cultures**: the language one starts with, and the language one learns next, and the order of learning, may affect cognitive development. -->
+<!-- - **Parents**: the way in which one learns languages, either at schools or at home environments, may affect cognitive development. -->
+<!-- - **Language**: language impose different demands, consider the demands of a sign language (body-brain), a highly tonal language, the demands of different writing systems, the cognitive demands that arise in cultures with no written scripts...   -->
+
+
+<!-- Put another ways, causal inference does not merely require *randomisation*, it also requires *control*.  -->
+
+
+<!-- #### 2. Conditional Exchangeability (No Unmeasured Confounding) with Observational Data -->
+
+
+<!-- Under stronger assumptions, we may sometimes infer causal effects from associations in data, even if the treatment variable $A$ has not been randomised.  -->
+
+
+<!-- $$ -->
+<!-- \text{ATE} = \sum_{l} \large( \mathbb{E}[Y|A=1, \textcolor{blue}{L=l}] - \mathbb{E}[Y|A=0, \textcolor{blue}{L=l}] \large) \times \textcolor{blue}{\Pr(L=l)} -->
+<!-- $$ -->
+
+<!-- Where $L$ denotes a set of measured covariates, we can express this principle of "no confounding" mathematically in two complementary ways. Recall our notation: $A \coprod B$ signifies that $A$ is independent of $B$, and vice versa: -->
+
+
+<!-- 1. **Potential Outcomes Independent of Treatment (given L):** $Y(a) \coprod A \mid L$ -->
+<!-- 2. **Treatment Assignment Independent of Potential Outcomes (given L):** $A \coprod Y(a) \mid L$ -->
+
+<!-- These formulations are crucial when working with causal diagrams, which visually encode these principles. The key idea is straightforward: ensuring a balance of confounders across treatment groups is fundamental to experimental and observational causal inference strategies.  -->
+
+<!-- With sufficiently large numbers of individuals, **randomisation facilitates this balance, achieving $A \coprod Y(a)$*** -->
+
+
+
+<!-- The challenge in achieving conditional exchangability is challenging in observational studies. This condition requires the groups being compared to be similar in every aspect except for the treatment. Consider bilingualism. In real-world data, individuals with access to green spaces may differ from those without access in several ways: -->
+
+<!-- - **Socioeconomic status**: the economic capacity of individuals often determines their opportunities for education and language learning, thereby affecting cognitive development. -->
+<!-- - **Age demographics**: language development is not even throughout childhood; when one learns a second language may make a difference. -->
+<!-- - **Lifestyle choices**: Children who learn different language  -->
+<!-- - **Personal values and social connections**: environmental values and community ties may influence both the choice of residence and the utilisation of green spaces. -->
+
+<!-- These and other unmeasured factors can introduce biases, complicating the interpretation of causal relationships in observational studies. -->
+
+
+<!-- ##### 3. The Positivity Assumption is challenging with observational data: The Relevant Treatments Do Not Exist in The Data -->
+
+<!-- Positivity demands that each individual has the possibility of experiencing *every* level of the treatment to be compared. However, real-world constraints, such as the availability of bilingualism within different cultural settings, may preclude some groups from accessing bilinual learning. Where the treatments of interest are absent or scarcely represented in our dataset, the resulting causal inferences will lack empirical support. Consequently, any coefficients derived will represent extrapolations from statistical models, challenging the validity of our causal inferences [@westreich2010; @hernan2023]. -->
+
+
+
+
+<!-- ### Summary  -->
+
+<!-- We described the fundamental problem of causal inference, focusing on the critical distinction between correlation -- associations in the data, and causation -- the contrast between potential outcomes only one of which, at most, can be observed. We discussed how controlled experiments facilitate the estimation of average treatment effects (ATE) by systematically manipulating the variable of interest, allowing for the distribution of variables that might affect the outcome to be balanced across the treatment conditions. Our discussion then shifted to observational data, emphasising the challenges inherent in extracting causal relationships from data without the benefit of controlled interventions. We underscored the need to satisfy three key assumptions —- conditional exchangeability, causal consistency, and positivity—for inferring average treatment effects from observational data. These assumptions ensure that the treatment groups are comparable, the treatment effect is consistent across the population, and every individual has a non-zero probability of receiving each treatment level, respectively.  -->
+
+<!-- **A note on causal diagrams**: we have seen that causal diagrams are graphical tools offer a systematic approach to identifying and controlling for confounding variables -- for helping to understand the conditions in which the assumption of "no unmeasured confounding" or equivalently  of "balance in the confounders across treatments" may be satisfied. Causal diagrams, however, do not obviate the need for these assumptions; instead, they provide a framework for evaluating whether and how the first of the three assumptions -- conditional exchangeability -- may be satisfied in a given study. -->
 
 
 
