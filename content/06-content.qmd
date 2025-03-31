@@ -399,7 +399,7 @@ We'll learn how to use `grf` after the mid-term break. It will allow us to get t
 
 ### Summary
 
-Let's revisit the centeral ideas:
+Let's revisit the core concepts:
 
 ####  **Interaction:**
 
