@@ -4,8 +4,11 @@ date: "2025-APR-08"
 ---
   
   
-Last Year's In-Class Test
+## Study Sheet
+
+<iframe src="psych-434-2025-test-preparation-tips.pdf" width="100%" height="800px" style="border: none;"></iframe>
 
 
+## Last Year's Test
 
 <iframe src="434-inclass-test-2024.pdf" width="100%" height="800px" style="border: none;"></iframe>

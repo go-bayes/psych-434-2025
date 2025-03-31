@@ -1915,7 +1915,7 @@
     "href": "content/07-quiz.html",
     "title": "In-Class Test",
     "section": "",
-    "text": "Last Year’s In-Class Test\n\n\n\n\n\n\n\nReuseCC BY-NC-SA 4.0"
+    "text": "Last Year’s In-Class Test\n\n\n\n\n\n\n\n\n\n\nFigure 1: Our variable naming conventions. This figure is adapted from (Bulbulia 2024)\n\n\n\n\n\n\n\n\n\nReferences\n\nBulbulia, J. A. 2024. “Methods in Causal Inference Part 1: Causal Diagrams and Confounding.” Evolutionary Human Sciences 6: e40. https://doi.org/10.1017/ehs.2024.35.\n\nReuseCC BY-NC-SA 4.0"
   },
   {
     "objectID": "content/index.html#slides",
@@ -2819,5 +2819,12 @@
     "title": "Causal Inference: Understanding How Effects Differ",
     "section": "Appendix A: Simplification of Additive Interaction Formula",
     "text": "Appendix A: Simplification of Additive Interaction Formula\nWe start with the definition of additive interaction based on comparing the joint effect relative to baseline versus the sum of individual effects relative to baseline:\n\n\\Big(\\mathbb{E}[Y(1,1)] - \\mathbb{E}[Y(0,0)]\\Big) - \\Big[\\Big(\\mathbb{E}[Y(1,0)] - \\mathbb{E}[Y(0,0)]\\Big) + \\Big(\\mathbb{E}[Y(0,1)] - \\mathbb{E}[Y(0,0)]\\Big)\\Big]\n\nFirst, distribute the negative sign across the terms within the square brackets:\n\n\\mathbb{E}[Y(1,1)] - \\mathbb{E}[Y(0,0)] - \\Big(\\mathbb{E}[Y(1,0)] - \\mathbb{E}[Y(0,0)]\\Big) - \\Big(\\mathbb{E}[Y(0,1)] - \\mathbb{E}[Y(0,0)]\\Big)\n\nNow remove the parentheses, flipping the signs inside them where preceded by a minus sign:\n\n\\mathbb{E}[Y(1,1)] - \\mathbb{E}[Y(0,0)] - \\mathbb{E}[Y(1,0)] + \\mathbb{E}[Y(0,0)] - \\mathbb{E}[Y(0,1)] + \\mathbb{E}[Y(0,0)]\n\nNext, combine the \\mathbb{E}[Y(0,0)] terms:\n\nWe have -\\mathbb{E}[Y(0,0)]\nThen +\\mathbb{E}[Y(0,0)] (these two cancel each other out)\nAnd another +\\mathbb{E}[Y(0,0)] remains.\n\nThe expression simplifies to:\n\n\\mathbb{E}[Y(1,1)] - \\mathbb{E}[Y(1,0)] - \\mathbb{E}[Y(0,1)] + \\mathbb{E}[Y(0,0)]\n\nThis is the standard definition of additive interaction, often called the interaction contrast. If this expression equals zero, there is no additive interaction; a non-zero value indicates an interaction effect.\nThis shows clearly that interaction is measured as the deviation of the joint effect from the sum of the separate effects, adjusted for the baseline."
+  },
+  {
+    "objectID": "content/07-quiz.html#last-years-test",
+    "href": "content/07-quiz.html#last-years-test",
+    "title": "In-Class Test",
+    "section": "Last Year’s Test",
+    "text": "Last Year’s Test"
   }
 ]
