@@ -1,0 +1,510 @@
+---
+title: "Causal Inference: Understanding How Effects Differ"
+subtitle: "Effect Modification, Interaction, and Conditional Average Treatment Effects"
+date: "2025-APR-01"
+bibliography: /Users/joseph/GIT/templates/bib/references.bib
+editor_options: 
+  chunk_output_type: console
+format:
+  html:
+    warnings: FALSE
+    error: FALSE
+    messages: FALSE
+    code-overflow: scroll
+    highlight-style: kate
+    code-tools:
+      source: true
+      toggle: FALSE
+html-math-method: katex
+reference-location: margin
+citation-location: margin
+cap-location: margin
+code-block-border-left: true
+---
+
+
+```{=html}
+<style>
+  .boxedblue {
+      border: 2px solid blue;
+      border-radius: 4px; /* slight roundness */
+      padding: 3px 6px; /* vertical | horizontal */
+      display: inline-block;
+      color: blue;
+    }
+  .circleblue {
+      border: 2px dashed blue;
+      border-radius: 50%;
+      padding: 3px 6px;
+      display: inline-block;
+      color: blue;
+    }
+</style>
+```
+
+
+```{r setup, include=FALSE}
+#| include: false
+# libraries and functions (ensure these are accessible)
+# library("tinytex")
+# library(extrafont)
+# loadfonts(device = "win") # Adjust device based on OS if using extrafont
+# source("/Users/joseph/GIT/templates/functions/funs.R") 
+```
+
+::: {.callout-note}
+**Required Reading**
+
+- [@hernan2024WHATIF] Chapters 4-5 [link](https://www.dropbox.com/scl/fi/9hy6xw1g1o4yz94ip8cvd/hernanrobins_WhatIf_2jan24.pdf?rlkey=8eaw6lqhmes7ddepuriwk5xk9&dl=0)
+
+**Optional Reading**
+
+- [@vanderweele2007FOURTYPESOFEFFECT] [link](https://www.dropbox.com/scl/fi/drytp2ui2b8o9jplh4bm9/four_types_of_effect_modification__a.6.pdf?rlkey=mb9nl599v93m6kyyo69iv5nz1&dl=0)
+
+- [@vanderweele2009distinction] [link](https://www.dropbox.com/scl/fi/srpynr0dvjcndveplcydn/OutcomeWide_StatisticalScience.pdf?rlkey=h4fv32oyjegdfl3jq9u1fifc3&dl=0)
+:::
+
+::: {.callout-important}
+## Key Concepts for Assessment
+  - **Causal Estimand:** The specific causal question we want to answer (e.g., the average effect in the whole population).
+  - **Statistical Estimand:** The calculation we perform on our data to try and answer the causal question.
+  - **Interaction:** The combined effect of *two or more* interventions.
+  - **Effect Modification:** When the effect of *one* intervention changes depending on a person's characteristics.
+  - **Heterogeneous Treatment Effects (HTE):** The general *idea* that treatment effects vary across people.
+  - **Conditional Average Treatment Effect (CATE) $\tau(x)$:** The *average* treatment effect for a specific subgroup defined by characteristics $x$.
+  - **Estimated Conditional Average Treatment Effect $\hat{\tau}(X)$:** Our *estimate* (from data) of the average treatment effect for a subgroup with characteristics $X$.
+:::
+
+
+## If you learn nothing else from this course...
+
+To answer psychological questions properly, we first need to state them very clearly. Causal inference gives us the tools to do this.
+
+
+## Causal inference asks: "What if?"
+
+The core idea is to compare what *actually happened* with what *could have happened* under different conditions (these "what ifs" are called **counterfactuals**).
+
+Imagine an outcome we care about, like student test scores ($Y$). We might compare the score if *everyone* got a new teaching method (let's call this condition $a^*$) versus if *everyone* got the old method (condition $a$).
+
+The difference in the potential outcome ($Y$) under these two scenarios is the causal effect for one person: $Y(a^*) - Y(a)$.
+
+Since we can't see both scenarios for the same person, we often look at the average effect across a group. The **Average Treatment Effect (ATE)** is the average difference in potential outcomes across the whole population:
+
+$$
+\text{ATE} = \mathbb{E}[Y(a^*) - Y(a)]
+$$
+
+This asks: "On average, how much would scores change if we switched everyone from the old method ($a$) to the new method ($a^*$)?".
+
+A big challenge is dealing with **confounders** – other factors that mix up the relationship between the treatment ($A$) and the outcome ($Y$), potentially misleading us about the true causal effect. We need to account for these.
+
+
+## What do 'Interaction' and 'Effect Modification' mean in Causal Inference?
+
+Words like 'moderation' and 'interaction' are often used loosely. Causal inference needs precise terms.
+
+We'll focus on two specific ideas:
+
+1.  **Interaction:** About the effect of *combining* interventions.
+2.  **Effect Modification:** About how the effect of *one* intervention changes for different *types of people*.
+
+
+## Interaction: The Effect of Teamwork (or Lack Thereof)
+
+**Interaction** in causal inference is about **joint interventions**. We look at what happens when we apply *two or more different treatments* at the same time.
+
+Let's say we have two treatments, $A$ and $B$, and an outcome $Y$.
+
+* $Y(\tilde{a})$ is the potential outcome if we set treatment $A$ to level $\tilde{a}$.
+* $Y(\tilde{b})$ is the potential outcome if we set treatment $B$ to level $\tilde{b}$.
+* $Y(\tilde{a}, \tilde{b})$ is the potential outcome if we set $A$ to $\tilde{a}$ *and* $B$ to $\tilde{b}$ simultaneously.
+
+To figure out these effects from observational data, we usually need assumptions like:
+
+- **Consistency:** The outcome we see for someone who got treatment $\tilde{a}$ is the same as their potential outcome $Y(\tilde{a})$.
+
+- **Conditional Exchangeability (No Unmeasured Confounding):** We can make the groups receiving different treatments comparable by adjusting for measured confounders ($L$ for $A \to Y$, and $Q$ for $B \to Y$). The sets $L$ and $Q$ might overlap.
+
+- **Positivity**: the exposures to be compared occur in all subgroups.
+
+
+To study the *interaction* between $A$ and $B$, we need to be able to estimate the effect of $A$ and the effect of $B$, which means we need to adjust for *all* confounders in **both** $L$ and $Q$ (i.e., their union $L \cup Q$).
+
+
+### Defining Interaction: Does 1 + 1 = 2?
+
+Let's use an education example:
+
+* $A$: New teaching method (1=New, 0=Old)
+* $B$: Extra tutoring (1=Yes, 0=No)
+* $Y$: Test score
+
+Is the boost in scores from getting *both* the new method *and* tutoring simply the sum of the boost from *only* the new method and the boost from *only* tutoring?
+
+We define **causal interaction on the additive scale** (looking at differences) by comparing the effect of the joint intervention to the sum of the individual effects (all compared to getting neither):
+
+$$
+\underbrace{(\mathbb{E}[Y(1,1)] - \mathbb{E}[Y(0,0)])}_{\text{Effect of Both}} \quad \text{vs} \quad \underbrace{(\mathbb{E}[Y(1,0)] - \mathbb{E}[Y(0,0)])}_{\text{Effect of A only}} + \underbrace{(\mathbb{E}[Y(0,1)] - \mathbb{E}[Y(0,0)])}_{\text{Effect of B only}}
+$$
+
+Interaction exists if these are not equal. This simplifies to checking if the following is non-zero (see Appendix):
+
+$$
+\underbrace{\mathbb{E}[Y(1,1)]}_{\text{Both}} - \underbrace{\mathbb{E}[Y(1,0)]}_{\text{A only}} - \underbrace{\mathbb{E}[Y(0,1)]}_{\text{B only}} + \underbrace{\mathbb{E}[Y(0,0)]}_{\text{Neither}} \neq 0
+$$
+
+- If this is positive: **Synergy** (the combination is better than expected).
+- If this is negative: **Antagonism** (the combination is worse than expected).
+
+*(We could also look at interaction on other scales, like ratios, which might give different answers. Always state the scale you're using -- we'll come back to this in later lectures)*
+
+#### Finding Causal Interaction in Data
+
+To estimate this interaction, we need valid estimates for all four average potential outcomes:
+
+$$\mathbb{E}[Y(0,0)], \mathbb{E}[Y(1,0)], \mathbb{E}[Y(0,1)], \mathbb{E}[Y(1,1)]$$
+
+This means we must control for confounders of *both* the $A \to Y$ link and the $B \to Y$ link.
+
+@fig-dag-interaction shows this. $L$ are confounders for $A \to Y$, and $Q$ are confounders for $B \to Y$. We need to block the backdoor paths (red arrows).
+
+```{tikz}
+#| label: fig-dag-interaction
+#| fig-cap: "Diagram illustrating causal interaction. Assessing the joint effect of two interventions, A (e.g., teaching method) and B (e.g., tutoring), on outcome Y (e.g., test score). L represents confounders of the A-Y relationship, and Q represents confounders of the B-Y relationship. Red arrows indicate biasing backdoor paths requiring adjustment. Assumes A and B are decided independently here."
+#| out-width: 100%
+#| echo: false
+
+\usetikzlibrary{positioning, shapes.geometric, arrows, decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+\begin{tikzpicture}[{every node/.append style}=draw]
+\node [rectangle, draw=white] (LA) at (0, .5) {$L_{0}$};
+\node [rectangle, draw=white] (LB) at (0, -.5) {$Q_{0}$};
+\node [rectangle, draw=white] (A) at (2, .5) {$A_{1}$};
+\node [rectangle, draw=white] (B) at (2, -.5) {$B_{1}$};
+\node [rectangle, draw=white] (Y) at (5, 0) {$Y_{2}$};
+\draw [-latex, draw=red] (LA) to (A);
+\draw [-latex, draw=red] (LB) to (B);
+\draw [-latex, draw=red, bend left] (LA) to (Y);
+\draw [-latex, draw=red, bend right] (LB) to (Y);
+\draw [-latex, draw=black] (A) to (Y); 
+\draw [-latex, draw=black] (B) to (Y); 
+\end{tikzpicture}
+```
+
+@fig-dag-interaction-solved shows we need to condition on (adjust for) *both* $L_0$ and $Q_0$.
+
+```{tikz}
+#| label: fig-dag-interaction-solved
+#| fig-cap: "Identification of causal interaction requires adjusting for all confounders of A-Y (L) and B-Y (Q). Boxes around L and Q indicate conditioning, closing backdoor paths."
+#| out-width: 80%
+#| echo: false
+
+\usetikzlibrary{positioning, shapes.geometric, arrows, decorations}
+\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
+\tikzset{>=latex}
+\begin{tikzpicture}[{every node/.append style}=draw]
+\node [rectangle, draw=black] (LA) at (0, .5) {$L_{0}$}; 
+\node [rectangle, draw=black] (LB) at (0, -.5) {$Q_{0}$}; 
+\node [rectangle, draw=white] (A) at (2, .5) {$A_{1}$};
+\node [rectangle, draw=white] (B) at (2, -.5) {$B_{1}$};
+\node [rectangle, draw=white] (Y) at (5, 0) {$Y_{2}$};
+\draw [-latex, draw=black] (LA) to (A);
+\draw [-latex, draw=black] (LB) to (B);
+\draw [-latex, draw=black, bend left] (LA) to (Y);
+\draw [-latex, draw=black, bend right] (LB) to (Y);
+\draw [-latex, draw=black] (A) to (Y);
+\draw [-latex, draw=black] (B) to (Y);
+\end{tikzpicture}
+```
+
+In our education example:
+
+- **L (Confounders for Teaching Method $\to$ Score):** Prior achievement, motivation, family background (SES), school quality, teacher differences (if not randomly assigned).
+
+- **Q (Confounders for Tutoring $\to$ Score):** Prior achievement, motivation, family background (SES - paying for tutoring), student availability, specific learning needs.
+
+Notice that prior achievement and motivation are in *both* $L$ and $Q$. We need to measure and adjust for *all* important factors in $L$ and $Q$ to get a reliable estimate of the interaction.
+
+
+## Effect Modification: Different Effects for Different People
+
+Unlike interaction (about combining treatments), **effect modification** is about whether the causal effect of a *single* intervention ($A$) on an outcome ($Y$) is *different* for different subgroups in the population. These subgroups are defined by baseline characteristics (like age, sex, prior history - let's call these $G$ or $X$).
+
+Effect modification helps us understand *who* benefits most (or least) from an intervention. We explore this using ideas like Heterogeneous Treatment Effects (HTE) and Conditional Average Treatment Effects (CATE).
+
+
+### Heterogeneous Treatment Effects (HTE): The Idea of Variation
+
+**Heterogeneous Treatment Effects (HTE)** just means that the effect of a treatment ($A$ on $Y$) isn't the same for everyone. The effect *varies*. This variation *is* effect modification.
+
+Why does it vary?
+
+- Differences in things we can measure (like age, sex, baseline health - our $X$ variables).
+- Differences in things we can't easily measure (like genetics, unmeasured background factors).
+
+HTE is the reality; treatments rarely work identically for all.
+
+
+### Conditional Average Treatment Effect (CATE): Measuring Variation with Data $\tau(x)$
+
+To study HTE using data, we focus on the
+
+**Conditional Average Treatment Effect (CATE)**. CATE is a specific *causal question (estimand)*: What is the average treatment effect *for the subgroup of people who share specific measured characteristics* $X=x$?
+
+$$
+\tau(x) = \text{CATE}(x) = \mathbb{E}[Y(1) - Y(0) | X = x]
+$$
+
+Here, $Y(1)$ is the potential outcome with treatment, $Y(0)$ without. $\tau(x)$ tells us the average effect specifically for people with characteristics $X=x$. By looking at how $\tau(x)$ changes for different $x$, we quantify effect modification *by the characteristics we measured in X*.
+
+
+### Comparing Effects Across Defined Groups
+
+A simple way to check for effect modification by a category $G$ (like comparing males vs females, or different locations) is to estimate the Average Treatment Effect (ATE) *separately within each group*. This is like comparing CATEs where $X$ is just the group variable $G$.
+
+Let's say $A$ is the treatment (0=control, 1=treated) and $G$ is the potential modifier (e.g., $g=$female, $g'=$male).
+
+We compare:
+
+1.  The average effect for females ($G=g_1$): $\delta_{g_1} = \mathbb{E}[Y(1) | G=g_1] - \mathbb{E}[Y(0) | G=g_1]$
+
+2.  The average effect for males ($G=g_2$): $\delta_{g_2} = \mathbb{E}[Y(1) | G=g_2] - \mathbb{E}[Y(0) | G=g_2]$
+
+Effect modification by $G$ exists if these are different: $\gamma = \delta_{g_1} - \delta_{g_2} \neq 0$.
+
+If our estimate $\hat{\gamma}$ is far from zero, it suggests the treatment effect differs between males and females.
+
+#### Finding Effect Modification in Data
+
+To estimate these group-specific effects ($\delta_g$) and their difference ($\gamma$) correctly, we need to control for confounders ($L$) of the $A \to Y$ relationship *within each group* defined by $G$. 
+
+Note: we don't necessarily need to control for things that cause $G$ itself, *unless* they also confound the $A \to Y$ relationship (i.e., are also in $L$).
+
+Look at @fig-dag-effect-modification. To estimate the $A \to Y$ effect within levels of $G$, we need to adjust for the confounders $L_0$. But this will partially block the effect-modification of G on Y.  Moreover, if we were identifying the causal effect of G on Y, after conditioning on L, we would find that a backdoor path opends from G to Y because L is a collider.  We cannot interpret any coefficient for G in a regression model where L is in the model. 
+
+```{tikz}
+#| label: fig-dag-effect-modification
+#| fig-cap: "How shall we investigate effect modification of A on Y by G? Can you see the problem?"
+#| out-width: 80%
+#| echo: false
+
+\usetikzlibrary{positioning, shapes.geometric, arrows.meta, decorations.pathmorphing}
+
+\tikzset{
+  Arrow/.style={->, >=latex, line width=0.4pt},  % Defines a generic arrow style
+  emod/.style={rectangle, fill=blue!10, draw=blue, thick, minimum size=6mm},
+  emoddot/.style={circle, fill=blue!10, draw=blue, dotted, thick, minimum size=6mm}
+}
+
+\begin{tikzpicture}
+
+\node [rectangle, draw=white, thick] (U) at (-4,0) {U};
+\node [black] (G) at (-2,0) {G};
+\node [rectangle, draw=black,thick] (L) at (0,0) {L$_{0}$};
+\node [rectangle, draw=white, thick] (A) at (2,0) {A$_{1}$};
+
+%\node [emoddot] (Z) at (0, -1) {Z};
+
+\node [rectangle, draw=white, thick] (Y) at (4,0) {Y$_{2}$};
+
+\draw[Arrow, draw=black, bend left = 20] (U) to (L);
+\draw[Arrow, draw=black] (G) to (L);
+\draw[Arrow, draw=black] (L) to (A);
+\draw[Arrow, draw=black, bend left = 30] (L) to (Y);
+\draw[Arrow, draw=black, bend right = 30] (G) to (Y);
+\draw [-latex, draw=black] (A) to (Y);
+\draw [-latex, draw=black,bend left = 40] (U) to (Y);
+%\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend right = 10] (Z) to (Y); % Circle-ended arrow
+\end{tikzpicture}
+```
+
+Thus it is essential to understand that when we control for confounding along the the $A \to Y$ path, we do not identify the causal effects of effect-modifiers. Rather, we should consider effect-modifiers *prognostic* indicators. Moreover, we're going to need to develop methods for clarifying prognostic indicators in multi-dimensional settings where 
+
+
+## Estimating How Effects Vary: Getting $\hat{\tau}(x)$ from Data
+
+We defined the Conditional Average Treatment Effect (CATE), $\tau(x)$, as the *true* average effect for a subgroup with specific features $X=x$:
+
+$$
+\tau(x) = \mathbb{E}[Y(1) - Y(0) | X = x]
+$$
+
+Now, we want to *estimate* this from our actual data. We call our estimate $\hat{\tau}(x)$. For any person $i$ in our study with features $X_i$, the value $\hat{\tau}(X_i)$ is our data-based *prediction* of the average treatment effect *for people like person i*.
+
+### "Personalised" Effects vs. True Individual Effects
+
+Wait - didn't we say we *can't* know the true effect for one specific person, $Y_i(1) - Y_i(0)$? Yes, that's still true.
+
+So what does $\hat{\tau}(X_i)$ mean?
+
+- **Individual Causal Effect (Unknowable):** $Y_i(1) - Y_i(0)$. This is the true effect for person $i$. We can't observe both $Y_i(1)$ and $Y_i(0)$.
+
+- **Estimated CATE ($\hat{\tau}(X_i)$) (What we calculate):** This is our estimate of the *average* effect, $\mathbb{E}[Y(1) - Y(0)]$, for the *subgroup* of people who share the same measured characteristics $X_i$ as person $i$.
+
+When people talk about "personalised" or "individualised" treatment effects in this context, they usually mean $\hat{\tau}(x)$. It's "personalised" because the prediction uses person $i$'s specific characteristics $X_i = x$. But remember, it's an **estimated average effect for a group**, not the unique effect for that single individual.
+
+### People Have Many Characteristics
+
+People aren't just in one group; they have many features at once. A student might be:
+
+- Female
+- 21 years old
+- From a low-income family
+- Did well on previous tests
+- Goes to a rural school
+- Highly motivated
+
+All these factors ($X_i$) together might influence how they respond to a new teaching method.
+
+Trying to figure this out with traditional regression by manually adding interaction terms (like `A*gender*age*income*...`) becomes impossible very quickly:
+
+- Too many combinations, not enough data in each specific combo.
+- High risk of finding "effects" just by chance (false positives).
+- Hard to know which interactions to even include.
+- Can't easily discover unexpected patterns.
+
+Thus, while simple linear regression with interaction terms (`lm(Y ~ A * X1 + A * X2)`) can estimate CATEs if the model is simple and correct, it often fails when things get complex (many $X$ variables, non-linear effects).
+
+**Causal forests** (using the `grf` package in R) [@grf2024] are a powerful, flexible alternative designed for this task. They build decision trees that specifically aim to find groups with different treatment effects.
+
+We'll learn how to use `grf` after the mid-term break. It will allow us to get the $\hat{\tau}(x)$ predictions and then think about how to use them, for instance, to prioritise who gets a treatment if resources are limited.
+
+
+<!-- This is where modern methods like **causal forests** come in, which we'll come back to after the mid-term break. -->
+
+<!-- ### Causal Forests: A Modern Tool for Estimating $\hat{\tau}(X)$ -->
+
+<!-- Causal forests (implemented in the R package `grf`) are designed for this complex situation. They are like random forests but built specifically to find differences in *treatment effects*. -->
+
+<!-- How they help: -->
+<!-- 1.  **Look at all features ($X$) at once:** They automatically search across all measured characteristics to see which ones explain differences in the treatment effect. -->
+<!-- 2.  **Flexible:** They don't assume simple linear relationships and can find complex patterns. -->
+<!-- 3.  **Local Averaging:** The estimate $\hat{\tau}(X_i)$ for person $i$ is based on the outcomes of other people in the data who are "similar" to person $i$ based on their characteristics $X$. -->
+<!-- 4.  **"Honest" Estimates:** They use clever statistical techniques (like splitting the data) to try and give reliable estimates and confidence intervals, reducing the risk of overfitting. -->
+
+<!-- The result is a prediction $\hat{\tau}(X_i)$ for each person $i$, based on their unique combination of measured features $X_i$. This gets us closer to understanding effect heterogeneity in a realistic way. -->
+
+<!-- ### Why Estimate CATEs ($\hat{\tau}(X)$)? -->
+
+<!-- Estimating $\hat{\tau}(X)$ is how we investigate HTE using our measured data $X$. We look at how $\hat{\tau}(X)$ changes across different types of people (different $X$ values) to: -->
+
+<!-- 1.  **See if the effect varies:** Go beyond the overall average (ATE) and see *if* and *how* the effect differs. -->
+
+<!-- 2.  **Find subgroups:** Identify groups (defined by $X$) who might benefit much more (or less, or even be harmed) by the intervention. -->
+
+<!-- 3.  **Inform targeted policies:** Use the predictions $\hat{\tau}(X_i)$ to investigate if giving the treatment only to those predicted to benefit most would lead to better outcomes overall (we'll evaluate this later using tools like RATE curves -- again this is all coming after the mid-term break). -->
+
+
+### Summary
+
+Let's revisit the centeral ideas:
+
+####  **Interaction:**
+
+- **Think:** Teamwork effect.
+- **What:** Effect of *two or more different interventions* ($A$ and $B$) applied together.
+- **Question:** Is the joint effect $\mathbb{E}[Y(a,b)]$ different from the sum of individual effects?
+- **Needs:** Control confounders for *all* interventions involved ($L \cup Q$).
+
+####  **Effect Modification / HTE / CATE:**
+- **Think:** Different effects for different groups.
+- **What:** Effect of a *single intervention* ($A$) varies depending on people's *baseline characteristics* ($G$ or $X$).
+- **Question (HTE):** *Does* the effect vary? (The phenomenon).
+-  **Question (CATE $\tau(x)$):** *What is* the average effect for a specific subgroup with features $X=x$? (The measure).
+- **Needs:** Control confounders for the *single* intervention ($L$) within subgroups.
+
+#### **Estimated "Individualised" Treatment Effects ($\hat{\tau}(x)$):**
+- **Think:** Personal profile prediction.
+- **What:** Our *estimate* of the average treatment effect for the subgroup of people sharing characteristics $X_i$.
+- **How:** Calculated using models (like causal forests) that use the person's full profile $X_i$.
+- **Important:** This is **not** the true effect for that single person (which is unknowable). It's an average for *people like them*.
+- **Use:** Explore HTE, identify subgroups, potentially inform targeted treatment strategies.
+
+Keeping these concepts distinct helps us ask clear research questions and choose the right methods.
+
+
+## Course Review So Far: A Quick Recap
+
+Let's quickly review the main ideas of causal inference we've covered.
+
+### The Big Question: Does A cause Y?
+
+Causal inference helps us answer if something (like a teaching method, $A$) causes a change in something else (like test scores, $Y$).
+
+### Core Idea: "What If?" (Counterfactuals)
+
+We compare what actually happened to what *would have happened* in a different scenario.
+
+- $Y(1)$: Score if the student *had* received the new method.
+- $Y(0)$: Score if the student *had* received the old method.
+
+The **Average Treatment Effect (ATE)** = $\mathbb{E}[Y(1) - Y(0)]$ is the average difference across the whole group.
+
+### This Lecture Clarified Concepts of Interaction vs. Effect Modification vs. Individual Predictions
+
+#### Interaction (Think: Teamwork Effects)
+
+- **About:** Combining *two different interventions* (A and B).
+- **Question:** Does using both A and B together give a result different from just adding up their separate effects? (e.g., new teaching method + tutoring).
+- **Needs:** Analyse effects of A alone, B alone, and A+B together. Control confounders for *both* A and B.
+
+#### Effect Modification (Think: Different Effects for Different Groups)
+
+- **About:** How the effect of *one intervention* (A) changes based on people's *characteristics* (X, like prior grades).
+- **Question:** Does the teaching method (A) work better for high-achieving students (X=high) than low-achieving students (X=low)?
+    - **HTE:** The *idea* that effects differ.
+    - **CATE $\tau(x)$:** The *average effect* for the specific group with characteristics $X=x$.
+- **Needs:** Analyse effect of A *within* different groups (levels of X). Control confounders for A.
+
+#### Estimated Individualised Effects ($\hat{\tau}(X_i)$) (Think: Personal Profile Prediction)
+
+- **About:** Using a person's *whole profile* of characteristics ($X_i$ - age, gender, background, etc.) to predict their likely response to treatment A.
+- **How:** Modern methods (like causal forests) take all of $X_i$ and estimate $\hat{\tau}(X_i)$.
+- **Result:** this $\hat{\tau}(X_i)$ is **not** the true unknowable effect for person $i$. It is the estimated *average effect for people similar to person i* (sharing characteristics $X_i$).
+- **Use:** helps explore if tailoring treatment based on these profiles ($X_i$) could be beneficial.
+
+### Simple Summary:
+
+- **Interaction:** Do A and B work together well/badly?
+- **Effect Modification:** Does A's effect depend on *who* you are (based on X)?
+- **$\hat{\tau}(X_i)$:** Can we *predict* A's average effect for someone based on their specific profile $X_i$?
+
+Understanding these differences is key to doing good causal research!
+
+## Appendix: Simplification of Additive Interaction Formula
+
+We start with the definition of additive interaction based on comparing the joint effect relative to baseline versus the sum of individual effects relative to baseline:
+
+$$
+\Big(\mathbb{E}[Y(1,1)] - \mathbb{E}[Y(0,0)]\Big) - \Big[\Big(\mathbb{E}[Y(1,0)] - \mathbb{E}[Y(0,0)]\Big) + \Big(\mathbb{E}[Y(0,1)] - \mathbb{E}[Y(0,0)]\Big)\Big]
+$$
+
+First, distribute the negative sign across the terms within the square brackets:
+
+$$
+\mathbb{E}[Y(1,1)] - \mathbb{E}[Y(0,0)] - \Big(\mathbb{E}[Y(1,0)] - \mathbb{E}[Y(0,0)]\Big) - \Big(\mathbb{E}[Y(0,1)] - \mathbb{E}[Y(0,0)]\Big)
+$$
+
+Now remove the parentheses, flipping the signs inside them where preceded by a minus sign:
+
+$$
+\mathbb{E}[Y(1,1)] - \mathbb{E}[Y(0,0)] - \mathbb{E}[Y(1,0)] + \mathbb{E}[Y(0,0)] - \mathbb{E}[Y(0,1)] + \mathbb{E}[Y(0,0)]
+$$
+
+Next, combine the $\mathbb{E}[Y(0,0)]$ terms:
+
+* We have $-\mathbb{E}[Y(0,0)]$
+* Then $+\mathbb{E}[Y(0,0)]$ (these two cancel each other out)
+* And another $+\mathbb{E}[Y(0,0)]$ remains.
+
+The expression simplifies to:
+
+$$
+\mathbb{E}[Y(1,1)] - \mathbb{E}[Y(1,0)] - \mathbb{E}[Y(0,1)] + \mathbb{E}[Y(0,0)]
+$$
+
+This is the standard definition of additive interaction, often called the interaction contrast. If this expression equals zero, there is no additive interaction; a non-zero value indicates an interaction effect.
+
+**This shows clearly that interaction is measured as the deviation of the joint effect from the sum of the separate effects, adjusted for the baseline.**
