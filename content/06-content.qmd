@@ -167,11 +167,11 @@ $$\mathbb{E}[Y(0,0)], \mathbb{E}[Y(1,0)], \mathbb{E}[Y(0,1)], \mathbb{E}[Y(1,1)]
 
 This means we must control for confounders of *both* the $A \to Y$ link and the $B \to Y$ link.
 
-@fig-dag-interaction shows this. $L$ are confounders for $A \to Y$, and $Q$ are confounders for $B \to Y$. We need to block the backdoor paths (red arrows).
+@fig-dag-interaction shows this. $L_A$ are confounders for $A \to Y$, and $L_B$ are confounders for $B \to Y$. We need to block the backdoor paths (red arrows).
 
 ```{tikz}
 #| label: fig-dag-interaction
-#| fig-cap: "Diagram illustrating causal interaction. Assessing the joint effect of two interventions, A (e.g., teaching method) and B (e.g., tutoring), on outcome Y (e.g., test score). L represents confounders of the A-Y relationship, and Q represents confounders of the B-Y relationship. Red arrows indicate biasing backdoor paths requiring adjustment. Assumes A and B are decided independently here."
+#| fig-cap: "Diagram illustrating causal interaction. Assessing the joint effect of two interventions, A (e.g., teaching method) and B (e.g., tutoring), on outcome Y (e.g., test score). L_A represents confounders of the A-Y relationship, and L_B represents confounders of the B-Y relationship. Red arrows indicate biasing backdoor paths requiring adjustment. Assumes A and B are decided independently here."
 #| out-width: 100%
 #| echo: false
 
@@ -179,17 +179,15 @@ This means we must control for confounders of *both* the $A \to Y$ link and the 
 \tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
 \tikzset{>=latex}
 \begin{tikzpicture}[{every node/.append style}=draw]
-\node [rectangle, draw=white] (LA) at (0, .5) {$L_{0}$};
-\node [rectangle, draw=white] (LB) at (0, -.5) {$Q_{0}$};
-\node [rectangle, draw=white] (A) at (2, .5) {$A_{1}$};
-\node [rectangle, draw=white] (B) at (2, -.5) {$B_{1}$};
-\node [rectangle, draw=white] (Y) at (5, 0) {$Y_{2}$};
+\node [rectangle, draw=white] (LA) at (0, .5) {$L_{A}$};
+\node [rectangle, draw=white] (LB) at (0, -.5) {$L_{B}$};
+\node [rectangle, draw=white] (A) at (2, .5) {$A_{}$};
+\node [rectangle, draw=white] (B) at (2, -.5) {$B_{}$};
+\node [rectangle, draw=white] (Y) at (5, 0) {$Y_{}$};
 \draw [-latex, draw=red] (LA) to (A);
 \draw [-latex, draw=red] (LB) to (B);
 \draw [-latex, draw=red, bend left] (LA) to (Y);
 \draw [-latex, draw=red, bend right] (LB) to (Y);
-\draw [-latex, draw=black] (A) to (Y); 
-\draw [-latex, draw=black] (B) to (Y); 
 \end{tikzpicture}
 ```
 
@@ -197,7 +195,7 @@ This means we must control for confounders of *both* the $A \to Y$ link and the 
 
 ```{tikz}
 #| label: fig-dag-interaction-solved
-#| fig-cap: "Identification of causal interaction requires adjusting for all confounders of A-Y (L) and B-Y (Q). Boxes around L and Q indicate conditioning, closing backdoor paths."
+#| fig-cap: "Identification of causal interaction requires adjusting for all confounders of A-Y (L) and B-Y (Q). Boxes around L_A and L_B indicate conditioning, closing backdoor paths."
 #| out-width: 80%
 #| echo: false
 
@@ -205,27 +203,25 @@ This means we must control for confounders of *both* the $A \to Y$ link and the 
 \tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
 \tikzset{>=latex}
 \begin{tikzpicture}[{every node/.append style}=draw]
-\node [rectangle, draw=black] (LA) at (0, .5) {$L_{0}$}; 
-\node [rectangle, draw=black] (LB) at (0, -.5) {$Q_{0}$}; 
-\node [rectangle, draw=white] (A) at (2, .5) {$A_{1}$};
-\node [rectangle, draw=white] (B) at (2, -.5) {$B_{1}$};
-\node [rectangle, draw=white] (Y) at (5, 0) {$Y_{2}$};
+\node [rectangle, draw=black] (LA) at (0, .5) {$L_{A}$}; 
+\node [rectangle, draw=black] (LB) at (0, -.5) {$L_{B}$}; 
+\node [rectangle, draw=white] (A) at (2, .5) {$A_{}$};
+\node [rectangle, draw=white] (B) at (2, -.5) {$B_{}$};
+\node [rectangle, draw=white] (Y) at (5, 0) {$Y_{}$};
 \draw [-latex, draw=black] (LA) to (A);
 \draw [-latex, draw=black] (LB) to (B);
 \draw [-latex, draw=black, bend left] (LA) to (Y);
 \draw [-latex, draw=black, bend right] (LB) to (Y);
-\draw [-latex, draw=black] (A) to (Y);
-\draw [-latex, draw=black] (B) to (Y);
 \end{tikzpicture}
 ```
 
 In our education example:
 
-- **L (Confounders for Teaching Method $\to$ Score):** Prior achievement, motivation, family background (SES), school quality, teacher differences (if not randomly assigned).
+- **$L_A$ (Confounders for Teaching Method $\to$ Score):** Prior achievement, motivation, family background (SES), school quality, teacher differences (if not randomly assigned).
 
-- **Q (Confounders for Tutoring $\to$ Score):** Prior achievement, motivation, family background (SES - paying for tutoring), student availability, specific learning needs.
+- **$L_B$ (Confounders for Tutoring $\to$ Score):** Prior achievement, motivation, family background (SES - paying for tutoring), student availability, specific learning needs.
 
-Notice that prior achievement and motivation are in *both* $L$ and $Q$. We need to measure and adjust for *all* important factors in $L$ and $Q$ to get a reliable estimate of the interaction.
+Notice that prior achievement and motivation are in *both* $L_A$ and $L_B$. We need to measure and adjust for *all* important factors in $\boxed{L_A}$ and $\boxed{L_B}$ to get a reliable estimate for interaction.
 
 
 ## Effect Modification: Different Effects for Different People
@@ -278,11 +274,9 @@ If our estimate $\hat{\gamma}$ is far from zero, it suggests the treatment effec
 
 #### Finding Effect Modification in Data
 
-To estimate these group-specific effects ($\delta_g$) and their difference ($\gamma$) correctly, we need to control for confounders ($L$) of the $A \to Y$ relationship *within each group* defined by $G$. 
+To estimate these group-specific effects ($\delta_g$) and their difference ($\gamma$) correctly, we need to control for confounders ($L$) of the $A \to Y$ relationship within each group defined by $G$. Note that we are not estimating the causal effect of $G$. As such, we do not need to control for things that cause $G$ itself, *unless* they also confound the $A \to Y$ relationship (i.e., are also in $L$).
 
-Note: we don't necessarily need to control for things that cause $G$ itself, *unless* they also confound the $A \to Y$ relationship (i.e., are also in $L$).
-
-Look at @fig-dag-effect-modification. To estimate the $A \to Y$ effect within levels of $G$, we need to adjust for the confounders $L_0$. But this will partially block the effect-modification of G on Y.  Moreover, if we were identifying the causal effect of G on Y, after conditioning on L, we would find that a backdoor path opends from G to Y because L is a collider.  We cannot interpret any coefficient for G in a regression model where L is in the model. 
+Look at @fig-dag-effect-modification. To estimate the $A \to Y$ effect within levels of $G$, we need to adjust for the confounders $L_0$. But this will partially block the effect-modification of $G$ on $Y$ because $L_0$ is a mediator for that path.  Moreover, if we were identifying the causal effect of $G$ on $Y$, after conditioning on $L$, we would find that a backdoor path opens from $G \to Y$ because $\boxed{L}$ is a collider.  $G$ does not have a causal interpretation in this model. However we would be wrong to thing that $G$ is not and an effect modifier of the effect of $A$ on $Y$. (See Appendix C).
 
 ```{tikz}
 #| label: fig-dag-effect-modification
@@ -316,11 +310,18 @@ Look at @fig-dag-effect-modification. To estimate the $A \to Y$ effect within le
 \draw[Arrow, draw=black, bend right = 30] (G) to (Y);
 \draw [-latex, draw=black] (A) to (Y);
 \draw [-latex, draw=black,bend left = 40] (U) to (Y);
-%\draw[-{Circle[open, fill=none]}, line width=0.25pt, draw=blue, bend right = 10] (Z) to (Y); % Circle-ended arrow
 \end{tikzpicture}
 ```
 
-Thus it is essential to understand that when we control for confounding along the the $A \to Y$ path, we do not identify the causal effects of effect-modifiers. Rather, we should consider effect-modifiers *prognostic* indicators. Moreover, we're going to need to develop methods for clarifying prognostic indicators in multi-dimensional settings where 
+Thus it is essential to understand that when we control for confounding along the the $A \to Y$ path, we do not identify the causal effects of effect-modifiers.
+
+To clarify:
+
+1. If the statistical model correctly identifies causal effect modification (by appropriately handling confounders and avoiding collider bias), then it has prognostic value regarding the differential outcomes expected under intervention $A=1$ vs $A=0$ depending on $G=g$.
+
+2. If the statistical model contains interaction terms that are artifacts of bias (like conditioning on a collider) or reflect a different target (like conditioning on a mediator when the total effect was intended), its causal prognostic value is compromised or needs careful interpretation. It might still predict $Y$ well given $A$, $G$, and $L$ in an observational setting, but it wouldn't accurately predict the results of intervening on A differently for different $G$ groups. (See Appendix B).
+
+The choice of variables fundamentally determines which causal question (if any) the statistical model is estimating. As with the average treatment effect, we interpret evidence for effect modification in the context of our assumptions about the causal relationships that obtain in the world.  This is because the statistical interaction we observe is highly sensitive to model choices. Any interpretation as causal effect modification, and therefore any reliable prognostic value for intervention effects within different segments of the population, depends entirely on whether and how our statistical model accounts for the causal structure.
 
 
 ## Estimating How Effects Vary: Getting $\hat{\tau}(x)$ from Data
@@ -1038,9 +1039,9 @@ We find that we obtain the population-level causal effect estimate with accurate
 
 ## Lessons from Lab 2
 
-- Regression coefficients do not clarify the problem of sample/target population mismatch -- or selection bias as discussed in this manuscript.
+- Regression coefficients do not clarify the problem of sample/target population mismatch -- or selection bias as discussed here.
 - The correct advice to investigators is that they should not rely on regression coefficients when evaluating the biases that arise from sample attrition. This advice applies to both methods that the authors use to investigate threats of bias. That is, to implement this advice, the authors must first take it.
-- Generally, observed data are insufficient for assessing threats. Observed data do not clarify structural sources of bias, nor do they clarify effect-modification in the full counterfactual data condition in which all receive the treatment and all do not receive the treatment (at the same level).
+- Generally, observed data are insufficient for assessing threats. Observed data do not clarify structural sources of bias, nor do they clarify effect-modification across the full counterfactual data conditions, in which (1) all receive the treatment and (2) all do not receive the treatment (at the same level).
 - To properly assess bias, one would need access to the counterfactual outcome—what would have happened to the missing participants had they not been lost to follow-up or had they responded. Again, the join distributions over "full data" are inherently unobservable [@vanderlaan2011]. 
 - In simple settings like the one we just simulated, we may address the gap between the sample and target population using methods such as modelling the censoring (e.g., censoring weighting). However, we never know what setting we are in or whether it is simple—such modelling must be handled with care. There is a large and growing epidemiology literature on this topic (see, for example, @li2023non).
 <!-- - Matters become more complex when there is confounding and selection bias because the problem is not merely one of external validity but also internal validity (i.e. obtaining valid causal effect estimates for the baseline sample). See for example @scharfstein1999adjusting; @laan2003unified; @howe2016selection (note that @howe2016selection, "selection" bias is defined as collider stratification bias, a variety of confounding bias and not simple sample and target population mismatch.)   -->
@@ -1079,13 +1080,10 @@ $$
 
 This is the standard definition of additive interaction, often called the interaction contrast. If this expression equals zero, there is no additive interaction; a non-zero value indicates an interaction effect.
 
-**This shows clearly that interaction is measured as the deviation of the joint effect from the sum of the separate effects, adjusted for the baseline.**
+**This shows clearly that interaction is the deviation of the joint effect from the sum of the separate effects, adjusted for the baseline.**
 
 
-## Appendix B
-
-
-### Evidence for effect-modification is relative to inclusion of other variables in the model
+## Appendix B:  Evidence for effect-modification is relative to inclusion of other variables in the model
 
 The 'sharp-null hypothesis' states there is no effect of the exposure on
 the outcome for any unit in the target population. Unless the 'sharp-null hypothesis' is false, there may be effect-modification. For any study worth conducting, we cannot evaluate whether the sharp-null hypothesis is false. If we could the experiment would be otiose. Therefore, we must assume the possibility of effect-modification. Notably, whether a variable is an effect-modifier also depends on which other variables are included in the model. That is, just as for the concept of a 'confounder', where a variable is an 'effect-modifier' cannot be stated without reference to an assumed causal order and an explicit statement about which other variables will be included in the model [@vanderweele2012].
@@ -1313,6 +1311,35 @@ Here, causal diagrams are useful for clarifying features of dependent
 and independent effect modification. For further discussion, see:
 @suzuki2013counterfactual; @vanderweele2009distinction.
 
+### Appendix C: Futher Clarification on Effect Modification Without Statistical Evidence for It.
+
+
+Again, look at @fig-dag-effect-modification. Suppose the investigator model the effect of $A$ on $Y$.  Suppose G is not associated with $Y$ conditional on $L$.  @fig-dag-effect-modification provides structural clarification for why concluding there is no effect modification by $G$ is incorrect.
+
+To clarify: 
+- We have a DAG structure: $G \to L$; $L \to A$, $L \to Y$
+- We're interested in the conditional average treatment effect (CATE): $\tau(g) = E[Y(1) - Y(0)| G = g]$
+- To identify the effect of $A$ on $Y$, we must condition on $\boxed{L}$
+- $G$ is (partially or fully) d-separated from $Y$ conditional on $\boxed{L}$
+
+Even though $G$ is d-separated from $Y$ given $L$, this doesn't mean $G$ can't modify the effect of $A$ on $Y$. The CATE for a specific value of $G$ can be expressed as:
+
+
+$$\tau(g) = E[Y(1) - Y(0)| G = g] = E[E[Y(1) - Y(0)| L, G = g]| G = g]$$
+
+Since $G$ is d-separated from $Y$ given $L$:
+
+$$τ(g) = E[E[Y(1) - Y(0)| L]| G = g]$$
+
+This means $τ(g)$ is a weighted average of the L-specific treatment effects, where the weights are determined by the distribution of L given $G=g$.
+
+If two conditions are met:
+1. The effect of $A$ on $Y$ varies across levels of $L$
+2. The distribution of $L$ varies with $G$ (which it does, since $G \to L$)
+
+Then $\tau(g)$ will vary with $g$, indicating effect modification by $G$.
+
+The investigators are would be wrong to equate d-separation with absence of effect modification. Although $G$ doesn't directly affect $Y$ after conditioning on $L$, $G$ can still modify the effect of $A$ on $Y$ through its influence on the distribution of $L$.
 
 
 
