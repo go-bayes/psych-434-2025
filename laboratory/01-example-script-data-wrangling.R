@@ -14,7 +14,7 @@ set.seed(123)
 # this is mine
 # push_mods <- here::here('/Users/joseph/v-project\ Dropbox/data/courses/25-psych-434')
 # yours might be (after creating a data file)
-# push_mods <- here::here("data")
+push_mods <- here::here("data")
 
 # load libraries ---------------------------------------------------------
 # install and load 'margot' package
