@@ -398,11 +398,6 @@ Traditional 'parametric' models (like simple regression) guess a single function
 *Idea*: split the covariate space by asking yes/no questions— 'Age ≤ 20?', 'Baseline wellbeing > 0.3?' — until each terminal **leaf** is fairly homogeneous.  Inside a leaf the predicted outcome is just the sample mean, so the tree builds a *piece-wise constant* surface instead of a global line.    
 *Analogy*: think of tiling a garden with stepping-stones: each stone is flat, but taken together they follow the ground’s contours.
 
-
-2. **Regression tree** 
-
-   A single tree is quick and interpretable but unstable: small changes in the data can move the splits and shift predictions.  A **random forest** grows many trees on bootstrap samples and averages their outputs.  Averaging cancels much of the noise [@breiman2001random].  
-
 2. **Regression forest**  
    A single tree is quick and interpretable but unstable: small changes in the data can move the splits and shift predictions.  A **random forest** grows many trees on bootstrap samples and averages their outputs.  Averaging cancels much of the noise [@breiman2001random].  
 
@@ -419,7 +414,13 @@ $$
 
 Because the noisy estimates point in many directions, their average is markedly less variable -- *the wisdom of trees is a wisdom of crowds*.
 
-Straight‑line models suit simple patterns; regression forests flex to any bends; causal forests add a third dimension -- variation in treatment responses. We'll see this in action
+Straight‑line models suit simple patterns; regression forests flex to any bends; causal forests add a third dimension -- variation in treatment responses. We'll see this in action/
+
+
+For more about causal forests see (~18mins in...)
+
+{{< video https://www.youtube.com/watch?v=YBbnCDRCcAI >}}
+
 
 <!-- So, a regression tree chops the data into locally flat chunks; a regression forest averages many such trees to smooth away chance idiosyncrasies; a causal forest adds honesty so that its averaged differences, though never directly observable for any one person, give our best data-driven forecast of individual treatment effects. -->
 

@@ -443,8 +443,6 @@ For the lab
 <p><em>Idea</em>: split the covariate space by asking yes/no questions— ‘Age ≤ 20?’, ‘Baseline wellbeing &gt; 0.3?’ — until each terminal <strong>leaf</strong> is fairly homogeneous. Inside a leaf the predicted outcome is just the sample mean, so the tree builds a <em>piece-wise constant</em> surface instead of a global line.<br>
 <em>Analogy</em>: think of tiling a garden with stepping-stones: each stone is flat, but taken together they follow the ground’s contours.</p>
 <ol start="2" type="1">
-<li><p><strong>Regression tree</strong></p>
-<p>A single tree is quick and interpretable but unstable: small changes in the data can move the splits and shift predictions. A <strong>random forest</strong> grows many trees on bootstrap samples and averages their outputs. Averaging cancels much of the noise <span class="citation" data-cites="breiman2001random">(<a href="#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span>.</p></li>
 <li><p><strong>Regression forest</strong><br>
 A single tree is quick and interpretable but unstable: small changes in the data can move the splits and shift predictions. A <strong>random forest</strong> grows many trees on bootstrap samples and averages their outputs. Averaging cancels much of the noise <span class="citation" data-cites="breiman2001random">(<a href="#ref-breiman2001random" role="doc-biblioref">Breiman 2001</a>)</span>.</p></li>
 <li><p><strong>Causal Forests</strong><br>
@@ -464,7 +462,9 @@ Wager, Stefan, and Susan Athey. 2018. <span>“Estimation and Inference of Heter
   \widehat{\tau}(x)=E[Y(1)-Y(0)\mid X=x].
 </span></p>
 <p>Because the noisy estimates point in many directions, their average is markedly less variable – <em>the wisdom of trees is a wisdom of crowds</em>.</p>
-<p>Straight‑line models suit simple patterns; regression forests flex to any bends; causal forests add a third dimension – variation in treatment responses. We’ll see this in action</p>
+<p>Straight‑line models suit simple patterns; regression forests flex to any bends; causal forests add a third dimension – variation in treatment responses. We’ll see this in action/</p>
+<p>For more about causal forests see (~18mins in…)</p>
+<div class="quarto-video ratio ratio-16x9"><iframe data-external="1" src="https://www.youtube.com/embed/YBbnCDRCcAI" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
 <!-- So, a regression tree chops the data into locally flat chunks; a regression forest averages many such trees to smooth away chance idiosyncrasies; a causal forest adds honesty so that its averaged differences, though never directly observable for any one person, give our best data-driven forecast of individual treatment effects. -->
 <hr>
 </section>
@@ -5081,496 +5081,497 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb6-400"><a href="#cb6-400"></a>*Idea*: split the covariate space by asking yes/no questions— 'Age ≤ 20?', 'Baseline wellbeing &gt; 0.3?' — until each terminal **leaf** is fairly homogeneous.  Inside a leaf the predicted outcome is just the sample mean, so the tree builds a *piece-wise constant* surface instead of a global line.    </span>
 <span id="cb6-401"><a href="#cb6-401"></a>*Analogy*: think of tiling a garden with stepping-stones: each stone is flat, but taken together they follow the ground’s contours.</span>
 <span id="cb6-402"><a href="#cb6-402"></a></span>
-<span id="cb6-403"><a href="#cb6-403"></a></span>
-<span id="cb6-404"><a href="#cb6-404"></a><span class="ss">2. </span>**Regression tree** </span>
+<span id="cb6-403"><a href="#cb6-403"></a><span class="ss">2. </span>**Regression forest**  </span>
+<span id="cb6-404"><a href="#cb6-404"></a>   A single tree is quick and interpretable but unstable: small changes in the data can move the splits and shift predictions.  A **random forest** grows many trees on bootstrap samples and averages their outputs.  Averaging cancels much of the noise <span class="co">[</span><span class="ot">@breiman2001random</span><span class="co">]</span>.  </span>
 <span id="cb6-405"><a href="#cb6-405"></a></span>
-<span id="cb6-406"><a href="#cb6-406"></a>   A single tree is quick and interpretable but unstable: small changes in the data can move the splits and shift predictions.  A **random forest** grows many trees on bootstrap samples and averages their outputs.  Averaging cancels much of the noise <span class="co">[</span><span class="ot">@breiman2001random</span><span class="co">]</span>.  </span>
-<span id="cb6-407"><a href="#cb6-407"></a></span>
-<span id="cb6-408"><a href="#cb6-408"></a><span class="ss">2. </span>**Regression forest**  </span>
-<span id="cb6-409"><a href="#cb6-409"></a>   A single tree is quick and interpretable but unstable: small changes in the data can move the splits and shift predictions.  A **random forest** grows many trees on bootstrap samples and averages their outputs.  Averaging cancels much of the noise <span class="co">[</span><span class="ot">@breiman2001random</span><span class="co">]</span>.  </span>
+<span id="cb6-406"><a href="#cb6-406"></a><span class="ss">3. </span>**Causal Forests**  </span>
+<span id="cb6-407"><a href="#cb6-407"></a>   To estimate treatment effects rather than outcomes, each tree plays a two-step 'honest' game <span class="co">[</span><span class="ot">@wager2018</span><span class="co">]</span>:  </span>
+<span id="cb6-408"><a href="#cb6-408"></a><span class="ss">   - </span>use one half of its sample to choose splits that separate treated from control units;  </span>
+<span id="cb6-409"><a href="#cb6-409"></a><span class="ss">   - </span>use the other half to compute treatment-control differences within every leaf.  </span>
 <span id="cb6-410"><a href="#cb6-410"></a></span>
-<span id="cb6-411"><a href="#cb6-411"></a><span class="ss">3. </span>**Causal Forests**  </span>
-<span id="cb6-412"><a href="#cb6-412"></a>   To estimate treatment effects rather than outcomes, each tree plays a two-step 'honest' game <span class="co">[</span><span class="ot">@wager2018</span><span class="co">]</span>:  </span>
-<span id="cb6-413"><a href="#cb6-413"></a><span class="ss">   - </span>use one half of its sample to choose splits that separate treated from control units;  </span>
-<span id="cb6-414"><a href="#cb6-414"></a><span class="ss">   - </span>use the other half to compute treatment-control differences within every leaf.  </span>
-<span id="cb6-415"><a href="#cb6-415"></a></span>
-<span id="cb6-416"><a href="#cb6-416"></a>   For a new individual with covariates $x_i$ each tree supplies a noisy leaf-level effect; the forest reports the **average**, written  </span>
-<span id="cb6-417"><a href="#cb6-417"></a></span>
-<span id="cb6-418"><a href="#cb6-418"></a>$$</span>
-<span id="cb6-419"><a href="#cb6-419"></a>  \widehat{\tau}(x)=E<span class="co">[</span><span class="ot">Y(1)-Y(0)\mid X=x</span><span class="co">]</span>.</span>
-<span id="cb6-420"><a href="#cb6-420"></a>$$</span>
+<span id="cb6-411"><a href="#cb6-411"></a>   For a new individual with covariates $x_i$ each tree supplies a noisy leaf-level effect; the forest reports the **average**, written  </span>
+<span id="cb6-412"><a href="#cb6-412"></a></span>
+<span id="cb6-413"><a href="#cb6-413"></a>$$</span>
+<span id="cb6-414"><a href="#cb6-414"></a>  \widehat{\tau}(x)=E<span class="co">[</span><span class="ot">Y(1)-Y(0)\mid X=x</span><span class="co">]</span>.</span>
+<span id="cb6-415"><a href="#cb6-415"></a>$$</span>
+<span id="cb6-416"><a href="#cb6-416"></a></span>
+<span id="cb6-417"><a href="#cb6-417"></a>Because the noisy estimates point in many directions, their average is markedly less variable -- *the wisdom of trees is a wisdom of crowds*.</span>
+<span id="cb6-418"><a href="#cb6-418"></a></span>
+<span id="cb6-419"><a href="#cb6-419"></a>Straight‑line models suit simple patterns; regression forests flex to any bends; causal forests add a third dimension -- variation in treatment responses. We'll see this in action/</span>
+<span id="cb6-420"><a href="#cb6-420"></a></span>
 <span id="cb6-421"><a href="#cb6-421"></a></span>
-<span id="cb6-422"><a href="#cb6-422"></a>Because the noisy estimates point in many directions, their average is markedly less variable -- *the wisdom of trees is a wisdom of crowds*.</span>
+<span id="cb6-422"><a href="#cb6-422"></a>For more about causal forests see (~18mins in...)</span>
 <span id="cb6-423"><a href="#cb6-423"></a></span>
-<span id="cb6-424"><a href="#cb6-424"></a>Straight‑line models suit simple patterns; regression forests flex to any bends; causal forests add a third dimension -- variation in treatment responses. We'll see this in action</span>
+<span id="cb6-424"><a href="#cb6-424"></a>{{&lt; video https://www.youtube.com/watch?v=YBbnCDRCcAI &gt;}}</span>
 <span id="cb6-425"><a href="#cb6-425"></a></span>
-<span id="cb6-426"><a href="#cb6-426"></a><span class="co">&lt;!-- So, a regression tree chops the data into locally flat chunks; a regression forest averages many such trees to smooth away chance idiosyncrasies; a causal forest adds honesty so that its averaged differences, though never directly observable for any one person, give our best data-driven forecast of individual treatment effects. --&gt;</span></span>
-<span id="cb6-427"><a href="#cb6-427"></a></span>
-<span id="cb6-428"><a href="#cb6-428"></a>---</span>
-<span id="cb6-429"><a href="#cb6-429"></a></span>
-<span id="cb6-430"><a href="#cb6-430"></a><span class="fu">### 4 Building Honest Trees: Avoiding Over-Fitting  </span></span>
-<span id="cb6-431"><a href="#cb6-431"></a></span>
-<span id="cb6-432"><a href="#cb6-432"></a>Sample splitting meanings partitioning your data into training and testing sets. This avoids overfittign the model to observations (remember we seek to estimate parameters for an entire population under two different exposures, at most, only one of which is observed on any individual.) Sample splitting is a feature of estimation in cauasal forests -- we separate model selection from estimation. Moreover, the forest adds a second safeguard: **out-of-bag (OOB) prediction**. Each $\widehat{\tau}(x_i)$ is averaged only over trees that never used $i$ in their split phase.  Together, honesty and OOB prediction deliver reliable uncertainty estimates even in high-dimensional settings (i.e. settings with *many* covariates.)</span>
-<span id="cb6-433"><a href="#cb6-433"></a></span>
-<span id="cb6-434"><a href="#cb6-434"></a>---</span>
-<span id="cb6-435"><a href="#cb6-435"></a></span>
-<span id="cb6-436"><a href="#cb6-436"></a><span class="fu">### 5 Handling missing data  </span></span>
-<span id="cb6-437"><a href="#cb6-437"></a></span>
-<span id="cb6-438"><a href="#cb6-438"></a>The <span class="in">`grf`</span> package adopts **Missing Incorporated in Attributes (MIA)** splitting.  'Missing' can itself become a branch, so cases are neither discarded nor randomly imputed.  This pragmatic approach keeps all observations in play while preserving the forest’s interpretability. </span>
-<span id="cb6-439"><a href="#cb6-439"></a></span>
-<span id="cb6-440"><a href="#cb6-440"></a>---</span>
-<span id="cb6-441"><a href="#cb6-441"></a></span>
-<span id="cb6-442"><a href="#cb6-442"></a><span class="fu">### 6 Is the heterogeneity *actionable*? — RATE statistics  </span></span>
-<span id="cb6-443"><a href="#cb6-443"></a></span>
-<span id="cb6-444"><a href="#cb6-444"></a>Once we have a personalised score $\widehat{\tau}(x)$ for every unit, the practical question is whether *targeting* high scorers delivers a benefit large enough to justify the extra effort.  The tool of choice is the **Targeting-Operator Characteristic (TOC)** curve:</span>
-<span id="cb6-445"><a href="#cb6-445"></a></span>
-<span id="cb6-446"><a href="#cb6-446"></a>$$</span>
-<span id="cb6-447"><a href="#cb6-447"></a>G(q)=\frac{1}{n}\sum_{i=1}^{\lfloor qn\rfloor}\widehat{\tau}_{(i)}, \qquad 0\le q\le1,</span>
-<span id="cb6-448"><a href="#cb6-448"></a>$$</span>
-<span id="cb6-449"><a href="#cb6-449"></a></span>
-<span id="cb6-450"><a href="#cb6-450"></a>where $\widehat{\tau}_{(1)}\ge\widehat{\tau}_{(2)}\ge\cdots$ are the estimated effects sorted from largest to smallest.  The horizontal axis $q$ is the fraction of the population we would treat; the vertical axis $G(q)$ is the cumulative gain we expect from treating that top slice.</span>
-<span id="cb6-451"><a href="#cb6-451"></a></span>
-<span id="cb6-452"><a href="#cb6-452"></a>Two integrals of the TOC curve summarise how lucrative targeting could be:</span>
-<span id="cb6-453"><a href="#cb6-453"></a></span>
-<span id="cb6-454"><a href="#cb6-454"></a><span class="ss">* </span>**RATE AUTOC** (Area *Under* the TOC) puts equal weight on every $q$.  This answers: *If benefits are concentrated among the very best prospects, how much can we harvest by cherry-picking them?*  </span>
-<span id="cb6-455"><a href="#cb6-455"></a></span>
-<span id="cb6-456"><a href="#cb6-456"></a><span class="ss">* </span>**RATE Qini** applies heavier weight to the mid-range of $q$.  This is the go-to metric when investigators face a fixed, moderate-sized budget—say, "we can afford to treat 40 % of individuals; will targeting help?"  <span class="co">[</span><span class="ot">@yadlowsky2021evaluating</span><span class="co">]</span>. We will evaluate the curve at treatment of 20% and 50% of the population.</span>
-<span id="cb6-457"><a href="#cb6-457"></a></span>
+<span id="cb6-426"><a href="#cb6-426"></a></span>
+<span id="cb6-427"><a href="#cb6-427"></a><span class="co">&lt;!-- So, a regression tree chops the data into locally flat chunks; a regression forest averages many such trees to smooth away chance idiosyncrasies; a causal forest adds honesty so that its averaged differences, though never directly observable for any one person, give our best data-driven forecast of individual treatment effects. --&gt;</span></span>
+<span id="cb6-428"><a href="#cb6-428"></a></span>
+<span id="cb6-429"><a href="#cb6-429"></a>---</span>
+<span id="cb6-430"><a href="#cb6-430"></a></span>
+<span id="cb6-431"><a href="#cb6-431"></a><span class="fu">### 4 Building Honest Trees: Avoiding Over-Fitting  </span></span>
+<span id="cb6-432"><a href="#cb6-432"></a></span>
+<span id="cb6-433"><a href="#cb6-433"></a>Sample splitting meanings partitioning your data into training and testing sets. This avoids overfittign the model to observations (remember we seek to estimate parameters for an entire population under two different exposures, at most, only one of which is observed on any individual.) Sample splitting is a feature of estimation in cauasal forests -- we separate model selection from estimation. Moreover, the forest adds a second safeguard: **out-of-bag (OOB) prediction**. Each $\widehat{\tau}(x_i)$ is averaged only over trees that never used $i$ in their split phase.  Together, honesty and OOB prediction deliver reliable uncertainty estimates even in high-dimensional settings (i.e. settings with *many* covariates.)</span>
+<span id="cb6-434"><a href="#cb6-434"></a></span>
+<span id="cb6-435"><a href="#cb6-435"></a>---</span>
+<span id="cb6-436"><a href="#cb6-436"></a></span>
+<span id="cb6-437"><a href="#cb6-437"></a><span class="fu">### 5 Handling missing data  </span></span>
+<span id="cb6-438"><a href="#cb6-438"></a></span>
+<span id="cb6-439"><a href="#cb6-439"></a>The <span class="in">`grf`</span> package adopts **Missing Incorporated in Attributes (MIA)** splitting.  'Missing' can itself become a branch, so cases are neither discarded nor randomly imputed.  This pragmatic approach keeps all observations in play while preserving the forest’s interpretability. </span>
+<span id="cb6-440"><a href="#cb6-440"></a></span>
+<span id="cb6-441"><a href="#cb6-441"></a>---</span>
+<span id="cb6-442"><a href="#cb6-442"></a></span>
+<span id="cb6-443"><a href="#cb6-443"></a><span class="fu">### 6 Is the heterogeneity *actionable*? — RATE statistics  </span></span>
+<span id="cb6-444"><a href="#cb6-444"></a></span>
+<span id="cb6-445"><a href="#cb6-445"></a>Once we have a personalised score $\widehat{\tau}(x)$ for every unit, the practical question is whether *targeting* high scorers delivers a benefit large enough to justify the extra effort.  The tool of choice is the **Targeting-Operator Characteristic (TOC)** curve:</span>
+<span id="cb6-446"><a href="#cb6-446"></a></span>
+<span id="cb6-447"><a href="#cb6-447"></a>$$</span>
+<span id="cb6-448"><a href="#cb6-448"></a>G(q)=\frac{1}{n}\sum_{i=1}^{\lfloor qn\rfloor}\widehat{\tau}_{(i)}, \qquad 0\le q\le1,</span>
+<span id="cb6-449"><a href="#cb6-449"></a>$$</span>
+<span id="cb6-450"><a href="#cb6-450"></a></span>
+<span id="cb6-451"><a href="#cb6-451"></a>where $\widehat{\tau}_{(1)}\ge\widehat{\tau}_{(2)}\ge\cdots$ are the estimated effects sorted from largest to smallest.  The horizontal axis $q$ is the fraction of the population we would treat; the vertical axis $G(q)$ is the cumulative gain we expect from treating that top slice.</span>
+<span id="cb6-452"><a href="#cb6-452"></a></span>
+<span id="cb6-453"><a href="#cb6-453"></a>Two integrals of the TOC curve summarise how lucrative targeting could be:</span>
+<span id="cb6-454"><a href="#cb6-454"></a></span>
+<span id="cb6-455"><a href="#cb6-455"></a><span class="ss">* </span>**RATE AUTOC** (Area *Under* the TOC) puts equal weight on every $q$.  This answers: *If benefits are concentrated among the very best prospects, how much can we harvest by cherry-picking them?*  </span>
+<span id="cb6-456"><a href="#cb6-456"></a></span>
+<span id="cb6-457"><a href="#cb6-457"></a><span class="ss">* </span>**RATE Qini** applies heavier weight to the mid-range of $q$.  This is the go-to metric when investigators face a fixed, moderate-sized budget—say, "we can afford to treat 40 % of individuals; will targeting help?"  <span class="co">[</span><span class="ot">@yadlowsky2021evaluating</span><span class="co">]</span>. We will evaluate the curve at treatment of 20% and 50% of the population.</span>
 <span id="cb6-458"><a href="#cb6-458"></a></span>
-<span id="cb6-459"><a href="#cb6-459"></a>To quantify the economic or policy value of heterogeneity, rank units by $\widehat{\tau}(x)$ and draw a **Targeting-Operator Characteristic (TOC)** curve that plots cumulative gain against the fraction $q$ of the population treated.  </span>
-<span id="cb6-460"><a href="#cb6-460"></a></span>
-<span id="cb6-461"><a href="#cb6-461"></a>---</span>
-<span id="cb6-462"><a href="#cb6-462"></a></span>
-<span id="cb6-463"><a href="#cb6-463"></a><span class="fu">### 7 RATE AUTOC EXAMPLE</span></span>
-<span id="cb6-464"><a href="#cb6-464"></a></span>
-<span id="cb6-465"><a href="#cb6-465"></a>Although OOB predictions are 'out-of-sample' for individual trees, the full forest still reuses information.  A simple remedy when estimating the RATE AUTOC and Qini is to split the data, **training** the forest on one fold and **testing** RATE/Qini on the other.  Again, this explicit splitting blocks optimistic bias and yields honest test statistics (such as confidence intervals) <span class="co">[</span><span class="ot">@grf2024</span><span class="co">]</span>.</span>
-<span id="cb6-466"><a href="#cb6-466"></a></span>
-<span id="cb6-467"><a href="#cb6-467"></a><span class="in">```{r, results='asis'}</span></span>
-<span id="cb6-468"><a href="#cb6-468"></a><span class="in">#| label: fig-rate-example</span></span>
-<span id="cb6-469"><a href="#cb6-469"></a><span class="in">#| fig-cap: "RATE AUTOC: Hours Socialising → Sense of Meaning"</span></span>
-<span id="cb6-470"><a href="#cb6-470"></a><span class="in">#| echo: false</span></span>
-<span id="cb6-471"><a href="#cb6-471"></a><span class="in">#| column: screen</span></span>
-<span id="cb6-472"><a href="#cb6-472"></a><span class="in">batch_rate_autoc_plots$model_t2_meaning_sense_z</span></span>
-<span id="cb6-473"><a href="#cb6-473"></a><span class="in">```</span></span>
-<span id="cb6-474"><a href="#cb6-474"></a></span>
-<span id="cb6-475"><a href="#cb6-475"></a>@fig-rate-example depicts a typical RATE AUTOC curve with sample splitting.  A steep initial rise indicates that a small, correctly targeted programme could deliver large gains. Note that the curve begins dipping below zero past about 30% of the sample. At that point we might be doing worse than the ATE by targeting the CATE -- at least for some.</span>
-<span id="cb6-476"><a href="#cb6-476"></a></span>
-<span id="cb6-477"><a href="#cb6-477"></a>**Remember -- figuring out who will benefit from a treatment is a difficult statistical problem [@grf2024].**</span>
-<span id="cb6-478"><a href="#cb6-478"></a></span>
-<span id="cb6-479"><a href="#cb6-479"></a>---</span>
-<span id="cb6-480"><a href="#cb6-480"></a></span>
-<span id="cb6-481"><a href="#cb6-481"></a><span class="fu">### 8 Visualising policy value: the Qini curve  </span></span>
-<span id="cb6-482"><a href="#cb6-482"></a></span>
-<span id="cb6-483"><a href="#cb6-483"></a>A **Qini curve** displays cumulative benefit on the vertical axis and treatment coverage (% of the population treated) on the horizontal.  As with the AUTOC curve we are using a held-out test fold to validate the response curve.</span>
-<span id="cb6-484"><a href="#cb6-484"></a></span>
-<span id="cb6-485"><a href="#cb6-485"></a><span class="in">```{r, results='asis'}</span></span>
-<span id="cb6-486"><a href="#cb6-486"></a><span class="in">#| label: fig-qini-example</span></span>
-<span id="cb6-487"><a href="#cb6-487"></a><span class="in">#| fig-cap: "Qini Curve: Hours Socialising → Social Belonging"</span></span>
-<span id="cb6-488"><a href="#cb6-488"></a><span class="in">#| echo: false</span></span>
-<span id="cb6-489"><a href="#cb6-489"></a><span class="in">#| column: screen</span></span>
-<span id="cb6-490"><a href="#cb6-490"></a><span class="in">plot_qini_belong</span></span>
-<span id="cb6-491"><a href="#cb6-491"></a><span class="in">```</span></span>
-<span id="cb6-492"><a href="#cb6-492"></a></span>
+<span id="cb6-459"><a href="#cb6-459"></a></span>
+<span id="cb6-460"><a href="#cb6-460"></a>To quantify the economic or policy value of heterogeneity, rank units by $\widehat{\tau}(x)$ and draw a **Targeting-Operator Characteristic (TOC)** curve that plots cumulative gain against the fraction $q$ of the population treated.  </span>
+<span id="cb6-461"><a href="#cb6-461"></a></span>
+<span id="cb6-462"><a href="#cb6-462"></a>---</span>
+<span id="cb6-463"><a href="#cb6-463"></a></span>
+<span id="cb6-464"><a href="#cb6-464"></a><span class="fu">### 7 RATE AUTOC EXAMPLE</span></span>
+<span id="cb6-465"><a href="#cb6-465"></a></span>
+<span id="cb6-466"><a href="#cb6-466"></a>Although OOB predictions are 'out-of-sample' for individual trees, the full forest still reuses information.  A simple remedy when estimating the RATE AUTOC and Qini is to split the data, **training** the forest on one fold and **testing** RATE/Qini on the other.  Again, this explicit splitting blocks optimistic bias and yields honest test statistics (such as confidence intervals) <span class="co">[</span><span class="ot">@grf2024</span><span class="co">]</span>.</span>
+<span id="cb6-467"><a href="#cb6-467"></a></span>
+<span id="cb6-468"><a href="#cb6-468"></a><span class="in">```{r, results='asis'}</span></span>
+<span id="cb6-469"><a href="#cb6-469"></a><span class="in">#| label: fig-rate-example</span></span>
+<span id="cb6-470"><a href="#cb6-470"></a><span class="in">#| fig-cap: "RATE AUTOC: Hours Socialising → Sense of Meaning"</span></span>
+<span id="cb6-471"><a href="#cb6-471"></a><span class="in">#| echo: false</span></span>
+<span id="cb6-472"><a href="#cb6-472"></a><span class="in">#| column: screen</span></span>
+<span id="cb6-473"><a href="#cb6-473"></a><span class="in">batch_rate_autoc_plots$model_t2_meaning_sense_z</span></span>
+<span id="cb6-474"><a href="#cb6-474"></a><span class="in">```</span></span>
+<span id="cb6-475"><a href="#cb6-475"></a></span>
+<span id="cb6-476"><a href="#cb6-476"></a>@fig-rate-example depicts a typical RATE AUTOC curve with sample splitting.  A steep initial rise indicates that a small, correctly targeted programme could deliver large gains. Note that the curve begins dipping below zero past about 30% of the sample. At that point we might be doing worse than the ATE by targeting the CATE -- at least for some.</span>
+<span id="cb6-477"><a href="#cb6-477"></a></span>
+<span id="cb6-478"><a href="#cb6-478"></a>**Remember -- figuring out who will benefit from a treatment is a difficult statistical problem [@grf2024].**</span>
+<span id="cb6-479"><a href="#cb6-479"></a></span>
+<span id="cb6-480"><a href="#cb6-480"></a>---</span>
+<span id="cb6-481"><a href="#cb6-481"></a></span>
+<span id="cb6-482"><a href="#cb6-482"></a><span class="fu">### 8 Visualising policy value: the Qini curve  </span></span>
+<span id="cb6-483"><a href="#cb6-483"></a></span>
+<span id="cb6-484"><a href="#cb6-484"></a>A **Qini curve** displays cumulative benefit on the vertical axis and treatment coverage (% of the population treated) on the horizontal.  As with the AUTOC curve we are using a held-out test fold to validate the response curve.</span>
+<span id="cb6-485"><a href="#cb6-485"></a></span>
+<span id="cb6-486"><a href="#cb6-486"></a><span class="in">```{r, results='asis'}</span></span>
+<span id="cb6-487"><a href="#cb6-487"></a><span class="in">#| label: fig-qini-example</span></span>
+<span id="cb6-488"><a href="#cb6-488"></a><span class="in">#| fig-cap: "Qini Curve: Hours Socialising → Social Belonging"</span></span>
+<span id="cb6-489"><a href="#cb6-489"></a><span class="in">#| echo: false</span></span>
+<span id="cb6-490"><a href="#cb6-490"></a><span class="in">#| column: screen</span></span>
+<span id="cb6-491"><a href="#cb6-491"></a><span class="in">plot_qini_belong</span></span>
+<span id="cb6-492"><a href="#cb6-492"></a><span class="in">```</span></span>
 <span id="cb6-493"><a href="#cb6-493"></a></span>
 <span id="cb6-494"><a href="#cb6-494"></a></span>
-<span id="cb6-495"><a href="#cb6-495"></a>@fig-qini-example: we find that focussing on the top 20 % of individuals nets a gain of 0.08 units (95 % CI 0.04–0.12).  Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19).  After that the curve flattens -- once we’ve treated everyone who offers a decent return, there are no more 'big fish' left to catch.</span>
-<span id="cb6-496"><a href="#cb6-496"></a></span>
-<span id="cb6-497"><a href="#cb6-497"></a>---</span>
-<span id="cb6-498"><a href="#cb6-498"></a></span>
+<span id="cb6-495"><a href="#cb6-495"></a></span>
+<span id="cb6-496"><a href="#cb6-496"></a>@fig-qini-example: we find that focussing on the top 20 % of individuals nets a gain of 0.08 units (95 % CI 0.04–0.12).  Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19).  After that the curve flattens -- once we’ve treated everyone who offers a decent return, there are no more 'big fish' left to catch.</span>
+<span id="cb6-497"><a href="#cb6-497"></a></span>
+<span id="cb6-498"><a href="#cb6-498"></a>---</span>
 <span id="cb6-499"><a href="#cb6-499"></a></span>
-<span id="cb6-500"><a href="#cb6-500"></a><span class="fu">### 9 From 'a black box' to simple rules: policy trees  </span></span>
-<span id="cb6-501"><a href="#cb6-501"></a></span>
-<span id="cb6-502"><a href="#cb6-502"></a>The causal forest hands us a personalised CATE for every individual, mapping a **high-dimensional** covariate vector $X$ to a number $\widehat{\tau}(X)$.  Helpful as that forecast may be, it stops short of telling us *what to do*: the function itself is too tangled --- thousands of overlapping splits -- to translate directly into a policy.  </span>
-<span id="cb6-503"><a href="#cb6-503"></a></span>
-<span id="cb6-504"><a href="#cb6-504"></a>The **policytree** algorithm bridges that gap by collapsing the forest's many $\widehat{\tau}(X)$ values into a single, shallow decision tree whose depth you choose; each split is chosen to maximise expected benefit [@policytree_package_2024].  In this course we cap the depth at **two** for a practical balance, specifially:</span>
-<span id="cb6-505"><a href="#cb6-505"></a></span>
-<span id="cb6-506"><a href="#cb6-506"></a><span class="ss">- </span>At most three yes/no questions per rule, so the logic fits on a slide you can present to policy-makers</span>
-<span id="cb6-507"><a href="#cb6-507"></a><span class="ss">- </span>Each leaf still contains enough observations to yield a stable effect estimate;  </span>
-<span id="cb6-508"><a href="#cb6-508"></a><span class="ss">- </span>Deeper trees increase computational complexity faster than they improve payoffs.</span>
-<span id="cb6-509"><a href="#cb6-509"></a></span>
-<span id="cb6-510"><a href="#cb6-510"></a><span class="in">```{r, results='asis'}</span></span>
-<span id="cb6-511"><a href="#cb6-511"></a><span class="in">#| label: fig-decision-tree</span></span>
-<span id="cb6-512"><a href="#cb6-512"></a><span class="in">#| fig-cap: "Decision tree for Social Belonging"</span></span>
-<span id="cb6-513"><a href="#cb6-513"></a><span class="in">#| echo: false</span></span>
-<span id="cb6-514"><a href="#cb6-514"></a><span class="in">#| column: screen</span></span>
-<span id="cb6-515"><a href="#cb6-515"></a><span class="in">plots_policy_trees$model_t2_belong_z$decision_tree</span></span>
-<span id="cb6-516"><a href="#cb6-516"></a><span class="in">```</span></span>
-<span id="cb6-517"><a href="#cb6-517"></a></span>
-<span id="cb6-518"><a href="#cb6-518"></a> </span>
-<span id="cb6-519"><a href="#cb6-519"></a>**Policy Tree Findings for Effect of Hour Socialising on Social Belonging:**</span>
-<span id="cb6-520"><a href="#cb6-520"></a></span>
-<span id="cb6-521"><a href="#cb6-521"></a>Participants are first split by Self Esteem at -0.925 (original scale: 3.958). For those with Self Esteem $&lt;=$ this threshold, the next split is by Neuroticism at 0.642 (original scale: 4.228). Within that subgroup, individuals with Neuroticism $&lt;=$ the threshold are recommended **control**, while those with Neuroticism $&gt;$ the threshold are recommended **treated**.</span>
-<span id="cb6-522"><a href="#cb6-522"></a></span>
-<span id="cb6-523"><a href="#cb6-523"></a>For participants with Self Esteem $&gt;$ -0.925 (original scale: 3.958), the second split is by Social Belonging at 0.776 (original scale: 5.972). In this subgroup, individuals with Social Belonging $&lt;=$ the threshold are recommended **treated**, while those with Social Belonging $&gt;$ the threshold are recommended **control**.</span>
-<span id="cb6-524"><a href="#cb6-524"></a></span>
+<span id="cb6-500"><a href="#cb6-500"></a></span>
+<span id="cb6-501"><a href="#cb6-501"></a><span class="fu">### 9 From 'a black box' to simple rules: policy trees  </span></span>
+<span id="cb6-502"><a href="#cb6-502"></a></span>
+<span id="cb6-503"><a href="#cb6-503"></a>The causal forest hands us a personalised CATE for every individual, mapping a **high-dimensional** covariate vector $X$ to a number $\widehat{\tau}(X)$.  Helpful as that forecast may be, it stops short of telling us *what to do*: the function itself is too tangled --- thousands of overlapping splits -- to translate directly into a policy.  </span>
+<span id="cb6-504"><a href="#cb6-504"></a></span>
+<span id="cb6-505"><a href="#cb6-505"></a>The **policytree** algorithm bridges that gap by collapsing the forest's many $\widehat{\tau}(X)$ values into a single, shallow decision tree whose depth you choose; each split is chosen to maximise expected benefit [@policytree_package_2024].  In this course we cap the depth at **two** for a practical balance, specifially:</span>
+<span id="cb6-506"><a href="#cb6-506"></a></span>
+<span id="cb6-507"><a href="#cb6-507"></a><span class="ss">- </span>At most three yes/no questions per rule, so the logic fits on a slide you can present to policy-makers</span>
+<span id="cb6-508"><a href="#cb6-508"></a><span class="ss">- </span>Each leaf still contains enough observations to yield a stable effect estimate;  </span>
+<span id="cb6-509"><a href="#cb6-509"></a><span class="ss">- </span>Deeper trees increase computational complexity faster than they improve payoffs.</span>
+<span id="cb6-510"><a href="#cb6-510"></a></span>
+<span id="cb6-511"><a href="#cb6-511"></a><span class="in">```{r, results='asis'}</span></span>
+<span id="cb6-512"><a href="#cb6-512"></a><span class="in">#| label: fig-decision-tree</span></span>
+<span id="cb6-513"><a href="#cb6-513"></a><span class="in">#| fig-cap: "Decision tree for Social Belonging"</span></span>
+<span id="cb6-514"><a href="#cb6-514"></a><span class="in">#| echo: false</span></span>
+<span id="cb6-515"><a href="#cb6-515"></a><span class="in">#| column: screen</span></span>
+<span id="cb6-516"><a href="#cb6-516"></a><span class="in">plots_policy_trees$model_t2_belong_z$decision_tree</span></span>
+<span id="cb6-517"><a href="#cb6-517"></a><span class="in">```</span></span>
+<span id="cb6-518"><a href="#cb6-518"></a></span>
+<span id="cb6-519"><a href="#cb6-519"></a> </span>
+<span id="cb6-520"><a href="#cb6-520"></a>**Policy Tree Findings for Effect of Hour Socialising on Social Belonging:**</span>
+<span id="cb6-521"><a href="#cb6-521"></a></span>
+<span id="cb6-522"><a href="#cb6-522"></a>Participants are first split by Self Esteem at -0.925 (original scale: 3.958). For those with Self Esteem $&lt;=$ this threshold, the next split is by Neuroticism at 0.642 (original scale: 4.228). Within that subgroup, individuals with Neuroticism $&lt;=$ the threshold are recommended **control**, while those with Neuroticism $&gt;$ the threshold are recommended **treated**.</span>
+<span id="cb6-523"><a href="#cb6-523"></a></span>
+<span id="cb6-524"><a href="#cb6-524"></a>For participants with Self Esteem $&gt;$ -0.925 (original scale: 3.958), the second split is by Social Belonging at 0.776 (original scale: 5.972). In this subgroup, individuals with Social Belonging $&lt;=$ the threshold are recommended **treated**, while those with Social Belonging $&gt;$ the threshold are recommended **control**.</span>
 <span id="cb6-525"><a href="#cb6-525"></a></span>
-<span id="cb6-526"><a href="#cb6-526"></a><span class="in">```{r, results='asis'}</span></span>
-<span id="cb6-527"><a href="#cb6-527"></a><span class="in">#| label: fig-policy-map</span></span>
-<span id="cb6-528"><a href="#cb6-528"></a><span class="in">#| fig-cap: "Predicted treatment assignment (predictions out of training sample)"</span></span>
-<span id="cb6-529"><a href="#cb6-529"></a><span class="in">#| fig-height: 14   # adjust</span></span>
-<span id="cb6-530"><a href="#cb6-530"></a><span class="in">#| fig-width: 16  # adjust</span></span>
-<span id="cb6-531"><a href="#cb6-531"></a><span class="in">#| echo: false</span></span>
-<span id="cb6-532"><a href="#cb6-532"></a><span class="in">plots_policy_trees$model_t2_belong_z$policy_tree</span></span>
-<span id="cb6-533"><a href="#cb6-533"></a><span class="in">```</span></span>
-<span id="cb6-534"><a href="#cb6-534"></a></span>
+<span id="cb6-526"><a href="#cb6-526"></a></span>
+<span id="cb6-527"><a href="#cb6-527"></a><span class="in">```{r, results='asis'}</span></span>
+<span id="cb6-528"><a href="#cb6-528"></a><span class="in">#| label: fig-policy-map</span></span>
+<span id="cb6-529"><a href="#cb6-529"></a><span class="in">#| fig-cap: "Predicted treatment assignment (predictions out of training sample)"</span></span>
+<span id="cb6-530"><a href="#cb6-530"></a><span class="in">#| fig-height: 14   # adjust</span></span>
+<span id="cb6-531"><a href="#cb6-531"></a><span class="in">#| fig-width: 16  # adjust</span></span>
+<span id="cb6-532"><a href="#cb6-532"></a><span class="in">#| echo: false</span></span>
+<span id="cb6-533"><a href="#cb6-533"></a><span class="in">plots_policy_trees$model_t2_belong_z$policy_tree</span></span>
+<span id="cb6-534"><a href="#cb6-534"></a><span class="in">```</span></span>
 <span id="cb6-535"><a href="#cb6-535"></a></span>
 <span id="cb6-536"><a href="#cb6-536"></a></span>
-<span id="cb6-537"><a href="#cb6-537"></a>---</span>
-<span id="cb6-538"><a href="#cb6-538"></a></span>
-<span id="cb6-539"><a href="#cb6-539"></a><span class="fu">### 10 Ethical and practical considerations  </span></span>
-<span id="cb6-540"><a href="#cb6-540"></a></span>
-<span id="cb6-541"><a href="#cb6-541"></a>There is no guarantee that statistical optimality will line up with social optimality. A rule that maximises expected health gains might still be **unaffordable** for a public agency, **unfair** to a protected group, or **opaque** to those asked to trust it.  We all have our notions of fairness, and we can't be expected to ignore them. Moreover, the estimation of CATE is always senstive to which variables we include in our model (see the caveats in <span class="co">[</span><span class="ot">Lecture 6</span><span class="co">](https://go-bayes.github.io/psych-434-2025/content/06-content.html#appendix-b-evidence-for-effect-modification-is-relative-to-inclusion-of-other-variables-in-the-model)</span>).  </span>
-<span id="cb6-542"><a href="#cb6-542"></a></span>
-<span id="cb6-543"><a href="#cb6-543"></a>So, we should not consider CATE an absolute guide to practice. We should be cautious. </span>
-<span id="cb6-544"><a href="#cb6-544"></a></span>
-<span id="cb6-545"><a href="#cb6-545"></a>Yet the very same CATE machinery that powers targeting also helps science move past a *one-size-fits-all* mindset.  By mapping treatment effects across a high-dimensional covariate space, we can test whether our favourite categories -- gender, age group, clinical severity -- actually capture the differences that matter.  Sometimes they do; often they don't, revealing that nature is not carved at the joints of our folk classifications.  Discovering *where* the forest finds meaningful splits can generate fresh psychological hypotheses about who responds, why, and under what circumstances, even when no policy decision is on the table. Over the next several weeks, we shall return to this point with examples.</span>
-<span id="cb6-546"><a href="#cb6-546"></a></span>
+<span id="cb6-537"><a href="#cb6-537"></a></span>
+<span id="cb6-538"><a href="#cb6-538"></a>---</span>
+<span id="cb6-539"><a href="#cb6-539"></a></span>
+<span id="cb6-540"><a href="#cb6-540"></a><span class="fu">### 10 Ethical and practical considerations  </span></span>
+<span id="cb6-541"><a href="#cb6-541"></a></span>
+<span id="cb6-542"><a href="#cb6-542"></a>There is no guarantee that statistical optimality will line up with social optimality. A rule that maximises expected health gains might still be **unaffordable** for a public agency, **unfair** to a protected group, or **opaque** to those asked to trust it.  We all have our notions of fairness, and we can't be expected to ignore them. Moreover, the estimation of CATE is always senstive to which variables we include in our model (see the caveats in <span class="co">[</span><span class="ot">Lecture 6</span><span class="co">](https://go-bayes.github.io/psych-434-2025/content/06-content.html#appendix-b-evidence-for-effect-modification-is-relative-to-inclusion-of-other-variables-in-the-model)</span>).  </span>
+<span id="cb6-543"><a href="#cb6-543"></a></span>
+<span id="cb6-544"><a href="#cb6-544"></a>So, we should not consider CATE an absolute guide to practice. We should be cautious. </span>
+<span id="cb6-545"><a href="#cb6-545"></a></span>
+<span id="cb6-546"><a href="#cb6-546"></a>Yet the very same CATE machinery that powers targeting also helps science move past a *one-size-fits-all* mindset.  By mapping treatment effects across a high-dimensional covariate space, we can test whether our favourite categories -- gender, age group, clinical severity -- actually capture the differences that matter.  Sometimes they do; often they don't, revealing that nature is not carved at the joints of our folk classifications.  Discovering *where* the forest finds meaningful splits can generate fresh psychological hypotheses about who responds, why, and under what circumstances, even when no policy decision is on the table. Over the next several weeks, we shall return to this point with examples.</span>
 <span id="cb6-547"><a href="#cb6-547"></a></span>
-<span id="cb6-548"><a href="#cb6-548"></a><span class="co">&lt;!-- Before deployment we therefore need three extra layers of scrutiny: --&gt;</span></span>
-<span id="cb6-549"><a href="#cb6-549"></a></span>
-<span id="cb6-550"><a href="#cb6-550"></a><span class="co">&lt;!-- 1. **Cost realism**   Will the programme's administrative and opportunity costs erase the forecast benefit?  A cost–effectiveness analysis can reveal when a simpler, less 'optimal' rule actually delivers better value.   --&gt;</span></span>
-<span id="cb6-551"><a href="#cb6-551"></a><span class="co">&lt;!-- 2. **Fairness auditing**  check whether error rates or treatment probabilities differ by gender, ethnicity, or socioeconomic status.  If gaps appear, consider adjusting the loss function or adding fairness constraints [@mitchell2021algorithmic].   --&gt;</span></span>
-<span id="cb6-552"><a href="#cb6-552"></a><span class="co">&lt;!-- 3. **Transparency and consent**   Publish the rule, document data sources, and secure stakeholder buy-in.  Transparent governance limits the risk of political backlash and encourages external replication. --&gt;</span></span>
-<span id="cb6-553"><a href="#cb6-553"></a></span>
-<span id="cb6-554"><a href="#cb6-554"></a>---</span>
-<span id="cb6-555"><a href="#cb6-555"></a></span>
-<span id="cb6-556"><a href="#cb6-556"></a><span class="fu">### Summary/next steps  </span></span>
-<span id="cb6-557"><a href="#cb6-557"></a></span>
-<span id="cb6-558"><a href="#cb6-558"></a>Our workflow answers three questions in sequence:</span>
-<span id="cb6-559"><a href="#cb6-559"></a></span>
-<span id="cb6-560"><a href="#cb6-560"></a><span class="ss">1. </span>**Is there substantial heterogeneity?**  Reject $H_0{:}\tau(x)$ constant if RATE AUTOC or RATE Qini is positive and statistically reliable  </span>
-<span id="cb6-561"><a href="#cb6-561"></a><span class="ss">2. </span>**Does targeting pay at realistic budgets?**  Inspect the slope of the Qini curve around plausible coverage levels.</span>
-<span id="cb6-562"><a href="#cb6-562"></a><span class="ss">3. </span>**Can we express the targeting rule in a few defensible steps?**  fit and validate a shallow policy tree.</span>
-<span id="cb6-563"><a href="#cb6-563"></a></span>
-<span id="cb6-564"><a href="#cb6-564"></a>In the lab section you will reproduce each stage on a simulated dataset.</span>
-<span id="cb6-565"><a href="#cb6-565"></a></span>
-<span id="cb6-566"><a href="#cb6-566"></a>---</span>
-<span id="cb6-567"><a href="#cb6-567"></a></span>
+<span id="cb6-548"><a href="#cb6-548"></a></span>
+<span id="cb6-549"><a href="#cb6-549"></a><span class="co">&lt;!-- Before deployment we therefore need three extra layers of scrutiny: --&gt;</span></span>
+<span id="cb6-550"><a href="#cb6-550"></a></span>
+<span id="cb6-551"><a href="#cb6-551"></a><span class="co">&lt;!-- 1. **Cost realism**   Will the programme's administrative and opportunity costs erase the forecast benefit?  A cost–effectiveness analysis can reveal when a simpler, less 'optimal' rule actually delivers better value.   --&gt;</span></span>
+<span id="cb6-552"><a href="#cb6-552"></a><span class="co">&lt;!-- 2. **Fairness auditing**  check whether error rates or treatment probabilities differ by gender, ethnicity, or socioeconomic status.  If gaps appear, consider adjusting the loss function or adding fairness constraints [@mitchell2021algorithmic].   --&gt;</span></span>
+<span id="cb6-553"><a href="#cb6-553"></a><span class="co">&lt;!-- 3. **Transparency and consent**   Publish the rule, document data sources, and secure stakeholder buy-in.  Transparent governance limits the risk of political backlash and encourages external replication. --&gt;</span></span>
+<span id="cb6-554"><a href="#cb6-554"></a></span>
+<span id="cb6-555"><a href="#cb6-555"></a>---</span>
+<span id="cb6-556"><a href="#cb6-556"></a></span>
+<span id="cb6-557"><a href="#cb6-557"></a><span class="fu">### Summary/next steps  </span></span>
+<span id="cb6-558"><a href="#cb6-558"></a></span>
+<span id="cb6-559"><a href="#cb6-559"></a>Our workflow answers three questions in sequence:</span>
+<span id="cb6-560"><a href="#cb6-560"></a></span>
+<span id="cb6-561"><a href="#cb6-561"></a><span class="ss">1. </span>**Is there substantial heterogeneity?**  Reject $H_0{:}\tau(x)$ constant if RATE AUTOC or RATE Qini is positive and statistically reliable  </span>
+<span id="cb6-562"><a href="#cb6-562"></a><span class="ss">2. </span>**Does targeting pay at realistic budgets?**  Inspect the slope of the Qini curve around plausible coverage levels.</span>
+<span id="cb6-563"><a href="#cb6-563"></a><span class="ss">3. </span>**Can we express the targeting rule in a few defensible steps?**  fit and validate a shallow policy tree.</span>
+<span id="cb6-564"><a href="#cb6-564"></a></span>
+<span id="cb6-565"><a href="#cb6-565"></a>In the lab section you will reproduce each stage on a simulated dataset.</span>
+<span id="cb6-566"><a href="#cb6-566"></a></span>
+<span id="cb6-567"><a href="#cb6-567"></a>---</span>
 <span id="cb6-568"><a href="#cb6-568"></a></span>
-<span id="cb6-569"><a href="#cb6-569"></a><span class="fu">## Lab: Data Preparation and Analysis Scripts</span></span>
-<span id="cb6-570"><a href="#cb6-570"></a></span>
+<span id="cb6-569"><a href="#cb6-569"></a></span>
+<span id="cb6-570"><a href="#cb6-570"></a><span class="fu">## Lab: Data Preparation and Analysis Scripts</span></span>
 <span id="cb6-571"><a href="#cb6-571"></a></span>
-<span id="cb6-572"><a href="#cb6-572"></a><span class="fu">### Link to data dictionary</span></span>
-<span id="cb6-573"><a href="#cb6-573"></a></span>
-<span id="cb6-574"><a href="#cb6-574"></a>::: {.callout-note}</span>
-<span id="cb6-575"><a href="#cb6-575"></a>For information about the variables in the synthetic data, download the New Zealand Attitudes and Values Data Dictionary here under "Primary Resources"</span>
-<span id="cb6-576"><a href="#cb6-576"></a></span>
-<span id="cb6-577"><a href="#cb6-577"></a><span class="co">[</span><span class="ot">https://osf.io/75snb/</span><span class="co">](https://osf.io/75snb/)</span></span>
-<span id="cb6-578"><a href="#cb6-578"></a></span>
-<span id="cb6-579"><a href="#cb6-579"></a>:::</span>
-<span id="cb6-580"><a href="#cb6-580"></a></span>
+<span id="cb6-572"><a href="#cb6-572"></a></span>
+<span id="cb6-573"><a href="#cb6-573"></a><span class="fu">### Link to data dictionary</span></span>
+<span id="cb6-574"><a href="#cb6-574"></a></span>
+<span id="cb6-575"><a href="#cb6-575"></a>::: {.callout-note}</span>
+<span id="cb6-576"><a href="#cb6-576"></a>For information about the variables in the synthetic data, download the New Zealand Attitudes and Values Data Dictionary here under "Primary Resources"</span>
+<span id="cb6-577"><a href="#cb6-577"></a></span>
+<span id="cb6-578"><a href="#cb6-578"></a><span class="co">[</span><span class="ot">https://osf.io/75snb/</span><span class="co">](https://osf.io/75snb/)</span></span>
+<span id="cb6-579"><a href="#cb6-579"></a></span>
+<span id="cb6-580"><a href="#cb6-580"></a>:::</span>
 <span id="cb6-581"><a href="#cb6-581"></a></span>
-<span id="cb6-582"><a href="#cb6-582"></a><span class="fu">### Script 1:</span></span>
-<span id="cb6-583"><a href="#cb6-583"></a></span>
+<span id="cb6-582"><a href="#cb6-582"></a></span>
+<span id="cb6-583"><a href="#cb6-583"></a><span class="fu">### Script 1:</span></span>
 <span id="cb6-584"><a href="#cb6-584"></a></span>
 <span id="cb6-585"><a href="#cb6-585"></a></span>
-<span id="cb6-588"><a href="#cb6-588"></a><span class="in">```{r}</span></span>
-<span id="cb6-589"><a href="#cb6-589"></a><span class="co">#| include: true</span></span>
-<span id="cb6-590"><a href="#cb6-590"></a><span class="co">#| eval: false</span></span>
-<span id="cb6-591"><a href="#cb6-591"></a><span class="co">#| file: ../laboratory/01-example-script-data-wrangling.R</span></span>
-<span id="cb6-592"><a href="#cb6-592"></a></span>
+<span id="cb6-586"><a href="#cb6-586"></a></span>
+<span id="cb6-589"><a href="#cb6-589"></a><span class="in">```{r}</span></span>
+<span id="cb6-590"><a href="#cb6-590"></a><span class="co">#| include: true</span></span>
+<span id="cb6-591"><a href="#cb6-591"></a><span class="co">#| eval: false</span></span>
+<span id="cb6-592"><a href="#cb6-592"></a><span class="co">#| file: ../laboratory/01-example-script-data-wrangling.R</span></span>
 <span id="cb6-593"><a href="#cb6-593"></a></span>
-<span id="cb6-594"><a href="#cb6-594"></a><span class="in">```</span></span>
-<span id="cb6-595"><a href="#cb6-595"></a></span>
+<span id="cb6-594"><a href="#cb6-594"></a></span>
+<span id="cb6-595"><a href="#cb6-595"></a><span class="in">```</span></span>
 <span id="cb6-596"><a href="#cb6-596"></a></span>
-<span id="cb6-597"><a href="#cb6-597"></a><span class="fu">### Script 2</span></span>
-<span id="cb6-598"><a href="#cb6-598"></a></span>
-<span id="cb6-601"><a href="#cb6-601"></a><span class="in">```{r}</span></span>
-<span id="cb6-602"><a href="#cb6-602"></a><span class="co">#| include: true</span></span>
-<span id="cb6-603"><a href="#cb6-603"></a><span class="co">#| eval: false</span></span>
-<span id="cb6-604"><a href="#cb6-604"></a><span class="co">#| file: ../laboratory/02-example-script-data-wrangling-2.R</span></span>
-<span id="cb6-605"><a href="#cb6-605"></a></span>
-<span id="cb6-606"><a href="#cb6-606"></a><span class="in">```</span></span>
-<span id="cb6-607"><a href="#cb6-607"></a></span>
+<span id="cb6-597"><a href="#cb6-597"></a></span>
+<span id="cb6-598"><a href="#cb6-598"></a><span class="fu">### Script 2</span></span>
+<span id="cb6-599"><a href="#cb6-599"></a></span>
+<span id="cb6-602"><a href="#cb6-602"></a><span class="in">```{r}</span></span>
+<span id="cb6-603"><a href="#cb6-603"></a><span class="co">#| include: true</span></span>
+<span id="cb6-604"><a href="#cb6-604"></a><span class="co">#| eval: false</span></span>
+<span id="cb6-605"><a href="#cb6-605"></a><span class="co">#| file: ../laboratory/02-example-script-data-wrangling-2.R</span></span>
+<span id="cb6-606"><a href="#cb6-606"></a></span>
+<span id="cb6-607"><a href="#cb6-607"></a><span class="in">```</span></span>
 <span id="cb6-608"><a href="#cb6-608"></a></span>
-<span id="cb6-609"><a href="#cb6-609"></a><span class="fu">### Script 3</span></span>
-<span id="cb6-610"><a href="#cb6-610"></a></span>
-<span id="cb6-613"><a href="#cb6-613"></a><span class="in">```{r}</span></span>
-<span id="cb6-614"><a href="#cb6-614"></a><span class="co">#| include: true</span></span>
-<span id="cb6-615"><a href="#cb6-615"></a><span class="co">#| eval: false</span></span>
-<span id="cb6-616"><a href="#cb6-616"></a><span class="co">#| file: ../laboratory/03-example-script-estimation-results.R</span></span>
-<span id="cb6-617"><a href="#cb6-617"></a></span>
-<span id="cb6-618"><a href="#cb6-618"></a><span class="in">```</span></span>
-<span id="cb6-619"><a href="#cb6-619"></a></span>
+<span id="cb6-609"><a href="#cb6-609"></a></span>
+<span id="cb6-610"><a href="#cb6-610"></a><span class="fu">### Script 3</span></span>
+<span id="cb6-611"><a href="#cb6-611"></a></span>
+<span id="cb6-614"><a href="#cb6-614"></a><span class="in">```{r}</span></span>
+<span id="cb6-615"><a href="#cb6-615"></a><span class="co">#| include: true</span></span>
+<span id="cb6-616"><a href="#cb6-616"></a><span class="co">#| eval: false</span></span>
+<span id="cb6-617"><a href="#cb6-617"></a><span class="co">#| file: ../laboratory/03-example-script-estimation-results.R</span></span>
+<span id="cb6-618"><a href="#cb6-618"></a></span>
+<span id="cb6-619"><a href="#cb6-619"></a><span class="in">```</span></span>
 <span id="cb6-620"><a href="#cb6-620"></a></span>
 <span id="cb6-621"><a href="#cb6-621"></a></span>
-<span id="cb6-622"><a href="#cb6-622"></a><span class="fu">## HOMEWORK: Prepare a fresh set of analysis scripts using a different exposure</span></span>
-<span id="cb6-623"><a href="#cb6-623"></a></span>
-<span id="cb6-624"><a href="#cb6-624"></a><span class="ss">- </span>E.g. Ask: what are the effects of a shift in religious service <span class="in">`religion_church`</span> on multi-dimensional well-being. </span>
-<span id="cb6-625"><a href="#cb6-625"></a><span class="ss">- </span>Consider what variables you need for confounding control at baseline. </span>
-<span id="cb6-626"><a href="#cb6-626"></a><span class="ss">- </span>Think about how to make the exposure variable binary.</span>
-<span id="cb6-627"><a href="#cb6-627"></a><span class="ss">- </span>You may consider different outcome(s) as well as a different exposure. </span>
-<span id="cb6-628"><a href="#cb6-628"></a></span>
+<span id="cb6-622"><a href="#cb6-622"></a></span>
+<span id="cb6-623"><a href="#cb6-623"></a><span class="fu">## HOMEWORK: Prepare a fresh set of analysis scripts using a different exposure</span></span>
+<span id="cb6-624"><a href="#cb6-624"></a></span>
+<span id="cb6-625"><a href="#cb6-625"></a><span class="ss">- </span>E.g. Ask: what are the effects of a shift in religious service <span class="in">`religion_church`</span> on multi-dimensional well-being. </span>
+<span id="cb6-626"><a href="#cb6-626"></a><span class="ss">- </span>Consider what variables you need for confounding control at baseline. </span>
+<span id="cb6-627"><a href="#cb6-627"></a><span class="ss">- </span>Think about how to make the exposure variable binary.</span>
+<span id="cb6-628"><a href="#cb6-628"></a><span class="ss">- </span>You may consider different outcome(s) as well as a different exposure. </span>
 <span id="cb6-629"><a href="#cb6-629"></a></span>
 <span id="cb6-630"><a href="#cb6-630"></a></span>
 <span id="cb6-631"><a href="#cb6-631"></a></span>
-<span id="cb6-632"><a href="#cb6-632"></a><span class="fu">### Packages</span></span>
-<span id="cb6-633"><a href="#cb6-633"></a></span>
-<span id="cb6-636"><a href="#cb6-636"></a><span class="in">```{r}</span></span>
-<span id="cb6-637"><a href="#cb6-637"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span>
-<span id="cb6-638"><a href="#cb6-638"></a><span class="in">```</span></span>
-<span id="cb6-639"><a href="#cb6-639"></a></span>
+<span id="cb6-632"><a href="#cb6-632"></a></span>
+<span id="cb6-633"><a href="#cb6-633"></a><span class="fu">### Packages</span></span>
+<span id="cb6-634"><a href="#cb6-634"></a></span>
+<span id="cb6-637"><a href="#cb6-637"></a><span class="in">```{r}</span></span>
+<span id="cb6-638"><a href="#cb6-638"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span>
+<span id="cb6-639"><a href="#cb6-639"></a><span class="in">```</span></span>
 <span id="cb6-640"><a href="#cb6-640"></a></span>
 <span id="cb6-641"><a href="#cb6-641"></a></span>
-<span id="cb6-642"><a href="#cb6-642"></a><span class="fu">## Appendix </span></span>
-<span id="cb6-643"><a href="#cb6-643"></a></span>
-<span id="cb6-644"><a href="#cb6-644"></a><span class="fu">## Review: The Fundamental Problem of Causal Inference as a Missing Data Problem</span></span>
-<span id="cb6-645"><a href="#cb6-645"></a></span>
-<span id="cb6-646"><a href="#cb6-646"></a>Recall the fundamental problem of causal inference, returning to the question of whether bilingualism improves cognitive abilities:</span>
-<span id="cb6-647"><a href="#cb6-647"></a></span>
-<span id="cb6-648"><a href="#cb6-648"></a><span class="ss">-   </span>$Y_i^{a = 1}$: The cognitive ability of child $i$ if they were bilingual. This is the counterfactual outcome when A = 1.</span>
-<span id="cb6-649"><a href="#cb6-649"></a><span class="ss">-   </span>$Y_i^{a = 0}$:: The cognitive ability of child $i$ if they were monolingual. This is the counterfactual outcome when A = 0.</span>
-<span id="cb6-650"><a href="#cb6-650"></a></span>
-<span id="cb6-651"><a href="#cb6-651"></a>The causal effect of bilingualism on cognitive ability for individual $i$ is then defined as the difference between these potential outcomes:</span>
-<span id="cb6-652"><a href="#cb6-652"></a></span>
-<span id="cb6-653"><a href="#cb6-653"></a>$$</span>
-<span id="cb6-654"><a href="#cb6-654"></a>\text{Causal Effect}_i = Y_i^{a=1} - Y_i^{a=0} </span>
-<span id="cb6-655"><a href="#cb6-655"></a>$$</span>
-<span id="cb6-656"><a href="#cb6-656"></a></span>
-<span id="cb6-657"><a href="#cb6-657"></a>We say there is a causal effect if:</span>
-<span id="cb6-658"><a href="#cb6-658"></a></span>
-<span id="cb6-659"><a href="#cb6-659"></a>$$</span>
-<span id="cb6-660"><a href="#cb6-660"></a>Y_i^{a=1} - Y_i^{a=0}  \neq 0</span>
-<span id="cb6-661"><a href="#cb6-661"></a>$$</span>
-<span id="cb6-662"><a href="#cb6-662"></a></span>
-<span id="cb6-663"><a href="#cb6-663"></a>However, we only observe one of the potential outcomes for each child. The other outcome is not observed because physics prevents a child from both receiving and not receiving bilingual exposure.</span>
-<span id="cb6-664"><a href="#cb6-664"></a></span>
-<span id="cb6-665"><a href="#cb6-665"></a>The fact that causal contrasts are not observed in individuals is called "The fundamental problem of causal inference."</span>
-<span id="cb6-666"><a href="#cb6-666"></a></span>
-<span id="cb6-667"><a href="#cb6-667"></a>Although we typically cannot observe individual causal effects, we can obtain average causal effects when certain assumptions are satisfied.</span>
-<span id="cb6-668"><a href="#cb6-668"></a></span>
-<span id="cb6-669"><a href="#cb6-669"></a><span class="in">```{=tex}</span></span>
-<span id="cb6-670"><a href="#cb6-670"></a><span class="in">\begin{align}</span></span>
-<span id="cb6-671"><a href="#cb6-671"></a><span class="in">E(\delta) = E(Y^{a=1} - Y^{a=0})\\</span></span>
-<span id="cb6-672"><a href="#cb6-672"></a><span class="in">          ~  = E(Y^{a=1}) - E(Y^{a=0}) \\</span></span>
-<span id="cb6-673"><a href="#cb6-673"></a><span class="in">          ~  = ATE</span></span>
-<span id="cb6-674"><a href="#cb6-674"></a><span class="in">\end{align}</span></span>
-<span id="cb6-675"><a href="#cb6-675"></a><span class="in">```</span></span>
-<span id="cb6-676"><a href="#cb6-676"></a>We may identify average causal effects from the data when the following assumptions are met:</span>
-<span id="cb6-677"><a href="#cb6-677"></a></span>
-<span id="cb6-678"><a href="#cb6-678"></a><span class="ss">-   </span>**Causal Consistency:** The exposure values under comparisons correspond to well-defined interventions that, in turn, correspond to the treatment versions in the data.[]</span>
-<span id="cb6-679"><a href="#cb6-679"></a><span class="ss">-   </span>**Positivity:** The probability of receiving every value of the exposure within all strata of co-variates is greater than zero []</span>
-<span id="cb6-680"><a href="#cb6-680"></a><span class="ss">-   </span>**Exchangeability:** The conditional probability of receiving every value of an exposure level, though not decided by the investigators, depends only on the measured covariates []</span>
-<span id="cb6-681"><a href="#cb6-681"></a></span>
-<span id="cb6-682"><a href="#cb6-682"></a>Further assumptions:</span>
-<span id="cb6-683"><a href="#cb6-683"></a></span>
-<span id="cb6-684"><a href="#cb6-684"></a><span class="ss">-   </span>**No Interference,** also known as the **Stable Unit Treatment Value Assumption** (SUTVA), requires that the treatment given to one unit (e.g., person, group, organization) does not interfere with the potential outcomes of another unit. Put differently, there are no "spillover" effects. Note: this assumption may be thought to be part of causal consistency, namely individual has only one potential outcome under each treatment condition.</span>
-<span id="cb6-685"><a href="#cb6-685"></a><span class="ss">-   </span>**Correctly specified model**: the requirement that the underlying statistical model used to estimate causal effects accurately represents the true relationships between the variables of interest. We say the model should be able to capture "the functional form" of the relationship between the treatment, the outcome, and any covariates. The model's functional form should be flexible enough to capture the true underlying relationship. The estimated causal effects may be biased if the model's functional form is incorrect. Additionally, the model must handle omitted variable bias by including all relevant confounders and should correctly handle missing data from non-response or loss-to follow up. We will return to the bias arising from missing data in the weeks ahead. For now, it is important to note that causal inference assumes that our model is correctly specified.</span>
-<span id="cb6-686"><a href="#cb6-686"></a></span>
+<span id="cb6-642"><a href="#cb6-642"></a></span>
+<span id="cb6-643"><a href="#cb6-643"></a><span class="fu">## Appendix </span></span>
+<span id="cb6-644"><a href="#cb6-644"></a></span>
+<span id="cb6-645"><a href="#cb6-645"></a><span class="fu">## Review: The Fundamental Problem of Causal Inference as a Missing Data Problem</span></span>
+<span id="cb6-646"><a href="#cb6-646"></a></span>
+<span id="cb6-647"><a href="#cb6-647"></a>Recall the fundamental problem of causal inference, returning to the question of whether bilingualism improves cognitive abilities:</span>
+<span id="cb6-648"><a href="#cb6-648"></a></span>
+<span id="cb6-649"><a href="#cb6-649"></a><span class="ss">-   </span>$Y_i^{a = 1}$: The cognitive ability of child $i$ if they were bilingual. This is the counterfactual outcome when A = 1.</span>
+<span id="cb6-650"><a href="#cb6-650"></a><span class="ss">-   </span>$Y_i^{a = 0}$:: The cognitive ability of child $i$ if they were monolingual. This is the counterfactual outcome when A = 0.</span>
+<span id="cb6-651"><a href="#cb6-651"></a></span>
+<span id="cb6-652"><a href="#cb6-652"></a>The causal effect of bilingualism on cognitive ability for individual $i$ is then defined as the difference between these potential outcomes:</span>
+<span id="cb6-653"><a href="#cb6-653"></a></span>
+<span id="cb6-654"><a href="#cb6-654"></a>$$</span>
+<span id="cb6-655"><a href="#cb6-655"></a>\text{Causal Effect}_i = Y_i^{a=1} - Y_i^{a=0} </span>
+<span id="cb6-656"><a href="#cb6-656"></a>$$</span>
+<span id="cb6-657"><a href="#cb6-657"></a></span>
+<span id="cb6-658"><a href="#cb6-658"></a>We say there is a causal effect if:</span>
+<span id="cb6-659"><a href="#cb6-659"></a></span>
+<span id="cb6-660"><a href="#cb6-660"></a>$$</span>
+<span id="cb6-661"><a href="#cb6-661"></a>Y_i^{a=1} - Y_i^{a=0}  \neq 0</span>
+<span id="cb6-662"><a href="#cb6-662"></a>$$</span>
+<span id="cb6-663"><a href="#cb6-663"></a></span>
+<span id="cb6-664"><a href="#cb6-664"></a>However, we only observe one of the potential outcomes for each child. The other outcome is not observed because physics prevents a child from both receiving and not receiving bilingual exposure.</span>
+<span id="cb6-665"><a href="#cb6-665"></a></span>
+<span id="cb6-666"><a href="#cb6-666"></a>The fact that causal contrasts are not observed in individuals is called "The fundamental problem of causal inference."</span>
+<span id="cb6-667"><a href="#cb6-667"></a></span>
+<span id="cb6-668"><a href="#cb6-668"></a>Although we typically cannot observe individual causal effects, we can obtain average causal effects when certain assumptions are satisfied.</span>
+<span id="cb6-669"><a href="#cb6-669"></a></span>
+<span id="cb6-670"><a href="#cb6-670"></a><span class="in">```{=tex}</span></span>
+<span id="cb6-671"><a href="#cb6-671"></a><span class="in">\begin{align}</span></span>
+<span id="cb6-672"><a href="#cb6-672"></a><span class="in">E(\delta) = E(Y^{a=1} - Y^{a=0})\\</span></span>
+<span id="cb6-673"><a href="#cb6-673"></a><span class="in">          ~  = E(Y^{a=1}) - E(Y^{a=0}) \\</span></span>
+<span id="cb6-674"><a href="#cb6-674"></a><span class="in">          ~  = ATE</span></span>
+<span id="cb6-675"><a href="#cb6-675"></a><span class="in">\end{align}</span></span>
+<span id="cb6-676"><a href="#cb6-676"></a><span class="in">```</span></span>
+<span id="cb6-677"><a href="#cb6-677"></a>We may identify average causal effects from the data when the following assumptions are met:</span>
+<span id="cb6-678"><a href="#cb6-678"></a></span>
+<span id="cb6-679"><a href="#cb6-679"></a><span class="ss">-   </span>**Causal Consistency:** The exposure values under comparisons correspond to well-defined interventions that, in turn, correspond to the treatment versions in the data.[]</span>
+<span id="cb6-680"><a href="#cb6-680"></a><span class="ss">-   </span>**Positivity:** The probability of receiving every value of the exposure within all strata of co-variates is greater than zero []</span>
+<span id="cb6-681"><a href="#cb6-681"></a><span class="ss">-   </span>**Exchangeability:** The conditional probability of receiving every value of an exposure level, though not decided by the investigators, depends only on the measured covariates []</span>
+<span id="cb6-682"><a href="#cb6-682"></a></span>
+<span id="cb6-683"><a href="#cb6-683"></a>Further assumptions:</span>
+<span id="cb6-684"><a href="#cb6-684"></a></span>
+<span id="cb6-685"><a href="#cb6-685"></a><span class="ss">-   </span>**No Interference,** also known as the **Stable Unit Treatment Value Assumption** (SUTVA), requires that the treatment given to one unit (e.g., person, group, organization) does not interfere with the potential outcomes of another unit. Put differently, there are no "spillover" effects. Note: this assumption may be thought to be part of causal consistency, namely individual has only one potential outcome under each treatment condition.</span>
+<span id="cb6-686"><a href="#cb6-686"></a><span class="ss">-   </span>**Correctly specified model**: the requirement that the underlying statistical model used to estimate causal effects accurately represents the true relationships between the variables of interest. We say the model should be able to capture "the functional form" of the relationship between the treatment, the outcome, and any covariates. The model's functional form should be flexible enough to capture the true underlying relationship. The estimated causal effects may be biased if the model's functional form is incorrect. Additionally, the model must handle omitted variable bias by including all relevant confounders and should correctly handle missing data from non-response or loss-to follow up. We will return to the bias arising from missing data in the weeks ahead. For now, it is important to note that causal inference assumes that our model is correctly specified.</span>
 <span id="cb6-687"><a href="#cb6-687"></a></span>
-<span id="cb6-688"><a href="#cb6-688"></a><span class="fu">## Subgroup analysis</span></span>
-<span id="cb6-689"><a href="#cb6-689"></a></span>
-<span id="cb6-690"><a href="#cb6-690"></a>Redcall, **Effect Modification** (also known as "heterogeneity of treatment effects", and "Effect-measure modification") occurs when the causal effect of intervention $A$ varies across different levels of another variable $R$:</span>
-<span id="cb6-691"><a href="#cb6-691"></a></span>
-<span id="cb6-692"><a href="#cb6-692"></a>$$E(Y^{a=1}|G=g_1, L=l) - E(Y^{a=0}|G=g_1, L=l) \neq E(Y^{a=1}|G=g_2, L=l) - E(Y^{a=0}|G=g_2, L=l)$$</span>
-<span id="cb6-693"><a href="#cb6-693"></a></span>
-<span id="cb6-694"><a href="#cb6-694"></a>Effect modification indicates that the magnitude of the causal effect of intervention $A$ is related to the modifier variable $G$ level. As discussed last week, effect modification can be observed even when there is no direct causal interaction between the treatment and the modifier variable. We noted that **interaction in causal inference refers to a situation where the combined effect of two interventions is not equal to the sum of their individual effects**. **Effect modification, on the other hand, occurs when the causal effect of one intervention varies across different levels of another variable.**</span>
-<span id="cb6-695"><a href="#cb6-695"></a></span>
+<span id="cb6-688"><a href="#cb6-688"></a></span>
+<span id="cb6-689"><a href="#cb6-689"></a><span class="fu">## Subgroup analysis</span></span>
+<span id="cb6-690"><a href="#cb6-690"></a></span>
+<span id="cb6-691"><a href="#cb6-691"></a>Redcall, **Effect Modification** (also known as "heterogeneity of treatment effects", and "Effect-measure modification") occurs when the causal effect of intervention $A$ varies across different levels of another variable $R$:</span>
+<span id="cb6-692"><a href="#cb6-692"></a></span>
+<span id="cb6-693"><a href="#cb6-693"></a>$$E(Y^{a=1}|G=g_1, L=l) - E(Y^{a=0}|G=g_1, L=l) \neq E(Y^{a=1}|G=g_2, L=l) - E(Y^{a=0}|G=g_2, L=l)$$</span>
+<span id="cb6-694"><a href="#cb6-694"></a></span>
+<span id="cb6-695"><a href="#cb6-695"></a>Effect modification indicates that the magnitude of the causal effect of intervention $A$ is related to the modifier variable $G$ level. As discussed last week, effect modification can be observed even when there is no direct causal interaction between the treatment and the modifier variable. We noted that **interaction in causal inference refers to a situation where the combined effect of two interventions is not equal to the sum of their individual effects**. **Effect modification, on the other hand, occurs when the causal effect of one intervention varies across different levels of another variable.**</span>
 <span id="cb6-696"><a href="#cb6-696"></a></span>
-<span id="cb6-697"><a href="#cb6-697"></a>We also noted that </span>
-<span id="cb6-698"><a href="#cb6-698"></a></span>
-<span id="cb6-699"><a href="#cb6-699"></a><span class="at">&gt; **For comparative research, we are typically interested in effect-modification, which requires subgroup analysis.**</span></span>
-<span id="cb6-700"><a href="#cb6-700"></a></span>
+<span id="cb6-697"><a href="#cb6-697"></a></span>
+<span id="cb6-698"><a href="#cb6-698"></a>We also noted that </span>
+<span id="cb6-699"><a href="#cb6-699"></a></span>
+<span id="cb6-700"><a href="#cb6-700"></a><span class="at">&gt; **For comparative research, we are typically interested in effect-modification, which requires subgroup analysis.**</span></span>
 <span id="cb6-701"><a href="#cb6-701"></a></span>
-<span id="cb6-702"><a href="#cb6-702"></a><span class="fu">### Causal Estimand, Statistical Estimand, Statistical Estimator</span></span>
-<span id="cb6-703"><a href="#cb6-703"></a></span>
-<span id="cb6-704"><a href="#cb6-704"></a>Let's set subgroup analysis to the side for a moment and begin focussing on statistical estimation.  </span>
-<span id="cb6-705"><a href="#cb6-705"></a></span>
-<span id="cb6-706"><a href="#cb6-706"></a>Suppose a researcher wants to understand the causal effect of marriage on individual happiness. Participants in the study are surveyed for their marital status ("married" or "not married") and their self-reported happiness on a scale from 1 to 10.</span>
-<span id="cb6-707"><a href="#cb6-707"></a></span>
-<span id="cb6-708"><a href="#cb6-708"></a><span class="fu">#### Causal Estimand</span></span>
-<span id="cb6-709"><a href="#cb6-709"></a></span>
-<span id="cb6-710"><a href="#cb6-710"></a><span class="ss">- </span>**Definition**: The causal estimand is the specific quantity or parameter that we aim to estimate to understand the causal effect of an intervention or treatment on an outcome.</span>
-<span id="cb6-711"><a href="#cb6-711"></a></span>
-<span id="cb6-712"><a href="#cb6-712"></a><span class="ss">- </span>**Example**: Here, the **Causal Estimand** would be the Average Treatment Effect (ATE) of being married on happiness. Specifically, we define the ATE as the difference in the potential outcomes of happiness if all individuals were married versus if no individuals were married:</span>
-<span id="cb6-713"><a href="#cb6-713"></a></span>
-<span id="cb6-714"><a href="#cb6-714"></a>  $$</span>
-<span id="cb6-715"><a href="#cb6-715"></a>  \text{ATE} = E<span class="co">[</span><span class="ot">Y^{a=1} - Y^{a=0}</span><span class="co">]</span></span>
-<span id="cb6-716"><a href="#cb6-716"></a>  $$</span>
-<span id="cb6-717"><a href="#cb6-717"></a></span>
+<span id="cb6-702"><a href="#cb6-702"></a></span>
+<span id="cb6-703"><a href="#cb6-703"></a><span class="fu">### Causal Estimand, Statistical Estimand, Statistical Estimator</span></span>
+<span id="cb6-704"><a href="#cb6-704"></a></span>
+<span id="cb6-705"><a href="#cb6-705"></a>Let's set subgroup analysis to the side for a moment and begin focussing on statistical estimation.  </span>
+<span id="cb6-706"><a href="#cb6-706"></a></span>
+<span id="cb6-707"><a href="#cb6-707"></a>Suppose a researcher wants to understand the causal effect of marriage on individual happiness. Participants in the study are surveyed for their marital status ("married" or "not married") and their self-reported happiness on a scale from 1 to 10.</span>
+<span id="cb6-708"><a href="#cb6-708"></a></span>
+<span id="cb6-709"><a href="#cb6-709"></a><span class="fu">#### Causal Estimand</span></span>
+<span id="cb6-710"><a href="#cb6-710"></a></span>
+<span id="cb6-711"><a href="#cb6-711"></a><span class="ss">- </span>**Definition**: The causal estimand is the specific quantity or parameter that we aim to estimate to understand the causal effect of an intervention or treatment on an outcome.</span>
+<span id="cb6-712"><a href="#cb6-712"></a></span>
+<span id="cb6-713"><a href="#cb6-713"></a><span class="ss">- </span>**Example**: Here, the **Causal Estimand** would be the Average Treatment Effect (ATE) of being married on happiness. Specifically, we define the ATE as the difference in the potential outcomes of happiness if all individuals were married versus if no individuals were married:</span>
+<span id="cb6-714"><a href="#cb6-714"></a></span>
+<span id="cb6-715"><a href="#cb6-715"></a>  $$</span>
+<span id="cb6-716"><a href="#cb6-716"></a>  \text{ATE} = E<span class="co">[</span><span class="ot">Y^{a=1} - Y^{a=0}</span><span class="co">]</span></span>
+<span id="cb6-717"><a href="#cb6-717"></a>  $$</span>
 <span id="cb6-718"><a href="#cb6-718"></a></span>
-<span id="cb6-719"><a href="#cb6-719"></a>  Here, $Y^{a=1}$ represents the potential happiness score if an individual is married, and $Y^{a=0}$ if they are not married.</span>
-<span id="cb6-720"><a href="#cb6-720"></a></span>
+<span id="cb6-719"><a href="#cb6-719"></a></span>
+<span id="cb6-720"><a href="#cb6-720"></a>  Here, $Y^{a=1}$ represents the potential happiness score if an individual is married, and $Y^{a=0}$ if they are not married.</span>
 <span id="cb6-721"><a href="#cb6-721"></a></span>
-<span id="cb6-722"><a href="#cb6-722"></a><span class="fu">#### Next step: Are Causal Assumptions Met? </span></span>
-<span id="cb6-723"><a href="#cb6-723"></a></span>
-<span id="cb6-724"><a href="#cb6-724"></a><span class="ss">- </span>Identification (Exchangeability): balance in the confounders across the treatments to be compared</span>
-<span id="cb6-725"><a href="#cb6-725"></a></span>
-<span id="cb6-726"><a href="#cb6-726"></a><span class="ss">- </span>Consistency: well-defined interventions</span>
-<span id="cb6-727"><a href="#cb6-727"></a></span>
-<span id="cb6-728"><a href="#cb6-728"></a><span class="ss">- </span>Positivity: treatments occur within levels of covariates $L$</span>
-<span id="cb6-729"><a href="#cb6-729"></a></span>
+<span id="cb6-722"><a href="#cb6-722"></a></span>
+<span id="cb6-723"><a href="#cb6-723"></a><span class="fu">#### Next step: Are Causal Assumptions Met? </span></span>
+<span id="cb6-724"><a href="#cb6-724"></a></span>
+<span id="cb6-725"><a href="#cb6-725"></a><span class="ss">- </span>Identification (Exchangeability): balance in the confounders across the treatments to be compared</span>
+<span id="cb6-726"><a href="#cb6-726"></a></span>
+<span id="cb6-727"><a href="#cb6-727"></a><span class="ss">- </span>Consistency: well-defined interventions</span>
+<span id="cb6-728"><a href="#cb6-728"></a></span>
+<span id="cb6-729"><a href="#cb6-729"></a><span class="ss">- </span>Positivity: treatments occur within levels of covariates $L$</span>
 <span id="cb6-730"><a href="#cb6-730"></a></span>
-<span id="cb6-731"><a href="#cb6-731"></a><span class="fu">#### Statistical Estimand (next step)</span></span>
-<span id="cb6-732"><a href="#cb6-732"></a></span>
-<span id="cb6-733"><a href="#cb6-733"></a><span class="ss">- </span>**The problem**: how do we bridge the gap between potential outcomes and data? </span>
-<span id="cb6-734"><a href="#cb6-734"></a></span>
-<span id="cb6-735"><a href="#cb6-735"></a><span class="ss">- </span>**Definition**: the statistical estimand is the parameter or function that summarises the relationship between variables as described by a statistical model applied to data. </span>
-<span id="cb6-736"><a href="#cb6-736"></a></span>
-<span id="cb6-737"><a href="#cb6-737"></a><span class="ss">- </span>**Example**: for our study, the **Statistical Estimand** might be the mean difference in happiness scores between individuals who are married and those who are not, as derived from a linear regression model:</span>
-<span id="cb6-738"><a href="#cb6-738"></a></span>
-<span id="cb6-739"><a href="#cb6-739"></a>  $$</span>
-<span id="cb6-740"><a href="#cb6-740"></a>  \text{Happiness} = \beta_0 + \beta_1 \times \text{Married} + \epsilon</span>
-<span id="cb6-741"><a href="#cb6-741"></a>  $$</span>
-<span id="cb6-742"><a href="#cb6-742"></a></span>
-<span id="cb6-743"><a href="#cb6-743"></a>  In this equation, $\beta_1$ represents the estimated difference in happiness scores between the married and non-married groups.</span>
-<span id="cb6-744"><a href="#cb6-744"></a></span>
-<span id="cb6-745"><a href="#cb6-745"></a><span class="fu">#### Statistical Estimator</span></span>
-<span id="cb6-746"><a href="#cb6-746"></a></span>
-<span id="cb6-747"><a href="#cb6-747"></a><span class="ss">- </span>**Definition**: a statistical estimator is a rule or method by which a numerical estimate of a statistical estimand is calculated from the data.</span>
-<span id="cb6-748"><a href="#cb6-748"></a></span>
-<span id="cb6-749"><a href="#cb6-749"></a><span class="ss">- </span>**Example**: in our marriage study, the **Statistical Estimator** for $\beta_1$ is the ordinary least squares (OLS) estimator. This estimator is used to calculate $\beta_1$ from the sample data provided by the survey. It provides an estimate of the impact of being married on happiness, calculated using:</span>
-<span id="cb6-750"><a href="#cb6-750"></a>  $$</span>
-<span id="cb6-751"><a href="#cb6-751"></a>  \hat{\beta}_1 = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2}</span>
-<span id="cb6-752"><a href="#cb6-752"></a>  $$</span>
-<span id="cb6-753"><a href="#cb6-753"></a>  where $X_i$ is a binary indicator for being married (1 for married, 0 for not married), $Y_i$ is the observed happiness score, and $\bar{X}$, $\bar{Y}$ are the sample means of $X$ and $Y$, respectively.</span>
-<span id="cb6-754"><a href="#cb6-754"></a></span>
-<span id="cb6-755"><a href="#cb6-755"></a>The upshot, we anchor our causal inquiries within a multi-step framework of data analysis. This involves: </span>
-<span id="cb6-756"><a href="#cb6-756"></a></span>
-<span id="cb6-757"><a href="#cb6-757"></a><span class="ss">1. </span>clearly defining our causal estimand within a specified *target population,*</span>
-<span id="cb6-758"><a href="#cb6-758"></a><span class="ss">2. </span>clarifying assumptions, &amp; especially identification assumptions, </span>
-<span id="cb6-759"><a href="#cb6-759"></a><span class="ss">3. </span>describing a statistical strategy for extracting this estimand from the data, and then </span>
-<span id="cb6-760"><a href="#cb6-760"></a><span class="ss">4. </span>applying an algorithm that embodies this statistical method.</span>
-<span id="cb6-761"><a href="#cb6-761"></a></span>
+<span id="cb6-731"><a href="#cb6-731"></a></span>
+<span id="cb6-732"><a href="#cb6-732"></a><span class="fu">#### Statistical Estimand (next step)</span></span>
+<span id="cb6-733"><a href="#cb6-733"></a></span>
+<span id="cb6-734"><a href="#cb6-734"></a><span class="ss">- </span>**The problem**: how do we bridge the gap between potential outcomes and data? </span>
+<span id="cb6-735"><a href="#cb6-735"></a></span>
+<span id="cb6-736"><a href="#cb6-736"></a><span class="ss">- </span>**Definition**: the statistical estimand is the parameter or function that summarises the relationship between variables as described by a statistical model applied to data. </span>
+<span id="cb6-737"><a href="#cb6-737"></a></span>
+<span id="cb6-738"><a href="#cb6-738"></a><span class="ss">- </span>**Example**: for our study, the **Statistical Estimand** might be the mean difference in happiness scores between individuals who are married and those who are not, as derived from a linear regression model:</span>
+<span id="cb6-739"><a href="#cb6-739"></a></span>
+<span id="cb6-740"><a href="#cb6-740"></a>  $$</span>
+<span id="cb6-741"><a href="#cb6-741"></a>  \text{Happiness} = \beta_0 + \beta_1 \times \text{Married} + \epsilon</span>
+<span id="cb6-742"><a href="#cb6-742"></a>  $$</span>
+<span id="cb6-743"><a href="#cb6-743"></a></span>
+<span id="cb6-744"><a href="#cb6-744"></a>  In this equation, $\beta_1$ represents the estimated difference in happiness scores between the married and non-married groups.</span>
+<span id="cb6-745"><a href="#cb6-745"></a></span>
+<span id="cb6-746"><a href="#cb6-746"></a><span class="fu">#### Statistical Estimator</span></span>
+<span id="cb6-747"><a href="#cb6-747"></a></span>
+<span id="cb6-748"><a href="#cb6-748"></a><span class="ss">- </span>**Definition**: a statistical estimator is a rule or method by which a numerical estimate of a statistical estimand is calculated from the data.</span>
+<span id="cb6-749"><a href="#cb6-749"></a></span>
+<span id="cb6-750"><a href="#cb6-750"></a><span class="ss">- </span>**Example**: in our marriage study, the **Statistical Estimator** for $\beta_1$ is the ordinary least squares (OLS) estimator. This estimator is used to calculate $\beta_1$ from the sample data provided by the survey. It provides an estimate of the impact of being married on happiness, calculated using:</span>
+<span id="cb6-751"><a href="#cb6-751"></a>  $$</span>
+<span id="cb6-752"><a href="#cb6-752"></a>  \hat{\beta}_1 = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2}</span>
+<span id="cb6-753"><a href="#cb6-753"></a>  $$</span>
+<span id="cb6-754"><a href="#cb6-754"></a>  where $X_i$ is a binary indicator for being married (1 for married, 0 for not married), $Y_i$ is the observed happiness score, and $\bar{X}$, $\bar{Y}$ are the sample means of $X$ and $Y$, respectively.</span>
+<span id="cb6-755"><a href="#cb6-755"></a></span>
+<span id="cb6-756"><a href="#cb6-756"></a>The upshot, we anchor our causal inquiries within a multi-step framework of data analysis. This involves: </span>
+<span id="cb6-757"><a href="#cb6-757"></a></span>
+<span id="cb6-758"><a href="#cb6-758"></a><span class="ss">1. </span>clearly defining our causal estimand within a specified *target population,*</span>
+<span id="cb6-759"><a href="#cb6-759"></a><span class="ss">2. </span>clarifying assumptions, &amp; especially identification assumptions, </span>
+<span id="cb6-760"><a href="#cb6-760"></a><span class="ss">3. </span>describing a statistical strategy for extracting this estimand from the data, and then </span>
+<span id="cb6-761"><a href="#cb6-761"></a><span class="ss">4. </span>applying an algorithm that embodies this statistical method.</span>
 <span id="cb6-762"><a href="#cb6-762"></a></span>
-<span id="cb6-763"><a href="#cb6-763"></a><span class="co">&lt;!-- ## Methods for Statistical Estimation in Causal Inference: Inverse Probability of Treatment Weights Using Propensity Scores --&gt;</span></span>
-<span id="cb6-764"><a href="#cb6-764"></a></span>
-<span id="cb6-765"><a href="#cb6-765"></a><span class="co">&lt;!-- Last week, we discussed confounding control using regression adjustment. Recall the formula for the average treatment effect (ATE) when conditioning on a set of covariates $L$: --&gt;</span></span>
-<span id="cb6-766"><a href="#cb6-766"></a></span>
-<span id="cb6-767"><a href="#cb6-767"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-768"><a href="#cb6-768"></a><span class="co">&lt;!-- \begin{aligned} --&gt;</span></span>
-<span id="cb6-769"><a href="#cb6-769"></a><span class="co">&lt;!-- \text{ATE} = E[Y^{a=1} \mid L = l] - E[Y^{a=0} \mid L = l] \quad \text{for any value of } l --&gt;</span></span>
-<span id="cb6-770"><a href="#cb6-770"></a><span class="co">&lt;!-- \end{aligned} --&gt;</span></span>
-<span id="cb6-771"><a href="#cb6-771"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-772"><a href="#cb6-772"></a></span>
-<span id="cb6-773"><a href="#cb6-773"></a><span class="co">&lt;!-- &gt; "We say that a set $L$ of measured non-descendants of $L$ is a sufficient set for confounding adjustment when conditioning on $L$ blocks all backdoor paths—that is, the treated and the untreated are exchangeable within levels of $L$" (Hernán &amp; Robins, *Causal Inference*, p. 86). --&gt;</span></span>
-<span id="cb6-774"><a href="#cb6-774"></a></span>
-<span id="cb6-775"><a href="#cb6-775"></a><span class="co">&lt;!-- This formula calculates the expected outcome difference between treated ($a=1$) and untreated ($a=0$) groups, given a specific value of the covariates $l$. --&gt;</span></span>
-<span id="cb6-776"><a href="#cb6-776"></a></span>
-<span id="cb6-777"><a href="#cb6-777"></a><span class="co">&lt;!-- Inverse Probability of Treatment Weighting (IPTW) takes a different approach. We create a pseudo-population where the treatment assignment is independent of the observed covariates by assigning weights to each individual based on their propensity scores. --&gt;</span></span>
-<span id="cb6-778"><a href="#cb6-778"></a></span>
-<span id="cb6-779"><a href="#cb6-779"></a><span class="co">&lt;!-- **We do this by modelling the treatment** --&gt;</span></span>
-<span id="cb6-780"><a href="#cb6-780"></a></span>
-<span id="cb6-781"><a href="#cb6-781"></a><span class="co">&lt;!-- Denote the treatment indicator by $A$, where $A = 1$ if an individual receives treatment and $A = 0$ otherwise. $L$ represents the vector of observed covariates, and $Y^a$ the potential outcomes. The propensity score, $e(L)$, is defined as the probability of receiving the treatment given the observed covariates: --&gt;</span></span>
-<span id="cb6-782"><a href="#cb6-782"></a></span>
-<span id="cb6-783"><a href="#cb6-783"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-784"><a href="#cb6-784"></a><span class="co">&lt;!-- \hat{e}(L) = P(A = 1 \mid L) --&gt;</span></span>
-<span id="cb6-785"><a href="#cb6-785"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-786"><a href="#cb6-786"></a></span>
-<span id="cb6-787"><a href="#cb6-787"></a><span class="co">&lt;!-- To obtain IPTW weights, compute the inverse probability of treatment: --&gt;</span></span>
-<span id="cb6-788"><a href="#cb6-788"></a></span>
-<span id="cb6-789"><a href="#cb6-789"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-790"><a href="#cb6-790"></a><span class="co">&lt;!-- v_i = \frac{A_i}{\hat{e}(L_i)} + \frac{1 - A_i}{1 - \hat{e}(L_i)} --&gt;</span></span>
-<span id="cb6-791"><a href="#cb6-791"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-792"><a href="#cb6-792"></a></span>
-<span id="cb6-793"><a href="#cb6-793"></a><span class="co">&lt;!-- Which simplifies to  --&gt;</span></span>
-<span id="cb6-794"><a href="#cb6-794"></a></span>
-<span id="cb6-795"><a href="#cb6-795"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-796"><a href="#cb6-796"></a><span class="co">&lt;!-- v_i =  --&gt;</span></span>
-<span id="cb6-797"><a href="#cb6-797"></a><span class="co">&lt;!-- \begin{cases}  --&gt;</span></span>
-<span id="cb6-798"><a href="#cb6-798"></a><span class="co">&lt;!-- \frac{1}{\hat{e}} &amp; \text{if } A_i = 1 \\ --&gt;</span></span>
-<span id="cb6-799"><a href="#cb6-799"></a><span class="co">&lt;!-- \frac{1}{1-\hat{e}} &amp; \text{if } A_i = 0  --&gt;</span></span>
-<span id="cb6-800"><a href="#cb6-800"></a><span class="co">&lt;!-- \end{cases} --&gt;</span></span>
-<span id="cb6-801"><a href="#cb6-801"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-802"><a href="#cb6-802"></a></span>
-<span id="cb6-803"><a href="#cb6-803"></a><span class="co">&lt;!-- where $v_i$ is the IPTW weight for individual $i$, $A_i$ is the treatment indicator for individual $i$, and $\hat{e}(L_i)$ is the estimated propensity score for individual $i$.    --&gt;</span></span>
-<span id="cb6-804"><a href="#cb6-804"></a></span>
-<span id="cb6-805"><a href="#cb6-805"></a><span class="co">&lt;!-- How might we use these weights to obtain causal effect estimates? --&gt;</span></span>
-<span id="cb6-806"><a href="#cb6-806"></a></span>
+<span id="cb6-763"><a href="#cb6-763"></a></span>
+<span id="cb6-764"><a href="#cb6-764"></a><span class="co">&lt;!-- ## Methods for Statistical Estimation in Causal Inference: Inverse Probability of Treatment Weights Using Propensity Scores --&gt;</span></span>
+<span id="cb6-765"><a href="#cb6-765"></a></span>
+<span id="cb6-766"><a href="#cb6-766"></a><span class="co">&lt;!-- Last week, we discussed confounding control using regression adjustment. Recall the formula for the average treatment effect (ATE) when conditioning on a set of covariates $L$: --&gt;</span></span>
+<span id="cb6-767"><a href="#cb6-767"></a></span>
+<span id="cb6-768"><a href="#cb6-768"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-769"><a href="#cb6-769"></a><span class="co">&lt;!-- \begin{aligned} --&gt;</span></span>
+<span id="cb6-770"><a href="#cb6-770"></a><span class="co">&lt;!-- \text{ATE} = E[Y^{a=1} \mid L = l] - E[Y^{a=0} \mid L = l] \quad \text{for any value of } l --&gt;</span></span>
+<span id="cb6-771"><a href="#cb6-771"></a><span class="co">&lt;!-- \end{aligned} --&gt;</span></span>
+<span id="cb6-772"><a href="#cb6-772"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-773"><a href="#cb6-773"></a></span>
+<span id="cb6-774"><a href="#cb6-774"></a><span class="co">&lt;!-- &gt; "We say that a set $L$ of measured non-descendants of $L$ is a sufficient set for confounding adjustment when conditioning on $L$ blocks all backdoor paths—that is, the treated and the untreated are exchangeable within levels of $L$" (Hernán &amp; Robins, *Causal Inference*, p. 86). --&gt;</span></span>
+<span id="cb6-775"><a href="#cb6-775"></a></span>
+<span id="cb6-776"><a href="#cb6-776"></a><span class="co">&lt;!-- This formula calculates the expected outcome difference between treated ($a=1$) and untreated ($a=0$) groups, given a specific value of the covariates $l$. --&gt;</span></span>
+<span id="cb6-777"><a href="#cb6-777"></a></span>
+<span id="cb6-778"><a href="#cb6-778"></a><span class="co">&lt;!-- Inverse Probability of Treatment Weighting (IPTW) takes a different approach. We create a pseudo-population where the treatment assignment is independent of the observed covariates by assigning weights to each individual based on their propensity scores. --&gt;</span></span>
+<span id="cb6-779"><a href="#cb6-779"></a></span>
+<span id="cb6-780"><a href="#cb6-780"></a><span class="co">&lt;!-- **We do this by modelling the treatment** --&gt;</span></span>
+<span id="cb6-781"><a href="#cb6-781"></a></span>
+<span id="cb6-782"><a href="#cb6-782"></a><span class="co">&lt;!-- Denote the treatment indicator by $A$, where $A = 1$ if an individual receives treatment and $A = 0$ otherwise. $L$ represents the vector of observed covariates, and $Y^a$ the potential outcomes. The propensity score, $e(L)$, is defined as the probability of receiving the treatment given the observed covariates: --&gt;</span></span>
+<span id="cb6-783"><a href="#cb6-783"></a></span>
+<span id="cb6-784"><a href="#cb6-784"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-785"><a href="#cb6-785"></a><span class="co">&lt;!-- \hat{e}(L) = P(A = 1 \mid L) --&gt;</span></span>
+<span id="cb6-786"><a href="#cb6-786"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-787"><a href="#cb6-787"></a></span>
+<span id="cb6-788"><a href="#cb6-788"></a><span class="co">&lt;!-- To obtain IPTW weights, compute the inverse probability of treatment: --&gt;</span></span>
+<span id="cb6-789"><a href="#cb6-789"></a></span>
+<span id="cb6-790"><a href="#cb6-790"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-791"><a href="#cb6-791"></a><span class="co">&lt;!-- v_i = \frac{A_i}{\hat{e}(L_i)} + \frac{1 - A_i}{1 - \hat{e}(L_i)} --&gt;</span></span>
+<span id="cb6-792"><a href="#cb6-792"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-793"><a href="#cb6-793"></a></span>
+<span id="cb6-794"><a href="#cb6-794"></a><span class="co">&lt;!-- Which simplifies to  --&gt;</span></span>
+<span id="cb6-795"><a href="#cb6-795"></a></span>
+<span id="cb6-796"><a href="#cb6-796"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-797"><a href="#cb6-797"></a><span class="co">&lt;!-- v_i =  --&gt;</span></span>
+<span id="cb6-798"><a href="#cb6-798"></a><span class="co">&lt;!-- \begin{cases}  --&gt;</span></span>
+<span id="cb6-799"><a href="#cb6-799"></a><span class="co">&lt;!-- \frac{1}{\hat{e}} &amp; \text{if } A_i = 1 \\ --&gt;</span></span>
+<span id="cb6-800"><a href="#cb6-800"></a><span class="co">&lt;!-- \frac{1}{1-\hat{e}} &amp; \text{if } A_i = 0  --&gt;</span></span>
+<span id="cb6-801"><a href="#cb6-801"></a><span class="co">&lt;!-- \end{cases} --&gt;</span></span>
+<span id="cb6-802"><a href="#cb6-802"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-803"><a href="#cb6-803"></a></span>
+<span id="cb6-804"><a href="#cb6-804"></a><span class="co">&lt;!-- where $v_i$ is the IPTW weight for individual $i$, $A_i$ is the treatment indicator for individual $i$, and $\hat{e}(L_i)$ is the estimated propensity score for individual $i$.    --&gt;</span></span>
+<span id="cb6-805"><a href="#cb6-805"></a></span>
+<span id="cb6-806"><a href="#cb6-806"></a><span class="co">&lt;!-- How might we use these weights to obtain causal effect estimates? --&gt;</span></span>
 <span id="cb6-807"><a href="#cb6-807"></a></span>
 <span id="cb6-808"><a href="#cb6-808"></a></span>
-<span id="cb6-809"><a href="#cb6-809"></a><span class="co">&lt;!-- ## Marginal Structural Models (MSMs) --&gt;</span></span>
-<span id="cb6-810"><a href="#cb6-810"></a></span>
-<span id="cb6-811"><a href="#cb6-811"></a><span class="co">&lt;!-- Marginal Structural Models (MSMs) estimate causal effects without requiring an "outcome model" that stratifies on covariates. Rather, MSMs employ weights derived from the inverse probability of treatment weighting (IPTW) to create a pseudo-population in which the distribution of covariates is independent of treatment assignment over time. --&gt;</span></span>
-<span id="cb6-812"><a href="#cb6-812"></a></span>
-<span id="cb6-813"><a href="#cb6-813"></a><span class="co">&lt;!-- The general form of an MSM can be expressed as follows: --&gt;</span></span>
-<span id="cb6-814"><a href="#cb6-814"></a></span>
-<span id="cb6-815"><a href="#cb6-815"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-816"><a href="#cb6-816"></a><span class="co">&lt;!-- E[Y^a] = \beta_0 + \beta_1a --&gt;</span></span>
-<span id="cb6-817"><a href="#cb6-817"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-818"><a href="#cb6-818"></a></span>
-<span id="cb6-819"><a href="#cb6-819"></a><span class="co">&lt;!-- where $E[Y^a]$ is the expected outcome under treatment $a$  and $\beta_0$ and $\beta_1$ are parameters estimated by fitting the weighted model. Again, the weights used in the MSM, typically derived from the IPTW (or another treatment model), adjust for the confounding, allowing the model to estimate the unbiased effect of the treatment on the outcome without requiring covariates in the model. --&gt;</span></span>
-<span id="cb6-820"><a href="#cb6-820"></a></span>
-<span id="cb6-821"><a href="#cb6-821"></a><span class="co">&lt;!-- Where do weights fit in?   Note, we have $E[Y^a]$ in please of $E[Y|A=a]$.  When applying propensity score weights in the linear regression model $E[Y^a] = \beta_0 + \beta_1a$, each observation is weighted by $v_i$, such that $v_i(\beta_0 + \beta_1a)$. This changes the estimation process to focus on a weighted sum of outcomes, where each individual's contribution is adjusted to reflect their probability of receiving the treatment, given their covariates. --&gt;</span></span>
-<span id="cb6-822"><a href="#cb6-822"></a></span>
+<span id="cb6-809"><a href="#cb6-809"></a></span>
+<span id="cb6-810"><a href="#cb6-810"></a><span class="co">&lt;!-- ## Marginal Structural Models (MSMs) --&gt;</span></span>
+<span id="cb6-811"><a href="#cb6-811"></a></span>
+<span id="cb6-812"><a href="#cb6-812"></a><span class="co">&lt;!-- Marginal Structural Models (MSMs) estimate causal effects without requiring an "outcome model" that stratifies on covariates. Rather, MSMs employ weights derived from the inverse probability of treatment weighting (IPTW) to create a pseudo-population in which the distribution of covariates is independent of treatment assignment over time. --&gt;</span></span>
+<span id="cb6-813"><a href="#cb6-813"></a></span>
+<span id="cb6-814"><a href="#cb6-814"></a><span class="co">&lt;!-- The general form of an MSM can be expressed as follows: --&gt;</span></span>
+<span id="cb6-815"><a href="#cb6-815"></a></span>
+<span id="cb6-816"><a href="#cb6-816"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-817"><a href="#cb6-817"></a><span class="co">&lt;!-- E[Y^a] = \beta_0 + \beta_1a --&gt;</span></span>
+<span id="cb6-818"><a href="#cb6-818"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-819"><a href="#cb6-819"></a></span>
+<span id="cb6-820"><a href="#cb6-820"></a><span class="co">&lt;!-- where $E[Y^a]$ is the expected outcome under treatment $a$  and $\beta_0$ and $\beta_1$ are parameters estimated by fitting the weighted model. Again, the weights used in the MSM, typically derived from the IPTW (or another treatment model), adjust for the confounding, allowing the model to estimate the unbiased effect of the treatment on the outcome without requiring covariates in the model. --&gt;</span></span>
+<span id="cb6-821"><a href="#cb6-821"></a></span>
+<span id="cb6-822"><a href="#cb6-822"></a><span class="co">&lt;!-- Where do weights fit in?   Note, we have $E[Y^a]$ in please of $E[Y|A=a]$.  When applying propensity score weights in the linear regression model $E[Y^a] = \beta_0 + \beta_1a$, each observation is weighted by $v_i$, such that $v_i(\beta_0 + \beta_1a)$. This changes the estimation process to focus on a weighted sum of outcomes, where each individual's contribution is adjusted to reflect their probability of receiving the treatment, given their covariates. --&gt;</span></span>
 <span id="cb6-823"><a href="#cb6-823"></a></span>
-<span id="cb6-824"><a href="#cb6-824"></a><span class="co">&lt;!-- ## Interpretation of $\beta_0$ and $\beta_1$  in a Marginal Structural Model --&gt;</span></span>
-<span id="cb6-825"><a href="#cb6-825"></a></span>
-<span id="cb6-826"><a href="#cb6-826"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Binary Treatment --&gt;</span></span>
-<span id="cb6-827"><a href="#cb6-827"></a></span>
-<span id="cb6-828"><a href="#cb6-828"></a><span class="co">&lt;!-- In models where the treatment $a$ is binary (e.g., $a = 0$ or $a = 1$), such as in many causal inference studies: --&gt;</span></span>
-<span id="cb6-829"><a href="#cb6-829"></a></span>
-<span id="cb6-830"><a href="#cb6-830"></a><span class="co">&lt;!-- - **$\beta_0$**: the expected value of the outcome $Y$ when the treatment is not applied ($a = 0$). This is the baseline level of the outcome in the absence of treatment. --&gt;</span></span>
-<span id="cb6-831"><a href="#cb6-831"></a><span class="co">&lt;!-- - **$\beta_1$**: the change in the expected outcome when the treatment status changes from 0 to 1. In logistic regression, $\beta_1$ represents the log-odds ratio of the outcome for the treatment group relative to the control group. In linear regression, $\beta_1$ quantifies the difference in the average outcome between the treated and untreated groups. --&gt;</span></span>
-<span id="cb6-832"><a href="#cb6-832"></a></span>
-<span id="cb6-833"><a href="#cb6-833"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Continuous Treatment --&gt;</span></span>
-<span id="cb6-834"><a href="#cb6-834"></a></span>
-<span id="cb6-835"><a href="#cb6-835"></a><span class="co">&lt;!-- When the treatment $a$ is continuous, the interpretation of $\beta_0$ and $\beta_1$ adjusts slightly: --&gt;</span></span>
-<span id="cb6-836"><a href="#cb6-836"></a></span>
-<span id="cb6-837"><a href="#cb6-837"></a><span class="co">&lt;!-- - **$\beta_0$**: represents the expected value of the outcome $Y$ when the treatment $a$ is at its reference value (often zero).  --&gt;</span></span>
-<span id="cb6-838"><a href="#cb6-838"></a><span class="co">&lt;!-- - **$\beta_1$**: represents the expected change in the outcome for each unit increase in the treatment. In this case, $\beta_1$ measures the gradient or slope of the relationship between the treatment and the outcome. For every one-unit increase in treatment, the outcome changes by $\beta_1$ units, assuming all other factors remain constant. --&gt;</span></span>
-<span id="cb6-839"><a href="#cb6-839"></a></span>
+<span id="cb6-824"><a href="#cb6-824"></a></span>
+<span id="cb6-825"><a href="#cb6-825"></a><span class="co">&lt;!-- ## Interpretation of $\beta_0$ and $\beta_1$  in a Marginal Structural Model --&gt;</span></span>
+<span id="cb6-826"><a href="#cb6-826"></a></span>
+<span id="cb6-827"><a href="#cb6-827"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Binary Treatment --&gt;</span></span>
+<span id="cb6-828"><a href="#cb6-828"></a></span>
+<span id="cb6-829"><a href="#cb6-829"></a><span class="co">&lt;!-- In models where the treatment $a$ is binary (e.g., $a = 0$ or $a = 1$), such as in many causal inference studies: --&gt;</span></span>
+<span id="cb6-830"><a href="#cb6-830"></a></span>
+<span id="cb6-831"><a href="#cb6-831"></a><span class="co">&lt;!-- - **$\beta_0$**: the expected value of the outcome $Y$ when the treatment is not applied ($a = 0$). This is the baseline level of the outcome in the absence of treatment. --&gt;</span></span>
+<span id="cb6-832"><a href="#cb6-832"></a><span class="co">&lt;!-- - **$\beta_1$**: the change in the expected outcome when the treatment status changes from 0 to 1. In logistic regression, $\beta_1$ represents the log-odds ratio of the outcome for the treatment group relative to the control group. In linear regression, $\beta_1$ quantifies the difference in the average outcome between the treated and untreated groups. --&gt;</span></span>
+<span id="cb6-833"><a href="#cb6-833"></a></span>
+<span id="cb6-834"><a href="#cb6-834"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Continuous Treatment --&gt;</span></span>
+<span id="cb6-835"><a href="#cb6-835"></a></span>
+<span id="cb6-836"><a href="#cb6-836"></a><span class="co">&lt;!-- When the treatment $a$ is continuous, the interpretation of $\beta_0$ and $\beta_1$ adjusts slightly: --&gt;</span></span>
+<span id="cb6-837"><a href="#cb6-837"></a></span>
+<span id="cb6-838"><a href="#cb6-838"></a><span class="co">&lt;!-- - **$\beta_0$**: represents the expected value of the outcome $Y$ when the treatment $a$ is at its reference value (often zero).  --&gt;</span></span>
+<span id="cb6-839"><a href="#cb6-839"></a><span class="co">&lt;!-- - **$\beta_1$**: represents the expected change in the outcome for each unit increase in the treatment. In this case, $\beta_1$ measures the gradient or slope of the relationship between the treatment and the outcome. For every one-unit increase in treatment, the outcome changes by $\beta_1$ units, assuming all other factors remain constant. --&gt;</span></span>
 <span id="cb6-840"><a href="#cb6-840"></a></span>
-<span id="cb6-841"><a href="#cb6-841"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co">  How can we apply marginal structural models in subgroups?  --&gt;</span></span>
-<span id="cb6-842"><a href="#cb6-842"></a></span>
+<span id="cb6-841"><a href="#cb6-841"></a></span>
+<span id="cb6-842"><a href="#cb6-842"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co">  How can we apply marginal structural models in subgroups?  --&gt;</span></span>
 <span id="cb6-843"><a href="#cb6-843"></a></span>
-<span id="cb6-844"><a href="#cb6-844"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Assumptions --&gt;</span></span>
-<span id="cb6-845"><a href="#cb6-845"></a></span>
-<span id="cb6-846"><a href="#cb6-846"></a><span class="co">&lt;!-- - **Model assumptions**: the treatment model is correctly specified. --&gt;</span></span>
-<span id="cb6-847"><a href="#cb6-847"></a><span class="co">&lt;!-- - **Causal assumptions**: all confounders are appropriately controlled, positivity and consistency assumptions hold. --&gt;</span></span>
-<span id="cb6-848"><a href="#cb6-848"></a></span>
+<span id="cb6-844"><a href="#cb6-844"></a></span>
+<span id="cb6-845"><a href="#cb6-845"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Assumptions --&gt;</span></span>
+<span id="cb6-846"><a href="#cb6-846"></a></span>
+<span id="cb6-847"><a href="#cb6-847"></a><span class="co">&lt;!-- - **Model assumptions**: the treatment model is correctly specified. --&gt;</span></span>
+<span id="cb6-848"><a href="#cb6-848"></a><span class="co">&lt;!-- - **Causal assumptions**: all confounders are appropriately controlled, positivity and consistency assumptions hold. --&gt;</span></span>
 <span id="cb6-849"><a href="#cb6-849"></a></span>
-<span id="cb6-850"><a href="#cb6-850"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Calculating Treatment Weights (Propensity Scores) and Confounding Control in Subgroups --&gt;</span></span>
-<span id="cb6-851"><a href="#cb6-851"></a></span>
-<span id="cb6-852"><a href="#cb6-852"></a><span class="co">&lt;!-- We may often achieve greater balance when conducting weighted analyses in subgroups by estimating propensity scores *within* these subgroups. The propensity score $ e(L, G) $ is the conditional probability of receiving the exposure $ A = 1 $, given the covariates $ L $ and subgroup indicator $ G $. This is often modelled using logistic regression or other methods that ensure covariate balance --&gt;</span></span>
-<span id="cb6-853"><a href="#cb6-853"></a><span class="co">&lt;!-- We define the estimated propensity score as follows: --&gt;</span></span>
-<span id="cb6-854"><a href="#cb6-854"></a></span>
-<span id="cb6-855"><a href="#cb6-855"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-856"><a href="#cb6-856"></a><span class="co">&lt;!-- \hat{e} = P(A = 1 \mid L, G) = f_A(L, G; \theta_A) --&gt;</span></span>
-<span id="cb6-857"><a href="#cb6-857"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-858"><a href="#cb6-858"></a></span>
-<span id="cb6-859"><a href="#cb6-859"></a><span class="co">&lt;!-- Here, $ f_A(L, G; \theta_A) $ is the statistical model estimating the probability of exposure $A = 1$ given covariates $L$ and subgroup $G$. We then calculate the weights for each individual, denoted $v$, using the estimated propensity score: --&gt;</span></span>
-<span id="cb6-860"><a href="#cb6-860"></a></span>
-<span id="cb6-861"><a href="#cb6-861"></a><span class="co">&lt;!-- $\theta_A$ encapsulates all the coefficients (parameters) in this model, including intercepts, slopes, and potentially other parameters depending on the model complexity (e.g., interaction terms, non-linear effects...etc). --&gt;</span></span>
-<span id="cb6-862"><a href="#cb6-862"></a></span>
-<span id="cb6-863"><a href="#cb6-863"></a><span class="co">&lt;!-- These weights $v$ depend on $A$ and are calculated as the inverse of the propensity score for exposed individuals and as the inverse of $ 1-\hat{e} $ for unexposed individuals. --&gt;</span></span>
-<span id="cb6-864"><a href="#cb6-864"></a></span>
-<span id="cb6-865"><a href="#cb6-865"></a><span class="co">&lt;!-- Propensity scores are estimated *separately* within strata of the subgroup to control for potential confounding tailored to each subgroup. These weights $v$ are specific to each individual in subgroup $G$. In the lab, we will clarify how to fit models to estimate contrasts for the causal effects within groups $\hat{\delta}_{g}, \hat{\delta}_{g'}$, etc., and how to obtain estimates for group-wise differences: --&gt;</span></span>
-<span id="cb6-866"><a href="#cb6-866"></a></span>
-<span id="cb6-867"><a href="#cb6-867"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-868"><a href="#cb6-868"></a><span class="co">&lt;!-- \hat{\gamma} = \overbrace{\big( \hat{E}[Y^a \mid G=g] - \hat{E}[Y^{a'} \mid G=g] \big)}^{\hat{\delta}_g} - \overbrace{\big( \hat{E}[Y^{a'} \mid G=g'] - \hat{E}[Y^a \mid G=g'] \big)}^{\hat{\delta}_{g'}} --&gt;</span></span>
-<span id="cb6-869"><a href="#cb6-869"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
-<span id="cb6-870"><a href="#cb6-870"></a></span>
+<span id="cb6-850"><a href="#cb6-850"></a></span>
+<span id="cb6-851"><a href="#cb6-851"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Calculating Treatment Weights (Propensity Scores) and Confounding Control in Subgroups --&gt;</span></span>
+<span id="cb6-852"><a href="#cb6-852"></a></span>
+<span id="cb6-853"><a href="#cb6-853"></a><span class="co">&lt;!-- We may often achieve greater balance when conducting weighted analyses in subgroups by estimating propensity scores *within* these subgroups. The propensity score $ e(L, G) $ is the conditional probability of receiving the exposure $ A = 1 $, given the covariates $ L $ and subgroup indicator $ G $. This is often modelled using logistic regression or other methods that ensure covariate balance --&gt;</span></span>
+<span id="cb6-854"><a href="#cb6-854"></a><span class="co">&lt;!-- We define the estimated propensity score as follows: --&gt;</span></span>
+<span id="cb6-855"><a href="#cb6-855"></a></span>
+<span id="cb6-856"><a href="#cb6-856"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-857"><a href="#cb6-857"></a><span class="co">&lt;!-- \hat{e} = P(A = 1 \mid L, G) = f_A(L, G; \theta_A) --&gt;</span></span>
+<span id="cb6-858"><a href="#cb6-858"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-859"><a href="#cb6-859"></a></span>
+<span id="cb6-860"><a href="#cb6-860"></a><span class="co">&lt;!-- Here, $ f_A(L, G; \theta_A) $ is the statistical model estimating the probability of exposure $A = 1$ given covariates $L$ and subgroup $G$. We then calculate the weights for each individual, denoted $v$, using the estimated propensity score: --&gt;</span></span>
+<span id="cb6-861"><a href="#cb6-861"></a></span>
+<span id="cb6-862"><a href="#cb6-862"></a><span class="co">&lt;!-- $\theta_A$ encapsulates all the coefficients (parameters) in this model, including intercepts, slopes, and potentially other parameters depending on the model complexity (e.g., interaction terms, non-linear effects...etc). --&gt;</span></span>
+<span id="cb6-863"><a href="#cb6-863"></a></span>
+<span id="cb6-864"><a href="#cb6-864"></a><span class="co">&lt;!-- These weights $v$ depend on $A$ and are calculated as the inverse of the propensity score for exposed individuals and as the inverse of $ 1-\hat{e} $ for unexposed individuals. --&gt;</span></span>
+<span id="cb6-865"><a href="#cb6-865"></a></span>
+<span id="cb6-866"><a href="#cb6-866"></a><span class="co">&lt;!-- Propensity scores are estimated *separately* within strata of the subgroup to control for potential confounding tailored to each subgroup. These weights $v$ are specific to each individual in subgroup $G$. In the lab, we will clarify how to fit models to estimate contrasts for the causal effects within groups $\hat{\delta}_{g}, \hat{\delta}_{g'}$, etc., and how to obtain estimates for group-wise differences: --&gt;</span></span>
+<span id="cb6-867"><a href="#cb6-867"></a></span>
+<span id="cb6-868"><a href="#cb6-868"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
+<span id="cb6-869"><a href="#cb6-869"></a><span class="co">&lt;!-- \hat{\gamma} = \overbrace{\big( \hat{E}[Y^a \mid G=g] - \hat{E}[Y^{a'} \mid G=g] \big)}^{\hat{\delta}_g} - \overbrace{\big( \hat{E}[Y^{a'} \mid G=g'] - \hat{E}[Y^a \mid G=g'] \big)}^{\hat{\delta}_{g'}} --&gt;</span></span>
+<span id="cb6-870"><a href="#cb6-870"></a><span class="co">&lt;!-- $$ --&gt;</span></span>
 <span id="cb6-871"><a href="#cb6-871"></a></span>
-<span id="cb6-872"><a href="#cb6-872"></a><span class="co">&lt;!-- - **$\hat{E}[Y^a \mid G=g]$**: Estimated expected outcome when treatment $a$ is applied to subgroup $G=g$. --&gt;</span></span>
-<span id="cb6-873"><a href="#cb6-873"></a><span class="co">&lt;!-- - **$\hat{E}[Y^{a'} \mid G=g]$**: Estimated expected outcome when a different treatment or control $a'$ is applied to the same subgroup $G=g$. --&gt;</span></span>
-<span id="cb6-874"><a href="#cb6-874"></a><span class="co">&lt;!-- - **$\hat{\delta}_g$**: Represents the estimated treatment effect within subgroup $G=g$, computed as the difference in expected outcomes between treatment $a$ and $a'$ within this subgroup. --&gt;</span></span>
-<span id="cb6-875"><a href="#cb6-875"></a></span>
-<span id="cb6-876"><a href="#cb6-876"></a><span class="co">&lt;!-- - **$\hat{E}[Y^{a'} \mid G=g']$**: Estimated expected outcome when treatment $a'$ is applied to a different subgroup $G=g'$. --&gt;</span></span>
-<span id="cb6-877"><a href="#cb6-877"></a><span class="co">&lt;!-- - **$\hat{E}[Y^a \mid G=g']$**: Estimated expected outcome when treatment $a$ is applied to subgroup $G=g'$. --&gt;</span></span>
-<span id="cb6-878"><a href="#cb6-878"></a><span class="co">&lt;!-- - **$\hat{\delta}_{g'}$**: Represents the estimated treatment effect within subgroup $G=g'$, computed as the difference in expected outcomes between treatment $a'$ and $a$ within this subgroup. --&gt;</span></span>
-<span id="cb6-879"><a href="#cb6-879"></a></span>
-<span id="cb6-880"><a href="#cb6-880"></a><span class="co">&lt;!-- - **$\hat{\gamma}$**: The overall measure calculated from your formula represents the difference in treatment effects between two subgroups, $G=g$ and $G=g'$. It quantifies how the effect of switching between treatments $a$ and $a'$ differs across the two subgroups. --&gt;</span></span>
-<span id="cb6-881"><a href="#cb6-881"></a></span>
+<span id="cb6-872"><a href="#cb6-872"></a></span>
+<span id="cb6-873"><a href="#cb6-873"></a><span class="co">&lt;!-- - **$\hat{E}[Y^a \mid G=g]$**: Estimated expected outcome when treatment $a$ is applied to subgroup $G=g$. --&gt;</span></span>
+<span id="cb6-874"><a href="#cb6-874"></a><span class="co">&lt;!-- - **$\hat{E}[Y^{a'} \mid G=g]$**: Estimated expected outcome when a different treatment or control $a'$ is applied to the same subgroup $G=g$. --&gt;</span></span>
+<span id="cb6-875"><a href="#cb6-875"></a><span class="co">&lt;!-- - **$\hat{\delta}_g$**: Represents the estimated treatment effect within subgroup $G=g$, computed as the difference in expected outcomes between treatment $a$ and $a'$ within this subgroup. --&gt;</span></span>
+<span id="cb6-876"><a href="#cb6-876"></a></span>
+<span id="cb6-877"><a href="#cb6-877"></a><span class="co">&lt;!-- - **$\hat{E}[Y^{a'} \mid G=g']$**: Estimated expected outcome when treatment $a'$ is applied to a different subgroup $G=g'$. --&gt;</span></span>
+<span id="cb6-878"><a href="#cb6-878"></a><span class="co">&lt;!-- - **$\hat{E}[Y^a \mid G=g']$**: Estimated expected outcome when treatment $a$ is applied to subgroup $G=g'$. --&gt;</span></span>
+<span id="cb6-879"><a href="#cb6-879"></a><span class="co">&lt;!-- - **$\hat{\delta}_{g'}$**: Represents the estimated treatment effect within subgroup $G=g'$, computed as the difference in expected outcomes between treatment $a'$ and $a$ within this subgroup. --&gt;</span></span>
+<span id="cb6-880"><a href="#cb6-880"></a></span>
+<span id="cb6-881"><a href="#cb6-881"></a><span class="co">&lt;!-- - **$\hat{\gamma}$**: The overall measure calculated from your formula represents the difference in treatment effects between two subgroups, $G=g$ and $G=g'$. It quantifies how the effect of switching between treatments $a$ and $a'$ differs across the two subgroups. --&gt;</span></span>
 <span id="cb6-882"><a href="#cb6-882"></a></span>
-<span id="cb6-883"><a href="#cb6-883"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Considerations --&gt;</span></span>
-<span id="cb6-884"><a href="#cb6-884"></a></span>
-<span id="cb6-885"><a href="#cb6-885"></a><span class="co">&lt;!-- - **Estimation**: to estimate the expected outcomes $\hat{E}[Y^a \mid G]$ and $\hat{E}[Y^{a'} \mid G]$, we require statistical models. If we use regression, we include interaction terms between treatment and subgroup indicators to directly estimate subgroup-specific treatment effects. Our use depends on correct model specification. --&gt;</span></span>
-<span id="cb6-886"><a href="#cb6-886"></a><span class="co">&lt;!-- - **Confidence intervals**: we may compute confidence intervals for $\hat{\gamma}$ using bootstrap, the delta method, or -- in our excercises -- simulation based methods. --&gt;</span></span>
-<span id="cb6-887"><a href="#cb6-887"></a><span class="co">&lt;!-- - **Causal assumptions**: again, a causal interpretation of $\hat{\gamma}$ relies on satisfying both causal assumptions and modelling assumptions.  Here, we have described estimation using propensity scores. --&gt;</span></span>
-<span id="cb6-888"><a href="#cb6-888"></a></span>
+<span id="cb6-883"><a href="#cb6-883"></a></span>
+<span id="cb6-884"><a href="#cb6-884"></a><span class="co">&lt;!-- </span><span class="al">###</span><span class="co"> Considerations --&gt;</span></span>
+<span id="cb6-885"><a href="#cb6-885"></a></span>
+<span id="cb6-886"><a href="#cb6-886"></a><span class="co">&lt;!-- - **Estimation**: to estimate the expected outcomes $\hat{E}[Y^a \mid G]$ and $\hat{E}[Y^{a'} \mid G]$, we require statistical models. If we use regression, we include interaction terms between treatment and subgroup indicators to directly estimate subgroup-specific treatment effects. Our use depends on correct model specification. --&gt;</span></span>
+<span id="cb6-887"><a href="#cb6-887"></a><span class="co">&lt;!-- - **Confidence intervals**: we may compute confidence intervals for $\hat{\gamma}$ using bootstrap, the delta method, or -- in our excercises -- simulation based methods. --&gt;</span></span>
+<span id="cb6-888"><a href="#cb6-888"></a><span class="co">&lt;!-- - **Causal assumptions**: again, a causal interpretation of $\hat{\gamma}$ relies on satisfying both causal assumptions and modelling assumptions.  Here, we have described estimation using propensity scores. --&gt;</span></span>
 <span id="cb6-889"><a href="#cb6-889"></a></span>
-<span id="cb6-890"><a href="#cb6-890"></a><span class="co">&lt;!-- ## Doubly Robust Estimation --&gt;</span></span>
-<span id="cb6-891"><a href="#cb6-891"></a></span>
-<span id="cb6-892"><a href="#cb6-892"></a><span class="co">&lt;!-- We can combine regression-based estimation with propensity score estimation to obtain *doubly robust* estimation. I will walk you through the steps in the lab. The TL;DR is this: doubly robust estimation reduces reliance on correct model specification. If either the PS model or the regression model is correctly specified, the model will be unbiased -- if the other causal inference assumptions are met. --&gt;</span></span>
-<span id="cb6-893"><a href="#cb6-893"></a></span>
-<span id="cb6-894"><a href="#cb6-894"></a><span class="co">&lt;!-- We cannot know whether these assumptions are met, we will need to do a sensitivity analysis, the topic of next week. --&gt;</span></span>
-<span id="cb6-895"><a href="#cb6-895"></a></span>
-<span id="cb6-896"><a href="#cb6-896"></a><span class="co">&lt;!-- I'll show you in lab how to employ simulation-based inference methods to compute standard errors and confidence intervals, following the approaches suggested by Greifer (2023)[]. --&gt;</span></span>
-<span id="cb6-897"><a href="#cb6-897"></a></span>
-<span id="cb6-898"><a href="#cb6-898"></a><span class="co">&lt;!-- ## Extra Readings n on Propensity Scores: --&gt;</span></span>
-<span id="cb6-899"><a href="#cb6-899"></a></span>
-<span id="cb6-900"><a href="#cb6-900"></a><span class="co">&lt;!-- Noah Griefer's Software and Blogs: [https://ngreifer.github.io/blog/subgroup-analysis-psm/](https://ngreifer.github.io/blog/) --&gt;</span></span>
+<span id="cb6-890"><a href="#cb6-890"></a></span>
+<span id="cb6-891"><a href="#cb6-891"></a><span class="co">&lt;!-- ## Doubly Robust Estimation --&gt;</span></span>
+<span id="cb6-892"><a href="#cb6-892"></a></span>
+<span id="cb6-893"><a href="#cb6-893"></a><span class="co">&lt;!-- We can combine regression-based estimation with propensity score estimation to obtain *doubly robust* estimation. I will walk you through the steps in the lab. The TL;DR is this: doubly robust estimation reduces reliance on correct model specification. If either the PS model or the regression model is correctly specified, the model will be unbiased -- if the other causal inference assumptions are met. --&gt;</span></span>
+<span id="cb6-894"><a href="#cb6-894"></a></span>
+<span id="cb6-895"><a href="#cb6-895"></a><span class="co">&lt;!-- We cannot know whether these assumptions are met, we will need to do a sensitivity analysis, the topic of next week. --&gt;</span></span>
+<span id="cb6-896"><a href="#cb6-896"></a></span>
+<span id="cb6-897"><a href="#cb6-897"></a><span class="co">&lt;!-- I'll show you in lab how to employ simulation-based inference methods to compute standard errors and confidence intervals, following the approaches suggested by Greifer (2023)[]. --&gt;</span></span>
+<span id="cb6-898"><a href="#cb6-898"></a></span>
+<span id="cb6-899"><a href="#cb6-899"></a><span class="co">&lt;!-- ## Extra Readings n on Propensity Scores: --&gt;</span></span>
+<span id="cb6-900"><a href="#cb6-900"></a></span>
+<span id="cb6-901"><a href="#cb6-901"></a><span class="co">&lt;!-- Noah Griefer's Software and Blogs: [https://ngreifer.github.io/blog/subgroup-analysis-psm/](https://ngreifer.github.io/blog/) --&gt;</span></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
