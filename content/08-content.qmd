@@ -297,28 +297,38 @@ interpretation_policy_trees <- margot::margot_interpret_policy_batch(
 
 
 ::: {.callout-important}
-## Key concepts  
+### Key concepts  
 The workflow below introduces **heterogeneous-treatment-effect (HTE) analysis** with *causal forests*. By the end of the lecture you should recognise five technical ideas - ATE, CATE, the estimator $\widehat{\tau}(x)$, the RATE statistics drawn from a **Targeting-Operator Characteristic** (TOC) curve, and **policy trees**—and know how each fits into an applied research pipeline.
 :::
 
 ::: {.callout-important}
-## For the lab  
-After the “LAB” heading you will find code that can be pasted directly into an R session.  No prior experience with `grf` or `policytree` is required; comments walk you through each step.
+### For the lab  
+
+There are **Three** R scripts we will be using over the next few weeks. 
+
+First:
+
+[Script 1](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/01-example-script-data-wrangling.R)
+
+[Script 2](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/02-example-script-data-wrangling-2.R)
+
+[Script 3](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/03-example-script-estimation-results.R)
+
 :::
 
 
 
-# Heterogeneous-Treatment-Effect Analysis with **causal forests**
+## Heterogeneous-Treatment-Effect Analysis with **causal forests**
 
-## Why worry about heterogeneity?  
+### Why worry about heterogeneity?  
 
 
-Relying on the average treatment effect (ATE) is a bit like handing out size-nine shoes to an entire student body: on *average* they might fit, but watch the tall students hobble and the small ones trip.  In the same way, a one-hour boost in weekly community socialising could send some students’ sense of belonging soaring while leaving others cold—or even wishing they'd stayed home with the cat.  Spotting that spread, measuring how big it really is, and deciding whether it is worth tailoring the 'shoe size' are the three practical goals of HTE analysis.
+Relying on the average treatment effect (ATE) is a bit like handing out size-nine shoes to an entire student body: on *average* they might fit, but watch the tall students hobble and the small ones trip.  In the same way, a one-hour boost in weekly community socialising could send some students' sense of belonging soaring while leaving others cold—or even wishing they'd stayed home with the cat.  Spotting that spread, measuring how big it really is, and deciding whether it is worth tailoring the 'shoe size' are the three practical goals of HTE analysis.
 
 
 ---
 
-## 1 Start with the average treatment effect (ATE)  
+### 1 Start with the average treatment effect (ATE)  
 
 We begin with the most straightforward (and secretly impossible) counterfactual: *run two parallel universes—one where **everyone** gets the treatment, another where **no-one** does—and compare the final scores.  The resulting difference is the **average treatment effect**:  
 
@@ -332,7 +342,7 @@ This gives us the average response -- the shoe size...
 
 ---
 
-## 2 Do effects differ across people?  
+### 2 Do effects differ across people?  
 
 Variation is captured by the **conditional average treatment effect (CATE)**,  
 
@@ -340,13 +350,11 @@ $$
 \tau(x)=E\!\bigl[Y(1)-Y(0)\mid X=x\bigr],
 $$
 
-where $X$ gathers pretreatment covariates -- age, baseline wellbeing, personality, and whatever else the ethics committee allowed. 
+where $X$ gathers pre-treatment covariates -- age, baseline wellbeing, personality, etc... Normally these will be our baseline confounders. 
 
 If $\tau(x)$ turns out to be flat, there is no heterogeneity worth targeting. 
 
-People differ in countless, overlapping ways—think of age, baseline wellbeing, personality traits, study habits, and more. A linear interaction model tests whether the treatment works differently along one straight dimension, such as gender, by fitting a straight line. But real‐world data often twist and turn. If the true relationship bends like a garden hose, a straight line will miss the curve. Causal forests fix this by letting the data place splits wherever the shape changes, so they can follow any bends that appear [@wager2018].
-
-Take-away: straight-line models are fine for simple patterns, but causal forests can trace the curves that simple lines overlook [@wager2018].
+People differ in countless, overlapping ways—think of age, baseline wellbeing, personality traits, study habits, and more. A linear interaction model tests whether the treatment works differently along one straight dimension, such as gender, by fitting a straight line. But real‐world data often twist and turn. If the true relationship bends like a garden hose, a straight line will miss the curve. Causal forests fix this by letting the data place splits wherever the shape changes, so they can follow any bends that appear [@wager2018].  Straight-line models are fine for simple patterns, but causal forests can trace the curves that simple lines overlook.
 
 
 ### 3. From straight lines to trees  
@@ -378,19 +386,19 @@ Because the noisy estimates point in many directions, their average is markedly 
 In sum, a regression tree chops the data into locally flat chunks; a regression forest averages many such trees to smooth away chance idiosyncrasies; a causal forest adds honesty so that its averaged differences, though never directly observable for any one person, give our best data-driven forecast of individual treatment effects.
 ---
 
-## 4 Built-in protection against over-fitting  
+### 4 Built-in protection against over-fitting  
 
 Honesty already separates model selection from estimation, but the forest adds a second safeguard: **out-of-bag (OOB) prediction**. Each $\widehat{\tau}(x_i)$ is averaged only over trees that never used $i$ in their split phase.  Together, honesty and OOB prediction deliver reliable uncertainty estimates even in high-dimensional settings.
 
 ---
 
-## 5 Handling missing data  
+### 5 Handling missing data  
 
 The `grf` package adopts **Missing Incorporated in Attributes (MIA)** splitting.  'Missing' can itself become a branch, so cases are neither discarded nor randomly imputed.  This pragmatic approach keeps all observations in play while preserving the forest’s interpretability.
 
 ---
 
-## 6 Is the heterogeneity *actionable*? — RATE statistics  
+### 6 Is the heterogeneity *actionable*? — RATE statistics  
 
 
 Once we have a personalised score $\widehat{\tau}(x)$ for every unit, the practical question is whether *targeting* high scorers delivers a benefit large enough to justify the extra effort.  The tool of choice is the **Targeting-Operator Characteristic (TOC)** curve:
@@ -412,7 +420,7 @@ To quantify the economic or policy value of heterogeneity, rank units by $\wideh
 
 ---
 
-## 7 RATE AUTOC EXAMPLE
+### 7 RATE AUTOC EXAMPLE
 
 Although OOB predictions are 'out-of-sample' for individual trees, the full forest still reuses information.  A simple remedy is to cut the data in half: **train** the forest on one fold and **test** RATE/Qini on the other.  This explicit split blocks optimistic bias and yields honest test statistics ($p$-values) [@grf2024].
 
@@ -424,13 +432,13 @@ Although OOB predictions are 'out-of-sample' for individual trees, the full fore
 batch_rate_autoc_plots$model_t2_meaning_sense_z
 ```
 
-@fig-rate-example depicts a typical RATE AUTOC curve with sample splitting.  A steep initial rise indicates that a small, correctly targeted programme could deliver large gains.
+@fig-rate-example depicts a typical RATE AUTOC curve with sample splitting.  A steep initial rise indicates that a small, correctly targeted programme could deliver large gains. Note that the curve begins dipping below zero past about 30%. At that point we might be doing worse than the ATE by targeting the CATE.
 
 ---
 
-## 8 Visualising policy value: the Qini curve  
+### 8 Visualising policy value: the Qini curve  
 
-A **Qini curve** displays cumulative benefit on the vertical axis and treatment coverage on the horizontal.  Confidence bands come directly from the held-out test fold.
+A **Qini curve** displays cumulative benefit on the vertical axis and treatment coverage on the horizontal.  As with the AUTOC curve we are using a held-out test fold to validate the reponse curve.
 
 ```{r, results='asis'}
 #| label: fig-qini-example
@@ -443,18 +451,20 @@ plot_qini_belong
 
 
 
-@fig-qini-example: we find that focussing on the top 20 % of individuals nets a gain of 0.08 units (95 % CI 0.04–0.12).  Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19).  After that the curve flattens -- once you’ve treated everyone who offers a decent return, there are no more big fish left to catch.
+@fig-qini-example: we find that focussing on the top 20 % of individuals nets a gain of 0.08 units (95 % CI 0.04–0.12).  Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19).  After that the curve flattens -- once you’ve treated everyone who offers a decent return, there are no more 'big fish' left to catch.
+
 ---
 
 
-## 9 From black box to simple rules: policy trees  
+### 9 From 'a black box' to simple rules: policy trees  
 
-The policytree algorithm serves that need by pruning the forest's many \widehat{\tau}(x) estimates into a decision tree whose depth you choose; the algorithm picks splits that maximise predicted benefit at that depth [@policytree_package_2024].  In this course we stop at depth = 2 for a practical balance:
+The causal forest hands us a personalised CATE for every individual, mapping a **high-dimensional** covariate vector $X$ to a number $\widehat{\tau}(X)$.  Helpful as that forecast is, it stops short of telling us *what to do*: the function itself is too tangled --- thousands of overlapping splits -- to translate directly into a policy.  
 
-- every rule uses at most two yes/no questions, so even politicians can follow the logic;
--	each leaf still holds enough cases to give a stable effect estimate;
--	deeper trees add substantial computational complexity.
+The **policytree** algorithm bridges that gap by collapsing the forest's many $\widehat{\tau}(X)$ values into a single, shallow decision tree whose depth you choose; each split is chosen to maximise expected benefit [@policytree_package_2024].  In this course we cap the depth at **2** for a practical balance:
 
+- at most two yes/no questions per rule, so the logic fits on a slide you can present to policy-makers;
+- each leaf still contains enough observations to yield a stable effect estimate;  
+- deeper trees increase complexity faster than they improve payoff.
 
 ```{r, results='asis'}
 #| label: fig-decision-tree
@@ -465,7 +475,7 @@ plots_policy_trees$model_t2_belong_z$decision_tree
 ```
 
  
-**Findings for Effect of Hour Socialising on Social Belonging:**
+**Policy Tree Findings for Effect of Hour Socialising on Social Belonging:**
 
 Participants are first split by Self Esteem at -0.925 (original scale: 3.958). For those with Self Esteem <= this threshold, the next split is by Neuroticism at 0.642 (original scale: 4.228). Within that subgroup, individuals with Neuroticism <= the threshold are recommended **control**, while those with Neuroticism > the threshold are recommended **treated**.
 
@@ -479,8 +489,8 @@ For participants with Self Esteem > -0.925 (original scale: 3.958), the second s
 ```{r, results='asis'}
 #| label: fig-policy-map
 #| fig-cap: "Predicted treatment assignment (predictions out of training sample)"
-#| fig-height: 16   # adjust
-#| fig-width: 16   # adjust
+#| fig-height: 14   # adjust
+#| fig-width: 16  # adjust
 #| echo: false
 plots_policy_trees$model_t2_belong_z$policy_tree
 ```
@@ -489,17 +499,26 @@ plots_policy_trees$model_t2_belong_z$policy_tree
 
 ---
 
-## 10 Ethical and practical considerations  
+### 10 Ethical and practical considerations  
 
-Statistical optimality rarely aligns perfectly with social acceptability. Cost, fairness, and transparency must all be weighed before implementing a targeted intervention. 
+Statistical optimality rarely lines up with social acceptability.  A rule that maximises expected health gains might still be **unaffordable** for a public agency, **unfair** to a protected group, or **opaque** to those asked to trust it.  Typically these trade-offs lie beyond the statistician’s remit (see the caveats in [Lecture 6](https://go-bayes.github.io/psych-434-2025/content/06-content.html#appendix-b-evidence-for-effect-modification-is-relative-to-inclusion-of-other-variables-in-the-model)).  
+
+Yet the very same CATE machinery that powers targeting also helps science move past a *one-size-fits-all* mindset.  By mapping treatment effects across a high-dimensional covariate space, we can test whether our favourite categories -- gender, age group, clinical severity -- actually capture the differences that matter.  Sometimes they do; often they don't, revealing that nature is not carved at the joints of our folk classifications.  Discovering *where* the forest sees meaningful splits can generate fresh psychological hypotheses about who responds, why, and under what circumstances, even when no policy decision is on the table.
+
+
+<!-- Before deployment we therefore need three extra layers of scrutiny: -->
+
+<!-- 1. **Cost realism**   Will the programme's administrative and opportunity costs erase the forecast benefit?  A cost–effectiveness analysis can reveal when a simpler, less 'optimal' rule actually delivers better value.   -->
+<!-- 2. **Fairness auditing**  check whether error rates or treatment probabilities differ by gender, ethnicity, or socioeconomic status.  If gaps appear, consider adjusting the loss function or adding fairness constraints [@mitchell2021algorithmic].   -->
+<!-- 3. **Transparency and consent**   Publish the rule, document data sources, and secure stakeholder buy-in.  Transparent governance limits the risk of political backlash and encourages external replication. -->
 
 ---
 
-## Summary and next steps  
+### Summary/next steps  
 
 Our workflow answers three questions in sequence:
 
-1. **Is there substantial heterogeneity?**  Reject $H_0{:}\tau(x)$ constant if RATE AUTOC or RATE Qini is positive and significant.  
+1. **Is there substantial heterogeneity?**  Reject $H_0{:}\tau(x)$ constant if RATE AUTOC or RATE Qini is positive and statistically reliable  
 2. **Does targeting pay at realistic budgets?**  Inspect the slope of the Qini curve around plausible coverage levels.
 3. **Can we express the targeting rule in a few defensible steps?**  fit and validate a shallow policy tree.
 
