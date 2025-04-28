@@ -50,9 +50,9 @@ library(tidyverse)
 push_mods <- here::here('/Users/joseph/v-project\ Dropbox/data/courses/25-psych-434')
 
 # read (large file)
-# models_binary_flipped_all <- margot::here_read_qs("models_binary_flipped_all", push_mods)
+models_binary_flipped_all <- margot::here_read_qs("models_binary_flipped_all", push_mods)
 
-models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", here::here("data"))
+# models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", here::here("data"))
 
 # names
 flipped_names <- here_read("flipped_names", push_mods)
