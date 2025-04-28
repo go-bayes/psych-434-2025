@@ -1,32 +1,33 @@
-# Example script 1: data wrangling
-# Spring 2025
+# example script 1: data wrangling
+# spring 2025
 # example estimation of average treatment effect - script 1
 # questions: joseph.bulbulia@vuw.ac.nz
 
 # restart fresh session if needed
-#rstudioapi::restartSession()
+# rstudioapi::restartSession()
 
-# set reproducibility
+# set seed for reproducibility
 set.seed(123)
 
 # save paths -------------------------------------------------------------------
-# create a save path to your on computer.
-# this is mine
+# specify the path where data will be saved
+# this is the path used by joseph
 # push_mods <- here::here('/Users/joseph/v-project\ Dropbox/data/courses/25-psych-434')
-# yours might be (after creating a data file)
+# replace with your own path after creating a data file
 push_mods <- here::here("data")
 
 # load libraries ---------------------------------------------------------
-# install and load 'margot' package
+# install and load 'margot' package if not already installed
 if (!require(margot, quietly = TRUE)) {
-devtools::install_github("go-bayes/margot") # make sure you have at least margot 1.0.21
+  devtools::install_github("go-bayes/margot") # ensure version is at least 1.0.21
 }
 
+# install and load 'boilerplate' package if not already installed
 if (!require(boilerplate, quietly = TRUE)) {
   devtools::install_github("go-bayes/boilerplate")
 }
 
-# load margot library
+# load required libraries
 library(margot)
 library(boilerplate)
 library(tidyverse)
@@ -34,63 +35,60 @@ library(qs)
 library(here)
 
 # import synthetic data ---------------------------------------------------
-# link
+# link to synthetic data
 # url <- "https://www.dropbox.com/scl/fi/ru0ecayju04ja8ky1mhel/df_nz_long.qs?rlkey=prpk9a5v4vcg1ilhkgf357dhd&dl=1"
 # 
-# # download to a temporary file
+# # download data to a temporary file
 # tmp <- tempfile(fileext = ".qs")
 # download.file(url, tmp, mode = "wb")
 # 
-# # read it into R
+# # read data into R
 # library(qs)
 # df_nz_long <- qread(tmp)
 # 
-# # view synthetic data
+# # view first few rows of synthetic data
 # head(df_nz_long)
 # 
-# # save to your director for later use and comment the above
+# # save data to your directory for later use and comment the above
 # margot::here_save_qs(df_nz_long,"df_nz_long" ,push_mods)
-
-
 
 # comment the above and henceforth read your data: 
 # remove old data 
 rm(df_nz_long)
 
-# read data
+# read data from saved file
 df_nz_long <- margot::here_read_qs("df_nz_long", push_mods)
 
 # define study variables --------------------------------------------------------
 
-# check out var names
+# view variable names in the dataset
 glimpse(df_nz_long)
 
-# how many participants? 
+# count the number of unique participants
 length(unique(df_nz_long$id))
 
-# exposure variable
+# define exposure variable
 name_exposure <- c("hours_community")
 var_labels_exposure = c("hours_community" = "Weekly Hours Community Socialising",
                         "hours_community_binary" = "Weekly Hours Community Socialising (binary)")
 
-# save for manuscript
+# save variable labels for manuscript
 here_save(var_labels_exposure, "var_labels_exposure")
 
-# define variable names
+# define variable names for binary exposure
 name_exposure_binary <- paste0(name_exposure, "_binary")
 t0_name_exposure_continuous <- paste0("t0_", name_exposure)
 t0_name_exposure_binary <- paste0("t0_", name_exposure, "_binary")
 
-# define wide variable name
+# define wide variable names
 t0_name_exposure <- paste0("t0_", name_exposure)
 t0_name_exposure_continuous <- paste0("t0_", name_exposure)
 t0_name_exposure_binary <- paste0("t0_", name_exposure, "_binary")
 
-# variable names for exposures used in models
+# define variable names for exposures used in models
 t1_name_exposure <- paste0("t1_", name_exposure)
 t1_name_exposure_binary <- paste0("t1_", name_exposure, "_binary")
-
-# Define study waves -----------------------------------------------------------
+# define study waves -----------------------------------------------------------
 baseline_wave <- "2018"
 exposure_waves <- c("2019")
 outcome_wave <- "2020"
@@ -101,59 +99,58 @@ baseline_and_exposure_waves <- c(baseline_wave, exposure_waves)
 baseline_and_outcome_waves <- c(baseline_wave, outcome_wave)
 
 # define scale ranges ----------------------------------------------------------
-scale_range_exposure <- c(0, 20)  # Used for descriptive graphs
-scale_ranges_outcomes <- c(1, 7) # Used for descriptive graphs
+scale_range_exposure <- c(0, 20)  # used for descriptive graphs
+scale_ranges_outcomes <- c(1, 7)  # used for descriptive graphs
 
 # check package versions
-packageVersion(pkg = 'margot') # make sure it is 1.0.19 or greater
+packageVersion(pkg = 'margot')    # make sure it is 1.0.19 or greater
 packageVersion(pkg = 'boilerplate')
 
 # load required packages -------------------------------------------------------
 pacman::p_load(
-  # Causal inference
-  clarify,      # Sensitivity analysis
-  cobalt,       # Covariate balance tables and plots
-  lmtp,         # Longitudinal targeted maximum likelihood estimation
-  margot,       # Functions for causal inference
-  MatchIt,      # Matching methods
-  MatchThem,    # Matching for multiply imputed datasets
-  policytree,   # Causal inference with policy trees
-  WeightIt,     # Weighting methods for covariate balancing
+  # causal inference
+  clarify,      # sensitivity analysis
+  cobalt,       # covariate balance tables and plots
+  lmtp,         # longitudinal targeted maximum likelihood estimation
+  margot,       # functions for causal inference
+  MatchIt,      # matching methods
+  MatchThem,    # matching for multiply imputed datasets
+  policytree,   # causal inference with policy trees
+  WeightIt,     # weighting methods for covariate balancing
   
   # data processing
-  data.table,   # Fast data wrangling
-  fastDummies,  # Fast creation of dummy variables
-  fs,           # Cross-platform file system operations
-  here,         # Simple and robust file referencing
-  janitor,      # Data cleaning and validation
-  naniar,       # Handling and visualization of missing data
-  skimr,        # Summary statistics for data frames
-  tidyverse,    # Collection of R packages for data science
+  data.table,   # fast data wrangling
+  fastDummies,  # fast creation of dummy variables
+  fs,           # cross-platform file system operations
+  here,         # simple and robust file referencing
+  janitor,      # data cleaning and validation
+  naniar,       # handling and visualization of missing data
+  skimr,        # summary statistics for data frames
+  tidyverse,    # collection of "R" packages for data science
   
-  # Machine learning
-  glmnet,       # Lasso and elastic-net regularized models
-  grf,          # Generalized random forests
-  ranger,       # Fast implementation of random forests
-  SuperLearner, # Ensemble learning
-  xgboost,      # Extreme gradient boosting
+  # machine learning
+  glmnet,       # lasso and elastic-net regularized models
+  grf,          # generalized random forests
+  ranger,       # fast implementation of random forests
+  SuperLearner, # ensemble learning
+  xgboost,      # extreme gradient boosting
   
-  # Visualization
-  DiagrammeR,   # Graph and network visualization
-  ggbeeswarm,   # Data visualization   
-  ggplot2,      # Data visualization
-  gt,           # HTML tables for data frames
-  gtsummary,    # Summary tables for regression models
-  kableExtra,   # Advanced table formatting
+  # visualization
+  DiagrammeR,   # graph and network visualization
+  ggbeeswarm,   # data visualization   
+  ggplot2,      # data visualization
+  gt,           # "HTML" tables for data frames
+  gtsummary,    # summary tables for regression models
+  kableExtra,   # advanced table formatting
   
-  # Parallel processing
-  doParallel,   # Parallel processing with foreach
-  progressr,    # Progress reporting for R
+  # parallel processing
+  doParallel,   # parallel processing with foreach
+  progressr,    # progress reporting for "R"
   
-  # Analysis
-  parameters,   # Parameters and performance metrics
-  EValue       # Compute E-values
+  # analysis
+  parameters,   # parameters and performance metrics
+  EValue        # compute e-values
 )
-
 # data preparation -------------------------------------------------------------
 # import and prepare data
 
@@ -479,32 +476,28 @@ ids_baseline <- dat_prep |>
   filter(!is.na(!!sym(name_exposure))) |> # exposure observed at baseline
   pull(id)
 
-# 
+# get number of participants at baseline
 n_participants <- length(ids_baseline)
-n_participants<- margot::pretty_number(n_participants)
+n_participants <- margot::pretty_number(n_participants)
 
-# check
+# check number of participants
 n_participants
 
-# save
+# save number of participants
 here_save(n_participants, "n_participants")
 
-
-# select ids for baseline cohort ---------------------------------------------------
-
-# eligibility criteria: participated in baseline wave, no missingness in the exposure
-# may have been lost to follow up. 
+# select ids for baseline cohort ------------------------------------------
+# eligibility: participated in baseline wave, no missingness in the exposure
+# may have been lost to follow up
 dat_long_1 <- dat_prep |>
-  filter(id %in% ids_study & wave %in% c(baseline_wave, exposure_waves, outcome_wave)) |> 
-  droplevels()# note that we might have more than one exposure wave
+  filter(id %in% ids_baseline & wave %in% c(baseline_wave, exposure_waves, outcome_wave)) |> 
+  droplevels()
 
-# check
+# check wave structure
 str(dat_long_1$wave)
 
-
-
 # aside -------------------------------------------------------------------
-# example of censoring with more conditions -------------------------------
+# example of censoring with more conditions
 
 # censor exposure if lost
 # ids_baseline_2 <- dat_long_censored_0 |>
@@ -513,19 +506,17 @@ str(dat_long_1$wave)
 # 
 # dat_long_censored <- dat_long_censored_0 |>
 #   filter(id %in% ids_baseline_2 & wave %in% c(baseline_wave, exposure_waves, outcome_wave)) |> 
-#   droplevels()# not
+#   droplevels()
 
-# check
-# subset for wave 2021 and extract observations where employed == 0, and now work_hours >20
+# check for specific conditions in a subset
 # subset_vals <- dat_long_censored$year_measured[
 #   dat_long_censored$wave == 2021 & dat_long_censored$employed == 0
 # ]
 
-# check
-# evaluate whether all year_measured are 0 in this subset
+# check if all year_measured are zero in this subset
 # all_zero <- all(subset_vals == 0, na.rm = TRUE)
 
-# view
+# view result
 # all_zero
 
 # data with eligibility criteria
@@ -534,85 +525,84 @@ str(dat_long_1$wave)
 
 # aside over --------------------------------------------------------------
 
-# evaluate exposure variable/s
-dat_long_exposure <- dat_long_1 |> 
-  filter(wave == exposure_waves) |> 
+# evaluate exposure variable(s)
+dat_long_exposure <- dat_long_1 |>
+  filter(wave == exposure_waves) |>
   droplevels()
 
-
-# censor if employed = 0 at wave 2
+# check wave counts
 table(dat_long_exposure$wave)
 
-# check 
-table(is.na(dat_long_exposure$religion_church))
+# check missingness in religion_church
+table(is.na(dat_long_exposure[[exposure_var]]))
+
+# check exposure variable name
 name_exposure
-# check missing
-# naniar::gg_miss_var(dat_long_exposured
-# you can check quantile breaks this way
-# ********* ENTER VARIABLE MANUALLY ***************
+
+# check missingness in exposure
+# naniar::gg_miss_var(dat_long_exposure)
+
+# check quantile breaks for exposure
 quantile(dat_long_exposure[[name_exposure]], na.rm = TRUE, probs = seq(0, 1, .25))
 mean(dat_long_exposure[[name_exposure]], na.rm = TRUE)
 median(dat_long_exposure[[name_exposure]], na.rm = TRUE)
 max(dat_long_exposure[[name_exposure]], na.rm = TRUE)
 sd(dat_long_exposure[[name_exposure]], na.rm = TRUE)
 
-# make break at one
+# count above and below break at one
 sum(dat_long_exposure[[name_exposure]] >= 1, na.rm = TRUE)
 sum(dat_long_exposure[[name_exposure]] < 1, na.rm = TRUE)
 
 # binary graph ------------------------------------------------------------
-#graph binary break at lower quartile (5)
+# graph binary break at lower quartile (5)
 graph_exposure_binary <- margot::margot_plot_categorical(
   dat_long_exposure,
   col_name = name_exposure,
   cutpoint_inclusive = "lower",
-  #n_divisions = 2,
+  # n_divisions = 2,
   custom_breaks = c(0,1),
   binwidth = .5)
 
-# view
+# view binary graph
 print(graph_exposure_binary)
 
-# check size
+# check graph size
 margot_size(graph_exposure_binary)
 
-# save for manuscript
+# save binary graph for manuscript
 margot::here_save_qs(graph_exposure_binary, "graph_exposure_binary", push_mods)
 
 # resume wrangling --------------------------------------------------------
-# create categorical variable (if desired) ------------------------------
-# view name
+# create categorical variable (if desired)
+# check exposure variable name
 name_exposure
 
 dat_long_2 <- margot::create_ordered_variable(
-  dat_long_1,  # make sure this is correct
+  dat_long_1,
   var_name = name_exposure,
   cutpoint_inclusive = "lower",
-  custom_breaks = c(0,1),
+  custom_breaks = c(0, 1)
 )
 
-# view name
+# check binary exposure variable name
 name_exposure_binary
 
-# view binary exposure variable
-table(is.na(
-  dat_long_2[[name_exposure_binary]]
-))
+# check missingness in binary exposure variable
+table(is.na(dat_long_2[[name_exposure_binary]]))
 
-# convert binary factors to 0, 1 -----------------------------------------
-# we do this using a custom function
+# convert binary factors to 0, 1
+# use custom function
 dat_long_3 <- margot_process_binary_vars(dat_long_2)
 
-
 # make 'not lost' variable ------------------------------------------------
-# used later for dealing with attrition
+# used for attrition handling
 dat_long_4 <- dat_long_3 |>
-  arrange(id, wave) |> 
+  arrange(id, wave) |>
   mutate(
     not_lost = ifelse(lead(year_measured) == 1, 1, 0),
     not_lost = ifelse(is.na(not_lost) & year_measured == 1, 1, not_lost),
     not_lost = ifelse(is.na(not_lost), 0, not_lost)
-  ) |> 
+  ) |>
   droplevels()
 
 # log-transform 'hours_' variables ----------------------------------------
@@ -620,10 +610,11 @@ dat_long_table <- margot_log_transform_vars(
   dat_long_4,
   vars = c(starts_with("hours_"), "household_inc"),
   exceptions = name_exposure,
-  # always
   prefix = "log_",
-  keep_original = TRUE ## set to TRUE for tables
-)  |> select(all_of(not_all_vars)) |> droplevels()
+  keep_original = TRUE # set to TRUE for tables
+) |>
+  select(all_of(not_all_vars)) |>
+  droplevels()
 
 # make wave a factor
 dat_long_table$wave <- as.factor(dat_long_table$wave)
@@ -631,7 +622,7 @@ dat_long_table$wave <- as.factor(dat_long_table$wave)
 
 
 # summary tables ----------------------------------------------------------
-# IMPORTANT FUNCTION  creates summary tables in one place
+# useful function that creates summary tables in one place
 summary_tables  <- margot_summary_tables(
   data = dat_long_table,
   baseline_wave = baseline_wave,
@@ -657,12 +648,12 @@ var_labels_health <- list(
   "alcohol_intensity" = "Alcohol Intensity",
   "hlth_bmi" = "Body Mass Index", 
   "hlth_sleep_hours" = "Sleep", 
-  "hours_exercise" = "Hours of Exercise",   #logged in models
+  "hours_exercise" = "Hours of Exercise",   # logged in models
   "short_form_health" = "Short Form Health" 
 )
 
 # define psych outcomes 
-var_labels_psych<- list(
+var_labels_psych <- list(
   "hlth_fatigue" = "Fatigue", 
   "kessler_latent_anxiety" = "Anxiety", 
   "kessler_latent_depression" = "Depression",  
@@ -670,7 +661,7 @@ var_labels_psych<- list(
 )
 
 # define present outcomes
-var_labels_present <- c(
+var_labels_present <- list(
   "bodysat" = "Body Satisfaction",
   "foregiveness" = "Forgiveness",
   "perfectionism" = "Perfectionism",
@@ -696,7 +687,7 @@ var_labels_social <- list(
 )
 
 # make labels
-var_labels_baseline <- c(
+var_labels_baseline <- list(
   "sdo" = "Social Dominance Orientation",
   "belong" = "Social Belonging",
   "born_nz_binary" = "Born in New Zealand (binary)",
@@ -737,7 +728,7 @@ here_save(var_labels_social, "var_labels_social")
 
 
 # combine all variable labels
-var_labels_measures = c(
+var_labels_measures <- c(
   var_labels_baseline,
   var_labels_health,
   var_labels_psych,
@@ -755,7 +746,7 @@ dat_long_table_x$rural_gch_2018_l <- factor(
   dat_long_table_x$rural_gch_2018_l,
   levels = 1:5,
   labels = rural_labels,
-  ordered = TRUE  # Optional: if the levels have an inherent order
+  ordered = TRUE  # optional: if the levels have an inherent order
 )
 
 # nicer for church attendance -- if you use it
@@ -765,13 +756,16 @@ dat_long_table_x$rural_gch_2018_l <- factor(
 #   ordered = TRUE  
 # )
 
-dat_long_table_baseline = dat_long_table_x |> 
+# create dataframes for each wave
+dat_long_table_baseline <- dat_long_table_x |> 
   filter(wave %in% c(baseline_wave, exposure_waves, outcome_wave))
 
-dat_long_table_exposure_waves = dat_long_table_x |> 
+# create dataframes for each wave
+dat_long_table_exposure_waves <- dat_long_table_x |> 
   filter(wave %in% c(baseline_wave, exposure_waves))
 
-dat_long_table_outcome_waves = dat_long_table_x |> 
+# create dataframes for each wave
+dat_long_table_outcome_waves <- dat_long_table_x |> 
   filter(wave %in% c(baseline_wave, outcome_wave))
 
 # make tables
@@ -792,7 +786,7 @@ markdown_table_baseline
 margot::here_save(markdown_table_baseline, "markdown_table_baseline")
 
 # make exposure table
-markdown_table_exposures <-margot_make_tables(
+markdown_table_exposures <- margot_make_tables(
   data = dat_long_table_exposure_waves,
   vars = name_exposure,
   by = "wave",
@@ -806,7 +800,6 @@ markdown_table_exposures
 
 # save
 here_save(markdown_table_exposures, "markdown_table_exposures")
-
 
 # names of outcome vars for health no logs
 raw_outcomes_health_no_log <- c(
@@ -878,126 +871,127 @@ table(dat_long_selected$sample_weights[dat_long_selected$wave == baseline_wave])
 # hist(dat_long_selected$g_sample_weights)
 # hist(dat_long_selected$gender_weights)
 
-# prepare data
+# prepare data with log transformations
 dat_long_prepare <- margot::margot_log_transform_vars(
   dat_long_selected,
   vars = c(starts_with("hours_"), "household_inc"),
   exceptions = name_exposure,
   prefix = "log_",
-  keep_original = TRUE ## Set to FALSE
-) |> 
-  # uncomment if using gender weights
+  keep_original = TRUE # set to false if you do not want to keep originals
+) |>
+  # uncomment the next two lines if using gender weights
   # select(-sample_weights) |>
-  # dplyr::rename(sample_weights = gender_weights)|> 
+  # dplyr::rename(sample_weights = gender_weights) |>
   select(all_of(all_vars)) |>
-  # make binary exposure variable |> 
   droplevels()
 
-# view hist
+# check distribution and missingness
 hist(dat_long_selected$sample_weights)
-table(is.na((dat_long_selected$sample_weights)))
-table(is.na((dat_long_selected$male_binary)))
+table(is.na(dat_long_selected$sample_weights))
+table(is.na(dat_long_selected$male_binary))
 
-
-# finally save baseline variables (if as needed)
+# extract baseline data
 dat_baseline <- dat_long_prepare |>
   filter(wave == baseline_wave)
+
+# check for missing values in baseline data
 table(is.na(dat_baseline$sample_weights))
 table(is.na(dat_baseline$male_binary))
 
-# ordinary sample weights
+# extract sample weights from baseline
 t0_sample_weights <- dat_baseline$sample_weights # use age/gender/ethnicity
 hist(dat_baseline$sample_weights)
 hist(t0_sample_weights)
 
-# if not using ethicity gender age
-#t0_sample_weights <- dat_baseline$gender_weights
+# alternative weights option (commented out)
+# t0_sample_weights <- dat_baseline$gender_weights
 
+# save sample weights
 margot::here_save(t0_sample_weights, "t0_sample_weights")
 
 # create tables -----------------------------------------------------------
 exposure_waves
 
-# create transition matrix ------------------------------------------------
+# create transition matrix for continuous exposure -----------------------
+# prepare data for transition matrix
 dt_positivity <- dat_long_selected |>
   filter(wave == baseline_wave | wave %in% exposure_waves) |>
   select(!!sym(name_exposure), id, wave) |>
-  mutate(exposure= as.numeric(!!sym(name_exposure))) |>
+  mutate(exposure = as.numeric(!!sym(name_exposure))) |>
   mutate(exposure = round(ifelse(exposure > 5, 5, exposure), 0)) |> 
   droplevels()
 
-# view
+# create transition table
 transition_tables <- margot_transition_table(dt_positivity, "exposure", "id", wave_var = "wave")
 
-# explanation
+# check explanation of transition tables
 cat(transition_tables$explanation)
 
-# view
+# view first transition table
 transition_tables$tables[[1]]
 
-
-# run this to put into your quarto document
-# (just copy and past the output)
+# generate code for quarto document
 transition_tables$quarto_code()
 
-# save the transition_tables, and import them into your document if/as needed
+# save transition tables for later use
 here_save(transition_tables, "transition_tables")
 
-
-# create transition matrix ------------------------------------------------
+# create transition matrix for binary exposure ---------------------------
+# prepare data for binary transition matrix
 dt_positivity_binary <- dat_long_selected |>
   filter(wave == baseline_wave | wave %in% exposure_waves) |>
   select(!!sym(name_exposure_binary), id, wave) |>
-  mutate(exposure_binary= as.numeric(!!sym(name_exposure_binary))) |>
+  mutate(exposure_binary = as.numeric(!!sym(name_exposure_binary))) |>
   droplevels()
 
-# make binary table
-transition_tables_binary <- margot_transition_table(dt_positivity_binary, 
-                                                    "exposure_binary", 
-                                                    "id", 
-                                                    wave_var = "wave")
-# table
+# create binary transition table
+transition_tables_binary <- margot_transition_table(
+  dt_positivity_binary, 
+  "exposure_binary", 
+  "id", 
+  wave_var = "wave"
+)
+
+# view binary transition table
 transition_tables_binary$tables[[1]]
 
-
-# transition_tables_cat
+# check explanation for binary transition tables
 cat(transition_tables_binary$explanation)
 
-# view
+# generate code for quarto document
 transition_tables_binary$quarto_code()
 
-# save
+# save binary transition tables
 margot::here_save(transition_tables_binary, "transition_tables_binary")
 
-
 # check missing values ---------------------------------------------------
-# and look for other problems
+# examine overall missingness
 naniar::miss_var_summary(dat_long_prepare) |> print(n = 100)
 
-# get baseline wave for perc missing
+# filter to baseline wave
 dat_baseline <- dat_long_prepare |> filter(wave == baseline_wave)
 
-# get
+# calculate percent missing at baseline
 percent_missing_baseline <- naniar::pct_miss(dat_baseline)
 
-# view
+# view missing percentage
 percent_missing_baseline
 
 # save for manuscript
 here_save(percent_missing_baseline, "percent_missing_baseline")
 
-# view missingness
+# visualise missingness patterns
 naniar::vis_miss(dat_baseline, warn_large_data = FALSE)
 
-# view missingness # lots of missingness in employed at current job
+# visualise missingness by variable
 naniar::gg_miss_var(dat_baseline)
 
-# If everything looks OK, save the data -----------------------------------
-# save the selected data
+# save the data ----------------------------------------------------------
+# save prepared dataset
 margot::here_save(dat_long_prepare, "dat_long_prepare")
 margot::here_save(name_exposure, "name_exposure")
 
-# save variable names
+# save variable names for later use
 margot::here_save(baseline_vars, "baseline_vars")
 margot::here_save(exposure_var, "exposure_var")
 margot::here_save(outcome_vars, "outcome_vars")
@@ -1007,16 +1001,15 @@ margot::here_save(outcome_wave, "outcome_wave")
 margot::here_save(continuous_columns_keep, "continuous_columns_keep")
 margot::here_save(ordinal_columns, "ordinal_columns")
 
-# graphs ------------------------------------------------------------------
-# individual plot ---------------------------------------------------------
-# exposure plot
+# visualise individual patterns ------------------------------------------
+# create plot of individual response trajectories
 individual_plot_exposure <- margot_plot_individual_responses(
   dat_long_1,
   y_vars = name_exposure,
   id_col = "id",
-  waves = c(2018:2019), # only there for two waves
+  waves = c(2018:2019), # only measured for two waves
   theme = theme_classic(),
-  random_draws =80,
+  random_draws = 80,
   title = NULL,
   y_label = NULL,
   x_label = NULL,
@@ -1030,10 +1023,9 @@ individual_plot_exposure <- margot_plot_individual_responses(
   scale_range = scale_range_exposure
 )
 
-
-# view
+# display individual trajectories plot
 individual_plot_exposure
 
-# size
-margot_size( individual_plot_exposure )
+# check plot dimensions
+margot_size(individual_plot_exposure)
 

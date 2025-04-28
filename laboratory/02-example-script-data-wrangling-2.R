@@ -9,7 +9,7 @@
 set.seed(123)
 
 # save paths -------------------------------------------------------------------
-# create a save path to your on computer.
+# create a save path to your on computer
 # this is mine
 # push_mods <- here::here('/Users/joseph/v-project\ Dropbox/data/courses/25-psych-434')
 # yours might be (after creating a data file)
@@ -25,100 +25,61 @@ if (!require(margot, quietly = TRUE)) {
 if (!require(boilerplate, quietly = TRUE)) {
   devtools::install_github("go-bayes/boilerplate")
 }
-
 # load margot library
 library(margot)
 
 # load necessary libraries
 pacman::p_load(
-  clarify,
-  # sensitivity analysis for causal inference
-  cobalt,
-  # covariate balance tables and plots
-  DiagrammeR,
-  # graph and network visualization
-  doParallel,
-  # parallel processing with foreach
-  fastDummies,
-  # fast creation of dummy variables
-  fs,
-  # cross-platform file system operations
-  ggbeeswarm,
-  # data visualisation
-  ggplot2,
-  # data visualisation
-  glmnet,
-  # lasso and elastic-net regularized models
-  grf,
-  # generalized random forests
-  gt,
-  # html tables for data frames
-  gtsummary,
-  # summary tables for regression models
-  here,
-  # simple and robust file referencing
-  janitor,
-  # data cleaning and validation
-  kableExtra,
-  # advanced table formatting
-  lmtp,
-  # longitudinal targeted maximum likelihood estimation
-  # margot,
-  # functions for casual inference
-  MatchIt,
-  # matching methods for causal inference
-  MatchThem,
-  # matching methods for multiply imputed datasets
-  naniar,
-  # handling and visualization of missing data
-  parameters,
-  # parameters and performance metrics
-  policytree,
-  # causal inference with policy trees
-  progressr,
-  # progress reporting for R
-  ranger,
-  # fast implementation of random forests
-  skimr,
-  # summary statistics for data frames
-  SuperLearner,
-  # ensemble learning
-  tidyverse,
-  # collection of R packages for data science
-  WeightIt,
-  # weighting methods for covariate balancing
-  xgboost,
-  # extreme gradient boosting
-  EValue,
-  # compute Evalues
-  data.table,
-  # fast data wrangling
-  maq,
-  # qini curves
-  purrr,
-  # data wrangling
-  patchwork,
-  # multiple plots
+  clarify,     # sensitivity analysis for causal inference
+  cobalt,      # covariate balance tables and plots
+  DiagrammeR,  # graph and network visualization
+  doParallel,  # parallel processing with foreach
+  fastDummies, # fast creation of dummy variables
+  fs,          # cross-platform file system operations
+  ggbeeswarm,  # data visualisation
+  ggplot2,     # data visualisation
+  glmnet,      # lasso and elastic-net regularized models
+  grf,         # generalized random forests
+  gt,          # html tables for data frames
+  gtsummary,   # summary tables for regression models
+  here,        # simple and robust file referencing
+  janitor,     # data cleaning and validation
+  kableExtra,  # advanced table formatting
+  lmtp,        # longitudinal targeted maximum likelihood estimation
+  MatchIt,     # matching methods for causal inference
+  MatchThem,   # matching methods for multiply imputed datasets
+  naniar,      # handling and visualization of missing data
+  parameters,  # parameters and performance metrics
+  policytree,  # causal inference with policy trees
+  progressr,   # progress reporting for R
+  ranger,      # fast implementation of random forests
+  skimr,       # summary statistics for data frames
+  SuperLearner,# ensemble learning
+  tidyverse,   # collection of R packages for data science
+  WeightIt,    # weighting methods for covariate balancing
+  xgboost,     # extreme gradient boosting
+  EValue,      # compute Evalues
+  data.table,  # fast data wrangling
+  maq,         # qini curves
+  purrr,       # data wrangling
+  patchwork,   # multiple plots
   labelled,
   purrr,
   boilerplate
 )
-# library(tidyr)
-# library(dplyr)
 
-
-#check
+# check
 push_mods
 
 # read data in
 dat_long_prepare <- margot::here_read("dat_long_prepare")
-name_exposure <- margot::here_read("name_exposure") #
+name_exposure <- margot::here_read("name_exposure")
 
 # check
 name_exposure_binary = paste0(name_exposure, "_binary")
 name_exposure_continuous = name_exposure
 
-#check
+# check
 name_exposure_binary
 name_exposure_continuous
 
@@ -126,7 +87,6 @@ name_exposure_continuous
 baseline_vars <- margot::here_read("baseline_vars")
 outcome_vars <- margot::here_read("outcome_vars")
 
-# baseline_exposure_cat <- margot::here_read("baseline_exposure_cat")
 baseline_wave <- margot::here_read("baseline_wave")
 exposure_waves <- margot::here_read("exposure_waves")
 outcome_wave <- margot::here_read("outcome_wave")
@@ -135,15 +95,17 @@ t0_sample_weights <- margot::here_read("t0_sample_weights")
 # define wide variable names
 t0_name_exposure_binary <- paste0("t0_", name_exposure_binary)
 
-# make exposure names (continuous not genreally used)
-t1_name_exposure_binary <- paste0("t1_",name_exposure_binary)
+# make exposure names (continuous not generally used)
+t1_name_exposure_binary <- paste0("t1_", name_exposure_binary)
 t1_name_exposure_binary
 
 t0_name_exposure_continuous <- paste0("t0_", name_exposure)
 t0_name_exposure_continuous
-# make exposure names (continuous not genreally used)
-t1_name_exposure_continuous <- paste0("t1_",name_exposure)
+
+# make exposure names (continuous not generally used)
+t1_name_exposure_continuous <- paste0("t1_", name_exposure)
 t1_name_exposure_continuous
+
 # ordinal use
 ordinal_columns <- c(
   "t0_education_level_coarsen",
@@ -152,19 +114,19 @@ ordinal_columns <- c(
   "t0_gen_cohort"
 )
 
-# for
+# keep sample weights without standardisation
 continuous_columns_keep <- c("t0_sample_weights")
 
 # prepare data for analysis ----------------------
 dat_long_prepare <- margot::remove_numeric_attributes(dat_long_prepare)
 
+# update wave to numeric
 dat_long_prepare_updated <- dat_long_prepare %>%
   mutate(wave = as.numeric(factor(wave, levels = sort(unique(wave)))))
 
-# make both
+# make both exposure variables
 name_exposure_both <- c(name_exposure_binary,name_exposure_continuous)
-
-#check
+# check
 name_exposure_both
 
 # wide data
@@ -193,15 +155,15 @@ margot::here_save(df_wide, "df_wide")
 
 # naniar::vis_miss(df_wide, warn_large_data = FALSE)
 # read back if needed
-#df_wide <- margot::here_read("df_wide")
+# df_wide <- margot::here_read("df_wide")
 
 # check
 colnames(df_wide)
 
 # this will order the data correctly
 # see margot documentation
-# standardixe outcomes, create not-lost indicator
-df_wide_encoded  <- margot::margot_process_longitudinal_data_wider(
+# standardise outcomes, create not-lost indicator
+df_wide_encoded <- margot::margot_process_longitudinal_data_wider(
   df_wide,
   ordinal_columns = ordinal_columns,
   continuous_columns_keep = continuous_columns_keep,
@@ -255,7 +217,7 @@ df_wide_encoded$t0_sample_weights
 # step 1: prepare baseline covariates
 E <- df_wide_encoded %>%
   select(
-    - all_of(t0_name_exposure_binary), # inserted by function but irrelevant
+    -all_of(t0_name_exposure_binary), # inserted by function but irrelevant
     -"t0_sample_weights") %>%
   select(starts_with("t0_"),
          -ends_with("_lost"),
@@ -263,7 +225,7 @@ E <- df_wide_encoded %>%
   colnames() %>%
   sort()
 
-# Note for baseline confounding we use the continuous var
+# note for baseline confounding we use the continuous var
 E # we use the continuous variable
 
 # save baseline covariates
@@ -284,13 +246,16 @@ cen_forest_0 <- probability_forest(cen_0, D_0)
 # save if needed, very large!
 # here_save_qs(cen_forest_0, "cen_forest_0", push_mods)
 
+# predict
 predictions_grf_0 <- predict(cen_forest_0, newdata = cen_0, type = "response")
+
+# get probability of censoring
 pscore_0 <- predictions_grf_0$pred[, 2]
 
 # view
 hist(pscore_0)
 
-# check corrrect sample weights
+# check correct sample weights  
 hist(t0_sample_weights)
 
 # use margot_adjust_weights for t0
@@ -310,17 +275,17 @@ t0_weights <- margot_adjust_weights(
 length(t0_weights$adjusted_weights)
 length(df_wide_encoded$t0_sample_weights)
 
-# assign
+# check
 nrow(df_wide_encoded)
 hist(t0_weights$adjusted_weights)
 
 # assign weights
 df_wide_encoded$t0_adjusted_weights <- t0_weights$adjusted_weights
 
-# just fyi
+# if you only wanted censoring weights
 # df_wide_encoded$t0_propensity_score_model_weights <- t0_weights$censoring_weights
 
-#check
+# check
 naniar::vis_miss(df_wide_encoded, warn_large_data = FALSE)
 
 # view
@@ -367,7 +332,6 @@ hist(t1_weights$adjusted_weights)
 # add weights -- these will be the weights we use
 df_wide_encoded_1$t1_adjusted_weights <- t1_weights$adjusted_weights
 
-
 # calculate summary statistics
 t0_adjusted_weight_summary <- summary(df_wide_encoded$t0_adjusted_weights)
 t1_adjusted_weight_summary <- summary(df_wide_encoded_1$t1_adjusted_weights)
@@ -376,7 +340,7 @@ t1_adjusted_weight_summary <- summary(df_wide_encoded_1$t1_adjusted_weights)
 t0_adjusted_weight_summary
 t1_adjusted_weight_summary
 
-#check
+# check
 naniar::vis_miss(df_wide_encoded_1, warn_large_data = FALSE)
 
 # save
@@ -398,20 +362,6 @@ table(df_wide_encoded_1$t1_lost_following_wave)
 # arrange
 df_grf <- df_wide_encoded_1 |>
   filter(t1_lost_following_wave == 0) |>
-  # rename(t0_adjusted_weights = t1_adjusted_weights) |> # do this later
-  # if you have not previously made a binary variable, make it here
-  # mutate(
-  #   # use the dynamically created binary variable name
-  #   !!t1_name_exposure_binary := ifelse(
-  #     get(t1_name_exposure_continuous) > 0, ### THINK ABOUT THIS
-  #     1,
-  #     0
-  #   )
-  # ) |>
-  # mutate(across(
-  #   where(is.factor),
-  #   ~ factor(as.character(.), levels = levels(.), ordered = is.ordered(.))
-  # )) |>
   select(
     where(is.factor),
     ends_with("_binary"),
@@ -494,10 +444,6 @@ df_propensity_org <- df_grf |> select(!starts_with("t2_"))
 # Remove NAs and print message that this has been done
 df_propensity <- df_propensity_org |> drop_na() |> droplevels()
 
-
-# if running a baseline model - exclude outcome
-E
-# E_propensity_names
 # first run model for baseline propensity if this is selected.  The default should be to not select it.
 propensity_model_and_plots <- margot_propensity_model_and_plots(
   df_propensity = df_propensity,

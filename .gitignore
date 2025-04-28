@@ -42,6 +42,8 @@
 # Using different computers
 *.DS_Store
 
+# data
+data/
 
 
 

@@ -14,9 +14,8 @@
 set.seed(123)
 
 
-
 # save paths -------------------------------------------------------------------
-# create a save path to your on computer.
+# create a save path to your on computer
 # this is mine
 # push_mods <- here::here('/Users/joseph/v-project\ Dropbox/data/courses/25-psych-434')
 # yours might be (after creating a data file)
@@ -31,26 +30,20 @@ if (!require(margot, quietly = TRUE)) {
   devtools::install_github("go-bayes/margot")
 }
 
-# if (!require(boilerplate, quietly = TRUE)) {
-#   devtools::install_github("go-bayes/boilerplate")
-# }
-
 # load margot library
 library(margot)
 
 # load necessary libraries
-# load necessary libraries
 pacman::p_load(
   clarify,      # sensitivity analysis for causal inference
   cobalt,       # covariate balance tables and plots
-  DiagrammeR,   # graph and network visualization
+  DiagrammeR,   # graph and network visualisation
   doParallel,   # parallel processing with foreach
   fastDummies,  # fast creation of dummy variables
   fs,           # cross-platform file system operations
-  ggbeeswarm,   # data visualisation   
   ggplot2,      # data visualisation
-  glmnet,       # lasso and elastic-net regularized models
-  grf,          # generalized random forests
+  glmnet,       # lasso and elastic-net regularised models
+  grf,          # generalised random forests
   gt,           # html tables for data frames
   gtsummary,    # summary tables for regression models
   here,         # simple and robust file referencing
@@ -60,7 +53,7 @@ pacman::p_load(
   margot,       # functions for casual inference
   MatchIt,      # matching methods for causal inference
   MatchThem,    # matching methods for multiply imputed datasets
-  naniar,       # handling and visualization of missing data
+  naniar,       # handling and visualisation of missing data
   parameters,   # parameters and performance metrics
   policytree,   # causal inference with policy trees
   progressr,    # progress reporting for R
@@ -74,13 +67,12 @@ pacman::p_load(
   data.table,   # fast data wrangling
   maq,          # qini curves
   purrr,        # data wrangling
-  patchwork,     # multiple plots
-  labelled,
-  purrr, 
-  cli,
-  crayon,
-  rlang,
-  kableExtra
+  patchwork,    # multiple plots
+  labelled,     # allows working with labelled data (variable and value labels)
+  cli,          # tools for building command line interfaces
+  crayon,       # colored terminal output
+  rlang,        # tools for programming with R
+  kableExtra    # enhance kable output with additional formatting
 )
 
 
@@ -187,7 +179,6 @@ label_mapping_all <- c(
 )
 
 
-
 # save label mappings -----------------------------------------------------
 here_save(label_mapping_health, "label_mapping_health")
 here_save(label_mapping_psych, "label_mapping_psych")
@@ -227,10 +218,8 @@ E
 df_grf[[t1_name_exposure_binary]]
 # *********************************
 
-
 # needs to be a matrix
 W <- as.vector(df_grf[[t1_name_exposure_binary]])
-
 
 # check that these values are 0 or 1
 W
@@ -258,8 +247,8 @@ grf_defaults <- list(
 decision_tree_defaults <- list(
   span_ratio = .3,
   text_size = 3.8,
-  y_padding = 0.25  # Use full parameter name
-  # edge_label_offset = .002,
+  y_padding = 0.25  # use full parameter name
+  # edge_label_offset = .002, # options
   # border_size = .05
 )
 
@@ -428,9 +417,8 @@ subtitle_present = "Present-Focussed Well-being"
 subtitle_life = "Life-Focussed Well-being"
 subtitle_social = "Social Well-being"
 
-
 # defaults
-base_defaults_binary  <- list(
+base_defaults_binary <- list(
   type = "RD",
   title = title_binary,
   #interpret_all_E_gt1 = TRUE,
@@ -456,7 +444,6 @@ base_defaults_binary  <- list(
   legend_title_size = 10,
   include_coefficients = FALSE
 )
-
 
 # set options for graphs
 # health graph options
@@ -484,7 +471,7 @@ outcomes_options_present <- margot_plot_create_options(
 
 # life graph options ------------------------------------------------------
 outcomes_options_life <- margot_plot_create_options(
-  title =  subtitle_life,
+  title = subtitle_life,
   base_defaults = base_defaults_binary,
   subtitle = "",
   filename_prefix = filename_prefix)
@@ -492,24 +479,22 @@ outcomes_options_life <- margot_plot_create_options(
 
 # social graph options ----------------------------------------------------
 outcomes_options_social <- margot_plot_create_options(
-  title =  subtitle_social,
+  title = subtitle_social,
   base_defaults = base_defaults_binary,
   subtitle = "",
   filename_prefix = filename_prefix)
 
-# all graph options ----------------------------------------------------
+# all graph options ------------------------------------------------------
 options_all_models <- margot_plot_create_options(
-  title =  "Outcomewide Wellbeing",
+  title = "Outcomewide Wellbeing",
   base_defaults = base_defaults_binary,
   subtitle = "",
   filename_prefix = filename_prefix)
 
 
-
-
-# make graphs -----------------------------------------------------------
+# make graphs -------------------------------------------------------------
 # read results
-# warning reading models will take time
+# warning: reading models will take time
 # import
 models_binary_health <- margot::here_read_qs("models_binary_health", push_mods)
 models_binary_psych <- margot::here_read_qs("models_binary_psych", push_mods)
@@ -574,7 +559,7 @@ binary_results_psych <- margot_plot(
 )
 
 # table
-binary_results_psych$transformed_table|> rename(
+binary_results_psych$transformed_table |> rename(
   "E-Value" = "E_Value",
   "E-Value bound" = "E_Val_bound"
 ) |>
@@ -584,7 +569,7 @@ binary_results_psych$transformed_table|> rename(
 cat(binary_results_psych$interpretation)
 
 # plot present
-#order
+# order
 binary_results_present <- margot_plot(
   models_binary_present$combined_table,
   options = outcomes_options_present,
@@ -593,17 +578,14 @@ binary_results_present <- margot_plot(
   save_output = FALSE,
   original_df = original_df,
   order = "evaluebound_asc"
-  
 )
 
 # plot
 binary_results_present$plot
 
-
 # interpretation
 cat(binary_results_present$interpretation)
 (binary_results_present$transformed_table)
-
 
 # plot life
 binary_results_life <- margot_plot(
@@ -616,9 +598,8 @@ binary_results_life <- margot_plot(
   original_df = original_df
 )
 
-
 # table
-binary_results_life$transformed_table|> rename(
+binary_results_life$transformed_table |> rename(
   "E-Value" = "E_Value",
   "E-Value bound" = "E_Val_bound"
 ) |>
@@ -638,8 +619,7 @@ binary_results_social <- margot_plot(
   include_coefficients = FALSE,
   save_output = FALSE,
   original_df = original_df,
-  order = "evaluebound_asc",
-  
+  order = "evaluebound_asc"
 )
 
 # table
@@ -695,7 +675,7 @@ all_models <- margot_bind_models(
 # graph
 plot_all_models <- margot_plot(
   all_models$combined_table,
-  options =  options_all_models,
+  options = options_all_models,
   save_output = FALSE,
   e_val_bound_threshold = 1.1,
   label_mapping = label_mapping_all,
@@ -724,23 +704,23 @@ tables_list <- list(
 )
 
 margot_bind_tables_markdown <- margot_bind_tables(
-  tables_list         =   tables_list, #list(all_models$combined_table),
-  sort_E_val_bound    = "desc",
+  tables_list = tables_list, #list(all_models$combined_table),
+  sort_E_val_bound = "desc",
   e_val_bound_threshold = 1.1,
-  highlight_color     = NULL,
-  bold                = TRUE,
-  rename_cols         = TRUE,
-  col_renames         = list(
-    "E-Value"       = "E_Value",
+  highlight_color = NULL,
+  bold = TRUE,
+  rename_cols = TRUE,
+  col_renames = list(
+    "E-Value" = "E_Value",
     "E-Value bound" = "E_Val_bound"
   ),
-  rename_ate          = TRUE,
-  threshold_col       = "E_Val_bound",
-  output_format       = "markdown",
-  kbl_args            = list(
+  rename_ate = TRUE,
+  threshold_col = "E_Val_bound",
+  output_format = "markdown",
+  kbl_args = list(
     booktabs = TRUE,
-    caption  = NULL,
-    align    = NULL
+    caption = NULL,
+    align = NULL
   )
 )
 
@@ -762,6 +742,7 @@ cat("\nTotal models in combined object:", length(all_models$results), "\n")
 
 
 # flip negatively oriented outcomes --------------------------------------
+# flip outcomes where higher values are worse for interpretation consistency
 models_binary_flipped_all <- margot_flip_forests(
   all_models,
   flip_outcomes = c(
@@ -783,6 +764,7 @@ margot_size(models_binary_flipped_all)
 here_save_qs(models_binary_flipped_all, "models_binary_flipped_all", push_mods)
 
 # omnibus heterogeneity tests --------------------------------------------
+# test for treatment effect heterogeneity across all outcomes
 result_ominbus_hetero_all <- margot::margot_omnibus_hetero_test(models_binary_flipped_all, label_mapping = label_mapping_all)
 
 # view results table
@@ -798,8 +780,8 @@ flipped_names <- c("Alcohol Frequency", "Alcohol Intensity", "BMI", "Fatigue", "
 
 # save for publication
 here_save(flipped_names, "flipped_names")
-# create rate analysis table
 
+# create rate analysis table
 rate_table_all <- margot_rate(
   models_binary_flipped_all, 
   label_mapping = label_mapping_all, 
@@ -823,7 +805,6 @@ cat(rate_interpretation_all$qini_results)
 cat(rate_interpretation_all$comparison)
 
 
-
 # check out model names
 rate_interpretation_all$either_model_names
 rate_interpretation_all$qini_model_names
@@ -831,10 +812,8 @@ rate_interpretation_all$both_model_names
 rate_interpretation_all$autoc_model_names
 
 
-
-# define autoc model names for batch processing
 # autoc plots ------------------------------------------------------------
-# generate batch rate plots
+# generate batch rate plots for models with significant heterogeneity
 batch_rate_autoc_plots <- margot_plot_rate_batch(
   models_binary_flipped_all, 
   save_plots = FALSE,
@@ -842,7 +821,6 @@ batch_rate_autoc_plots <- margot_plot_rate_batch(
   model_names = rate_interpretation_all$autoc_model_names  
 )
 
-rate_interpretation_all$autoc_model_names
 # view selected autoc plots
 batch_rate_autoc_plots$model_t2_log_hours_exercise_z
 batch_rate_autoc_plots$model_t2_hlth_fatigue_z
@@ -853,14 +831,13 @@ batch_rate_autoc_plots$model_t2_meaning_sense_z
 batch_rate_qini_plots <- margot_plot_rate_batch(
   models_binary_flipped_all, 
   save_plots = FALSE,
-  rate_interpretation_all$qini_model_names  #just use a
+  model_names = rate_interpretation_all$qini_model_names
 )
 
 # for instruction -- note that initial heterogeneity dips below zero
 batch_rate_qini_plots$model_t2_bodysat_z
 batch_rate_qini_plots$model_t2_self_esteem_z
 batch_rate_qini_plots$model_t2_belong_z
-
 
 
 # QINI --------------------------------------------------------------------
@@ -884,32 +861,22 @@ here_save_qs(models_binary_batch_qini, "models_binary_batch_qini", push_mods)
 
 # view models
 # first make graphs
-plot_qini_exercise <-models_binary_batch_qini$model_t2_log_hours_exercise_z$qini_plot
+plot_qini_exercise <- models_binary_batch_qini$model_t2_log_hours_exercise_z$qini_plot
 plot_qini_fatigue <- models_binary_batch_qini$model_t2_hlth_fatigue_z$qini_plot
 plot_qini_bodysat <- models_binary_batch_qini$model_t2_bodysat_z$qini_plot
 plot_qini_self_control <- models_binary_batch_qini$model_t2_self_control_z$qini_plot
 plot_qini_self_esteem <- models_binary_batch_qini$model_t2_self_esteem_z$qini_plot
 plot_qini_belong <- models_binary_batch_qini$model_t2_belong_z$qini_plot
 
-
-
 # recall the ate
 plot_all_models$plot
 
-# patchwork allows us to group graphs together
-library(patchwork)
-
-# view plots
-(plot_qini_exercise / plot_qini_fatigue / plot_qini_bodysat) 
-
-(plot_qini_self_control /plot_qini_self_esteem / plot_qini_t2_belong)
-
-# extract plots for models without reliable heterogeneity
-
 # interpret qini curves
-interpretation_qini_curves <- margot_interpret_qini(models_binary_batch_qini,
-                                                    model_names = rate_interpretation_all$qini_model_names,
-                                                    label_mapping = label_mapping_all)
+interpretation_qini_curves <- margot_interpret_qini(
+  models_binary_batch_qini,
+  model_names = rate_interpretation_all$qini_model_names,
+  label_mapping = label_mapping_all
+)
 
 # view qini interpretation
 cat(interpretation_qini_curves$qini_explanation)
@@ -917,10 +884,12 @@ cat(interpretation_qini_curves$qini_explanation)
 # view summary table
 interpretation_qini_curves$summary_table |> kbl("markdown")
 
-# others
-# combine qini plots
+# combine qini plots for visualisation
+# patchwork allows us to group graphs together
+library(patchwork)
 qini_plots_combined <- 
-  (plot_qini_exercise + plot_qini_fatigue +  plot_qini_bodysat) / (plot_qini_self_control + plot_qini_self_esteem + plot_qini_t2_belong) + 
+  (plot_qini_exercise + plot_qini_fatigue + plot_qini_bodysat) / 
+  (plot_qini_self_control + plot_qini_self_esteem + plot_qini_belong) + 
   plot_annotation(
     title = "Qini Plots: Reliable Priority 'Spending' at Fractional Budgets",
     tag_levels = "A",
@@ -944,7 +913,7 @@ plot_all_models$plot
 #   "model_t2_support_z"
 # )
 
-
+# make policy trees
 plots_policy_trees <- margot_policy(
   models_binary_flipped_all,
   save_plots = FALSE,
@@ -969,41 +938,47 @@ interpretation_policy_trees <- margot_interpret_policy_batch(
 # this will give you results
 cat(interpretation_policy_trees)
 
-# plots
+# view plots --------------------------------------------------------------
+# log hours exercise
 plots_policy_trees$model_t2_log_hours_exercise_z$decision_tree
 plots_policy_trees$model_t2_log_hours_exercise_z$policy_tree
 plots_policy_trees$model_t2_log_hours_exercise_z$combined_plot
 
+# fatigue
 plots_policy_trees$model_t2_hlth_fatigue_z$decision_tree
 plots_policy_trees$model_t2_hlth_fatigue_z$policy_tree
 plots_policy_trees$model_t2_hlth_fatigue_z$combined_plot
 
+# self control
 plots_policy_trees$model_t2_self_control_z$decision_tree
 plots_policy_trees$model_t2_self_control_z$policy_tree
 plots_policy_trees$model_t2_self_control_z$combined_plot
 
+# meaning sense
 plots_policy_trees$model_t2_meaning_sense_z$decision_tree
 plots_policy_trees$model_t2_meaning_sense_z$policy_tree
 plots_policy_trees$model_t2_meaning_sense_z$combined_plot
 
+# body satisfaction
 plots_policy_trees$model_t2_bodysat_z$decision_tree
 plots_policy_trees$model_t2_bodysat_z$policy_tree
 plots_policy_trees$model_t2_bodysat_z$combined_plot
 
-
+# self esteem
 plots_policy_trees$model_t2_self_esteem_z$decision_tree
 plots_policy_trees$model_t2_self_esteem_z$policy_tree
 plots_policy_trees$model_t2_self_esteem_z$combined_plot
 
+# belonging
 plots_policy_trees$model_t2_belong_z$decision_tree
 plots_policy_trees$model_t2_belong_z$policy_tree
+plots_policy_trees$model_t2_belong_z$combined_plot
 
 
 #############################################################################
 # theoretical comparisons ---------------------------------------------------
 # individual theoretical comparisons (if relevant)
 # need to get values for wealth if wealth is compared
-
 
 # step 1 get information for wealth for conditonal comparisons
 head(df_grf$t0_log_household_inc_z)
@@ -1014,21 +989,23 @@ log_mean_inc <- mean(original_df$t0_log_household_inc, na.rm = TRUE)
 # get sd on original data scale
 log_sd_inc <- sd(original_df$t0_log_household_inc, na.rm = TRUE)
 
-# function to get 
-margot_back_transform_log_z(log_mean = log_mean_inc, 
-                            log_sd = log_sd_inc,
-                            z_scores = c(-1, 0, 1),
-                            label = "data_scale")
+# function to get back to data scale
+margot_back_transform_log_z(
+  log_mean = log_mean_inc, 
+  log_sd = log_sd_inc,
+  z_scores = c(-1, 0, 1),
+  label = "data_scale"
+)
 
-
-# if we have specific groups to compare
+# define complex conditions for subsetting
 complex_condition_political <- X[, "t0_political_conservative_z"] > -1 &
   X[, "t0_political_conservative_z"] < 1
 
 complex_condition_wealth <- X[, "t0_log_household_inc_z"] > -1 & 
   X[, "t0_log_household_inc_z"] < 1
 
-subsets_standard_wealth  <- list(
+# wealth subsets
+subsets_standard_wealth <- list(
   Poor = list(
     var = "t0_log_household_inc_z",
     value = -1,
@@ -1045,11 +1022,12 @@ subsets_standard_wealth  <- list(
     value = 1,
     operator = ">",
     description = "HShold income > +1 SD (NZD 191k)",
-    label = "Rich"  # label remains as is, but could be changed if desired
+    label = "Rich"
   )
 )
 
-subsets_standard_political  <- list(
+# political subsets
+subsets_standard_political <- list(
   Liberal = list(
     var = "t0_political_conservative_z",
     value = -1,
@@ -1061,18 +1039,19 @@ subsets_standard_political  <- list(
     # operator = "<",
     subset_condition = complex_condition_political,
     description = "Effects among those > -1 SD and < +1 in political conservativism",
-    label = "Centrist"  # label remains as is, but could be changed if desired
+    label = "Centrist"
   ),
   Conservative = list(
     var = "t0_political_conservative_z",
     value = 1,
     operator = ">",
     description = "> +1 SD in political conservativism",
-    label = "Conservative"  # label remains as is, but could be changed if desired
+    label = "Conservative"
   )
 )
 
-subsets_standard_gender  <- list(
+# gender subsets
+subsets_standard_gender <- list(
   Female = list(
     var = "t0_male_binary",
     value = 0,
@@ -1082,10 +1061,11 @@ subsets_standard_gender  <- list(
     var = "t0_male_binary",
     value = 1,
     description = "Males"
-  )) 
+  )
+) 
 
-
-subsets_standard_ethnicity<- list(
+# ethnicity subsets
+subsets_standard_ethnicity <- list(
   Asian = list(
     var = "t0_eth_cat_asian_binary",
     value = 1,
@@ -1107,7 +1087,7 @@ subsets_standard_ethnicity<- list(
     description = "Māori"
   )
 )
-# 
+
 # subsets_standard_cohort <- list(
 #   boomers = list(
 #     var = "t0_gen_cohort_gen_Boomers_binary",
@@ -1135,16 +1115,14 @@ subsets_standard_ethnicity<- list(
 #   )
 # )
 
-
 # check
-mean(original_df$t0_age) - sd(original_df$t0_age) # 36.44773
-
+mean(original_df$t0_age) - sd(original_df$t0_age) #
 
 # if we have specific groups to compare
 complex_condition_age_under_neg_1_sd  <- X[, "t0_age_z"] < -1 
 complex_condition_age_gr_eq_neg_1_sd  <- X[, "t0_age_z"] >= -1 
 
-
+# age subsets
 subsets_standard_cohort <- list(
   under_37 = list(
     value = complex_condition_age_under_neg_1_sd,
@@ -1156,7 +1134,6 @@ subsets_standard_cohort <- list(
   )
 )
 
-
 # batch planned subgroup analysis -----------------------------------------
 # set up lists of models, names, and subtitles
 domain_models <- list(
@@ -1167,8 +1144,10 @@ domain_models <- list(
   models_binary_social
 )
 
+# set up domain names
 domain_names <- c("health", "psych", "present", "life", "social")
 
+# set up subtitles
 subtitles <- c(
   subtitle_health,
   subtitle_psych,
@@ -1201,43 +1180,41 @@ planned_subset_results <- margot_planned_subgroups_batch(
 # results
 # health subgroup
 cat(planned_subset_results$health$wealth$explanation)
-cat(planned_subset_results$health$ethnicity$explanation) #* 
-cat(planned_subset_results$health$political$explanation) # 
-cat(planned_subset_results$health$gender$explanation) # 
-cat(planned_subset_results$health$cohort$explanation) #*
+cat(planned_subset_results$health$ethnicity$explanation) 
+cat(planned_subset_results$health$political$explanation) 
+cat(planned_subset_results$health$gender$explanation) 
+cat(planned_subset_results$health$cohort$explanation) 
 
 
-cat(planned_subset_results$psych$wealth$explanation) #*
-cat(planned_subset_results$psych$ethnicity$explanation) #*
-cat(planned_subset_results$psych$political$explanation) # *
-cat(planned_subset_results$psych$gender$explanation) # *
-cat(planned_subset_results$psych$cohort$explanation) #*
+cat(planned_subset_results$psych$wealth$explanation) 
+cat(planned_subset_results$psych$ethnicity$explanation) 
+cat(planned_subset_results$psych$political$explanation) 
+cat(planned_subset_results$psych$gender$explanation) 
+cat(planned_subset_results$psych$cohort$explanation) 
 
 
-cat(planned_subset_results$present$wealth$explanation) #*
-cat(planned_subset_results$present$ethnicity$explanation) #*
-cat(planned_subset_results$present$political$explanation) # *
-cat(planned_subset_results$present$gender$explanation) # *
-cat(planned_subset_results$present$cohort$explanation) #*
+cat(planned_subset_results$present$wealth$explanation) 
+cat(planned_subset_results$present$ethnicity$explanation) 
+cat(planned_subset_results$present$political$explanation) 
+cat(planned_subset_results$present$gender$explanation) 
+cat(planned_subset_results$present$cohort$explanation) 
 
 
-cat(planned_subset_results$life$wealth$explanation) #*
-cat(planned_subset_results$life$ethnicity$explanation) #*
-cat(planned_subset_results$life$political$explanation) # *
-cat(planned_subset_results$life$gender$explanation) # *
-cat(planned_subset_results$life$cohort$explanation) #*
+cat(planned_subset_results$life$wealth$explanation) 
+cat(planned_subset_results$life$ethnicity$explanation) 
+cat(planned_subset_results$life$political$explanation) 
+cat(planned_subset_results$life$gender$explanation) 
+cat(planned_subset_results$life$cohort$explanation) 
 
-cat(planned_subset_results$social$wealth$explanation) #*
-cat(planned_subset_results$social$ethnicity$explanation) #*
-cat(planned_subset_results$social$political$explanation) # *
-cat(planned_subset_results$social$gender$explanation) # *
-cat(planned_subset_results$social$cohort$explanation) #*
+cat(planned_subset_results$social$wealth$explanation) 
+cat(planned_subset_results$social$ethnicity$explanation) 
+cat(planned_subset_results$social$political$explanation) 
+cat(planned_subset_results$social$gender$explanation) 
+cat(planned_subset_results$social$cohort$explanation) 
 
 
 # combine tables ----------------------------------------------------------
-# wrap each domain’s table in a list:
-
-
+# wrap each domain's table in a list:
 # wealth subgroups --------------------------------------------------------
 tables_list_poor <- list(
   Health = planned_subset_results$health$wealth$results$Poor$transformed_table,
@@ -1246,17 +1223,16 @@ tables_list_poor <- list(
   Social = planned_subset_results$social$wealth$results$Poor$transformed_table
 )
 
-
 # new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_poor,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Poor"),
-                           highlight_color = NULL, output_format = "html")
+margot::margot_bind_tables(
+  tables_list = tables_list_poor,
+  bold = TRUE,
+  kbl_args = list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Poor"),
+  highlight_color = NULL, 
+  output_format = "html"
+)
 
-
-# margot_bind_tables(tables_list = tables_list,
-#                    bold = TRUE,
-#                    highlight_color = NULL, output_format = "latex")
+# create table list for middle income subgroup
 tables_list_middleincome <- list(
   Health = planned_subset_results$health$wealth$results$MiddleIncome$transformed_table,
   Psych  = planned_subset_results$psych$wealth$results$MiddleIncome$transformed_table,
@@ -1264,13 +1240,17 @@ tables_list_middleincome <- list(
   Social = planned_subset_results$social$wealth$results$MiddleIncome$transformed_table
 )
 
-
-# new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_middleincome,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Middle Income"),
-                           highlight_color = NULL, output_format = "html")
-
+# bind tables and display results
+margot::margot_bind_tables(
+  tables_list = tables_list_middleincome,
+  bold = TRUE,
+  kbl_args = list(
+    booktabs = TRUE, 
+    caption = "Wealth Subgroup Analysis: Middle Income"
+  ),
+  highlight_color = NULL, 
+  output_format = "html"
+)
 
 planned_subset_results$health$wealth$results$Rich$transformed_table
 
@@ -1283,15 +1263,18 @@ tables_list_rich <- list(
 
 
 # new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_rich,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Rich"),
-                           highlight_color = NULL, output_format = "html")
+margot::margot_bind_tables(
+  tables_list = tables_list_rich,
+  bold = TRUE,
+  kbl_args = list(
+    booktabs = TRUE, 
+    caption = "Wealth Subgroup Analysis: Rich"
+  ),
+  highlight_color = NULL, 
+  output_format = "html"
+)
 
-
-
-
-# Age subgroups -----------------------------------------------------------
+# cohort subgroups --------------------------------------------------------
 
 # wealth subgroups --------------------------------------------------------
 planned_subset_results$health$cohort$results$Generation_X$transformed_table
@@ -1306,11 +1289,16 @@ tables_list_boomers <- list(
 
 
 # new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_boomers,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, 
-                                          caption = "Cohort Subgroup Analysis: Boomers"),
-                           highlight_color = "yellow", output_format = "html")
+margot::margot_bind_tables(
+  tables_list = tables_list_boomers,
+  bold = TRUE,
+  kbl_args = list(
+    booktabs = TRUE, 
+    caption = "Cohort Subgroup Analysis: Boomers"
+  ),
+  highlight_color = NULL,
+  output_format = "html"
+)
 
 
 # margot_bind_tables(tables_list = tables_lisblue()# margot_bind_tables(tables_list = tables_list,
@@ -1325,23 +1313,29 @@ tables_list_genZ <- list(
 
 
 # new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_genZ,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Cohort Subgroup Analysis: Generation Z"),
-                           highlight_color = NULL, output_format = "html")
-
-
-
+# new function bind tables
+margot::margot_bind_tables(
+  tables_list = tables_list_genZ,
+  bold = TRUE,
+  kbl_args = list(
+    booktabs = TRUE, 
+    caption = "Cohort Subgroup Analysis: Generation Z"
+  ),
+  highlight_color = NULL,
+  output_format = "html"
+)
 
 # new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_rich,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Rich"),
-                           highlight_color = NULL, output_format = "html")
-
-
-
-
+margot::margot_bind_tables(
+  tables_list = tables_list_rich,
+  bold = TRUE,
+  kbl_args = list(
+    booktabs = TRUE, 
+    caption = "Wealth Subgroup Analysis: Rich"
+  ),
+  highlight_color = NULL,
+  output_format = "html"
+)
 
 
 # plots -------------------------------------------------------------------
@@ -1363,6 +1357,7 @@ plots_subgroup_wealth_health <- wrap_plots(
 # view
 print(plots_subgroup_wealth_health)
 
+# plots
 plots_subgroup_ethnicity_health<- wrap_plots(
   list(
     planned_subset_results$health$ethnicity$results$Asian$plot,
@@ -1380,6 +1375,7 @@ plots_subgroup_ethnicity_health<- wrap_plots(
 # view
 print(plots_subgroup_ethnicity_health)
 
+# plots
 plots_subgroup_political_health <- wrap_plots(
   list(
     planned_subset_results$health$political$results$Conservative$plot,
@@ -1428,6 +1424,7 @@ plots_subgroup_cohort_health<- wrap_plots(
     theme = theme(plot.title = element_text(size = 18,  face = "bold"))
   )
 
+# view
 print(plots_subgroup_cohort_health)
 
 # psychological well-being
@@ -1447,6 +1444,7 @@ plots_subgroup_wealth_psych <- wrap_plots(
 # view
 print(plots_subgroup_wealth_psych)
 
+# plots
 plots_subgroup_ethnicity_psych<- wrap_plots(
   list(
     planned_subset_results$psych$ethnicity$results$Asian$plot,
@@ -1464,7 +1462,7 @@ plots_subgroup_ethnicity_psych<- wrap_plots(
 # view
 print(plots_subgroup_ethnicity_psych)
 
-
+# plots
 plots_subgroup_political_psych <- wrap_plots(
   list(
     planned_subset_results$psych$political$results$Conservative$plot,
@@ -1513,9 +1511,8 @@ plots_subgroup_cohort_psych<- wrap_plots(
     theme = theme(plot.title = element_text(size = 18,  face = "bold"))
   )
 
+# view
 print(plots_subgroup_cohort_psych)
-
-
 
 # present focussed well-being
 plots_subgroup_wealth_present <- wrap_plots(
@@ -1534,6 +1531,7 @@ plots_subgroup_wealth_present <- wrap_plots(
 # view
 print(plots_subgroup_wealth_present)
 
+# plots
 plots_subgroup_ethnicity_present<- wrap_plots(
   list(
     planned_subset_results$present$ethnicity$results$Asian$plot,
@@ -1551,7 +1549,7 @@ plots_subgroup_ethnicity_present<- wrap_plots(
 # view
 print(plots_subgroup_ethnicity_present)
 
-
+# plots
 plots_subgroup_political_present <- wrap_plots(
   list(
     planned_subset_results$present$political$results$Conservative$plot,
@@ -1581,7 +1579,7 @@ plots_subgroup_gender_present<- wrap_plots(
     theme = theme(plot.title = element_text(size = 18,  face = "bold"))
   )
 
-# view
+# view  
 print(plots_subgroup_gender_present)
 
 # plots
@@ -1600,6 +1598,7 @@ plots_subgroup_cohort_present<- wrap_plots(
     theme = theme(plot.title = element_text(size = 18,  face = "bold"))
   )
 
+# view
 print(plots_subgroup_cohort_present)
 
 
@@ -1620,6 +1619,7 @@ plots_subgroup_wealth_life <- wrap_plots(
 # view
 print(plots_subgroup_wealth_life)
 
+# plots
 plots_subgroup_ethnicity_life<- wrap_plots(
   list(
     planned_subset_results$life$ethnicity$results$Asian$plot,
@@ -1637,7 +1637,7 @@ plots_subgroup_ethnicity_life<- wrap_plots(
 # view
 print(plots_subgroup_ethnicity_life)
 
-
+# plots
 plots_subgroup_political_life <- wrap_plots(
   list(
     planned_subset_results$life$political$results$Conservative$plot,
@@ -1775,555 +1775,7 @@ print(plots_subgroup_cohort_social)
 
 
 
-
-
-
-
-
-
-
-
-# ol ----------------------------------------------------------------------
-
-
-# wealth subgroups --------------------------------------------------------
-tables_list_poor <- list(
-  Health = planned_subset_results$health$wealth$results$Poor$transformed_table,
-  Psych  = planned_subset_results$psych$wealth$results$Poor$transformed_table,
-  Life   = planned_subset_results$life$wealth$results$Poor$transformed_table,
-  Social = planned_subset_results$social$wealth$results$Poor$transformed_table
-)
-
-
-# new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_poor,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Poor"),
-                           highlight_color = NULL, output_format = "html")
-
-
-# margot_bind_tables(tables_list = tables_list,
-#                    bold = TRUE,
-#                    highlight_color = NULL, output_format = "latex")
-tables_list_middleincome <- list(
-  Health = planned_subset_results$health$wealth$results$MiddleIncome$transformed_table,
-  Psych  = planned_subset_results$psych$wealth$results$MiddleIncome$transformed_table,
-  Life   = planned_subset_results$life$wealth$results$MiddleIncome$transformed_table,
-  Social = planned_subset_results$social$wealth$results$MiddleIncome$transformed_table
-)
-
-
-# new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_middleincome,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Middle Income"),
-                           highlight_color = NULL, output_format = "html")
-
-
-planned_subset_results$health$wealth$results$Rich$transformed_table
-
-tables_list_rich <- list(
-  Health = planned_subset_results$health$wealth$results$Rich$transformed_table,
-  Psych  = planned_subset_results$psych$wealth$results$Rich$transformed_table,
-  Life   = planned_subset_results$life$wealth$results$Rich$transformed_table,
-  Social = planned_subset_results$social$wealth$results$Rich$transformed_table
-)
-
-
-# new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_rich,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Rich"),
-                           highlight_color = NULL, output_format = "html")
-
-
-
-
-# Age subgroups -----------------------------------------------------------
-
-# wealth subgroups --------------------------------------------------------
-planned_subset_results$health$cohort$results$Generation_X$transformed_table
-
-planned_subset_results$health$cohort$results$Boomers$transformed_table
-tables_list_boomers <- list(
-  Health = planned_subset_results$health$cohort$results$Boomers$transformed_table,
-  Psych  = planned_subset_results$psych$cohort$results$Boomers$transformed_table,
-  Life   = planned_subset_results$psych$cohort$results$Boomers$transformed_table,
-  Social = planned_subset_results$psych$cohort$results$Boomers$transformed_table
-)
-
-
-# new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_boomers,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, 
-                                          caption = "Cohort Subgroup Analysis: Boomers"),
-                           highlight_color = "yellow", output_format = "html")
-
-
-# margot_bind_tables(tables_list = tables_lisblue()# margot_bind_tables(tables_list = tables_list,
-#                    bold = TRUE,
-#                    highlight_color = NULL, output_format = "latex")
-tables_list_genZ <- list(
-  Health = planned_subset_results$health$cohort$results$Generation_Z$transformed_table,
-  Psych  = planned_subset_results$psych$cohort$results$Generation_Z$transformed_table,
-  Life   = planned_subset_results$psych$cohort$results$Generation_Z$transformed_table,
-  Social = planned_subset_results$psych$cohort$results$Generation_Z$transformed_table
-)
-
-
-# new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_genZ,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Cohort Subgroup Analysis: Generation Z"),
-                           highlight_color = NULL, output_format = "html")
-
-
-
-
-# new function bind tables
-margot::margot_bind_tables(tables_list = tables_list_rich,
-                           bold = TRUE,
-                           kbl_args= list(booktabs = TRUE, caption = "Wealth Subgroup Analysis: Rich"),
-                           highlight_color = NULL, output_format = "html")
-
-
-
-
-
-
-# plots -------------------------------------------------------------------
-# Results Plots
-# health
-plots_subgroup_wealth_health <- wrap_plots(
-  list(
-    planned_subset_results$health$wealth$results$Poor$plot,
-    planned_subset_results$health$wealth$results$MiddleIncome$plot,
-    planned_subset_results$health$wealth$results$Rich$plot
-  ),
-  ncol = 1
-) +
-  patchwork::plot_annotation(
-    title = subtitle_health,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_wealth_health)
-
-plots_subgroup_ethnicity_health<- wrap_plots(
-  list(
-    planned_subset_results$health$ethnicity$results$Asian$plot,
-    planned_subset_results$health$ethnicity$results$Euro$plot,
-    planned_subset_results$health$ethnicity$results$Maori$plot,
-    planned_subset_results$health$ethnicity$results$Pacific$plot
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_health,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_ethnicity_health)
-
-plots_subgroup_political_health <- wrap_plots(
-  list(
-    planned_subset_results$health$political$results$Conservative$plot,
-    planned_subset_results$health$political$results$Centrist$plot,
-    planned_subset_results$health$political$results$Conservative$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_health,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_political_health)
-
-# plots
-plots_subgroup_gender_health<- wrap_plots(
-  list(
-    planned_subset_results$health$gender$results$Female$plot,
-    planned_subset_results$health$gender$results$Male$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_health,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_gender_health)
-
-# plots
-plots_subgroup_cohort_health<- wrap_plots(
-  list(
-    planned_subset_results$health$cohort$results$Boomers$plot,
-    planned_subset_results$health$cohort$results$Generation_X$plot,
-    planned_subset_results$health$cohort$results$Generation_Y$plot,
-    planned_subset_results$health$cohort$results$Generation_Z$plot
-    
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_health,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-print(plots_subgroup_cohort_health)
-
-# psychological well-being
-plots_subgroup_wealth_psych <- wrap_plots(
-  list(
-    planned_subset_results$psych$wealth$results$Poor$plot,
-    planned_subset_results$psych$wealth$results$MiddleIncome$plot,
-    planned_subset_results$psych$wealth$results$Rich$plot
-  ),
-  ncol = 1
-) +
-  patchwork::plot_annotation(
-    title = subtitle_psych,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_wealth_psych)
-
-plots_subgroup_ethnicity_psych<- wrap_plots(
-  list(
-    planned_subset_results$psych$ethnicity$results$Asian$plot,
-    planned_subset_results$psych$ethnicity$results$Euro$plot,
-    planned_subset_results$psych$ethnicity$results$Maori$plot,
-    planned_subset_results$psych$ethnicity$results$Pacific$plot
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_psych,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_ethnicity_psych)
-
-
-plots_subgroup_political_psych <- wrap_plots(
-  list(
-    planned_subset_results$psych$political$results$Conservative$plot,
-    planned_subset_results$psych$political$results$Centrist$plot,
-    planned_subset_results$psych$political$results$Conservative$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_psych,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_political_psych)
-
-# plots
-plots_subgroup_gender_psych<- wrap_plots(
-  list(
-    planned_subset_results$psych$gender$results$Female$plot,
-    planned_subset_results$psych$gender$results$Male$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_psych,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_gender_psych)
-
-# plots
-plots_subgroup_cohort_psych<- wrap_plots(
-  list(
-    planned_subset_results$psych$cohort$results$Boomers$plot,
-    planned_subset_results$psych$cohort$results$Generation_X$plot,
-    planned_subset_results$psych$cohort$results$Generation_Y$plot,
-    planned_subset_results$psych$cohort$results$Generation_Z$plot
-    
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_psych,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-print(plots_subgroup_cohort_psych)
-
-
-
-# present focussed well-being
-plots_subgroup_wealth_present <- wrap_plots(
-  list(
-    planned_subset_results$present$wealth$results$Poor$plot,
-    planned_subset_results$present$wealth$results$MiddleIncome$plot,
-    planned_subset_results$present$wealth$results$Rich$plot
-  ),
-  ncol = 1
-) +
-  patchwork::plot_annotation(
-    title = subtitle_present,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_wealth_present)
-
-plots_subgroup_ethnicity_present<- wrap_plots(
-  list(
-    planned_subset_results$present$ethnicity$results$Asian$plot,
-    planned_subset_results$present$ethnicity$results$Euro$plot,
-    planned_subset_results$present$ethnicity$results$Maori$plot,
-    planned_subset_results$present$ethnicity$results$Pacific$plot
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_present,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_ethnicity_present)
-
-
-plots_subgroup_political_present <- wrap_plots(
-  list(
-    planned_subset_results$present$political$results$Conservative$plot,
-    planned_subset_results$present$political$results$Centrist$plot,
-    planned_subset_results$present$political$results$Conservative$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_present,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_political_present)
-
-# plots
-plots_subgroup_gender_present<- wrap_plots(
-  list(
-    planned_subset_results$present$gender$results$Female$plot,
-    planned_subset_results$present$gender$results$Male$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_present,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_gender_present)
-
-# plots
-plots_subgroup_cohort_present<- wrap_plots(
-  list(
-    planned_subset_results$present$cohort$results$Boomers$plot,
-    planned_subset_results$present$cohort$results$Generation_X$plot,
-    planned_subset_results$present$cohort$results$Generation_Y$plot,
-    planned_subset_results$present$cohort$results$Generation_Z$plot
-    
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_present,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-print(plots_subgroup_cohort_present)
-
-
-## life focussed well-being
-plots_subgroup_wealth_life <- wrap_plots(
-  list(
-    planned_subset_results$life$wealth$results$Poor$plot,
-    planned_subset_results$life$wealth$results$MiddleIncome$plot,
-    planned_subset_results$life$wealth$results$Rich$plot
-  ),
-  ncol = 1
-) +
-  patchwork::plot_annotation(
-    title = subtitle_life,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_wealth_life)
-
-plots_subgroup_ethnicity_life<- wrap_plots(
-  list(
-    planned_subset_results$life$ethnicity$results$Asian$plot,
-    planned_subset_results$life$ethnicity$results$Euro$plot,
-    planned_subset_results$life$ethnicity$results$Maori$plot,
-    planned_subset_results$life$ethnicity$results$Pacific$plot
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_life,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_ethnicity_life)
-
-
-plots_subgroup_political_life <- wrap_plots(
-  list(
-    planned_subset_results$life$political$results$Conservative$plot,
-    planned_subset_results$life$political$results$Centrist$plot,
-    planned_subset_results$life$political$results$Conservative$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_life,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_political_life)
-
-# plots
-plots_subgroup_gender_life<- wrap_plots(
-  list(
-    planned_subset_results$life$gender$results$Female$plot,
-    planned_subset_results$life$gender$results$Male$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_life,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_gender_life)
-
-# plots
-plots_subgroup_cohort_life<- wrap_plots(
-  list(
-    planned_subset_results$life$cohort$results$Boomers$plot,
-    planned_subset_results$life$cohort$results$Generation_X$plot,
-    planned_subset_results$life$cohort$results$Generation_Y$plot,
-    planned_subset_results$life$cohort$results$Generation_Z$plot
-    
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_life,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-print(plots_subgroup_cohort_life)
-
-# social well-being
-plots_subgroup_wealth_social <- wrap_plots(
-  list(
-    planned_subset_results$social$wealth$results$Poor$plot,
-    planned_subset_results$social$wealth$results$MiddleIncome$plot,
-    planned_subset_results$social$wealth$results$Rich$plot
-  ),
-  ncol = 1
-) +
-  patchwork::plot_annotation(
-    title = subtitle_social,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_wealth_social)
-
-plots_subgroup_ethnicity_social<- wrap_plots(
-  list(
-    planned_subset_results$social$ethnicity$results$Asian$plot,
-    planned_subset_results$social$ethnicity$results$Euro$plot,
-    planned_subset_results$social$ethnicity$results$Maori$plot,
-    planned_subset_results$social$ethnicity$results$Pacific$plot
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_social,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_ethnicity_social)
-
-
-plots_subgroup_political_social <- wrap_plots(
-  list(
-    planned_subset_results$social$political$results$Conservative$plot,
-    planned_subset_results$social$political$results$Centrist$plot,
-    planned_subset_results$social$political$results$Conservative$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_social,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_political_social)
-
-# plots
-plots_subgroup_gender_social<- wrap_plots(
-  list(
-    planned_subset_results$social$gender$results$Female$plot,
-    planned_subset_results$social$gender$results$Male$plot
-  ),
-  ncol = 1
-)+
-  patchwork::plot_annotation(
-    title = subtitle_social,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-# view
-print(plots_subgroup_gender_social)
-
-# plots
-plots_subgroup_cohort_social<- wrap_plots(
-  list(
-    planned_subset_results$social$cohort$results$Boomers$plot,
-    planned_subset_results$social$cohort$results$Generation_X$plot,
-    planned_subset_results$social$cohort$results$Generation_Y$plot,
-    planned_subset_results$social$cohort$results$Generation_Z$plot
-    
-  ),
-  ncol = 2
-)+
-  patchwork::plot_annotation(
-    title = subtitle_social,
-    theme = theme(plot.title = element_text(size = 18,  face = "bold"))
-  )
-
-print(plots_subgroup_cohort_social)
-
-
-
-# individual plot options: showcased ---------------------------------------------
+# plot options: showcased ---------------------------------------------
 # default
 margot_plot_decision_tree(
   models_binary_social,
@@ -2389,11 +1841,9 @@ margot::margot_plot_policy_tree(
   split_line_color = "red",
 )
 
-
-# just the alpha
+# adjust only the alpha
 margot::margot_plot_policy_tree(
   models_binary,
   "model_t2_agreeableness_z",
   point_alpha = .1
 )
-
