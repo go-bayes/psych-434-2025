@@ -46,7 +46,7 @@ source("/Users/joseph/GIT/templates/functions/experimental_funs.R")
 
 ::: {.callout-note}
 **Required**
-- nil
+- grf package readings [https://grf-labs.github.io/grf/](https://grf-labs.github.io/grf/)
 
 **Optional**
 - [@Bulbulia2024PracticalGuide] [link](https://osf.io/preprints/psyarxiv/uyg3d)
@@ -153,13 +153,16 @@ The equations are as follows (for risk ratios)
 
 $$
 E-value_{RR} = RR + \sqrt{RR \times (RR - 1)}
-$$ $$
+$$ 
+
+$$
 E-value_{LCL} = LCL + \sqrt{LCL \times (LCL - 1)}
 $$
 
 Here is an R function that will calculate E-values
 
 ```{r}
+#| eval: true
 # evalue for risk ratio
 calculate_e_value <- function(rr, lcl) {
   e_value_rr = rr + sqrt(rr*(rr - 1))
@@ -345,32 +348,7 @@ Our question: does visiting a clinical psychologist reduce the 10 year incidence
 
 ```
 
-### Solution: adjust for confounder at baseline
 
-```{tikz}
-#| label: fig-dag-4
-#| fig-cap: "Solution to this problem"
-#| out-width: 100%
-#| echo: false
-
-\usetikzlibrary{positioning}
-\usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows}
-\usetikzlibrary{decorations}
-\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
-\tikzset{>=latex}
-
-
-\begin{tikzpicture}[{every node/.append style}=draw]
-\node [rectangle, draw=white, align=left] (L) at (0, 0) {t0/Heart Attack};
-\node [ellipse, draw=white] (A) at (4, 0) {t1/Doctor Visit};
-\node [rectangle, draw=white] (Y) at (8, 0) {t2/Heart Attack};
-\draw [-latex, draw=red, dashed] (A) to (Y);
-\draw [-latex, bend left, draw =black] (L) to (Y);
-\draw [-latex, black] (L) to (A);
-\end{tikzpicture}
-
-```
 
 ### A more thorough confounding control
 
