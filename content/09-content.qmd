@@ -47,6 +47,7 @@ source("/Users/joseph/GIT/templates/functions/experimental_funs.R")
 ::: {.callout-note}
 **Required**
 - grf package readings [https://grf-labs.github.io/grf/](https://grf-labs.github.io/grf/)
+- Do "Homework" form Lecture 8
 
 **Optional**
 - [@Bulbulia2024PracticalGuide] [link](https://osf.io/preprints/psyarxiv/uyg3d)

@@ -34,9 +34,9 @@ website:
           href: content/06-content.qmd
         - text: "Week 7: In Class Test"
           href: content/07-quiz.qmd
-        - text: "Week 8: Causal Inference - Estimation of ATE and CATE - R and LaTeX"
+        - text: "Week 8: Estimation of ATE and CATE using machine learning - R"
           href: content/08-content.qmd
-        - text: "Week 9: Hands On: A Full Study Analysis in R"
+        - text: "Week 9: Theoretically postulated Subgroups analysis- R"
           href: content/09-content.qmd
         - text: "Week 10: Hands On: Writing Up Your Analysis: Quarto Documents"
           href: content/10-content.qmd

@@ -65,9 +65,9 @@ original_df <- margot::here_read("df_wide", push_mods)
 
 # boilerplate_save(master_unified_db, output_file = "unified_db", data_path  = here_data_path, create_backup = FALSE)
 
-unified_db <- boilerplate_import(data_path = here_data_path)
+# unified_db <- boilerplate_import(data_path = here_data_path)
 
-cat(unified_db$appendix$explain$grf)
+# cat(unified_db$appendix$explain$grf)
 # set model defaults -----------------------------------------------------
 grf_defaults <- list(
   seed = 123, # reproduce results
@@ -373,9 +373,9 @@ $$
   \widehat{\tau}(x)=E[Y(1)-Y(0)\mid X=x].
 $$
 
-Because the noisy estimates point in many directions, their average is markedly less variable -- *the wisdom of (tree) crowds*.
+Because the noisy estimates point in many directions, their average is markedly less variable -- *the wisdom of trees is a wisdom of crowds*.
 
-**In sum** a regression tree chops the data into locally flat chunks; a regression forest averages many such trees to smooth away chance idiosyncrasies; a causal forest adds honesty so that its averaged differences, though never directly observable for any one person, give our best data-driven forecast of individual treatment effects.
+In sum, a regression tree chops the data into locally flat chunks; a regression forest averages many such trees to smooth away chance idiosyncrasies; a causal forest adds honesty so that its averaged differences, though never directly observable for any one person, give our best data-driven forecast of individual treatment effects.
 ---
 
 ## 4 Built-in protection against over-fitting  
@@ -405,7 +405,7 @@ Two integrals of the TOC curve summarise how lucrative targeting could be:
 
 * **RATE AUTOC** (Area *Under* the TOC) puts equal weight on every $q$.  This answers: *If benefits are concentrated among the very best prospects, how much can we harvest by cherry-picking them?*  
 
-* **RATE Qini** applies heavier weight to the mid-range of $q$.  This is the go-to metric when investigators face a fixed, moderate-sized budget—say, "we can afford to treat 40 % of students; will targeting help?" [@raduszkiewicz2022grading].
+* **RATE Qini** applies heavier weight to the mid-range of $q$.  This is the go-to metric when investigators face a fixed, moderate-sized budget—say, "we can afford to treat 40 % of individuals; will targeting help?"  [@yadlowsky2021evaluating]. We will evaluate the curve at treatment of 20% and 50% of the population.
 
 
 To quantify the economic or policy value of heterogeneity, rank units by $\widehat{\tau}(x)$ and draw a **Targeting-Operator Characteristic (TOC)** curve that plots cumulative gain against the fraction $q$ of the population treated.  
@@ -420,7 +420,7 @@ Although OOB predictions are 'out-of-sample' for individual trees, the full fore
 #| label: fig-rate-example
 #| fig-cap: "RATE AUTOC: Hours Socialising → Sense of Meaning"
 #| echo: false
-#| column: screen-inset
+#| column: screen
 batch_rate_autoc_plots$model_t2_meaning_sense_z
 ```
 
@@ -432,19 +432,18 @@ batch_rate_autoc_plots$model_t2_meaning_sense_z
 
 A **Qini curve** displays cumulative benefit on the vertical axis and treatment coverage on the horizontal.  Confidence bands come directly from the held-out test fold.
 
-:::{.column-page}
 ```{r, results='asis'}
 #| label: fig-qini-example
 #| fig-cap: "Qini Curve: Hours Socialising → Social Belonging"
 #| echo: false
-#| column: screen-inset-shaded
+#| column: screen
 plot_qini_belong
 ```
-:::
 
 
 
-Reading @fig-qini-example: cherry-picking the top 20 % of students nets a gain of 0.08 units (95 % CI 0.04–0.12).  Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19).  After that the curve flattens -- once you’ve treated everyone who offers a decent return, there are no more big fish left to catch.
+
+@fig-qini-example: we find that focussing on the top 20 % of individuals nets a gain of 0.08 units (95 % CI 0.04–0.12).  Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19).  After that the curve flattens -- once you’ve treated everyone who offers a decent return, there are no more big fish left to catch.
 ---
 
 
@@ -452,21 +451,21 @@ Reading @fig-qini-example: cherry-picking the top 20 % of students nets a gain o
 
 The policytree algorithm serves that need by pruning the forest's many \widehat{\tau}(x) estimates into a decision tree whose depth you choose; the algorithm picks splits that maximise predicted benefit at that depth [@policytree_package_2024].  In this course we stop at depth = 2 for a practical balance:
 
-	- every rule uses at most two yes/no questions, so even politicians can follow the logic;
-	-	each leaf still holds enough cases to give a stable effect estimate;
-	-	deeper trees add substantial computational complexity.
+- every rule uses at most two yes/no questions, so even politicians can follow the logic;
+-	each leaf still holds enough cases to give a stable effect estimate;
+-	deeper trees add substantial computational complexity.
 
 
 ```{r, results='asis'}
 #| label: fig-decision-tree
 #| fig-cap: "Decision tree for Social Belonging"
 #| echo: false
-#| column: screen-inset-shaded
+#| column: screen
 plots_policy_trees$model_t2_belong_z$decision_tree
 ```
 
  
-*Findings for Social Belonging:**
+**Findings for Effect of Hour Socialising on Social Belonging:**
 
 Participants are first split by Self Esteem at -0.925 (original scale: 3.958). For those with Self Esteem <= this threshold, the next split is by Neuroticism at 0.642 (original scale: 4.228). Within that subgroup, individuals with Neuroticism <= the threshold are recommended **control**, while those with Neuroticism > the threshold are recommended **treated**.
 
@@ -479,9 +478,9 @@ For participants with Self Esteem > -0.925 (original scale: 3.958), the second s
 
 ```{r, results='asis'}
 #| label: fig-policy-map
-#| fig-cap: "Predicted treatment assignment (out-of-sample)"
-#| fig-height: 12    # adjust
-#| fig-width: 10    # adjust
+#| fig-cap: "Predicted treatment assignment (predictions out of training sample)"
+#| fig-height: 16   # adjust
+#| fig-width: 16   # adjust
 #| echo: false
 plots_policy_trees$model_t2_belong_z$policy_tree
 ```
@@ -4472,6 +4471,15 @@ margot::margot_plot_policy_tree(
 )
 
 ```
+
+
+## HOMEWORK: Prepare A Fresh Set of Analysis Scripts With A Different Exposure
+
+- E.g. Ask: what are the effects of a shift in religious service `religion_church` on multi-dimensional well-being. 
+- Consider what variables you need for confounding control at baseline. 
+- Think about how to make the exposure variable binary.
+- You may consider different outcome(s) as well as a different exposure. 
+
 
 
 
