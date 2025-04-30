@@ -421,8 +421,7 @@ subtitle_social = "Social Well-being"
 base_defaults_binary <- list(
   type = "RD",
   title = title_binary,
-  #interpret_all_E_gt1 = TRUE,
-  e_val_bound_threshold = 1.1,
+  e_val_bound_threshold = 1.2,
   colors = c(
     "positive" = "#E69F00",
     "not reliable" = "grey50",
@@ -515,7 +514,7 @@ binary_results_health <- margot_plot(
   save_output = FALSE, 
   order = "evaluebound_asc",
   original_df = original_df,
-  e_val_bound_threshold = 1.1
+  e_val_bound_threshold = 1.2
 )
 
 # view
@@ -539,7 +538,7 @@ binary_results_psych_asc <- margot_plot(
   include_coefficients = FALSE,
   save_output = FALSE,
   original_df = original_df,
-  e_val_bound_threshold = 1.1,
+  e_val_bound_threshold = 1.2,
   order = "evaluebound_asc")
 
 
@@ -553,7 +552,7 @@ binary_results_psych <- margot_plot(
   label_mapping = label_mapping_psych,
   include_coefficients = FALSE,
   save_output = FALSE,
-  e_val_bound_threshold = 1.1,
+  e_val_bound_threshold = 1.2,
   original_df = original_df,
   order = "evaluebound_asc"
 )
@@ -677,7 +676,7 @@ plot_all_models <- margot_plot(
   all_models$combined_table,
   options = options_all_models,
   save_output = FALSE,
-  e_val_bound_threshold = 1.1,
+  e_val_bound_threshold = 1.2,
   label_mapping = label_mapping_all,
   save_path = here::here(push_mods),
   original_df = original_df,
@@ -706,7 +705,7 @@ tables_list <- list(
 margot_bind_tables_markdown <- margot_bind_tables(
   tables_list = tables_list, #list(all_models$combined_table),
   sort_E_val_bound = "desc",
-  e_val_bound_threshold = 1.1,
+  e_val_bound_threshold = 1.2,
   highlight_color = NULL,
   bold = TRUE,
   rename_cols = TRUE,
