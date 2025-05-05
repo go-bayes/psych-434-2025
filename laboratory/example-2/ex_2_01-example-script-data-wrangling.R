@@ -1,5 +1,5 @@
-# example script 1: data wrangling
-# spring 2025
+# example 2 script 1: data wrangling
+# may 2025
 # example estimation of average treatment effect - script 1
 # questions: joseph.bulbulia@vuw.ac.nz
 
@@ -10,7 +10,8 @@
 # load libraries ---------------------------------------------------------
 # install and load 'margot' package if not already installed
 if (!require(margot, quietly = TRUE)) {
-  devtools::install_github("go-bayes/margot") # ensure version is at least 1.0.21
+  devtools::install_github("go-bayes/margot") # ensure version is at least 1.0.32
+  library(margot
 }
 
 # install and load 'boilerplate' package if not already installed
@@ -39,25 +40,13 @@ set.seed(123)
 pull_data <- here::here("data")
 
 # create a folder called "models" in the main directory
-dir.create("models")
+dir.create("models_example_2")
 
 # then create a link to this directory using `here::here()`
-push_mods <- here::here("models")
-
-# data directory
-pull_mods <- here::here("data")
-
-
-
-# # save data to your directory for later use and comment the above
-# margot::here_save_qs(df_nz_long,"df_nz_long" ,push_mods)
-
-# comment the above and henceforth read your data: 
-# remove old data 
-rm(df_nz_long)
+push_mods <- here::here("models_example_2")
 
 # read data from saved file
-df_nz_long <- margot::here_read_qs("df_nz_long", push_mods)
+df_nz_long <- margot::here_read_qs("df_nz_long", pull_data)
 
 # define study variables --------------------------------------------------------
 
@@ -68,9 +57,9 @@ glimpse(df_nz_long)
 length(unique(df_nz_long$id))
 
 # define exposure variable
-name_exposure <- c("hours_community")
-var_labels_exposure = c("hours_community" = "Weekly Hours Community Socialising",
-                        "hours_community_binary" = "Weekly Hours Community Socialising (binary)")
+name_exposure <- c("extraversion")
+var_labels_exposure = c("extraversion" = "Extraversion",
+                        "extraversion_binary" = "Extraversion (binary)")
 
 # save variable labels for manuscript
 here_save(var_labels_exposure, "var_labels_exposure")
@@ -428,6 +417,7 @@ outcome_vars_no_log<-sort(outcome_vars_no_log)
 extra_vars <- c("id", "wave", "year_measured", "not_lost", "sample_weights") 
 all_vars <- c(baseline_vars, exposure_var, outcome_vars, extra_vars)
 
+# extra vars for table
 extra_vars_table <- extra_vars
 not_all_vars<- c(baseline_vars_no_log, exposure_var, outcome_vars_no_log, extra_vars_table)
 
