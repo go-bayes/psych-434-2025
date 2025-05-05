@@ -15,22 +15,18 @@ set.seed(123)
 # this is the path used by joseph
 # push_mods <- here::here('/Users/joseph/v-project\ Dropbox/data/courses/25-psych-434')
 # replace with your own path after creating a data file
+
 pull_mods_data <- here::here("data")
 
 # load libraries ---------------------------------------------------------
 # install and load 'margot' package if not already installed
 if (!require(margot, quietly = TRUE)) {
-  devtools::install_github("go-bayes/margot") # ensure version is at least 1.0.21
-}
-
-# install and load 'boilerplate' package if not already installed
-if (!require(boilerplate, quietly = TRUE)) {
-  devtools::install_github("go-bayes/boilerplate")
+  devtools::install_github("go-bayes/margot") # ensure version is at least 1.0.32
+  library("margot")
 }
 
 # load required libraries
 library(margot)
-library(boilerplate)
 library(tidyverse)
 library(qs)
 library(here)
@@ -51,5 +47,5 @@ df_nz_long <- qread(tmp)
 head(df_nz_long)
 
 # # save data to your directory for later use and comment the above
-margot::here_save_qs(df_nz_long,"df_nz_long" ,push_mods_data)
+margot::here_save_qs(df_nz_long,"df_nz_long" ,pull_mods_data)
 

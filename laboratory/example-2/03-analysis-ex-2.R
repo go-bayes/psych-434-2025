@@ -1,6 +1,8 @@
 # # example 2 02-data-wrangling-grf-model
 # get data into wide format and ready for modelling using grf
 # joseph.bulbulia@gmail.com
+devtools::load_all("/Users/joseph/GIT/margot/")
+
 # may 2025
 
 # restart fresh session
@@ -280,42 +282,42 @@ policy_tree_defaults <- list(
 
 # 
 # # test --------------------------------------------------------------------
-# n <- nrow(X) # n in sample
-# 
-# # define training sample
-# toy <- sample(1:n, n / 4) # get half sample
-# 
-# # test set data
-# toy_data = df_grf[toy, ]
-# 
-# # check size
-# nrow(toy_data)
-# 
-# # covariates
-# X_toy = X[toy, ]
-# 
-# # test set covariates check
-# str(X_toy)
-# 
-# # test set exposure
-# W_toy = W[toy]
-# 
-# # test weights
-# weights_toy = weights[toy]
-# 
-# # 1. fit model and save everything
-# cf_out <- margot_causal_forest(
-#   data        = toy_data,
-#   outcome_vars=  c("t2_kessler_latent_depression_z"),
-#   covariates  = X_toy,
-#   W           = W_toy,
-#   weights     = weights_toy,
-#   save_data   = TRUE,   #  ← needed for flipping models
-#   save_models = TRUE, # ←  save models
-# )
-# 
-# 
-# # inspect qini data
+n <- nrow(X) # n in sample
+
+# define training sample
+toy <- sample(1:n, n / 4) # get half sample
+
+# test set data
+toy_data = df_grf[toy, ]
+
+# check size
+nrow(toy_data)
+
+# covariates
+X_toy = X[toy, ]
+
+# test set covariates check
+str(X_toy)
+
+# test set exposure
+W_toy = W[toy]
+
+# test weights
+weights_toy = weights[toy]
+
+# 1. fit model and save everything
+cf_out <- margot_causal_forest(
+  data        = toy_data,
+  outcome_vars=  c("t2_kessler_latent_depression_z"),
+  covariates  = X_toy,
+  W           = W_toy,
+  weights     = weights_toy,
+  save_data   = TRUE,   #  ← needed for flipping models
+  save_models = TRUE, # ←  save models
+)
+
+
+# inspect qini data
 # # where there are very low or high propensity scores (prob of exposure) we might consider trimming
 # table_inspect_qini <- margot::margot_inspect_qini(cf_out, propensity_bounds = c(0.01, 0.97))
 # table_inspect_qini
@@ -392,7 +394,7 @@ policy_tree_defaults <- list(
 #   decision_tree_args  = list(text_size   = 4)
 # )
 # 
-# # L1 combo tree ** (we'll generally plot combo trees) ** 
+# # L1 combo tree ** (we'll generally plot combo trees) **
 # combo1$combined_plot
 # 
 # # test L2 combo tree
@@ -530,101 +532,101 @@ policy_tree_defaults <- list(
 # ** uncomment to run full models** 
 
 # # health models -----------------------------------------------------------
-# models_binary_health <- margot::margot_causal_forest(
-#   data = df_grf,
-#   outcome_vars = t2_outcome_health_z,
-#   covariates = X,
-#   W = W,
-#   weights = weights,
-#   grf_defaults = grf_defaults,
-#   top_n_vars = 15,
-#   save_models = TRUE,
-#   save_data = TRUE,
-#   train_proportion = 0.7
-# )
-# 
-# # check size if needed
-# margot::margot_size(models_binary_health)
-# 
-# # save model
-# margot::here_save_qs(models_binary_health, "models_binary_health", push_mods)
-# 
-# 
-# # psych models ------------------------------------------------------------
-# models_binary_psych <- margot::margot_causal_forest(
-#   data = df_grf,
-#   outcome_vars = t2_outcome_psych_z,
-#   covariates = X,
-#   W = W,
-#   weights = weights,
-#   grf_defaults = grf_defaults,
-#   top_n_vars = 15,
-#   save_models = TRUE,
-#   save_data = TRUE,
-#   train_proportion = 0.7
-# )
-# 
-# # save model
-# margot::here_save_qs(models_binary_psych, "models_binary_psych", push_mods)
-# 
-# 
-# # present models ----------------------------------------------------------
-# models_binary_present <- margot::margot_causal_forest(
-#   data = df_grf,
-#   outcome_vars = t2_outcome_present_z,
-#   covariates = X,
-#   W = W,
-#   weights = weights,
-#   grf_defaults = grf_defaults,
-#   top_n_vars = 15,
-#   save_models = TRUE,
-#   save_data = TRUE,
-#   train_proportion = 0.7
-# )
-# 
-# # save model
-# margot::here_save_qs(models_binary_present, "models_binary_present", push_mods)
-# 
-# 
-# # life models -------------------------------------------------------------
-# models_binary_life <- margot::margot_causal_forest(
-#   data = df_grf,
-#   outcome_vars = t2_outcome_life_z,
-#   covariates = X,
-#   W = W,
-#   weights = weights,
-#   grf_defaults = grf_defaults,
-#   top_n_vars = 15,
-#   save_models = TRUE,
-#   save_data = TRUE,
-#   train_proportion = 0.7
-# )
-# 
-# # save model
-# margot::here_save_qs(models_binary_life, "models_binary_life", push_mods)
-# 
-# 
-# # social models -----------------------------------------------------------
-# models_binary_social <- margot::margot_causal_forest(
-#   data = df_grf,
-#   outcome_vars = t2_outcome_social_z,
-#   covariates = X,
-#   W = W,
-#   weights = weights,
-#   grf_defaults = grf_defaults,
-#   top_n_vars = 15,
-#   save_models = TRUE,
-#   save_data = TRUE,
-#   train_proportion = 0.7
-# )
-# 
-# 
-# # save model
-# margot::here_save_qs(models_binary_social, "models_binary_social", push_mods)
-# 
+models_binary_health <- margot::margot_causal_forest(
+  data = df_grf,
+  outcome_vars = t2_outcome_health_z,
+  covariates = X,
+  W = W,
+  weights = weights,
+  grf_defaults = grf_defaults,
+  top_n_vars = 15,
+  save_models = TRUE,
+  save_data = TRUE,
+  train_proportion = 0.7
+)
+
+# check size if needed
+margot::margot_size(models_binary_health)
+
+# save model
+margot::here_save_qs(models_binary_health, "models_binary_health", push_mods)
 
 
-# read results ------------------------------------------------------------
+# psych models ------------------------------------------------------------
+models_binary_psych <- margot::margot_causal_forest(
+  data = df_grf,
+  outcome_vars = t2_outcome_psych_z,
+  covariates = X,
+  W = W,
+  weights = weights,
+  grf_defaults = grf_defaults,
+  top_n_vars = 15,
+  save_models = TRUE,
+  save_data = TRUE,
+  train_proportion = 0.7
+)
+
+# save model
+margot::here_save_qs(models_binary_psych, "models_binary_psych", push_mods)
+
+
+# present models ----------------------------------------------------------
+models_binary_present <- margot::margot_causal_forest(
+  data = df_grf,
+  outcome_vars = t2_outcome_present_z,
+  covariates = X,
+  W = W,
+  weights = weights,
+  grf_defaults = grf_defaults,
+  top_n_vars = 15,
+  save_models = TRUE,
+  save_data = TRUE,
+  train_proportion = 0.7
+)
+
+# save model
+margot::here_save_qs(models_binary_present, "models_binary_present", push_mods)
+
+
+# life models -------------------------------------------------------------
+models_binary_life <- margot::margot_causal_forest(
+  data = df_grf,
+  outcome_vars = t2_outcome_life_z,
+  covariates = X,
+  W = W,
+  weights = weights,
+  grf_defaults = grf_defaults,
+  top_n_vars = 15,
+  save_models = TRUE,
+  save_data = TRUE,
+  train_proportion = 0.7
+)
+
+# save model
+margot::here_save_qs(models_binary_life, "models_binary_life", push_mods)
+
+
+# social models -----------------------------------------------------------
+models_binary_social <- margot::margot_causal_forest(
+  data = df_grf,
+  outcome_vars = t2_outcome_social_z,
+  covariates = X,
+  W = W,
+  weights = weights,
+  grf_defaults = grf_defaults,
+  top_n_vars = 15,
+  save_models = TRUE,
+  save_data = TRUE,
+  train_proportion = 0.7
+)
+
+
+# save model
+margot::here_save_qs(models_binary_social, "models_binary_social", push_mods)
+
+
+
+# read results ------------------------------------------------------------ 
 
 # if you save models you do not need to re-run them
 models_binary_health <- margot::here_read_qs("models_binary_health", push_mods)
@@ -632,10 +634,6 @@ models_binary_psych <- margot::here_read_qs("models_binary_psych", push_mods)
 models_binary_present <- margot::here_read_qs("models_binary_present", push_mods)
 models_binary_life <- margot::here_read_qs("models_binary_life", push_mods)
 models_binary_social <- margot::here_read_qs("models_binary_social", push_mods)
-
-# check size (example)
-margot::margot_size(models_binary_health)
-
 
 # make graphs -------------------------------------------------------------
 # titles
@@ -992,34 +990,34 @@ flip_outcomes_standard = c(
   "t2_hlth_fatigue_z",
   "t2_kessler_latent_anxiety_z",
   "t2_kessler_latent_depression_z",
-  "t2_rumination_z"#,
-  # "t2_perfectionism_z" # the exposure variable was not investigated
+  "t2_rumination_z",
+  "t2_perfectionism_z" # the exposure variable was not investigated
 )
 
 # we will investigate losses to these outcomes
 # usual flipped names for positive interventions
 # commented out for this study
-# flipped_names <- c(
-#   "Alcohol Frequency",
-#   "Alcohol Intensity",
-#   "BMI",
-#   "Fatigue",
-#   "Anxiety",
-#   "Depression",
-#   "Perfectionism",
-#   "Rumination"
-# )
+flipped_names <- c(
+  "Alcohol Frequency",
+  "Alcohol Intensity",
+  "BMI",
+  "Fatigue",
+  "Anxiety",
+  "Depression",
+  "Rumination",
+  "Perfectionism"
+)
 
 # set diff for all outcomes to obtain vector of postive outcomes to reverse
-flip_outcomes <- c( setdiff(t2_outcomes_all, flip_outcomes_standard) ) 
+flip_outcomes <- flip_outcomes_standard #c( setdiff(t2_outcomes_all, flip_outcomes_standard) ) 
 
 # check
 flip_outcomes
 
 # checks
-neg_check <- vapply(all_models$results[ paste0("model_", flip_outcomes) ],
-                    \(x) mean(x$tau_hat, na.rm = TRUE) < 0, logical(1))
-stopifnot(all(neg_check))   # every chosen outcome has a negative mean CATE
+# neg_check <- vapply(all_models$results[ paste0("model_", flip_outcomes) ],
+#                     \(x) mean(x$tau_hat, na.rm = TRUE) < 0, logical(1))
+# stopifnot(all(neg_check))   # every chosen outcome has a negative mean CATE
 
 # get labels
 flipped_names <- margot_get_labels(flip_outcomes, label_mapping_all)
@@ -1035,15 +1033,21 @@ here_save(flipped_names, "flipped_names")
 # flip negatively oriented outcomes --------------------------------------
 
 # flip models using margot's function
-# this will take some time 
+
+#  *** this will take some time ***
+
+# ** give it time ** 
 models_binary_flipped_all <- margot_flip_forests(
   all_models,
   flip_outcomes = flip_outcomes, #  ← select 
   recalc_policy = TRUE
 )
 
-# size
-margot_size(models_binary_flipped_all)
+# save
+here_save_qs(models_binary_flipped_all, "models_binary_flipped_all", push_mods)
+
+# read if needed
+models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
 
 # test
 models_binary_flipped_all$results$model_t2_kessler_latent_depression_z$policy_tree_depth_1
@@ -1159,61 +1163,67 @@ if (length(autoc_plots) > 0) {
 
 
 # QINI --------------------------------------------------------------------
-decision_tree_test_1L <- margot_plot_decision_tree(
-  models_binary_flipped_all,
-  model_name = "model_t2_kessler_latent_depression_z",
-  max_depth  = 1L, # ← new argument
-  original_df = original_df,
-  label_mapping = label_mapping_all
-)
-decision_tree_test_1L
-
-decision_tree_test_1L
-
-# ignore workings
-policy_tree_plots_1L <- models_binary_batch_qini <- margot_policy(
+plots_qini <- margot_policy(
   models_binary_flipped_all,
   save_plots = FALSE,
   output_dir = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args = policy_tree_defaults,
   model_names = rate_interpretation_all$qini_model_names,
-  max_depth  = 1L, # ← new argument
-  original_df = original_df,
-  label_mapping = label_mapping_all
-)
-
-# check size
-margot_size(policy_tree_plots_1L)
-
-# view
-policy_tree_plots_1L[[1]][[3]]
-policy_tree_plots_1L[[2]][[3]]
-
-
-
-# 2 L workflow
-policy_tree_plots_1L <- models_binary_batch_qini <- margot_policy(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$qini_model_names,
-  max_depth  = 1L, # ← new argument
+  max_depth  = 2L, # ← new argument
   original_df = original_df,
   label_mapping = label_mapping_all
 )
 
 # view
-policy_tree_plots_2L[[1]][[3]]
+plots_qini[[1]][[4]]
+plots_qini[[2]][[4]]
+plots_qini[[3]][[4]]
 
-policy_tree_plots_2L[[2]][[3]]
-margot_interpret_policy_batch
+# get all plots
+plots <- lapply(seq_along(plots_qini), function(i) {
+  models_binary_batch_qini[[i]][[4]]  # extract the 4th element (plot) from each model
+})
 
-margot_interpret_policy_tree(models_binary_flipped_all,   
-                             model_name = rate_interpretation_all$qini_model_names[[1]], 
-                             original_df = original_df)
+# give the plots meaningful names
+names(plots) <- rate_interpretation_all$qini_model_names
+
+# determine number of columns based on number of plots# determine number of columns based on number of plots
+num_cols <- ifelse(length(plots) > 3, 2, 1)
+
+# combine plots using patchwork
+library(patchwork)
+
+
+# create combined plot
+combined_plot <- plots[[1]]
+for (i in 2:length(plots)) {
+  combined_plot <- combined_plot + plots[[i]]
+}
+
+# apply the dynamic layout
+combined_plot <- combined_plot + plot_layout(ncol = num_cols)
+
+# add titles and annotations
+combined_plot <- combined_plot & 
+  plot_annotation(
+    title = "Qini Model Plots",
+    subtitle = paste0(length(plots), " models arranged in ", num_cols, " column(s)"),
+    tag_levels = "A"  # Adds A, B, C, etc. to the plots
+  )
+
+# view
+combined_plot
+
+# save the combined plot with appropriate dimensions
+# adjust width and height based on the layout
+# width <- ifelse(num_cols == 1, 8, 12)
+# height <- 6 * ceiling(length(plots)/num_cols)  # height per row * number of rows
+# 
+# ggsave(here::here(push_mods, "combined_qini_plots.pdf"), 
+#        combined_plot, 
+#        width = width, height = height)
+
 
 # interpretation ----------------------------------------------------------
 # interpret qini curves
@@ -1233,7 +1243,7 @@ interpretation_qini_curves$summary_table |> kbl("markdown")
 
 # policy tree analysis ---------------------------------------------------
 # make policy trees
-plots_policy_trees <- margot_policy(
+plots_policy_trees_1L <- margot_policy(
   models_binary_flipped_all,
   save_plots = FALSE,
   output_dir = here::here(push_mods),
@@ -1242,47 +1252,56 @@ plots_policy_trees <- margot_policy(
   model_names = rate_interpretation_all$either_model_names, # defined above
   original_df = original_df,
   label_mapping = label_mapping_all, 
-  max_depth = 2
+  max_depth = 1L
+)
+
+# model 1
+plots_policy_trees_1L[[1]][[3]]
+
+# model 2
+plots_policy_trees_1L[[2]][[3]]
+
+# model 3
+plots_policy_trees_1L[[2]][[3]]
+
+interpret_plots_policy_trees_1L <- margot_interpret_policy_batch(models_binary_flipped_all,  
+                              model_names = rate_interpretation_all$either_model_names)
+
+
+# view interpretation
+cat(interpret_plots_policy_trees_1L)
+
+# policy tree analysis ---------------------------------------------------
+# make policy trees
+# *** 2L is MUCH MORE PERSUASIVE *** 
+plots_policy_trees_2L <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_names = rate_interpretation_all$either_model_names, # defined above
+  original_df = original_df,
+  label_mapping = label_mapping_all, 
+  max_depth = 2L
 )
 
 
-# extract the policy tree plots for all models
-# get model names
-model_names <- rate_interpretation_all$either_model_names
-model_names
-
-# create a more organized structure for the plots
-plot_collection <- list()
-
-# for each model, collect all three plot types
-for (i in seq_along(model_names)) {
-  model_name <- model_names[[i]]
-  
-  # Create a list of the three plots for this model
-  model_plots <- list(
-    plot1 = plots_policy_trees[[i]][[1]],
-    plot2 = plots_policy_trees[[i]][[2]],
-    plot3 = plots_policy_trees[[i]][[3]]
-  )
-  
-  # Add to the collection with model name as key
-  plot_collection[[model_name]] <- model_plots
-}
-
-# example
-plot_collection[[1]][[3]]
-
-
-# view plots --------------------------------------------------------------
 # model 1
-plots_policy_trees[[1]][[3]]
+plots_policy_trees_2L[[1]][[3]]
 
 # model 2
-plots_policy_trees[[2]][[3]]
+plots_policy_trees_2L[[2]][[3]]
 
-# yola
+# model 3
+plots_policy_trees_1L[[2]][[3]]
 
-devtools::load_all("/Users/joseph/GIT/margot/")
+interpret_plots_policy_trees_2L <- margot_interpret_policy_batch(models_binary_flipped_all, model_names = rate_interpretation_all$either_model_names)
+
+
+# view interpretation
+cat(interpret_plots_policy_trees_2L)
+
 
 
 #############################################################################
@@ -1449,7 +1468,7 @@ domain_models <- list(
   models_binary_social
 )
 
-str(domain_models, max.level=2)
+
 # set up domain names
 domain_names <- c("health", "psych", "present", "life", "social")
 
@@ -1461,7 +1480,7 @@ subtitles <- c(
   subtitle_life,
   subtitle_social
 )
-subsets_standard_cohort
+
 # set up subset types in a list
 subset_types <- list(
   wealth = subsets_standard_wealth,
@@ -1472,7 +1491,7 @@ subset_types <- list(
 )
 
 
-
+# run model
 planned_subset_results <- margot_planned_subgroups_batch(
   domain_models = domain_models,
   X = X,
@@ -1483,9 +1502,6 @@ planned_subset_results <- margot_planned_subgroups_batch(
   subtitles = subtitles
 )
 
-
-
-planned_subset_results
 
 # results
 # health subgroup
@@ -2151,31 +2167,3 @@ margot::margot_plot_policy_tree(
   point_alpha = .1
 )
 
-
-
-# subsets_standard_cohort <- list(
-#   boomers = list(
-#     var = "t0_gen_cohort_gen_Boomers_binary",
-#     value = 1,
-#     description = "Baby Boomers",
-#     label = "Boomers"  # label remains as is, but could be changed if desired
-#   ),
-#   gen_X = list(
-#     var = "t0_gen_cohort_gen_X_binary",
-#     value = 1,
-#     description = "Generation X",
-#     label = "Generation_X"  # label remains as is, but could be changed if desired
-#   ),
-#   gen_Y = list(
-#     var = "t0_gen_cohort_gen_Y_binary",
-#     value = 1,
-#     description = "Generation Y",
-#     label = "Generation_Y"  # label remains as is, but could be changed if desired
-#   ),
-#   gen_Z = list(
-#     var = "t0_gen_cohort_gen_Z_binary",
-#     value = 1,
-#     description = "Generation Z",
-#     label = "Generation_Z"  # label remains as is, but could be changed if desired
-#   )
-# )

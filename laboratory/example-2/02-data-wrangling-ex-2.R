@@ -10,7 +10,7 @@ set.seed(123)
 
 # load libraries ---------------------------------------------------------
 # install and load 'margot' package
-# make sure you have at least margot 1.0.21
+# make sure you have at least margot 1.0.31
 if (!require(margot, quietly = TRUE)) {
   devtools::install_github("go-bayes/margot")
   library(margot)
@@ -176,6 +176,10 @@ t0_name_exposure_binary
 t1_name_exposure_binary <- paste0("t1_",name_exposure_binary)
 t1_name_exposure_binary
 
+# for predictive models for censoring/ use continuous variable for better 
+# predictions
+t1_name_exposure_continuous <- paste0("t1_", name_exposure)
+
 # ordinal use
 ordinal_columns <- c(
   "t0_education_level_coarsen",
@@ -193,7 +197,7 @@ dat_long_prepare <- margot::remove_numeric_attributes(dat_long_prepare)
 # wide data
 df_wide <- margot_wide_machine(dat_long_prepare,
                                id = "id",
-                               wave = "time_factor",
+                               wave = "wave",
                                baseline_vars,
                                exposure_var = name_exposure_both,
                                outcome_vars,
@@ -227,6 +231,8 @@ naniar::vis_miss(df_wide, warn_large_data = FALSE)
 colnames(df_wide)
 
 
+# made data wide in correct format
+# ignore warning
 df_wide_encoded  <- margot::margot_process_longitudinal_data_wider(
   df_wide,
   ordinal_columns = ordinal_columns,
@@ -330,10 +336,8 @@ D_0 <- as.factor(df_wide_encoded$t0_lost_following_wave)
 cen_0 <- df_wide_encoded[, E]
 
 # probability forest for censoring
+# this will take time
 cen_forest_0 <- probability_forest(cen_0, D_0)
-
-# save if needed, but object is very large
-# here_save_qs(cen_forest_0, "cen_forest_0", push_mods)
 
 # get predictions
 predictions_grf_0 <- predict(cen_forest_0, newdata = cen_0, type = "response")
@@ -362,15 +366,12 @@ t0_weights <- margot_adjust_weights(
 length(t0_weights$adjusted_weights)
 length(df_wide_encoded$t0_sample_weights)
 
-# assign
+# veiw
 nrow(df_wide_encoded)
 hist(t0_weights$adjusted_weights)
 
-# assign weights
+# give weights
 df_wide_encoded$t0_adjusted_weights <- t0_weights$adjusted_weights
-
-# just fyi
-# df_wide_encoded$t0_propensity_score_model_weights <- t0_weights$censoring_weights
 
 #check
 naniar::vis_miss(df_wide_encoded, warn_large_data = FALSE)
@@ -390,13 +391,11 @@ D_1 <- as.factor(df_wide_encoded_1$t1_lost_following_wave)
 cen_1 <- df_wide_encoded_1[, E_and_exposure]
 
 # probability forest for censoring
+#  *** this will take time *** 
 cen_forest_1 <- probability_forest(cen_1, D_1, 
                                    sample.weights = df_wide_encoded_1$t0_adjusted_weights)
 
-# save if needed, very large
-# here_save(cen_forest_1, "cen_forest_1")
-
-# pedictions
+# predict forest
 predictions_grf_1 <- predict(cen_forest_1, 
                              newdata = cen_1, type = "response")
 # get propensity score
@@ -557,7 +556,11 @@ propensity_model_and_plots <- margot_propensity_model_and_plots(
 
 # visualise
 summary(propensity_model_and_plots$match_propensity)
+
+# key plot
 propensity_model_and_plots$love_plot
+
+# other plots
 propensity_model_and_plots$summary_plot
 propensity_model_and_plots$balance_table
 propensity_model_and_plots$diagnostics

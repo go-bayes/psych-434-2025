@@ -18,6 +18,7 @@ html-math-method: katex
 reference-location: margin
 citation-location: margin
 cap-location: margin
+code-fold: true
 code-block-border-left: true
 ---
 
@@ -70,73 +71,87 @@ Doing a causal analysis
 
 
 
-- Download the script and store in our R directory: [link to analysis script ](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example_analysis.R)
-
-- Make sure you can install all libraries required of the manuscript template.
-
-- Come to the seminar prepared to work through the analysis
-
-
 
 ## LAB
 
-- We start with our lab this week. 
 
-- Here is a link to the workbook:
+### Script 0 Setup
 
-[link to template for option 2 assignment 3](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example_analysis.R)
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/example-2/00-setup.R
+
+
+```
+
+
+### Script 01 Initial Data Wrangling
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/example-2/01-data-wrangling-ex-2.R
+
+
+```
+
+
+### Script 2 Secondary Data Wrangling
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/example-2/02-data-wrangling-ex-2.R
+
+```
+
+
+### Script 3 Analysis
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/example-2/03-analysis-ex-2.R
+
+```
+
 
 
 
 
 ## What You Will Learn
 
-- **Modified Treatment Policies**
-
-- **Setting up your analysis:** 
-  
-- **Data wrangling (review):** 
-
-- **Demographic Tables (review):** 
-
-- **Exploratory Tables and Graphs (review)**
-
-- **Computing inverse probability of censoring weights (IPCW) to handle attrition/missingness**
-
 - **Sensitivity Analysis: E-values**
+- **Workflow**
 
-- **Causal Analysis using machine learning ensembles (Targeted Maximum Likelihood)**
-
-
-## Part 1: New Content 
-
-### Modified Treatment Policies and E-values
+<!-- ### Modified Treatment Policies and E-values -->
 
 
-A modified treatment policy is a *flexible* intervention of the following form: 
+<!-- A modified treatment policy is a *flexible* intervention of the following form:  -->
 
 
-$$
-\mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\ 
-a_1 & \text{otherwise} \end{cases}
-$$
-$$
-\mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\ 
-a_1 & \text{otherwise} \end{cases}
-$$
+<!-- $$ -->
+<!-- \mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\  -->
+<!-- a_1 & \text{otherwise} \end{cases} -->
+<!-- $$ -->
+<!-- $$ -->
+<!-- \mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\  -->
+<!-- a_1 & \text{otherwise} \end{cases} -->
+<!-- $$ -->
 
-$$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
+<!-- $$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
 
-$$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
+<!-- $$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
 
-$$
-{\delta}(g) ={g'} - {g''}
-$$
+<!-- $$ -->
+<!-- {\delta}(g) ={g'} - {g''} -->
+<!-- $$ -->
 
 
-Rather than shifting an entire population into one of two states, the estimand flexibly shifts a population according to a pre-specified function. 
+<!-- Rather than shifting an entire population into one of two states, the estimand flexibly shifts a population according to a pre-specified function.  -->
 
-see: @hoffman2023
+<!-- see: @hoffman2023 -->
 
 
 ### Sensitivity Analysis using E-values
@@ -254,165 +269,6 @@ Our question must be made precise.
 
 Today we will consider how to make psychological questions precise, and how to answer them, using 3-wave panel designs [@vanderweele2020].
 
-The order is as follows:
-
-1. **Motivate Three Wave Longitudinal Designs Using Causal Graphs**
-2. **Checklist For Causal Estimation in Three Wave Longitudinal Designs**
-3. **Explanation of the the Checklist**
-
-
-## Motivations for a Three-Wave Longitudinal Design for Observational Causal Inference. 
-
-REVIEW: 
-Causal Diagrammes (DAGS) are a remarkably powerful and simple tool for understanding confounding [See here](https://osf.io/b23k7) 
-
-### Common cause of exposure and outcome.
-
-Our question: does visiting a clinical psychologist reduce the 10 year incidence of heart attacks?
-
-
-```{tikz}
-#| label: fig-dag-1
-#| fig-cap: "Common cause of exposure and outcome: example"
-#| out-width: 100%
-#| echo: false
-
-\usetikzlibrary{positioning}
-\usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows}
-\usetikzlibrary{decorations}
-\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
-\tikzset{>=latex}
-
-
-\begin{tikzpicture}[{every node/.append style}=draw]
-\node [ellipse, draw=white] (L) at (0, 0) {t0/Male};
-\node [rectangle, draw=white] (A) at (4, 0) {t1/DoctorVisit};
-\node [rectangle, draw=white] (Y) at (8, 0) {t2/Heart Attack};
-\draw [-latex, draw=red, dashed] (A) to (Y);
-\draw [-latex, bend left, draw =black] (L) to (Y);
-\draw [-latex, black] (L) to (A);
-\end{tikzpicture}
-```
-
-### Solution: Adjust for Confounder
-
-```{tikz}
-#| label: fig-dag-2
-#| fig-cap: "Solution to this problem."
-#| out-width: 100%
-#| echo: false
-
-\usetikzlibrary{positioning}
-\usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows}
-\usetikzlibrary{decorations}
-\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
-\tikzset{>=latex}
-
-
-\begin{tikzpicture}[{every node/.append style}=draw]
-\node [rectangle, draw=black] (L) at (0, 0) {t0/Male};
-\node [ellipse, draw=white] (A) at (4, 0) {t1/DoctorVisit};
-\node [rectangle, draw=white] (Y) at (8, 0) {t2/Heart Attack};
-\draw [-latex, draw=white] (A) to (Y);
-\draw [-latex, bend left, draw =black] (L) to (Y);
-\draw [-latex, black] (L) to (A);
-\end{tikzpicture}
-
-```
-
-### Bias: exposure at baseline is a common cause of the exposure at t1 and outcome at t2
-
-```{tikz}
-#| label: fig-dag-3
-#| fig-cap: "Causal graph reveals bias from pre-exosure indicator"
-#| out-width: 100%
-#| echo: false
-
-\usetikzlibrary{positioning}
-\usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows}
-\usetikzlibrary{decorations}
-\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
-\tikzset{>=latex}
-
-
-\begin{tikzpicture}[{every node/.append style}=draw]
-\node [rectangle, draw=white] (L) at (0, 0) {t0/Doctor Visit};
-\node [ellipse, draw=white] (A) at (4, 0) {t1/Doctor Visit};
-\node [rectangle, draw=white] (Y) at (8, 0) {t2/Heart Attack};
-\draw [-latex, draw=red, dashed] (A) to (Y);
-\draw [-latex, bend left, draw =black] (L) to (Y);
-\draw [-latex, black] (L) to (A);
-\end{tikzpicture}
-
-```
-
-
-
-### A more thorough confounding control
-
-```{tikz}
-#| label: fig-dag-5
-#| fig-cap: "Causal graph:more general panel design"
-#| out-width: 100%
-#| echo: false
-
-\usetikzlibrary{positioning}
-\usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows}
-\usetikzlibrary{decorations}
-\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
-\tikzset{>=latex}
-
-
-\begin{tikzpicture}[{every node/.append style}=draw]
-\node [rectangle, draw=white, align=left] (L) at (0, 0) {t0/Male \\t0/Doctor Visit \\t0/Heart Attack};
-\node [ellipse, draw=white] (A) at (4, 0) {t1/Doctor Visit};
-\node [rectangle, draw=white] (Y) at (8, 0) {t2/Heart Attack};
-\draw [-latex, draw=red, dashed] (A) to (Y);
-\draw [-latex, bend left, draw =black] (L) to (Y);
-\draw [-latex, black] (L) to (A);
-\end{tikzpicture}
-```
-
-### Generic 3-wave panel design (VanderWeeele 2020)
-
-```{tikz}
-#| label: fig-dag-6
-#| fig-cap: "Causal graph: three-wave panel design"
-#| out-width: 100%
-#| echo: false
-
-\usetikzlibrary{positioning}
-\usetikzlibrary{shapes.geometric}
-\usetikzlibrary{arrows}
-\usetikzlibrary{decorations}
-\tikzstyle{Arrow} = [->, thin, preaction = {decorate}]
-\tikzset{>=latex}
-
-\begin{tikzpicture}[{every node/.append style}=draw]
-\node [rectangle, draw=white] (U) at (0, 0) {U};
-\node [rectangle, draw=black, align=left] (L) at (2, 0) {t0/L \\t0/A \\t0/Y};
-\node [rectangle, draw=white] (A) at (4, 0) {t1/A};
-\node [ellipse, draw=white] (Y) at (6, 0) {t2/Y};
-\draw [-latex, draw=black] (U) to (L);
-\draw [-latex, draw=black] (L) to (A);
-\draw [-latex, draw=red, dotted] (A) to (Y);
-\draw [-latex, bend left=50, draw =black] (L) to (Y);
-\draw [-latex, bend right=50, draw =black, dotted] (U) to (Y);
-\draw [-latex, bend left=50, draw =black, dotted] (U) to (A);
-
-
-\end{tikzpicture}
-```
-
-
-
-## Sensitivity analysis
-
-
 
 ## Comprehensive Checklist for Detailed Reporting of a Causal Inferenctial Study.
 
@@ -422,6 +278,7 @@ Our question: does visiting a clinical psychologist reduce the 10 year incidence
 -   **Relevance:** have I explained its importance? If not, explain.
 -   **Ethics** how might this question affect people? How might not investigating this question affect people? 
 -   **Causality:** Is my question causal? If not, refine your question.
+-   **Heterogeneous Treatment Effects**:  Do I want to examine who responds differently (CATE)?
 -   **Subgroup analysis:** does my question involve a subgroup (e.g., cultural group)? If not, develop a subgroup analysis question.
 -   **Explain the Framework:** can I explain the causal inference framework and convey the gist to non-specialists? If not, review course materials.
 
@@ -471,32 +328,7 @@ Our question: does visiting a clinical psychologist reduce the 10 year incidence
 
 #### Identify the Estimand
 
--   **Causal Estimand:** Is my causal estimand one of the following:
-
-$$ATE_{G,(A,A')} = E[Y(1) - Y(0)|G, L]$$
-
-$$ATE_{G,(A/A')} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}$$
-
-A modified treatment policy, e.g.
-
-$$
-\mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\ 
-a_1 & \text{otherwise} \end{cases}
-$$
-$$
-\mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\ 
-a_1 & \text{otherwise} \end{cases}
-$$
-
-$$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
-
-$$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$
-
-$$
-{\gamma}(g) ={g'} - {g''}
-$$
-
-If yes, you're on the right track.
+- ATE or CATE or both? 
 
 #### Understanding Source and Target Populations
 
@@ -529,7 +361,7 @@ If yes, you're on the right track.
 
 #### If Machine Learing
 
--  **Machine Learning**: have I explained how semi-parametric ensemble machine learning works? (see example below).
+-  **Machine Learning**: have I explained how causal forests work (next week's lecture).
 
 ### d. Highlight unmeasured pre-treatment covariates
 
@@ -574,35 +406,7 @@ Let **U** denoted unmeasured pre-treatment covariates that may potentially bias 
 
 ### e. Choose the scale for a causal contrast
 
-Average causal effects can be inferred by contrasting the expected outcome when a population is exposed to an exposure level, $E[Y(A = a)]$, with the expected outcome under a different exposure level, $E[Y(A=a')]$.
-
-For a binary treatment with levels $A=0$ and $A=1$, the Average Treatment Effect (ATE), on the difference scale, is expressed:
-
-$$ATE_{\text{risk difference}} = E[Y(1)|L] - E[Y(0)|L]$$
-
-On the risk ratio scale, the ATE is expressed:
-
-$$ATE_{\text{risk ratio}} = \frac{E[Y(1)|L]}{E[Y(0)|L]}$$
-
-Other effect scales, such as the incidence rate ratio, incidence rate difference, or hazard ratio, might also be of interest. We can also define the Average Treatment Effect on the Treated (ATT) :
-
-$$ATT_{\text{risk difference}} = E[Y(1) - Y(0)|A=1,L]$$
-
-$$ATT_{\text{risk ratio}} = \frac{E[Y(1)|A=1,L]}{E[Y(0)|A=1, L]}$$
-
-Another common estimand is the Population Average Treatment Effect (PATE), which denotes the effect the treatment would have on the entire population if applied universally to that population. This quantity can be expressed:
-
-$$PATE_{\text{risk difference}} = f(E[Y(1) - Y(0)|L], W)$$
-
-$$PATE_{\text{risk ratio}} = f\left(\frac{E[Y(1)|L]}{E[Y(0)|L]}, W\right)$$
-
-where $f$ is a function that incorporates weights $W$ into the estimation of the expected outcomes. These weights are given from census estimates for the wider population. Note: I will show you how to use weights in future seminars.
-
-We might also be interested in identifying effects specific to certain strata, such as risk differences or risk ratios, as they are modified by baseline indicators. Denote a stratum of interest by $G$. We may then compute:
-
-$$ATE_{G,\text{risk difference}} = E[Y(1) - Y(0)|G, L]$$
-
-$$ATE_{G,\text{risk ratio}} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}$$
+Difference/ Risk ratio? 
 
 #### Consider:
 
