@@ -1,4 +1,4 @@
-# script 1: causal workflow for estimating average treatment effects using margot
+# script 2: causal workflow for estimating average treatment effects using margot
 # may 2025
 # questions: joseph.bulbulia@vuw.ac.nz
 

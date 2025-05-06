@@ -35,14 +35,6 @@ loadfonts(device = "all")
 library("margot")
 library("tidyverse")
 
-# WARNING:  COMMENT THIS OUT. JB DOES THIS FOR WORKING WITHOUT WIFI
-#source("/Users/joseph/GIT/templates/functions/libs2.R")
-
-# WARNING:  COMMENT THIS OUT. JB DOES THIS FOR WORKING WITHOUT WIFI
-#source("/Users/joseph/GIT/templates/functions/funs.R")
-
-# WARNING:  COMMENT THIS OUT. JB DOES THIS FOR WORKING WITHOUT WIFI
-source("/Users/joseph/GIT/templates/functions/experimental_funs.R")
 ```
 
 
@@ -80,26 +72,29 @@ Doing a causal analysis
 ### Scripts for a full analysis
 
 ::: {.callout-note-script-0}
-[Download full lab scripts](../laboratory/example-2/00-setup.R)
+[Download full lab scripts 0](../laboratory/example-2/00-setup.R)
 :::
 
 
 ::: {.callout-note-script-1}
-[Download full lab scripts](../laboratory/example-2/01-init-data-wrangling-ex-2.R)
+[Download full lab scripts 1](../laboratory/example-2/01-init-data-wrangling-ex-2.R)
 :::
 
 ::: {.callout-note-script-2}
-[Download full lab scripts](../laboratory/example-2/02-data-wrangling-ex-2.R)
+[Download full lab scripts 2](../laboratory/example-2/02-data-wrangling-ex-2.R)
 :::
 
 ::: {.callout-note-script-3}
-[Download full lab scripts](../laboratory/example-2/03-analysis-ex-2.R)
+[Download full lab scripts 3](../laboratory/example-2/03-analysis-ex-2.R)
 :::
 
 
-## Code Review
 
-### Script 0 Setup
+## Script 0: Setup
+
+**Run in full. No need to change anything.**  
+
+This script prepares your data. Run it once -- running it twice would be like turning the ignition off just to start your car again: unnecessary/silly.
 
 
 ```{r}
@@ -109,19 +104,151 @@ Doing a causal analysis
 ```
 
 
+## Script 01 Initial Data Wrangling
 
-### Script 01 Initial Data Wrangling
+Five checkpoints in the *wrangle-1* script are as follows;
+
+
+### First — pick your exposure* 
+
+Decide which variable is the “cause”. Here it is `extraversion`. Verify it exists at baseline (`t0_`) *and* at the exposure wave (`t1_`). glimpse it, eyeball missingness, and record the choice:
+
+```r
+name_exposure <- "hours_community"
+here_save(name_exposure, "name_exposure")
+```
+
+### Second -- choose a binary cut-point
+binary splits simplify interpretation but can torture data. plot the distribution and mark obvious breaks:
+
+```r
+margot_plot_categorical(df,
+                        col_name       = name_exposure,
+                        custom_breaks  = c(0, 1))
+```
+
+Ask: which break meaningfully separate groups into two exposure groups? Is the split balanced? adjust `custom_breaks` until the answer is “yes”. then commit:
+
+
+```r
+create_ordered_variable(df,
+                        var_name       = name_exposure,
+                        custom_breaks  = c(0, 1))
+```
+
+
+### Third — select outcomes that fit your interests
+outcomes live in themed buckets (health, psych, life, social…). Choose the measures your hypothesis needs; save the vector for the manuscript:
+
+```r
+outcome_vars <- c("lifesat", "pwi", "self_esteem")
+here_save(outcome_vars, "outcome_vars")
+```
+
+### Fourth — lock in wave structure
+
+Define one baseline wave, one or more exposure waves, and one outcome wave:
+
+```r
+baseline_wave  <- "2018"
+exposure_waves <- "2019"
+outcome_wave   <- "2020"
+```
+
+Everything downstream—eligibility, transitions... depends on this trio.
+
+
+### Fifth — save as you go, or regret later
+Use `margot::here_save()` (objects) and `here_save_qs()` (large objects) right after you create something you’ll cite. The convention keeps analysis, tables, and manuscript in sync.
+
+```r
+here_save(dat_long_prepare,          "dat_long_prepare")
+here_save(percent_missing_baseline,  "percent_missing_baseline")
+```
+
+
+### Take-away: Think about the hypothetical experiment you wish to perform with observational data. 
+
+Decide early (exposure, cut-point, outcomes, waves), *checkpoint* everything with `here_save()`, and the rest of the pipeline flows.
+
+
+### Script 1 is here:
 
 ```{r}
 #| include: true
 #| eval: false
 #| file: ../laboratory/example-2/01-init-data-wrangling-ex-2.R
 
-
 ```
 
 
-### Script 2 Secondary Data Wrangling
+## Script 2: what script 2 does while you sip your coffee
+
+**Purpose**  
+Convert the tidy long data into a grf-ready wide matrix and correct for dropout bias with inverse-probability-of-censoring weighting (IPCW).
+
+### Step 1 – go wide automatically
+
+`margot_wide_machine()` reshapes each wave into `t0_`, `t1_`, `t2_` columns. You gave it all the names in script 1, so no new choices here. Inspect `df_wide` just to be sure the columns look sensible (baseline before exposure before outcome).
+
+
+```r
+colnames(df_wide)
+naniar::vis_miss(df_wide)
+```
+
+### Step 2 – encode + scale for algorithms
+
+`margot_process_longitudinal_data_wider()` turns factors into dummies, scales continuous variables, and appends loss-to-follow-up flags. The result is `df_wide_encoded`.  
+
+Quick sanity check: the exposure binaries should be `0/1` and their `NA`s must match the *_lost* indicators.
+
+```r
+table(df_wide_encoded$t0_not_lost_following_wave)
+```
+
+
+### Step 3 – build IPCW weights*
+
+Two probability forests estimate the chance of being observed at t1 and t2. `margot_adjust_weights()` then trims extreme values and normalises the weights. these appear as `t0_adjusted_weights` and `t1_adjusted_weights`.  The weigths should not be too extreme (e.g. values > 10)
+
+```r
+hist(df_wide_encoded$t0_adjusted_weights)
+```
+
+**Why?** observations that resemble those who dropped out are up-weighted, so estimates stay unbiased when data vanish.
+
+
+
+### Step 4 – drop the censored 
+Rows with `*_lost_following_wave == 1` are removed, leaving `df_grf`. This dataset feeds the causal forest and should now have **no missing values** in any `t1_` or `t2_` column. Missingness is permitted in `t0_` columns
+
+```r
+naniar::vis_miss(df_grf)   # should be a blank canvas
+```
+
+---
+
+### Step 5 – checkpoint everything
+
+Each major object (`df_wide`, `df_wide_encoded`, `df_grf`, the weight vectors) is saved with `here_save()` or `here_save_qs()`. this keeps the analysis reproducible and the manuscript tables in sync.
+
+
+### Takeaway: what you must do
+
+1. **run the script without edits.**  
+2. skim the weight histograms; if you see huge spikes, ask for help.  
+3. confirm `df_grf` has the expected number of rows and no missing cells.
+
+
+**take-away**:
+
+Script 2 is a conveyor belt: long → wide → weighted → clean. your only job is to eyeball the parcels before they roll into the modelling bay.
+
+
+
+
+### Script 2 is here:
 
 ```{r}
 #| include: true
@@ -131,7 +258,109 @@ Doing a causal analysis
 ```
 
 
-### Script 3 Analysis
+## Script 3 The Analysis
+
+
+### 1 Reproducibility scaffold  
+
+```r
+set.seed(123)                 # lock randomness  
+pacman::p_load(margot, qs …)  # load every tool once  
+```
+No choices here—just **run** and move on.
+
+
+
+### 2 Pull in prepared objects  
+
+```r
+df_grf           <- here_read("df_grf")     # wide, weighted data  
+name_exposure    <- here_read("name_exposure")  
+```
+
+If anything is `NULL`, return to scripts 1–2 and debug.
+
+
+
+### 3 Sanity-check with a toy forest  
+Fit one outcome on ¼ of the data to confirm the pipeline before burning CPU hours.
+
+```r
+cf_out <- margot_causal_forest(
+  data         = df_grf[sample(nrow(df_grf), nrow(df_grf)/4), ],
+  outcome_vars = "t2_kessler_latent_depression_z",
+  covariates   = X,           # baseline covariates E
+  W            = W,           # exposure
+  weights      = weights
+)
+margot_plot_policy_combo(cf_out, max_depth = 1L)
+```
+
+Success = a plot appears without errors.
+
+
+### 4 Full model batches + ATE tables  
+Loop over the five outcome domains, saving each model to `models_example_2/`.
+
+```r
+models_binary_health <- margot_causal_forest(
+  data = df_grf,
+  outcome_vars = t2_outcome_health_z,
+  covariates   = X, W = W, weights = weights,
+  save_models  = TRUE, save_data = TRUE
+)
+here_save_qs(models_binary_health, "models_binary_health")
+```
+
+Then create ATE plots and interpretations with `margot_plot()`.  Save as these go straight into the manuscript.
+
+
+
+### 5 Heterogeneity hunt (CATE)  
+
+*Evidence phase*  
+
+-   **RATE AUTOC** & **Qini curves** via `margot_rate()` and `margot_inspect_qini()` flag outcomes with meaningful heterogeneity.  
+
+*Action phase*  
+
+-  **Flip** outcomes you want to *minimise* (e.g. depression) so positive CATE = good.  
+
+```r
+flipped <- margot_flip_forests(all_models,
+                                   flip_outcomes =
+                                   c("t2_kessler_latent_depression_z"), 
+                                   recalc_policy = TRUE)
+```
+
+-  Fit **policy trees** (`margot_policy()`, `max_depth = 2L`) to discover actionable rules.  
+
+- Depth-1 trees are often trivial; depth-2 gives interpretable nuance.
+
+Check that every split variable exists in the original data and that leaves map sensibly onto subgroups (no cells with < 30 observations).
+
+
+### 6 Report subgroup analyses (optional)  
+
+When theory predicts effect modification—age bands, income thirds, etc.—use `margot_planned_subgroups_batch()`. The helper auto-generates tables and mini-plots; just pass the subset definitions you crafted:
+
+```r
+planned_subset_results <- margot_planned_subgroups_batch(
+  domain_models = list(models_binary_health, …),
+  X             = X,
+  subset_types  = list(wealth = subsets_standard_wealth, …)
+)
+```
+If you do subgroup analyses, save the markdown tables/ plots using the protocols for the main analysis (For you to do, not done in the script.)
+
+
+
+### Takeaway  
+
+Run the script in order, **eyes on three checkpoints**: the toy forest plot, smooth Qini/RATE curves, and sensible policy-tree leaves. Everything else is auto-saved for the manuscript.
+
+
+### Script 3 is here:
 
 ```{r}
 #| include: true
@@ -142,10 +371,13 @@ Doing a causal analysis
 
 
 
-## What You Will Learn
+## Part 2: 
 
 - **Sensitivity Analysis: E-values**
 - **Workflow**
+
+
+
 
 <!-- ### Modified Treatment Policies and E-values -->
 
@@ -294,7 +526,7 @@ Today we will consider how to make psychological questions precise, and how to a
 
 ## Comprehensive Checklist for Detailed Reporting of a Causal Inferenctial Study.
 
-## STEP 1 Formulate the Research Question
+#### Step 1: Formulate the Research Question
 
 -   **State your question:** is my question clearly stated? If not, state it.
 -   **Relevance:** have I explained its importance? If not, explain.
@@ -328,7 +560,7 @@ Today we will consider how to make psychological questions precise, and how to a
 -   **Consistency:** can I interpret what it means to intervene on the exposure? I should be able to.
 -   **Exchangeability:** are different versions of the exposure conditionally exchangeable given measured baseline confounders? They should be.
 -   **Exposure type:** is the exposure binary or continuous?
--   **Shift intervention**: Am I contrasting static interventions or modified treatment policies? 
+-   **Shift intervention**: Am I contrasting static interventions or modified treatment policies?  (Not relevant for your final report)
 -   **Exposure timing:** Does the exposure appear before the outcome? It should.
 
 #### Account for Confounders
@@ -350,7 +582,7 @@ Today we will consider how to make psychological questions precise, and how to a
 
 #### Identify the Estimand
 
-- ATE or CATE or both? 
+- ATE or CATE or both? (For you -- it will be both)
 
 #### Understanding Source and Target Populations
 
@@ -381,11 +613,11 @@ Today we will consider how to make psychological questions precise, and how to a
 -   **Outcome assessment:** If the outcome is rare and binary, have I specified logistic regression? If it's continuous, have I considered converting it to z-scores?
 -   **Sensitivity analysis:** am I planning a sensitivity analysis using simulation? If yes, describe it (e.g. E-values.)
 
-#### If Machine Learing
+#### Machine Learing
 
--  **Machine Learning**: have I explained how causal forests work (next week's lecture).
+Have I explained how causal forests work (next week's lecture).
 
-### d. Highlight unmeasured pre-treatment covariates
+### Clarify unmeasured pre-treatment covariates
 
 Let **U** denoted unmeasured pre-treatment covariates that may potentially bias the statistical association between *A* and *Y* independently of the measured covariates.
 
@@ -426,7 +658,7 @@ Let **U** denoted unmeasured pre-treatment covariates that may potentially bias 
 \end{tikzpicture}
 ```
 
-### e. Choose the scale for a causal contrast
+### Choose the scale for a causal contrast
 
 Difference/ Risk ratio? 
 
@@ -451,7 +683,7 @@ $$ATE_{A/A'} = \frac{E[Y(A)| L]}{E[Y(A')| L]}$$
 
 This defines the contrast of $A$ and $A'$ on a ratio scale.
 
-#### f. Describe the population(s) for whom the intended study is meant to generalise by distinguishing between source and target populations.
+#### Describe the population(s) for whom the intended study is meant to generalise by distinguishing between source and target populations.
 
 Consider the following concepts:
 
@@ -473,7 +705,7 @@ where $f$ is a function and $T$ is a function that maps the results from our sou
 
 We discover that asking a causal question is a multifaceted task. It demands careful definition of the outcome, including its timing, the exposure, and covariates. It also requires selecting the appropriate scale for causal contrast, controlling for confounding, and potentially adjusting for sample weights or stratification. Finally, when asking a causal question, we must consider for whom the results apply. Only after following these steps can we then ask: "How may we answer this causal question?"
 
-## STEP 2: ANSWER A CAUSAL QUESTION
+## STEP 2: Answer Your Question
 
 #### Obtain longitudinal data
 
@@ -532,7 +764,8 @@ Consider the following ideas about how to report one's model:
 -   **Propensity Score Reporting:** Detail the process of propensity score derivation, including the model used and any variable transformations.
 -   **WeightIt Package:** Explicitly mention the use of the 'WeightIt' package in R, including any specific options or parameters used in the propensity score estimation process.
 -   **Method Variations:** Report if different methods were used to obtain propensity scores, and the reasons behind the choice of methods such as 'ebal', 'energy', and 'ps'.
--   **Continuous Exposures:** Highlight that for continuous exposures, only the 'energy' option was used for propensity score estimation.
+-   **Continuous Exposures:** Highlight that for continuous exposures, only the 'energy' option was used for propensity score estimation. (not relevant for your report)
+-  **Binary Exposure** Justify your cutpoints by referencing theory/existing knowledge *in advance* of conducting the analysis.
 -   **Subgroup Estimation:** Confirm that the propensity scores for subgroups were estimated separately, and discuss how the weights were subsequently combined with the original data.
 -   **Covariate Balance:** Include a Love plot to visually represent covariate balance on the exposure both before and after weighting.
 -   **Weighting Algorithm Statistics:** Report the statistics for the weighting algorithms as provided by the WeightIt package, including any measures of balance or fit.
