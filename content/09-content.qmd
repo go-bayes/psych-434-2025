@@ -12,7 +12,7 @@ format:
     code-overflow: scroll
     highlight-style: kate
     code-line-numbers: true
-    code-fold: false
+    code-fold: true
     code-tools:
       source: true
       toggle: false
@@ -73,18 +73,41 @@ Doing a causal analysis
 
 
 
-## LAB
+## LABORATORY
 
+
+
+### Scripts for a full analysis
+
+::: {.callout-note-script-0}
+[Download full lab scripts](../laboratory/example-2/00-setup.R)
+:::
+
+
+::: {.callout-note-script-1}
+[Download full lab scripts](../laboratory/example-2/01-init-data-wrangling-ex-2.R)
+:::
+
+::: {.callout-note-script-2}
+[Download full lab scripts](../laboratory/example-2/02-data-wrangling-ex-2.R)
+:::
+
+::: {.callout-note-script-3}
+[Download full lab scripts](../laboratory/example-2/03-analysis-ex-2.R)
+:::
+
+
+## Code Review
 
 ### Script 0 Setup
+
 
 ```{r}
 #| include: true
 #| eval: false
 #| file: ../laboratory/example-2/00-setup.R
-
-
 ```
+
 
 
 ### Script 01 Initial Data Wrangling
@@ -116,8 +139,6 @@ Doing a causal analysis
 #| file: ../laboratory/example-2/03-analysis-ex-2.R
 
 ```
-
-
 
 
 
