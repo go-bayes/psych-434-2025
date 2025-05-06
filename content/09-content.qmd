@@ -11,14 +11,15 @@ format:
     messages: FALSE
     code-overflow: scroll
     highlight-style: kate
+    code-line-numbers: true
+    code-fold: false
     code-tools:
       source: true
-      toggle: FALSE
+      toggle: false
 html-math-method: katex
 reference-location: margin
 citation-location: margin
 cap-location: margin
-code-fold: true
 code-block-border-left: true
 ---
 
@@ -91,7 +92,7 @@ Doing a causal analysis
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/example-2/01-data-wrangling-ex-2.R
+#| file: ../laboratory/example-2/01-init-data-wrangling-ex-2.R
 
 
 ```

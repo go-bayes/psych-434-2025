@@ -384,7 +384,7 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
 
 - **Evaluation Criteria**:
     - Clarity of theoretical framework, research question, and design.
-    - Validity of confounding control strategy.
+    - Validity of confounding control strategy. 
     - Discussion on assumptions and statistical models.
     - Presentation quality (10%)
       - clearly and efficiently presents study 
