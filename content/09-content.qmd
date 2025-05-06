@@ -357,7 +357,7 @@ If you do subgroup analyses, save the markdown tables/ plots using the protocols
 
 ### Takeaway  
 
-Run the script in order, **eyes on three checkpoints**: the toy forest plot, smooth Qini/RATE curves, and sensible policy-tree leaves. Everything else is auto-saved for the manuscript.
+Run the script in order, **eyes on three checkpoints**: the toy forest plot, convincing Qini/RATE curves/interpretations, and sensible policy-tree leaves. Everything else is auto-saved for the manuscript.
 
 
 ### Script 3 is here:
