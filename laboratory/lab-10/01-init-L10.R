@@ -19,6 +19,15 @@ if (!requireNamespace("margot", quietly = TRUE)) {
   devtools::install_github("go-bayes/margot", upgrade = "never")
 }
 
+if (packageVersion("margot") < "1.0.36") {
+  stop("please install margot >= 1.0.36 for this workflow\n
+       run: devtools::install_github(\"go-bayes/margot\")
+")
+}
+
+library("margot")
+
+
 # load packages -------------------------------------------------------------
 # pacman will install missing packages automatically
 if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")

@@ -2,7 +2,6 @@
 # may 2025
 # questions: joseph.bulbulia@vuw.ac.nz
 
-
 # +--------------------------+
 # |       DO NOT ALTER       |
 # +--------------------------+
@@ -29,9 +28,8 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 
-
-if (packageVersion("margot") < "1.0.35") {
-  stop("please install margot >= 1.0.35 for this workflow\n
+if (packageVersion("margot") < "1.0.36") {
+  stop("please install margot >= 1.0.36 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -58,13 +56,13 @@ pacman::p_load(
   skimr,           # summary statistics
   grf, ranger,     # machine learning forests
   doParallel,      # parallel processing,
+  kableExtra,
   ggplot2 ,        # graphs
   rlang ,          # functions for base types/Core R/ 'Tidyverse'
   purrr ,          # functional programming tools.
-  patchwork,       # nice graph placement
+  patchwork,      # nice graph placement
   janitor,         # nice labels
-  glue,            # format/ interpolate a string
-  kableExtra.      %tables
+  glue            # format/ interpolate a string
 )
 
 
@@ -290,7 +288,7 @@ cf_out <- margot_causal_forest(
   weights      = weights_toy,
   save_data    = TRUE,
   save_models  = TRUE
-  )
+)
 
 # inspect Qini curve ------------------------------------------------------
 qini_tbl <- margot::margot_inspect_qini(cf_out, propensity_bounds = c(0.01, 0.97))
@@ -396,6 +394,7 @@ cf_out_f <- margot_flip_forests(
 # where there are very low or high propensity scores (prob of exposure) we might consider trimming
 margot::margot_inspect_qini(cf_out_f, propensity_bounds = c(0.01, 0.97))
 
+
 # if we had extreme scores (not used here)
 # cf_out_flipped_trimmed <- margot_rescue_qini(model_results      = cf_out_f,
 #                                              propensity_bounds  = c(0.05, 0.95)) 
@@ -476,7 +475,7 @@ binary_results$transformed_table |> rename("E-Value" = "E_Value", "E-Value bound
   kbl(format = 'markdown')
 
 # check
-cat(binary_results$interpretation)
+binary_results$plot
 
 # interpretation
 cat(binary_results$interpretation)
@@ -578,7 +577,7 @@ flipped_names <- c(
   # |   END MODIFY             |
   # +--------------------------+
 )
-  
+
 
 # NOT IF THE EXPOSURE IS NEGATIVE, FOCUS ON WHICH OUTCOMES, if any, ARE POSITIVE AND FLIP THESE?
 flip_outcomes <- flip_outcomes_standard #c( setdiff(t2_outcomes_all, flip_outcomes_standard) )
@@ -624,6 +623,17 @@ here_save_qs(models_binary_flipped_all, "models_binary_flipped_all", push_mods)
 
 # read back if needed
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
+
+
+# where there are very low or high propensity scores (prob of exposure) we might consider trimming
+# margot::margot_inspect_qini(models_binary_flipped_all, propensity_bounds = c(0.05, 0.95))
+# 
+# 
+# # if we had extreme scores (not used here)
+# models_binary_flipped_all_t <- margot_rescue_qini(model_results      = models_binary_flipped_all,
+#                                              propensity_bounds  = c(0.05, 0.95))
+
+
 
 # omnibus heterogeneity tests --------------------------------------------
 # test for treatment effect heterogeneity across all outcomes
@@ -725,8 +735,20 @@ if (length(autoc_plots) > 0) {
   message("No AUTOC plots available")
 }
 
+models_batch_qini_2L_test <- margot_plot_policy_combo(
+  models_binary_flipped_all,
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_name =  "model_t2_log_hours_exercise_z",
+  max_depth  = 2L,
+  # ← new argument
+  original_df = original_df,
+  label_mapping = label_mapping_all
+)
+rate_interpretation_all$qini_model_names
 
 # qini --------------------------------------------------------------------
+# run the margot_policy function
 models_batch_qini_2L <- margot_policy(
   models_binary_flipped_all,
   save_plots = FALSE,
@@ -740,52 +762,59 @@ models_batch_qini_2L <- margot_policy(
   label_mapping = label_mapping_all
 )
 
+# extract the plots from the results
 plots <- lapply(seq_along(models_batch_qini_2L), function(i) {
   models_batch_qini_2L[[i]][[4]]  # extract the 4th element (plot) from each model
 })
 
-
-rate_interpretation_all$qini_model_names
-
-# give the plots meaningful names
+# name the plots
 names(plots) <- rate_interpretation_all$qini_model_names
 
-# determine number of columns based on number of plots# determine number of columns based on number of plots
+# determine number of columns based on number of plots
 num_cols <- ifelse(length(plots) > 3, 2, 1)
 
-# combine plots using patchwork
+# load the patchwork library for combining plots
 library(patchwork)
 
-
-# create combined plot
-combined_plot <- plots[[1]]
-for (i in 2:length(plots)) {
-  combined_plot <- combined_plot + plots[[i]]
+# check if there are any plots to combine
+if (length(plots) == 0) {
+  message("no plots available to combine")
+  NULL  # removed return since this isn't in a function
+} else {
+  # create combined plot
+  combined_plot <- plots[[1]]
+  
+  # only run the loop if there are at least 2 plots
+  if (length(plots) > 1) {
+    for (i in 2:length(plots)) {
+      combined_plot <- combined_plot + plots[[i]]
+    }
+  }
+  
+  # apply the dynamic layout
+  combined_plot <- combined_plot + plot_layout(ncol = num_cols)
+  # add titles and annotations
+  combined_plot <- combined_plot &
+    plot_annotation(
+      title = "Qini Model Plots",
+      subtitle = paste0(length(plots), 
+                        ifelse(length(plots) == 1, " model ", " models "), 
+                        "arranged in ", num_cols, 
+                        ifelse(num_cols == 1, " column", " columns")),
+      tag_levels = "A"  # adds a, b, c, etc. to the plots
+    )
+  # view
+  combined_plot
+  # save (optional)
+  width <- ifelse(num_cols == 1, 8, 12)
+  height <- 6 * ceiling(length(plots)/num_cols)  # height per row * number of rows
+  # save
+  ggsave(here::here(push_mods, "combined_qini_plots.pdf"),
+         combined_plot,
+         width = width, height = height)
+  
+  combined_plot  # removed return since this isn't in a function
 }
-
-# apply the dynamic layout
-combined_plot <- combined_plot + plot_layout(ncol = num_cols)
-
-# add titles and annotations
-combined_plot <- combined_plot &
-  plot_annotation(
-    title = "Qini Model Plots",
-    subtitle = paste0(length(plots), " models arranged in ", num_cols, " column(s)"),
-    tag_levels = "A"  # adds a, b, c, etc. to the plots
-  )
-
-# view
-combined_plot
-
-# save (optional)
-width <- ifelse(num_cols == 1, 8, 12)
-height <- 6 * ceiling(length(plots)/num_cols)  # height per row * number of rows
-
-# save
-ggsave(here::here(push_mods, "combined_qini_plots.pdf"),
-       combined_plot,
-       width = width, height = height)
-
 
 # interpretation ----------------------------------------------------------
 # interpret qini curves
@@ -821,7 +850,7 @@ plots_policy_trees_1L <- margot_policy(
 )
 
 # get number of models
-n_models_1L <- length(rate_interpretation_all$either_model_names)
+n_models <- length(rate_interpretation_all$either_model_names)
 
 # # use purrr to map through and print each model
 # purrr::map(1:n_models_1L, function(i) {
@@ -833,14 +862,13 @@ n_models_1L <- length(rate_interpretation_all$either_model_names)
 #   cat("\n\n")
 # })
 
-model_outputs <- purrr::map(1:n_models_1L, ~plots_policy_trees_1L[[.x]][[3]])
+model_outputs <- purrr::map(1:n_models, ~plots_policy_trees_1L[[.x]][[3]])
 
 # name the list elements by model number
 names(model_outputs) <- paste0("model_", 1:n_models)
 
 
 model_outputs$model_1
-model_outputs$model_2
 
 # policy tree analysis ---------------------------------------------------
 # make policy trees
@@ -858,12 +886,11 @@ plots_policy_trees_2L <- margot_policy(
   max_depth = 2L
 )
 
-n_models_2L <- length(rate_interpretation_all$either_model_names)
+n_models <- length(rate_interpretation_all$either_model_names)
 
-model_outputs_2L <- purrr::map(1:n_models_1L, ~plots_policy_trees_2L[[.x]][[3]])
+model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[3]])
 
 model_outputs_2L[[1]]
-model_outputs_2L[[2]]
 
 interpret_plots_policy_trees_2L <- margot_interpret_policy_batch(
   models_binary_flipped_all, model_names = rate_interpretation_all$either_model_names)
@@ -895,17 +922,17 @@ all_plots_policy_trees_1L <- margot_policy(
   label_mapping = label_mapping_all,
   max_depth = 1L
 )
-n_models_1L_all <- length(models_binary_flipped_all$results)
-n_models_1L_all
+n_models <- length(models_binary_flipped_all$results)
+n_models
 
 
-model_outputs_1L_all <- purrr::map(1:n_models_1L_all, ~all_plots_policy_trees_2L[[.x]][[3]])
+model_outputs_1L_all <- purrr::map(1:n_models, ~all_plots_policy_trees_1L[[.x]][[3]])
 
 # view
-model_outputs_1L_all[[1]] # interesting
-model_outputs_1L_all[[2]] # ← not convincing  
+model_outputs_1L_all[[1]] # ← not convincing 
+model_outputs_1L_all[[2]] # ←  
 model_outputs_1L_all[[3]] # ← not convincing  
-model_outputs_1L_all[[4]] # 
+model_outputs_1L_all[[4]] # ← not convincing 
 model_outputs_1L_all[[5]] # ← not convincing 
 model_outputs_1L_all[[6]] # ← not convincing  
 model_outputs_1L_all[[7]] # ← not convincing  
@@ -916,48 +943,6 @@ model_outputs_1L_all[[11]] # ← not convincing
 model_outputs_1L_all[[12]] # ← not convincing  
 model_outputs_1L_all[[13]] # ← not convincing  
 
-
-
-interpret_plots_policy_trees_1L_all <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 1)
-
-
-# view interpretation
-cat(interpret_plots_policy_trees_1L_all)
-
-
-# ALL model 1L
-all_plots_policy_trees_1L <- margot_policy(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  # model_names = rate_interpretation_all$either_model_names, # use all
-  # defined above
-  original_df = original_df,
-  label_mapping = label_mapping_all,
-  max_depth = 1L
-)
-n_models_all <- length(models_binary_flipped_all$results)
-n_models_all
-
-
-model_outputs_1L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_1L[[.x]][[3]])
-
-# view
-model_outputs_1L_all[[1]] # interesting
-model_outputs_1L_all[[2]] # ← not convincing  
-model_outputs_1L_all[[3]] # ← not convincing  
-model_outputs_1L_all[[4]] # 
-model_outputs_1L_all[[5]] # ← not convincing 
-model_outputs_1L_all[[6]] # ← not convincing  
-model_outputs_1L_all[[7]] # ← not convincing  
-model_outputs_1L_all[[8]] #
-model_outputs_1L_all[[9]] # ← not convincing  
-model_outputs_1L_all[[10]] # ← not convincing  
-model_outputs_1L_all[[11]] # ← not convincing  
-model_outputs_1L_all[[12]] # ← not convincing  
-model_outputs_1L_all[[13]] # ← not convincing  
 
 
 # interpretation
@@ -968,8 +953,6 @@ interpret_plots_policy_trees_1L_all <- margot_interpret_policy_batch(models_bina
 cat(interpret_plots_policy_trees_1L_all)
 
 
-
-# all models 2L -----------------------------------------------------------
 # ALL model 1L
 all_plots_policy_trees_2L <- margot_policy(
   models_binary_flipped_all,
@@ -983,28 +966,26 @@ all_plots_policy_trees_2L <- margot_policy(
   label_mapping = label_mapping_all,
   max_depth = 2L
 )
-
-# get n of models
-n_models_all <- length(models_binary_flipped_all$results)
-
+n_models <- length(models_binary_flipped_all$results)
+n_models
 
 
-model_outputs_2L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_2L[[.x]][[3]])
+model_outputs_2L_all <- purrr::map(1:n_models, ~all_plots_policy_trees_2L[[.x]][[3]])
 
 # view
-model_outputs_2L_all[[1]] # 
+model_outputs_2L_all[[1]] # ← 
 model_outputs_2L_all[[2]] # ← 
-model_outputs_2L_all[[3]] # ← 
+model_outputs_2L_all[[3]] # 
 model_outputs_2L_all[[4]] # 
 model_outputs_2L_all[[5]] # ← 
-model_outputs_2L_all[[6]] # 
-model_outputs_2L_all[[7]] # ←  
+model_outputs_2L_all[[6]] # ←
+model_outputs_2L_all[[7]] # ← 
 model_outputs_2L_all[[8]] #
-model_outputs_2L_all[[9]] # ← 
-model_outputs_2L_all[[10]] # ← 
-model_outputs_2L_all[[11]] # ←  
-model_outputs_2L_all[[12]] # ← 
-model_outputs_2L_all[[13]] # ← not convincing  
+model_outputs_2L_all[[9]] # ←
+model_outputs_2L_all[[10]] # 
+model_outputs_2L_all[[11]] #  
+model_outputs_2L_all[[12]] # ← not convincing 
+model_outputs_2L_all[[13]] # 
 
 
 # interpretation
@@ -1012,7 +993,8 @@ interpret_plots_policy_trees_2L_all <- margot_interpret_policy_batch(models_bina
 
 
 # view interpretation
-cat(interpret_plots_policy_trees_1L_all)
+cat(interpret_plots_policy_trees_2L_all)
+
 
 # +--------------------------+
 # |   END MODIFY SECTION     |
@@ -1241,7 +1223,7 @@ plots_subgroup_wealth<- wrap_plots(
                              theme = theme(plot.title = element_text(size = 18, face = "bold")))
 
 # view
-print(plots_subgroup_wealth_health)
+plots_subgroup_wealth
 
 # plots
 plots_subgroup_ethnicity <- wrap_plots(
@@ -1266,7 +1248,7 @@ plots_subgroup_political <- wrap_plots(
     planned_subset_results$wellbeing$political$results$Liberal$plot,
     planned_subset_results$wellbeing$political$results$Centrist$plot,
     planned_subset_results$wellbeing$political$results$Conservative$plot  
-    ),
+  ),
   ncol = 1
 ) +
   patchwork::plot_annotation(title = "Political Orientation",
@@ -1308,7 +1290,7 @@ print(plots_subgroup_cohort)
 
 # plot options: showcased ---------------------------------------------
 # default
-margot_plot_decision_tree(models_binary_social, "model_t2_support_z", )
+margot_plot_decision_tree(models_binary, "model_t2_support_z", )
 # tighten branches for easier viewing in single graphs
 margot::margot_plot_decision_tree(
   models_binary,
@@ -1350,17 +1332,6 @@ margot::margot_plot_decision_tree(
   original_df = original_df
 )
 
-# select only plot 2 change size of axis_text
-# change colours, modify etc...
-margot::margot_plot_policy_tree(
-  models_binary,
-  "model_t2_support_z",
-  plot_selection = "p2",
-  axis_title_size = 30,
-  split_label_size = 20,
-  split_label_color = "red",
-  split_line_color = "red",
-)
 
 # adjust only the alpha
 margot::margot_plot_policy_tree(models_binary_social, "model_t2_support_z", point_alpha = .1)
