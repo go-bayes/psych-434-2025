@@ -1,0 +1,1444 @@
+---
+title: "Your Title"
+abstract: |
+  **Background**: .
+  **Objectives**: 
+    1. Estimate the causal effect of YOUR EXPOSURE on YOUR OUTCOMES measured one year later.
+    2. Evaluate whether these effects vary across the population.
+    3. Provide policy guidance on which individuals might benefit most.
+  **Method**: We conducted a three-wave retrospective cohort study (waves XX-XXX, October XXXX--October XXXX) using data from the New Zealand Attitudes and Values Study, a nationally representative panel. Participants were eligible if they participated in the NZAVS in the baseline wave (XXXX, were under the age of 62, and were employed > 20 hours per week. We defined the exposure as XXXX  > NUMBER on a 1-7 Likert Scale (1 = yes, 0 = no). To address attrition, we applied inverse probability of censoring weights; to improve external validity, we applied weighted to the population distribution of Age, Ethnicity, and Gender. We computed expected mean outcomes for the population in each exposure condition (high XXXX/low XXXXX). Under standard causal assumptions of unconfoundedness, the contrast provides an unbiased average treatment effect. We then used causal forests to detect heterogeneity in these effects and employed policy tree algorithms to identify individuals ("strong responders") likely to experience the greatest benefits.
+  **Results**:   Increasing XXXXX leads to XXXXX. Heterogeneous responses to (e.g. *Forgiveness*, *Personal Well-Being*, and *Life-Satisfaction*) reveal structural variability in subpopulations...
+  **Implications**: TBA
+  **Keywords**: *Causal Inference*;  *Cross-validation*; *Distress*; *Employment*; *Longitudinal*; *Machine Learning*; *Religion*; *Semi-parametric*; *Targeted Learning*.
+author: 
+  - name: YOUR NAME
+    affiliation: Victoria University of Wellington, New Zealand
+    orcid: 0000-0000-0000-0000
+    email: XXXXX
+  - name: Joseph A. Bulbulia
+    affiliation: Victoria University of Wellington, New Zealand
+    orcid: 0000-0000-0000-00000
+    email: joseph.bulbulia@vuw.ac.nz
+    corresponding: yes
+keywords: [Causal Inference, Church, Cross-validation, Distress, Health, Longitudinal, Machine Learning, Religion, Semi-parametric, Targeted Learning]
+editor_options: 
+  chunk_output_type: console
+format:
+  # docx:
+  #   default: true
+  #   tbl-opts:
+  #     toprule: 1pt
+  #     midrule: 0.5pt
+  #     bottomrule: 1pt
+  #     alignment: left
+  pdf:  
+    bibliography: /Users/joseph/GIT/templates/bib/references.bib
+    pdf-engine: lualatex
+    sanitise: true
+    keep-tex: true
+    link-citations: true
+    colorlinks: true
+    documentclass: article
+    classoption: ["single column"]
+    lof: false
+    lot: false
+    geometry:
+      - top=30mm
+      - left=25mm
+      - heightrounded
+      - headsep=22pt
+      - headheight=11pt
+      - footskip=33pt
+      - ignorehead
+      - ignorefoot
+    template-partials: 
+      - /Users/joseph/GIT/templates/quarto/title.tex
+      - /Users/joseph/GIT/templates/measures/data
+    header-includes:
+      - \input{/Users/joseph/GIT/latex/latex-for-quarto.tex}
+      - \let\oldtabular\tabular
+      - \renewcommand{\tabular}{\small\oldtabular}
+      - \setlength{\tabcolsep}{4pt}  % adjust this value as needed
+date: "last-modified"
+execute:
+  echo: false
+  warning: false
+  include: true
+  eval: true
+fontfamily: libertinus
+bibliography: /Users/joseph/GIT/templates/bib/references.bib
+csl: /Users/joseph/GIT/templates/csl/camb-a.csl
+---
+```{r}
+#| label: load-libraries
+#| echo: false
+#| include: false
+#| eval: true
+
+# boilerplate package
+if (!require(boilerplate, quietly = TRUE)) {
+  # install devtools if necessary
+  if (!require(devtools, quietly = TRUE)) {
+    install.packages("devtools")
+  }
+  devtools::install_github("go-bayes/boilerplate")
+}
+
+# margot package
+if (!require(boilerplate, quietly = TRUE)) {
+  # install devtools if necessary
+  if (!require(devtools, quietly = TRUE)) {
+    install.packages("devtools")
+  }
+  devtools::install_github("go-bayes/margot")
+}
+
+# check version, should be > 1.0.13
+packageVersion(pkg = 'margot')
+
+# other required libraries
+library("boilerplate")
+# library("margot")
+library("tinytex")
+library("extrafont")
+library("tidyverse")
+library("kableExtra")
+library("glue")
+library("patchwork")
+library("kableExtra")
+library("stringr")
+library("ggplot2")
+library("ggeffects")
+library("parameters")
+library("table1")
+library("here")
+library("knitr")
+
+# for reproducibility
+set.seed(123)
+
+# for document creation 
+# fonts
+loadfonts(device = "all")
+
+# set path for study data (set to your own machine)
+push_mods <- here::here("save_directory") 
+
+# set boilerplate path (set to your own machine)
+master_path <- "/Users/joseph/GIT/templates/boilerplate_data"
+
+# set directory database path
+here_data_path = here::here("save_directory", "boilerplate")
+
+# import master data
+master_unified_db <- boilerplate_import(data_path = master_path)
+
+# save master to current
+boilerplate_save(master_unified_db, output_file = "unified_db", data_path  = here_data_path)
+
+# import
+unified_db <- boilerplate_import(data_path = here_data_path)
+cat(unified_db$methods$confounding_control$vanderweele)
+cat(unified_db$appendix$explain$grf)
+# read variable names
+# waves
+baseline_wave <- margot::here_read("baseline_wave")
+exposure_waves <- margot::here_read("exposure_waves")
+outcome_wave <- margot::here_read("outcome_wave")
+baseline_wave <- margot::here_read("baseline_wave")
+
+
+# make names 
+# names to define 
+study_years = "2018-2021"
+
+# eligibility template
+eligibility_template = "Participants were eligible of they participated in the {baseline wave}"
+
+# define
+name_exposure_variable = here_read("name_exposuer")
+name_outcome_variables = "Multi-dimensional Wellbeing"
+name_exposure = name_exposure_variable
+
+# # set data paths
+# push_mods <- here::here("/Users/joseph/Library/CloudStorage/Dropbox-v-project/data/24-jb-church-fl-long")
+
+# missing at baseline
+percent_missing_baseline <- margot::here_read("percent_missing_baseline")
+
+# read variable names
+baseline_vars <- margot::here_read("baseline_vars")
+exposure_var <- margot::here_read("exposure_var")
+outcome_vars <- margot::here_read("outcome_vars")
+
+# read by domain ... here same as outcome_vars
+outcome_vars <- here_read("outcome_vars")
+label_mapping_all <- here_read("label_mapping_all")
+
+# exposure
+raw_exposure_vars = here_read("exposure_var")
+
+# define flipped outcome names for interpretation
+flipped_names <- here_read("flipped_names")
+
+# make flip list
+flipped_list=  paste(flipped_names, collapse = ", ")
+
+# read labels for measures
+# var_labels_baseline <- here_read("var_labels_baseline")
+# var_labels_exposure = here_read("var_labels_exposure")
+# var_labels_outcomes <- here_read("var_labels_outcomes_all")
+
+# all vars
+var_labels_measures <- here_read("var_labels_measures")
+
+
+
+# labels
+print( var_labels_measures )
+
+# check exposure labels (defined above)
+# appendix_text_all_measures
+
+# import untransformed data for graphs
+original_df <- margot::here_read('df_wide', push_mods)
+
+# summary tables
+# summary_tables <- margot::here_read_qs("summary_tables", push_mods)
+
+# read nzavs timeline
+timeline_histogram <- margot::here_read_qs("timeline_histogram", push_mods)
+
+
+# read latex tables
+latex_table_baseline <- margot::here_read("latex_table_baseline")
+latex_table_exposures <- margot::here_read("latex_table_exposures")
+latex_table_outcomes <- margot::here_read("latex_table_outcomes_all")
+
+# read markdown tables (not as nice but plays well with word)
+markdown_table_baseline <- margot::here_read("markdown_table_baseline")
+markdown_table_exposures <- margot::here_read("markdown_table_exposures")
+markdown_table_outcomes <- margot::here_read("markdown_table_outcomes_all")
+
+
+
+# imports
+n_total <-  margot::here_read("n_total")
+
+# total
+n_total
+
+# participants
+n_participants <- here_read("n_participants")
+
+###############
+
+#   **KEYWORDS**: *Causal Inference*; *Church*; *Cross-validation*; *Distress*; *Health*; *Longitudinal*; *Machine Learning*; *Religion*; *Semi-parametric*; *Targeted Learning*."
+
+###############
+
+# verify positivity 
+# binary
+transition_tables <- margot::here_read("transition_tables")
+transition_tables_binary <- here_read("transition_tables_binary")
+# print( transition_tables_binary$tables[[1]])
+# print( transition_tables_binary$explanation[[1]])
+# transition_tables_binary$quarto_code()
+
+
+
+
+
+# measures -----------------------------------------------------------------
+# generate measures text 
+baseline_measures_text <- boilerplate_generate_measures(
+  variable_heading = "Baseline Covariates",
+  variables = baseline_vars,
+  db = unified_db,  # pass the unified database
+  heading_level = 3,
+  subheading_level = 4,
+  print_waves = FALSE,
+  label_mappings = var_labels_measures
+)
+
+cat(baseline_measures_text)
+exposure_var_simple = exposure_var[[2]]
+exposure_var_simple
+
+exposure_measures_text <- boilerplate_generate_measures(
+  variable_heading = "Exposure Variable",
+  variables = exposure_var_simple,
+  db = unified_db,  # pass the unified database
+  heading_level = 3,
+  subheading_level = 4,
+  print_waves = FALSE,
+  label_mappings = var_labels_measures
+)
+cat(exposure_measures_text)
+
+# print the result
+cat(exposure_measures_text)
+
+
+# generate text for outcome variables
+outcome_measures_text <- boilerplate_generate_measures(
+  variable_heading = "Outcome Variables",
+  variables = outcome_vars,
+  db = unified_db,  # pass the unified database
+  heading_level = 3,
+  subheading_level = 4,
+  print_waves = FALSE,
+  label_mappings = var_labels_measures
+)
+
+# print the result
+cat(outcome_measures_text)
+
+# language for exposure
+measures_exposure <- glue::glue("'*How valued do you feel by your current organization?*?' Code string (Binary): (if < 5, coded 0; if 5-7, coded 1)")
+
+
+
+# plot options ------------------------------------------------------------
+name_exposure_template <- glue::glue(name_exposure_variable)
+name_outcomes_template <- glue::glue(name_outcome_variables)
+subtitle = ""
+filename_prefix = "ow_grf"
+
+title_binary <-  glue::glue("{name_exposure_variable}")
+
+# study specific graphs and tables
+
+# state personality outcomes
+outcomes <- c(
+
+)
+
+# give nice names to outcomes for tables and graphs
+print(label_mapping )
+# graphs ------------------------------------------------------------------
+# titles
+title_health = "Health"
+title_psych = "Psychological Well-being"
+title_present = "Present-Focussed Well-being"
+title_life = "Life-Focussed Well-being"
+title_social = "Social Well-being"
+
+
+# defaults
+base_defaults_binary  <- list(
+  type = "RD",
+  title = title_binary,
+  order = "alphabetical",
+  colors = c(
+    "positive" = "#E69F00",
+    "not reliable" = "grey50",
+    "negative" = "#56B4E9"
+  ),
+  x_offset = -.5,
+  # will be set based on type
+  x_lim_lo = -.5,
+  # will be set based on type
+  x_lim_hi = .5,
+  text_size = 4,
+  linewidth = 0.5,
+  estimate_scale = 1,
+  base_size = 18,
+  point_size = 2,
+  title_size = 16,
+  subtitle_size = 16,
+  legend_text_size = 10,
+  legend_title_size = 10,
+  include_coefficients = FALSE 
+)
+
+# set options for graphs
+# health graph options
+outcomes_options_health <- margot_plot_create_options(
+  title = title_health,
+  base_defaults = base_defaults_binary,
+  subtitle = "",
+  filename_prefix = filename_prefix)
+
+# psych graph options
+outcomes_options_psych <- margot_plot_create_options(
+  title = title_psych,
+  base_defaults = base_defaults_binary,
+  subtitle = "",
+  filename_prefix = filename_prefix)
+
+
+# present graph options ---------------------------------------------------
+outcomes_options_present <- margot_plot_create_options(
+  title = title_present,
+  base_defaults = base_defaults_binary,
+  subtitle = "",
+  filename_prefix = filename_prefix)
+
+
+# life graph options ------------------------------------------------------
+outcomes_options_life <- margot_plot_create_options(
+  title = title_life,
+  base_defaults = base_defaults_binary,
+  subtitle = "",
+  filename_prefix = filename_prefix)
+
+
+# social graph options ----------------------------------------------------
+outcomes_options_social <- margot_plot_create_options(
+  title = title_social,
+  base_defaults = base_defaults_binary,
+  subtitle = "",
+  filename_prefix = filename_prefix)
+
+
+# make graphs -----------------------------------------------------------
+# read results
+# warning reading models will take time
+# import
+models_binary_health <- margot::here_read_qs("models_binary_health", push_mods)
+models_binary_psych <- margot::here_read_qs("models_binary_psych", push_mods)
+models_binary_present <- margot::here_read_qs("models_binary_present", push_mods)
+models_binary_life <- margot::here_read_qs("models_binary_life", push_mods)
+models_binary_social <- margot::here_read_qs("models_binary_social", push_mods)
+#models_binary_social_dev <- margot::here_read_qs("models_binary_social_dev", push_mods)
+
+# check size (example)
+margot::margot_size(models_binary_health)
+
+
+# health domain plots ------------------------------------------------------
+binary_results_health <- margot_plot(
+  models_binary_health$combined_table,
+  options = outcomes_options_health,
+  label_mapping = label_mapping_health,
+  include_coefficients = FALSE,
+  save_output = FALSE, 
+  original_df = original_df
+)
+
+# view table
+binary_results_health$transformed_table |> 
+  rename(
+    "E-Value" = "E_Value",
+    "E-Value bound" = "E_Val_bound"
+  ) |>
+  kbl(format = 'markdown')
+
+# check plot
+# binary_results_health$plot
+
+# view interpretation
+cat(binary_results_health$interpretation)
+
+# psychological domain plots ----------------------------------------------
+binary_results_psych <- margot_plot(
+  models_binary_psych$combined_table,
+  options = outcomes_options_psych,
+  label_mapping = label_mapping_psych,
+  include_coefficients = FALSE,
+  save_output = FALSE,
+  original_df = original_df
+)
+
+# view table
+binary_results_psych$transformed_table |> 
+  rename(
+    "E-Value" = "E_Value",
+    "E-Value bound" = "E_Val_bound"
+  ) |>
+  kbl(format = 'markdown')
+
+# view plot
+# binary_results_psych$plot
+
+# view interpretation
+cat(binary_results_psych$interpretation)
+
+# present domain plots ---------------------------------------------------
+binary_results_present <- margot_plot(
+  models_binary_present$combined_table,
+  options = outcomes_options_present,
+  label_mapping = label_mapping_present,
+  include_coefficients = FALSE,
+  save_output = FALSE,
+  original_df = original_df
+)
+
+# view table
+binary_results_present$transformed_table |> 
+  rename(
+    "E-Value" = "E_Value",
+    "E-Value bound" = "E_Val_bound"
+  ) |>
+  kbl(format = 'markdown')
+
+# view plot
+# binary_results_present$plot
+
+# view interpretation
+cat(binary_results_present$interpretation)
+
+# life domain plots ------------------------------------------------------
+binary_results_life <- margot_plot(
+  models_binary_life$combined_table,
+  options = outcomes_options_life,
+  label_mapping = label_mapping_life,
+  include_coefficients = FALSE,
+  save_output = FALSE,
+  original_df = original_df
+)
+
+# view table
+binary_results_life$transformed_table |> 
+  rename(
+    "E-Value" = "E_Value",
+    "E-Value bound" = "E_Val_bound"
+  ) |>
+  kbl(format = 'markdown')
+
+# view plot
+# binary_results_life$plot
+
+# view interpretation
+cat(binary_results_life$interpretation)
+
+# social domain plots ----------------------------------------------------
+binary_results_social <- margot_plot(
+  models_binary_social$combined_table,
+  options = outcomes_options_social,
+  label_mapping = label_mapping_social,
+  include_coefficients = FALSE,
+  save_output = FALSE,
+  original_df = original_df
+)
+
+# view table
+binary_results_social$transformed_table |> 
+  rename(
+    "E-Value" = "E_Value",
+    "E-Value bound" = "E_Val_bound"
+  ) |>
+  kbl(format = 'markdown')
+
+# view plot
+# binary_results_social$plot
+
+# view interpretation
+cat(binary_results_social$interpretation)
+
+# combine ate plots ------------------------------------------------------
+plot_ate_health <- binary_results_health$plot
+plot_ate_psych <- binary_results_psych$plot
+plot_ate_present <- binary_results_present$plot
+plot_ate_life <- binary_results_life$plot
+plot_ate_social <- binary_results_social$plot
+
+# create combined plot with annotations
+ate_plots_combined <- plot_ate_health + 
+  plot_ate_psych + 
+  plot_ate_present + 
+  plot_ate_life + 
+  plot_ate_social +
+  plot_annotation(
+    title = title_binary,
+    tag_levels = "A",
+    theme = theme(
+      plot.title = element_text(size = 20),
+      legend.position = "top"
+    )
+  ) +
+  plot_layout(guides = "collect")
+
+# view combined plot
+ate_plots_combined
+
+# combine tables ---------------------------------------------------------
+# create list of tables by domain
+tables_list <- list(
+  Health = binary_results_health$transformed_table,
+  Psych = binary_results_psych$transformed_table,
+  Life = binary_results_life$transformed_table,
+  Social = binary_results_social$transformed_table
+)
+
+# check structure
+str(tables_list)
+
+# create markdown version
+margot_bind_tables_markdown <- margot_bind_tables(
+  tables_list = tables_list,
+  e_val_bound_threshold = 1,
+  bold = TRUE,
+  rename_cols = TRUE,
+  col_renames = list(
+    "E-Value" = "E_Value",
+    "E-Value bound" = "E_Val_bound"
+  ),
+  threshold_col = "E_Val_bound",
+#  highlight_color = NULL, 
+  output_format = "markdown"
+)
+
+# view markdown table
+margot_bind_tables_markdown
+
+# create latex version if needed
+# margot_bind_tables_latex <- margot_bind_tables(
+#   tables_list = tables_list,
+#   bold = TRUE,
+#   col_renames = list(
+#     "E-Value" = "E_Value",
+#     "E-Value bound" = "E_Val_bound"
+#   ),
+#   threshold_col = "E_Val_bound",
+#   highlight_color = NULL, 
+#   output_format = "latex"
+# )
+# 
+# # view latex table
+# margot_bind_tables_latex
+
+# combine all models -----------------------------------------------------
+# merge all domain models into single object
+all_models <- margot_bind_models(
+  models_binary_health,
+  models_binary_psych,
+  models_binary_present,
+  models_binary_life,
+  models_binary_social
+)
+
+# check combined structure
+str(all_models, max.level = 1)
+
+# count models by category
+cat("Number of original models:\n")
+cat("Social models:", length(models_binary_social$results), "\n")
+cat("Psych models:", length(models_binary_psych$results), "\n")
+cat("Health models:", length(models_binary_health$results), "\n")
+cat("Present models:", length(models_binary_present$results), "\n")
+cat("Life models:", length(models_binary_life$results), "\n")
+cat("\nTotal models in combined object:", length(all_models$results), "\n")
+
+
+# flip negatively oriented outcomes --------------------------------------
+models_binary_flipped_all <- margot_flip_forests(
+  all_models,
+  flip_outcomes = c(
+    "t2_hlth_bmi_z", 
+    "t2_hlth_fatigue_z",
+    "t2_kessler_latent_anxiety_z",
+    "t2_kessler_latent_depression_z",
+    "t2_rumination_z",
+    "t2_perfectionism_z"
+  )
+)
+
+# omnibus heterogeneity tests --------------------------------------------
+result_ominbus_hetero <- margot_omnibus_hetero_test(
+  models_binary_flipped_all,
+  label_mapping = label_mapping,
+  alpha = 0.05,  detail_level = "standard", 
+  format = "markdown"
+)
+
+# view results table
+result_ominbus_hetero$summary_table |> kbl("markdown")
+
+# view test interpretation
+cat(result_ominbus_hetero$brief_interpretation)
+
+
+# rate test analysis -----------------------------------------------------
+# create rate analysis table
+rate_table_all <- margot_rate(
+  models_binary_flipped_all, 
+  label_mapping = label_mapping, 
+  highlight_significant = TRUE
+)
+
+# view rate tables
+rate_table_all$rate_autoc |> kbl("markdown")
+rate_table_all$rate_qini |> kbl("markdown")
+
+# generate interpretation
+rate_interpretation_all <- margot_interpret_rate(
+  rate_table_all, 
+  flipped_outcomes = flipped_names
+)
+
+# view interpretations
+cat(rate_interpretation_all$autoc_results)
+cat(rate_interpretation_all$qini_results)
+cat(rate_interpretation_all$comparison)
+
+
+# define autoc model names for batch processing
+autoc_model_names <- c(
+  "model_t2_forgiveness_z",
+  "model_t2_lifesat_z", 
+  "model_t2_pwi_z"
+)
+
+
+# define qini model names
+qini_model_names <- c(
+  "model_t2_log_hours_exercise_z",
+  "model_t2_forgiveness_z",
+  "model_t2_lifesat_z", 
+  "model_t2_pwi_z"
+)
+
+# autoc plots ------------------------------------------------------------
+# generate batch rate plots
+batch_rate_plots <- margot_plot_rate_batch(
+  models_binary_flipped_all, 
+  save_plots = FALSE
+)
+
+# view selected autoc plots
+plot_rate_1 <- batch_rate_plots$model_t2_forgiveness_z + labs(title = "Forgiveness")
+plot_rate_2 <- batch_rate_plots$model_t2_lifesat_z + labs(title = "Life Satisfaction")
+plot_rate_3 <- batch_rate_plots$model_t2_pwi_z + labs(title = "Personal Wellbeing Index")
+
+
+
+# combine qini plots
+rate_plots_combined <- (plot_rate_1/ plot_rate_2 / plot_rate_3 ) +
+  plot_annotation(
+    title = "Targeting AUTOC Graphs",
+    tag_levels = "A",
+    theme = theme(legend.position = "top")
+  ) +
+  plot_layout(guides = "collect")
+
+# # view
+# rate_plots_combined
+
+# qini analysis ----------------------------------------------------------
+# set decision tree defaults
+decision_tree_defaults <- list(
+  span_ratio = .3,
+  text_size = 4,
+  y_padding = 0.25
+)
+
+# set policy tree defaults
+policy_tree_defaults <- list(
+  point_alpha = .5,
+  title_size = 12,
+  subtitle_size = 14,
+  axis_title_size = 14,
+  legend_title_size = 14
+)
+
+
+# create union of model names for combined analysis
+union_model_names <- union(autoc_model_names, qini_model_names)
+
+
+# batch process heterogeneity results for qini
+models_binary_batch_qini <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_names = qini_model_names,
+  original_df = original_df,
+  label_mapping = label_mapping
+)
+
+# extract plots for models without reliable heterogeneity
+qini_plot_1_no <- models_binary_batch_qini$model_t2_log_hours_exercise_z$qini_plot
+
+# extract plots for models with reliable heterogeneity
+plot_qini_1 <- models_binary_batch_qini$model_t2_forgiveness_z$qini_plot
+plot_qini_2 <- models_binary_batch_qini$model_t2_lifesat_z$qini_plot
+plot_qini_3 <- models_binary_batch_qini$model_t2_pwi_z$qini_plot
+
+# interpret qini curves
+interpretation_qini_curves <- margot_interpret_qini(
+  models_binary_batch_qini,
+  model_names = qini_model_names,
+  label_mapping = label_mapping
+)
+
+# view qini interpretation
+cat(interpretation_qini_curves$qini_explanation)
+
+# view summary table
+interpretation_qini_curves$summary_table |> kbl("markdown")
+
+# view individual qini plots
+# plot_qini_1
+# plot_qini_2
+# plot_qini_3
+
+# combine qini plots
+qini_plots_combined <- (qini_plot_1_no/ plot_qini_1 / plot_qini_2 / plot_qini_3) +
+  plot_annotation(
+    title = "Qini Graphs: Reliable Priority 'Spending' at 20% / 50% Budgets",
+    tag_levels = "A",
+    theme = theme(legend.position = "top")
+  ) +
+  plot_layout(guides = "collect")
+
+# view combined qini plots
+#qini_plots_combined
+
+# policy tree analysis ---------------------------------------------------
+binary_batch_union <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_names = union_model_names,
+  original_df = original_df,
+  label_mapping = label_mapping
+)
+
+# generate policy tree interpretations
+interpretation_policy_trees <- margot_interpret_policy_batch(
+  models_binary_flipped_all,
+  model_names = union_model_names,
+  train_proportion = 0.8,
+  original_df = original_df,
+  label_mapping = label_mapping
+)
+
+# view policy tree interpretation
+cat(interpretation_policy_trees)
+
+# view individual decision plots
+# rate only
+plot_decision_1 <- binary_batch_union$model_t2_forgiveness_z$combined_plot
+plot_decision_1
+
+# qini only
+plot_decision_2 <- binary_batch_union$model_t2_lifesat_z$combined_plot
+plot_decision_2
+
+# both rate and qini
+plot_decision_3 <- binary_batch_union$model_t2_pwi_z$combined_plot
+plot_decision_3
+
+
+plot_decision_4 <- binary_batch_union$model_t2_log_hours_exercise_z$combined_plot
+plot_decision_4
+
+# define global variables
+
+
+# name control regime
+name_control_regime_lower = "low perceived gratitude"
+value_exposure_regime = "Set perceived Employer Gratitude >= 5 (scake range 1-7)"
+value_control_regime = "Set perceived Employer Gratitude < 5 (scale range 1-7)"
+name_exposure_lower = "perceived employer gratitude"
+name_outcomes_lower = "multi-dimensional wellbeing"
+
+# define names
+global_vars <- list(
+  name_exposure_variable = "Perceived Employer Gratitude",
+  n_total = n_total,
+  n_participants = n_participants,
+  exposure_variable = name_exposure_variable,
+  name_exposure_variable = name_exposure_variable,
+  name_exposure_lower = name_exposure_lower,
+  name_control_regime_lower = name_control_regime_lower,
+  # name_outcome_variables_short = "wellbeing"
+  name_outcome_variables = "Multi-dimensional Wellbeing",
+  name_outcomes_lower = "multi-dimensional wellbeing",
+  # define names
+  name_exposure_capfirst = "Perceived employer gratitude",
+  appendix_timeline = "Appendix A",
+  appendix_measures = "Appendix B",
+  measures_exposure = measures_exposure,
+  appendix_analytic_approach = "Appendix C",
+  appendix_assumptions_grf = "Appendix D",
+  appendix_cate_validation_grf = "Appendix D",
+  appendices_sample = "Appendix A",
+  appendix_outcomes = "Appendix B",
+  appendix_positivity = "Appendix E",
+  value_exposure_regime = value_exposure_regime,
+  value_treatment_regime = value_exposure_regime,
+  value_control_regime = value_control_regime,
+  name_exposure_regime = "High Perceived Employer Gratitude",
+  name_control_regime = "Less Than High Perceived Employer Gratitude",
+  name_exposure_threshold = "Experiences High Employer Gratitude",
+  name_control_threshold = "Experiences Less-than High Employer Gratitude",
+  value_exposure = "1",
+  value_control = "0",
+  appendix_explain_grf = "F",
+  name_target_population = "Working adults in New Zealand from the years 2020-2023",
+  number_exposure_waves = "one",
+  #time_varying_confounders = "(physical disability, employment status, partner status, and parenting status)",
+  flipped_list = c("Neuroticism"),
+  grf_appendix = "Appendix D",
+  baseline_wave = "NZAVS time 12, years 2020-2021",
+  exposure_waves = "NZAVS time 11, year 2021-2022",
+  outcome_wave = "NZAVS time 12, years 2022-2023",
+  flipped_example = "Neuroticism",
+  appendix_analytic_approach = "Appendix E",
+  protocol_url = "https://osf.io/ce4t9/",
+  flipped_list =  flipped_list
+)
+
+# contrast template
+contrast_template = "We used causal forests to estimate and average treatment effect as a contrast between *{name_control_regime_lower}* and *{name_exposure_lower}* on {name_outcomes_lower}."
+
+
+# contrast_text
+contrast_text = glue(contrast_template)
+
+# appendix 
+text_explain_grf <- boilerplate_generate_text(
+  category = "appendix",
+  sections = c(
+    "explain.grf"
+  ),
+  global_vars = list(
+    traning_proportion = "70%",
+    train_proportion_decision_tree = "70%"
+  ),
+  db = unified_db
+)
+```
+
+
+
+{{< pagebreak >}}
+
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+ cat(boilerplate_generate_text(
+  category = "template",
+  sections = c(
+    "grf.simple"
+  ),
+  global_vars = list(
+    name_outcomes_lower = name_outcomes_lower,
+    name_exposure_lower = name_exposure_lower,
+    name_exposure_capfirst = name_exposure
+  ),
+  db = unified_db
+))
+
+```
+
+{{< pagebreak >}}
+
+## Method
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+ cat(boilerplate_generate_text(
+  category = "methods",
+  sections = c(
+    "sample.nzavs",
+    "target_population",
+    "eligibility.standard",
+    "causal_intervention.grf_simple_text",
+    "analytic_approach.general_approach_cate_short",
+    "exposure_indicator",
+    "outcomes.outcomewide_wellbeing",
+    "causal_identification_criteria",
+    "confounding_control.vanderweele",
+    "statistical_models.grf_short_explanation",
+    "missing_data.missing_grf_simple",
+    "sensitivity_analysis.short_evalue"
+  ),
+  global_vars = global_vars,
+  # global_vars = list(
+  #   exposure_variable = "Religious Service Attendance",
+  #   n_total = n_total,
+  #   n_participants = n_participants,
+  #   appendix_timeline = "Appendix A",
+  #   appendix_measures = "Appendix B",
+  #   measures_exposure = measures_exposure,
+  #   appendix_analytic_approach = "Appendix C",
+  #   appendix_assumptions_grf = "Appendix D",
+  #   appendix_cate_validation_grf = "Appendix D",
+  #   appendices_sample = "Appendix A",
+  #   appendix_outcomes = "Appendix B",
+  #   appendix_positivity = "Appendix E",
+  #   value_exposure_regime = "Regular Religious Service Attendance",
+  #   value_treatment_regime = "No Religious Service Attendance",
+  #   value_exposure_regime = " At each wave, if attendance is below four times per month, we shift it to four; otherwise, we leave it unchanged.",
+  #   value_control_regime = "At each wave, if attendance is above zero, we shift it to zero; otherwise, we leave it unchanged.",
+  #   name_exposure_regime = "Regular Religious Service Attendance.",
+  #   name_control_regime = "No Religious Service Attendance.",
+  #   name_exposure_threshold = "Attends Religious Service",
+  #   name_control_threshold = "No Religious Service Attendance.",
+  #   value_exposure = "1",
+  #   value_control = "0",
+  #   name_target_population = "all adults in New Zealand from the years 2018-2021",
+  #   number_exposure_waves = "one",
+  #   time_varying_confounders = "(physical disability, employment status, partner status, and parenting status)",
+  #   flipped_list = c("Neuroticism"),
+  #   grf_appendix = "Appendix D",
+  #   baseline_wave = "NZAVS time 10, years 2018-2019",
+  #   exposure_waves = "NZAVS time 11, year 2019",
+  #   outcome_wave = "NZAVS time 12, years 2020-2021",
+  #   flipped_example = "Neuroticism",
+  #   appendix_analytic_approach = "Appendix E",
+  #   protocol_url = "https://osf.io/ce4t9/"
+  # ),
+  db = unified_db
+))
+```
+
+
+{{< pagebreak >}}
+
+## Results
+
+### Average Treatement Effects
+
+
+
+```{r}
+#| label: fig-ate
+#| fig-cap: "Average Treatment Effects on Multi-dimensional Wellbeing"
+#| eval: true
+#| echo: false
+#| fig-height: 14
+#| fig-width: 18
+ate_plots_combined
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-outcomes
+#| tbl-cap: "Average Treatment Effects on Multi-dimensional Wellbeing"
+#| eval: true
+#| echo: false
+
+margot_bind_tables_markdown
+
+```
+
+### ATE Result: Health 
+
+```{r, results = 'asis'}
+cat(binary_results_health$interpretation)
+```
+
+### ATE Result: Psychological Wellbeing
+```{r, results = 'asis'}
+cat(binary_results_psych$interpretation)
+```
+
+
+### ATE Result: Present-Focussed Wellbeing
+```{r, results = 'asis'}
+cat(binary_results_present$interpretation)
+```
+
+
+### ATE Result: Life_Focussed Wellbeing
+```{r, results = 'asis'}
+cat(binary_results_life$interpretation)
+```
+
+### ATE Result: Social Wellbeing
+```{r, results = 'asis'}
+cat(binary_results_social$interpretation)
+```
+
+
+{{< pagebreak >}}
+
+### Heterogeneous Treatment Effects 
+
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(rate_interpretation_all$comparison)
+```
+
+Refer to [Appendix F](#appendix-cate-validation) for details.
+
+
+
+### RATE AUTOC Results
+
+
+```{r, results = 'asis'}
+# only reliable results
+cat(rate_interpretation_all$autoc_results)
+```
+
+```{r}
+#| label: fig-rate
+#| fig-cap: "RATE AUTOC Graphs"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+rate_plots_combined
+```
+
+
+### QINI Curve Results
+
+```{r, results = 'asis'}
+# only reliable results
+cat(rate_interpretation_all$qini_results)
+```
+
+
+```{r}
+#| label: tbl-qini
+#| tbl-cap: "Qini Curve Results"
+#| eval: true
+#| echo: false
+
+interpretation_qini_curves$summary_table |> 
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  kbl(format = "markdown")
+```
+
+```{r, results = 'asis'}
+# only reliable results
+cat(interpretation_qini_curves$qini_explanation)
+```
+
+
+```{r}
+#| label: fig-qini
+#| fig-cap: "RATE AUTOC Graphs"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+qini_plots_combined
+```
+
+
+{{< pagebreak >}}
+
+
+```{r, results = 'asis'}
+cat(interpretation_policy_trees)
+```
+
+
+        
+```{r}
+#| label: fig-policy-1
+#| fig-cap: "Decision Tree: Forgiveness"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+plot_decision_1
+```
+
+
+
+```{r}
+#| label: fig-policy-2
+#| fig-cap: "Decision Tree: Life Satisfaction"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+plot_decision_2
+```
+
+
+```{r}
+#| label: fig-policy-3
+#| fig-cap: "Decision Tree: Personal Wellbeing Index"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+plot_decision_3
+```
+
+
+```{r}
+#| label: fig-policy-4
+#| fig-cap: "Decision Tree: Hours of Exercise"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+plot_decision_4
+```
+
+
+## Discussion
+
+
+<!-- These findings reveal that religious service causally affects personality. Our ATE estimates suggest that religious service reliably increases Agreeableness ($\text{ATE} \approx 0.07$, $E$-value = 1.156) and decreases Neuroticism ($\text{ATE} \approx -0.06$, $E$-value = 1.056). The associated $E$-values exceed 1, indicating that unmeasured confounding would need to be moderately strong to invalidate these causal interpretations. For the remaining outcomes, the overall ATE evidence was inconclusive. -->
+
+<!-- Our results also indicate that a single average treatment effect (ATE) can mask important individual differences. Specifically, selectively intervening using measured covariates at baseline could increase Conscientiousness at the population level and further enhance Agreeableness beyond indiscriminate treatments.  -->
+
+<!-- Our results suggest that a single average treatment effect can conceal meaningful subgroup differences. Specifically, tailoring interventions using observed baseline measures may further increase Conscientiousness and augment Agreeableness beyond blanket approaches. -->
+
+<!-- For Agreeableness, participants who commute less than about 5.8 hours per week and have a household income above NZD 28,600 experience greater gains in Agreeableness when attending religious services. Meanwhile, those with comparable low commuting hours but lower household income tend to gain less from this intervention. Among those commuting more than 5.8 hours weekly, individuals doing more than 16 hours of housework benefit more from religious attendance, whereas those with greater commuting and minimal housework show weaker responses in Agreeableness. -->
+
+<!-- Turning to Conscientiousness, people who score below about 5.75 on honesty-humility (on a 1–7 scale) and also exceed a neuroticism threshold of roughly 3.25 (on a 1–7 scale) respond more strongly than those who remain below that neuroticism threshold. Among those scoring higher on honesty-humility, individuals with anxiety above approximately 0.67 (on a 0–5 scale) appear to gain more in Conscientiousness from religious attendance. By contrast, those not exceeding this anxiety cutoff see smaller gains—perhaps because other factors govern their capacity to benefit from the intervention. -->
+
+<!-- These patterns reinforce the value of approaches like causal forests, Qini curves, and policy trees. By focusing on individual variation, we can better identify who stands to benefit most from interventions, offering a more refined way to promote personality development at scale. -->
+
+
+```{r,  results='asis'}
+#| eval: true
+#| echo: false
+cat(boilerplate_generate_text(
+  category = "discussion",
+  sections = c(
+    "ethics",
+    "authors_statment_empty",
+    "acknowlegements.nzavs_acknowledgements_2025",
+    "nzavs_data_availabily"
+  ),
+  global_vars = list(
+    exposure_variable = name_exposure_variable
+  ),
+  db = unified_db
+))
+```
+
+
+
+{{< pagebreak >}}
+
+## Appendix A: Daily Data Collection  {#appendix-timeline}
+
+@fig-timeline presents the New Zealand Attitudes and Values Study Data Collection (2018 retained cohort) from years 2018-2014 (NZAVS time 10--time 15).
+
+```{r}
+#| label: fig-timeline
+#| fig-cap: "Historgram of New Zealand Attitudes and Values Study Daily Data Collection for Time 12 cohort: years 2020-2023."
+#| eval: true
+#| include: true
+#| echo: false
+#| fig-width: 12
+#| fig-height: 12
+#| 
+timeline_histogram
+```
+
+
+{{< pagebreak >}}
+
+## Appendix B: Measures and Demographic Statistics {#appendix-measures}
+
+
+### Measures 
+
+####  Covariate Measures 
+```{r, results='asis'}
+cat(baseline_measures_text)
+```
+
+#### Exposure Measures
+
+```{r, results='asis'}
+cat(exposure_measures_text)
+```
+
+#### Outcome Measures
+
+```{r, results='asis'}
+cat(outcome_measures_text)
+```
+### Sample Demographic Statistics
+
+@tbl-appendix-baseline presents sample demographic statistics.
+
+::: {#tbl-appendix-baseline}
+```{r, results = 'asis'}
+#| eval: true
+#| include: true
+#| echo: false
+markdown_table_baseline
+```
+Demographic statistics for New Zealand Attitudes and Values Cohort wave 2018.
+:::
+
+
+### Exposure Variable {#appendix-exposure} 
+
+<!-- @tbl-sample-exposures presents sample statistics for the exposure variable, religious service attendance, during the baseline and exposure waves. This variable was not measured in part of NZAVS time 12 (years 2020-2021) and part of NZAVS time 13 (years 2021-2022). To address missingness, if a value was observed after NZAVS time 14, we carried the previous observation forward and created and NA indicator. If there was no future observation, the participant was treated as censored, and inverse probability of censoring weights were applied, following our standard method for handling missing observations (see mansucript **Method**/**Handling of Missing Data**). Here, our carry-forward imputation approach may result in conservative causal effect estimation because it introduces measurement error. However, this approach would not generally bias causal effect estimation away from the null because the measurement error is unsystematic and random and unrelated to the outcomes. -->
+
+
+::: {#tbl-appendix-exposures}
+```{r, results = 'asis'}
+#| eval: true
+#| include: true
+#| echo: false
+
+markdown_table_exposures
+
+```
+Demographic statistics for New Zealand Attitudes and Values Cohort waves 2018.
+:::
+
+{{< pagebreak >}}
+
+### Outcome Variables {#appendix-outcomes} 
+
+::: {#tbl-appendix-outcomes}
+```{r, results = 'asis'}
+#| eval: true
+#| include: true
+#| echo: false
+
+markdown_table_outcomes
+
+```
+Outcome variables measured at baseline (NZAVS time 10, years 2018-2019, and time 15, years 2023-2024).
+:::
+
+
+{{< pagebreak >}}
+
+## Appendix E: 
+
+### Assumptions for Causal Inference
+
+```{r,  results='asis'}
+#| eval: true
+#| echo: false
+cat(boilerplate_generate_text(
+  category = "appendix",
+  sections = c(
+  "confounding.threewave_x"
+  ),
+  global_vars = list(
+    exposure_variable = name_exposure_variable
+  ),
+  db = unified_db
+))
+```
+
+
+
+
+
+### Transition Matrix to Check The Positivity Assumption {#appendix-transition}
+
+
+```{r, results = 'asis'}
+#| label: tbl-transition
+#| tbl-cap: "Transition Matrix Showing Change"
+#| eval: true
+#| include: true
+#| echo: false
+
+transition_tables_binary$tables[[1]]
+```
+
+```{r, results = 'asis'}
+cat(transition_tables_binary$explanation)
+```
+
+
+{{< pagebreak >}}
+
+
+## Appendix F: Evidence of Heterogeneity {#appendix-cate-validation}
+
+
+
+        
+```{r, results='asis'}
+#| label: tbl-omnibus
+#| eval: true
+#| echo: false
+result_ominbus_hetero$summary_table |> kbl("markdown")
+```
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(result_ominbus_hetero$interpretations)
+```
+
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(boilerplate_generate_text(
+  category = "results",
+  sections = c(
+    "grf.interpretation_rate"
+  ),
+  global_vars = list(
+    appendix_omnibus = "Appendix F",
+    flipped_list = flipped_list
+  ),
+  db = unified_db
+))
+```
+
+
+
+```{r, results='asis'}
+#| label: tbl-rate-autoc
+#| eval: true
+#| echo: false
+# view rate tables
+rate_table_all$rate_autoc |> kbl("markdown")
+#rate_table_all$rate_qini |> kbl("markdown")
+```
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(rate_interpretation_all$autoc_results)
+```
+
+```{r, results='asis'}
+#| label: tbl-rate-qini
+#| eval: true
+#| echo: false
+rate_table_all$rate_qini |> kbl("markdown")
+```
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(rate_interpretation_all$qini_results)
+```
+
+
+{{< pagebreak >}}
+
+```{r,  results='asis'}
+#| eval: true
+#| echo: false
+#| include: true
+text_explain_grf <- boilerplate_generate_text(
+  category = "appendix",
+  sections = c(
+    "explain.grf"
+  ),
+  global_vars = list(
+    traning_proportion = "70%",
+    train_proportion_decision_tree = "70%",
+    appendix_letter_explain_grf = "G"
+  ),
+  db = unified_db
+)
+cat(knitr::knit_child(text = text_explain_grf, quiet = TRUE))
+```
+
+
+
+## References {.appendix-refs}
+
+

@@ -72,25 +72,25 @@ Doing a causal analysis
 ### Scripts for a full analysis
 
 ::: {.callout-note-script-0}
-[Download full lab scripts 0](../laboratory/example-2/00-setup.R)
+[Download full lab scripts 0](../laboratory/lab-10/00-setup-L10.R)
 :::
 
 
 ::: {.callout-note-script-1}
-[Download full lab scripts 1](../laboratory/example-2/01-init-data-wrangling-ex-2.R)
+[Download full lab scripts 1](../laboratory/ ../laboratory/lab-10/01-init-L10.R)
 :::
 
 ::: {.callout-note-script-2}
-[Download full lab scripts 2](../laboratory/example-2/02-data-wrangling-ex-2.R)
+[Download full lab scripts 2]( ../laboratory/lab-10/02-make-wide-L10.R)
 :::
 
 ::: {.callout-note-script-3}
-[Download full lab scripts 3](../laboratory/example-2/03-analysis-ex-2.R)
+[Download full lab scripts 3](../laboratory/lab-10/03-models-L10.R)
 :::
 
 
 
-## Script 0: Setup
+## Script 0 is here
 
 **Run in full. No need to change anything.**  
 
@@ -100,7 +100,7 @@ This script prepares your data. Run it once -- running it twice would be like tu
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/example-2/00-setup.R
+#| file: ../laboratory/lab-10/00-setup-L10.R
 ```
 
 
@@ -162,7 +162,7 @@ Everything downstream—eligibility, transitions... depends on this trio.
 Use `margot::here_save()` (objects) and `here_save_qs()` (large objects) right after you create something you’ll cite. The convention keeps analysis, tables, and manuscript in sync.
 
 ```r
-here_save(dat_long_prepare,          "dat_long_prepare")
+here_save(dat_long_final,          "dat_long_final")
 here_save(percent_missing_baseline,  "percent_missing_baseline")
 ```
 
@@ -172,12 +172,12 @@ here_save(percent_missing_baseline,  "percent_missing_baseline")
 Decide early (exposure, cut-point, outcomes, waves), *checkpoint* everything with `here_save()`, and the rest of the pipeline flows.
 
 
-### Script 1 is here:
+## Script 1 is here:
 
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/example-2/01-init-data-wrangling-ex-2.R
+#| file: ../laboratory/lab-10/01-init-L10.R
 
 ```
 
@@ -248,12 +248,12 @@ Script 2 is a conveyor belt: long → wide → weighted → clean. your only job
 
 
 
-### Script 2 is here:
+## Script 2 is here:
 
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/example-2/02-data-wrangling-ex-2.R
+#| file: ../laboratory/lab-10/02-make-wide-L10.R
 
 ```
 
@@ -360,12 +360,12 @@ If you do subgroup analyses, save the markdown tables/ plots using the protocols
 Run the script in order, **eyes on three checkpoints**: the toy forest plot, convincing Qini/RATE curves/interpretations, and sensible policy-tree leaves. Everything else is auto-saved for the manuscript.
 
 
-### Script 3 is here:
+## Script 3 is here:
 
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/example-2/03-analysis-ex-2.R
+#| file: ../laboratory/lab-10/03-models-L10.R
 
 ```
 

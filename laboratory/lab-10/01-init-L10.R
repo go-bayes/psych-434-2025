@@ -1,12 +1,23 @@
-# script 1 causal workflow for estimating average treatment effects using margot
+# script 1 workflow lecture 10
 # may 2025
 # questions: joseph.bulbulia@vuw.ac.nz
+
+
+# +--------------------------+
+# |       DO NOT ALTER       |
+# +--------------------------+
 
 # restart fresh session for a clean workspace
 rstudioapi::restartSession()
 
 # set seed for reproducibility
 set.seed(123)
+
+# install and load 'margot' from GitHub if missing
+if (!requireNamespace("margot", quietly = TRUE)) {
+  message("installing 'margot' from GitHub")
+  devtools::install_github("go-bayes/margot", upgrade = "never")
+}
 
 # load packages -------------------------------------------------------------
 # pacman will install missing packages automatically
@@ -19,14 +30,41 @@ pacman::p_load(
   fastDummies,     # dummy variable creation
   naniar,          # missing data handling
   skimr,           # summary statistics
-  grf, ranger,     # machine learning forests
-  doParallel      # parallel processing
+  grf,             # machine learning forests
+  kableExtra,      # tables
+  ggplot2,         # graphs
+  doParallel       # parallel processing
+  grf,             # causal forests
+  janitor          # variables names
+  stringr          # variable names
+  patchwork        # graphs
+  table1           # tables
 )
 
 # check margot version ------------------------------------------------------
-if (packageVersion("margot") < "1.0.33") {
-  stop("please install margot >= 1.0.33 for this workflow")
+if (packageVersion("margot") < "1.0.35") {
+  stop("please install margot >= 1.0.35 for this workflow\n
+       run: devtools::install_github(\"go-bayes/margot\")
+")
 }
+
+
+# check margot version ------------------------------------------------------
+if (packageVersion("margot") < "1.0.35") {
+  stop("please install margot >= 1.0.35 for this workflow\n
+       run: devtools::install_github(\"go-bayes/margot\")
+")
+}
+
+library("margot")
+
+# install and load other packages from CRAN if missing
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+
 
 # create directories --------------------------------------------------------
 # create data directory if it doesn't exist
@@ -34,19 +72,19 @@ if (!dir.exists("data")) {
   dir.create("data")  # first time only: make a folder named 'data'
 }
 
-if (!dir.exists("models_example_2")) {
-  dir.create("models_example_2")  # first time only: make a folder named 'data'
+if (!dir.exists("save_directory")) {
+  dir.create("save_directory")  # first time only: make a folder named 'data'
 }
 
+# set up data directory structure
 data_dir    <- here::here("data")
-push_mods <- here::here("models_example_2") # implicit directory `margot::here_save()` uses
+push_mods <- here::here("save_directory") 
 
 # load data -----------------------------------------------------------------
 df_nz_long <- margot::here_read_qs("df_nz_long", data_dir)
 
 # initial data prep ---------------------------------------------------------
 # prepare intial data
-
 # define labels for rural classification
 rural_labels <- c(
   "High Urban Accessibility", 
@@ -87,41 +125,49 @@ dat_prep <- df_nz_long |>
   droplevels()
 
 
-###############################################################################
-# KEY DECISION 1
-###############################################################################
 
-# check out variables
-colnames(df_nz_long)
+# view variable names -----------------------------------------------------
+print(colnames(df_nz_long)) 
+
+# +--------------------------+
+# |     END DO NOT ALTER     |
+# +--------------------------+
+
+
+
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
+
 
 # define study variables ----------------------------------------------------
 # ** key decision 1: define your exposure variable **
 name_exposure <- "extraversion"
-exposure_var_binary = paste0(name_exposure, "_binary")
-exposure_var  <- c(name_exposure, paste0(name_exposure, "_binary"))
 
-# ** key decision 2: define your study waves **
+# exposure variable labels
+var_labels_exposure <- list(
+  "extraversion" = "Extraversion",
+  "extraversion_binary" = "Extraversion (binary)"
+)
+
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
+
+
+# +--------------------------+
+# | OPTIONALLY MODIFY SECTION|
+# +--------------------------+
+
+# **  define your study waves **
 baseline_wave      <- "2018"        # baseline measurement
 exposure_waves     <- c("2019")     # when exposure is measured
 outcome_wave       <- "2020"        # when outcomes are measured
 all_waves          <- c(baseline_wave, exposure_waves, outcome_wave)
 
-# save key variables --------------------------------------------------------
-margot::here_save(name_exposure, "name_exposure",push_mods)
-margot::here_save(exposure_var, "exposure_var", push_mods)
-margot::here_save(exposure_var_binary, "exposure_var_binary", push_mods)
-margot::here_save(all_waves,"all_waves", push_mods)
-
-
-
-###############################################################################
-# DECISION 2: BASELINE:  IT WILL MAKE SENSE TO KEEP BASELINE VARIABLES 
-###############################################################################
-
-
-# ** key decision 2: define baseline covariates **
+# **  define baseline covariates **
 # these are demographics, traits, etc. measured at baseline
-# no need to change these defaults
+
 baseline_vars <- c(
   # demographics
   "age", "born_nz_binary", "education_level_coarsen",
@@ -143,201 +189,95 @@ baseline_vars <- c(
   "political_conservative", "religion_identification_level"
 )
 
-# sort for easier reference
-baseline_vars <- sort(baseline_vars)
+# +--------------------------+
+# |END OPTIONALLY MODIFY SEC.|
+# +--------------------------+
 
-baseline_vars_no_log_init <- c(
-  baseline_vars,
-  c(
-    "hours_children",
-    "hours_commute",
-    "hours_exercise",
-    "hours_housework",
-    "hours_community",
-    "household_inc"
-  )
-)
-baseline_vars_no_log = setdiff(baseline_vars_no_log_init, c(
-  "log_hours_children",
-  "log_hours_commute",
-  "log_hours_exercise",
-  "log_hours_housework",
-  "log_hours_community",
-  "log_household_inc"
-))
 
-# sort
-baseline_vars_no_log <- sort(baseline_vars_no_log)
-
-# save
-here_save(baseline_vars_no_log, "baseline_vars_no_log")
-
-###############################################################################
-# KEY DECISION 3: DEFINE OUTCOME VARIABLES 
-###############################################################################
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
 
 # ** key decision 3: define outcome variables **
 outcome_vars <- c(
   # health outcomes
-  "alcohol_frequency_weekly", "alcohol_intensity",
-  "hlth_bmi", "log_hours_exercise", "hlth_sleep_hours", 
-  "short_form_health",
+  # "alcohol_frequency_weekly", "alcohol_intensity",
+  # "hlth_bmi", 
+  "log_hours_exercise", 
+  # "hlth_sleep_hours", 
+  # "short_form_health",
   
   # psychological outcomes
-  "hlth_fatigue", "kessler_latent_anxiety", 
-  "kessler_latent_depression", "rumination",
+  # "hlth_fatigue", 
+  "kessler_latent_anxiety", 
+  "kessler_latent_depression", 
+  "rumination",
   
   # wellbeing outcomes
-  "bodysat", "forgiveness", "gratitude", "lifesat", 
-  "meaning_purpose", "meaning_sense", "perfectionism", 
-  "pwi", "self_control", "self_esteem", 
-  "sexual_satisfaction",
+  "bodysat", 
+  #"forgiveness", "gratitude", 
+  "lifesat", "meaning_purpose", "meaning_sense", 
+  # "perfectionism", 
+  "pwi", 
+  #"self_control", 
+  "self_esteem", 
+  #"sexual_satisfaction",
   
   # social outcomes
   "belong", "neighbourhood_community", "support"
 )
 
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
+
+# +--------------------------+
+# |       DO NOT ALTER       |
+# +--------------------------+
+
+# after selecting your exposure/ baseline / outcome variables do not modify this
+# code
+
+# make binary variable (UNLESS YOUR EXPOSURE IS A BINARY VARIABLE)
+exposure_var_binary = paste0(name_exposure, "_binary")
+
+# make exposure variable list (we will keep both the continuous and binary variable)
+exposure_var  <- c(name_exposure, paste0(name_exposure, "_binary"))
+
 # sort for easier reference
+baseline_vars <- sort(baseline_vars)
 outcome_vars <- sort(outcome_vars)
 
-# outcome vars no log
-outcome_vars_no_log_init <- c(outcome_vars,"hours_exercise")
+# save key variables --------------------------------------------------------
+margot::here_save(name_exposure, "name_exposure")
+margot::here_save(var_labels_exposure,"var_labels_exposure")
+margot::here_save(baseline_vars,"baseline_vars")
+margot::here_save(exposure_var, "exposure_var")
+margot::here_save(exposure_var_binary, "exposure_var_binary")
+margot::here_save(outcome_vars, "outcome_vars")
+margot::here_save(baseline_wave, "baseline_wave")
+margot::here_save(exposure_waves, "exposure_waves")
+margot::here_save(outcome_wave, "outcome_wave")
+margot::here_save(all_waves,"all_waves")
 
-outcome_vars_no_log = setdiff(outcome_vars_no_log_init, c(
-  "log_hours_exercise"
-))
-
-
-# sort
-outcome_vars_no_log <- sort(outcome_vars_no_log_init)
-
-# save
-here_save(baseline_vars_no_log, "baseline_vars_no_log")
-
-
-
-
-
-# outcome variables by domain ---------------------------------------------
-raw_outcomes_health <- c(
-  "alcohol_frequency_weekly", 
-  "alcohol_intensity",
-  "hlth_bmi", 
-  "log_hours_exercise", 
-  "hlth_sleep_hours", 
-  "short_form_health"
-)
-# sort
-raw_outcomes_health <- sort(raw_outcomes_health)
-
-# save 
-here_save(raw_outcomes_health, "raw_outcomes_health")
-
-# with no log
-raw_outcomes_health_no_log <- c(raw_outcomes_health, "hours_exercise")
-
-# sort
-raw_outcomes_health_no_log <- sort(raw_outcomes_health_no_log)
-
-# save 
-here_save(raw_outcomes_health_no_log, "raw_outcomes_health_no_log")
-
-# define psych outcomes labels
-raw_outcomes_psych <- c( 
-  "hlth_fatigue", 
-  "kessler_latent_anxiety", 
-  "kessler_latent_depression",  
-  "rumination"
-)
-
-# sort
-raw_outcomes_psych <- sort(raw_outcomes_psych)
-
-# save
-here_save(raw_outcomes_psych, "raw_outcomes_psych")
-
-# define present outcomes labels
-raw_outcomes_present <- c(
-  "bodysat",
-  "forgiveness",
-  "perfectionism", 
-  "self_control" , 
-  "self_esteem", 
-  "sexual_satisfaction" )
-
-# sort
-raw_outcomes_present <- sort(raw_outcomes_present)
-
-# save
-here_save(raw_outcomes_present, "raw_outcomes_present")
-
-# define life outcomes labels
-raw_outcomes_life <- c( 
-  "gratitude", 
-  "lifesat", 
-  "meaning_purpose", 
-  "meaning_sense",
-  "pwi"  # move personal well-being here if not using individual facents
-)
-
-# sort
-raw_outcomes_life <- sort(raw_outcomes_life)
-
-# save
-here_save(raw_outcomes_life, "raw_outcomes_life")
-
-# define social outcomes labels
-raw_outcomes_social <- c(
-  "belong",
-  "neighbourhood_community", 
-  "support" 
-)
-
-# sort
-raw_outcomes_social <- sort(raw_outcomes_social)
-
-# save
-here_save(raw_outcomes_social, "raw_outcomes_social")
-
-# create all outcome variable names ---------------------------------------
-# for tables
-raw_outcomes_all = c(
-  baseline_vars_no_log,
-  raw_outcomes_health_no_log,
-  raw_outcomes_psych,
-  raw_outcomes_present,
-  raw_outcomes_life,
-  raw_outcomes_social
-)
-
-# select only unique measures
-raw_outcomes_all <- unique(raw_outcomes_all)
-
-# save
-here_save(raw_outcomes_all, "raw_outcomes_all")
+# +--------------------------+
+# |     END DO NOT ALTER     |
+# +--------------------------+
 
 
 
-###############################################################################
-# KEY DECISION 4: DEFINE OUTCOME VARIABLES 
-###############################################################################
-
-
-# time-varying confounder if needed ---------------------------------------
-
-# ** key decision 4: define time-varying confounders **
-# these are variables that could affect the outcome but cannot be affected by exposure
-confounder_vars <- c(
-  "hlth_disability_binary"  # consider carefully if this could be affected by the exposure
-)
-
-# save variables for reproducibility ----------------------------------------
-margot::here_save(baseline_vars,    "baseline_vars", push_mods)
-margot::here_save(outcome_vars,     "outcome_vars", push_mods)
-margot::here_save(confounder_vars,  "confounder_vars", push_mods)
+# +--------------------------+
+# | OPTIONALLY MODIFY SECTION|
+# +--------------------------+
 
 # select eligible participants ----------------------------------------------
 # only include participants who have exposure data at baseline
+
+# You might require tighter conditions 
+# for example, if you are interested in the effects of hours of childcare, 
+# you might want to select only those who were parents at baseline. 
+# talk to me if you think you might night tighter eligibility criteria.
+
 ids_baseline <- dat_prep |> 
   filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
   pull(id)
@@ -347,11 +287,19 @@ dat_long_1 <- dat_prep |>
   filter(id %in% ids_baseline, wave %in% all_waves) |> 
   droplevels()
 
-# ** key decision 6: determine binary cutpoint for exposure **
-# visualise distribution to decide on appropriate cutpoint
+# +--------------------------+
+# |END OPTIONALLY MODIFY SEC.|
+# +--------------------------+
+
+
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
+# plot distribution to help with cutpoint decision
+# get exposure wave to inspect exposure variable distribution
 dat_long_exposure <- dat_long_1 |> filter(wave %in% exposure_waves)
 
-# plot distribution to help with cutpoint decision
+# make graph 
 graph_cut <- margot::margot_plot_categorical(
   dat_long_exposure,
   col_name         = name_exposure,
@@ -365,40 +313,40 @@ graph_cut <- margot::margot_plot_categorical(
   show_sd          = TRUE
 )
 print(graph_cut)
+
+# save your graph
 margot::here_save(graph_cut, "graph_cut", push_mods)
 
 # create binary exposure variable based on chosen cutpoint
 dat_long_2 <- margot::create_ordered_variable(
   dat_long_1,
   var_name           = name_exposure,
-  custom_breaks      = c(1, 4),  # ** adjust based on your decision **
+  custom_breaks      = c(1, 4),  # ** -- adjust based on your decision above -- **
   cutpoint_inclusive = "upper"
 )
+
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
+
+# +--------------------------+
+# |       DO NOT ALTER       |
+# +--------------------------+
 
 # process binary variables and log-transform --------------------------------
 # convert binary factors to 0/1 format
 dat_long_3 <- margot::margot_process_binary_vars(dat_long_2)
-
-# log-transform hours and income variables: tables for manuscript
-dat_long_tables <- margot::margot_log_transform_vars(
-  dat_long_3,
-  vars            = c(starts_with("hours_"), "household_inc"),
-  prefix          = "log_",
-  keep_original   = TRUE  # keep both original and transformed variables
-) |> 
-  # select only variables needed for analysis
-  select(all_of(c(baseline_vars_no_log, exposure_var, outcome_vars_no_log, "id", "wave"))) |> 
-  droplevels()
 
 # log-transform hours and income variables: tables for analysis (only logged versions of vars)
 dat_long_final <- margot::margot_log_transform_vars(
   dat_long_3,
   vars            = c(starts_with("hours_"), "household_inc"),
   prefix          = "log_",
-  keep_original   = FALSE  # omit original variables
+  keep_original   = FALSE,
+  exceptions = exposure_var # omit original variables
 ) |> 
   # select only variables needed for analysis
-  select(all_of(c(baseline_vars, exposure_var, outcome_vars, "id", "wave"))) |> 
+  select(all_of(c(baseline_vars, exposure_var, outcome_vars, "id", "wave", "year_measured", "sample_weights"))) |> 
   droplevels()
 
 
@@ -420,23 +368,15 @@ percent_missing_baseline <- naniar::pct_miss(dat_baseline_pct)
 margot::here_save(percent_missing_baseline, "percent_missing_baseline", push_mods)
 
 # save prepared dataset for next stage --------------------------------------
-margot::here_save(dat_long_final, "dat_long_prepare", push_mods)
+margot::here_save(dat_long_final, "dat_long_final", push_mods)
 
-# visualise individual changes in exposure over time ------------------------
-# useful for understanding exposure dynamics
-individual_plot <- margot_plot_individual_responses(
-  dat_long_1,
-  y_vars = name_exposure,
-  id_col = "id",
-  waves = c(2018:2019),
-  random_draws = 56,  # number of randomly selected individuals to show
-  theme = theme_classic(),
-  scale_range = c(1, 7),  # range of the exposure variable
-  full_response_scale = TRUE,
-  seed = 123
-)
-print(individual_plot)
-margot::here_save(individual_plot, "individual_plot_exposure", push_mods)
+# +--------------------------+
+# |     END DO NOT ALTER     |
+# +--------------------------+
+
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
 
 # create transition matrices to check positivity ----------------------------
 # this helps assess whether there are sufficient observations in all exposure states
@@ -445,7 +385,7 @@ dt_positivity <- dat_long_final |>
   select(!!sym(name_exposure), id, wave) |>
   mutate(exposure = round(as.numeric(!!sym(name_exposure)), 0)) |>
   # create binary exposure based on cutpoint
-  mutate(exposure_binary = ifelse(exposure >= 4, 1, 0)) |>
+  mutate(exposure_binary = ifelse(exposure >= 4, 1, 0)) |> ## *-- modify this --* 
   mutate(wave = as.numeric(wave) -1 )
 
 # create transition tables
@@ -472,23 +412,7 @@ transition_tables_binary <- margot::margot_transition_table(
 print(transition_tables_binary$tables[[1]])
 margot::here_save(transition_tables_binary, "transition_tables_binary", push_mods)
 
-
-
-###############################################################################
-# KEY DECISION 5: DEFINE OUTCOME VARIABLES 
-###############################################################################
-
-# create descriptive tables -------------------------------------------------
-# define variable labels for tables and plots -------------------------------
-# ** key decision 5: define clear labels for all variables **
-# create labels by category for better organisation
-
-# exposure variable labels
-var_labels_exposure <- list(
-  "extraversion" = "Extraversion",
-  "extraversion_binary" = "Extraversion (binary)"
-)
-
+# create tables -----------------------------------------------------------
 # baseline variable labels
 var_labels_baseline <- list(
   # demographics
@@ -540,70 +464,55 @@ var_labels_baseline <- list(
   "log_hours_exercise" = "Log Hours Exercising",
   "log_hours_housework" = "Log Hours on Housework"
 )
+here_save(var_labels_baseline, "var_labels_baseline")
 
 # outcome variable labels, organized by domain
+# reivew your outcomes make sure they appear on the list below
+# comment out what you do not need
+outcome_vars
 
-var_labels_health <- list(
-  "alcohol_frequency_weekly" = "Alcohol Frequency (weekly)",
-  "alcohol_intensity" = "Alcohol Intensity",
-  "hlth_bmi" = "Body Mass Index",
-  "hlth_sleep_hours" = "Sleep",
-  "hours_exercise" = "Hours of Exercise",
-  "short_form_health" = "Short Form Health"
-)
-
-# define psych outcomes
-var_labels_psych <- list(
+# get names
+var_labels_outcomes <- list(
+  # "alcohol_frequency_weekly" = "Alcohol Frequency (weekly)",
+  # "alcohol_intensity" = "Alcohol Intensity",
+  # "hlth_bmi" = "Body Mass Index",
+  # "hlth_sleep_hours" = "Sleep",
+  "log_hours_exercise" = "Hours of Exercise (log)",
+ # "short_form_health" = "Short Form Health",
   "hlth_fatigue" = "Fatigue",
   "kessler_latent_anxiety" = "Anxiety",
   "kessler_latent_depression" = "Depression",
-  "rumination" = "Rumination"
-)
-
-# define present outcomes
-var_labels_present <- list(
+ # "rumination" = "Rumination",
   "bodysat" = "Body Satisfaction",
-  "foregiveness" = "Forgiveness",
-  "perfectionism" = "Perfectionism",
-  "self_control" = "Self Control",
+ # "forgiveness" = "Forgiveness",
+ # "perfectionism" = "Perfectionism",
+ # "self_control" = "Self Control",
   "self_esteem" = "Self Esteem",
-  "sexual_satisfaction" = "Sexual Satisfaction"
-)
-
-# define life outcomes
-var_labels_life <- list(
-  "gratitude" = "Gratitude",
+  "sexual_satisfaction" = "Sexual Satisfaction",
+ # "gratitude" = "Gratitude",
   "lifesat" = "Life Satisfaction",
   "meaning_purpose" = "Meaning: Purpose",
-  # exposure variable
   "meaning_sense" = "Meaning: Sense",
-  "pwi = Personal Well-being Index"
-)
-
-# define social outcome names
-var_labels_social <- list(
+  "pwi = Personal Well-being Index",
   "belong" = "Social Belonging",
   "neighbourhood_community" = "Neighbourhood Community",
   "support" = "Social Support"
 )
-# combine all label lists
-var_labels_all = c(
-  var_labels_baseline,
-  var_labels_exposure,
-  var_labels_health,
-  var_labels_psych,
-  var_labels_present,
-  var_labels_life,
-  var_labels_social
-)
 
 # save for manuscript
-here_save(var_labels_all, "var_labels_all", push_mods)
+here_save(var_labels_outcomes, "var_labels_outcomes")
 
 
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
+
+# +--------------------------+
+# |       DO NOT ALTER       |
+# +--------------------------+
 # tables ------------------------------------------------------------------
 # create baseline characteristics table
-dat_baseline = dat_long_tables |>
+dat_baseline = dat_long_final |>
   filter(wave %in% c(baseline_wave)) |>
   mutate(
     male_binary = factor(male_binary),
@@ -615,11 +524,19 @@ dat_baseline = dat_long_tables |>
     sample_frame_opt_in_binary = factor(sample_frame_opt_in_binary)
   )
 
+
+# save sample weights from baseline wave
+# save sample weights
+t0_sample_weights <- dat_baseline$sample_weights
+here_save(t0_sample_weights, "t0_sample_weights")
+
+
+
 baseline_table <- margot::margot_make_tables(
   data = dat_baseline,
   vars = baseline_vars,
   by = "wave",
-  labels = var_labels_all,
+  labels = var_labels_baseline,
   table1_opts = list(overall = FALSE, transpose = FALSE),
   format = "markdown"
 )
@@ -628,10 +545,10 @@ margot::here_save(baseline_table, "baseline_table", push_mods)
 
 # create exposure table by wave
 exposure_table <- margot::margot_make_tables(
-  data = dat_long_tables |> filter(wave %in% c(baseline_wave, exposure_waves)),
+  data = dat_long_final |> filter(wave %in% c(baseline_wave, exposure_waves)),
   vars = exposure_var,
   by = "wave",
-  labels = var_labels_all,
+  labels = var_labels_exposure,
   factor_vars = exposure_var_binary,
   table1_opts = list(overall = FALSE, transpose = FALSE),
   format = "markdown"
@@ -641,14 +558,24 @@ margot::here_save(exposure_table, "exposure_table", push_mods)
 
 # create outcomes table by wave
 outcomes_table <- margot::margot_make_tables(
-  data = dat_long_tables |> filter(wave %in% c(baseline_wave, outcome_wave)),
-  vars = outcome_vars_no_log,
+  data = dat_long_final |> filter(wave %in% c(baseline_wave, outcome_wave)),
+  vars = outcome_vars,
   by = "wave",
-  labels = var_labels,
+  labels = var_labels_outcomes,
   format = "markdown"
 )
 print(outcomes_table)
 margot::here_save(outcomes_table, "outcomes_table", push_mods)
+
+# +--------------------------+
+# |     END DO NOT ALTER     |
+# +--------------------------+
+
+
+# +--------------------------+
+# |     END                  |
+# +--------------------------+
+
 
 # note: completed data preparation step -------------------------------------
 # you're now ready for the next steps:
@@ -661,6 +588,26 @@ margot::here_save(outcomes_table, "outcomes_table", push_mods)
 # study waves: baseline (2018), exposure (2019), outcome (2020)
 # baseline covariates: demographics, traits, health measures (excluding exposure)
 # outcomes: health, psychological, wellbeing, and social variables
-# time-varying confounders: disability status??
-# binary cutpoint for exposure: 4 on the extraversion scale
+# binary cutpoint for exposure: here, 4 on the extraversion scale
 # label names for tables
+
+
+
+
+# THIS IS FOR INTEREST ONLY ----------------------------------------------------
+# uncomment to view random chang in individuals
+# visualise individual changes in exposure over time ------------------------
+# useful for understanding exposure dynamics
+# individual_plot <- margot_plot_individual_responses(
+#   dat_long_1,
+#   y_vars = name_exposure,
+#   id_col = "id",
+#   waves = c(2018:2019),
+#   random_draws = 56,  # number of randomly selected individuals to show
+#   theme = theme_classic(),
+#   scale_range = c(1, 7),  # range of the exposure variable
+#   full_response_scale = TRUE,
+#   seed = 123
+# )
+# print(individual_plot)
+
