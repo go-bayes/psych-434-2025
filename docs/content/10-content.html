@@ -266,7 +266,8 @@ div.csl-indent {
   <ul>
   <li><a href="#part-1-quarto-manuscripts" id="toc-part-1-quarto-manuscripts" class="nav-link active" data-scroll-target="#part-1-quarto-manuscripts">Part 1: Quarto manuscripts</a>
   <ul class="collapse">
-  <li><a href="#to-do" id="toc-to-do" class="nav-link" data-scroll-target="#to-do">To Do</a></li>
+  <li><a href="#first-lets-go-through-your-analysis." id="toc-first-lets-go-through-your-analysis." class="nav-link" data-scroll-target="#first-lets-go-through-your-analysis.">First Let’s Go Through Your Analysis.</a></li>
+  <li><a href="#get-quarto" id="toc-get-quarto" class="nav-link" data-scroll-target="#get-quarto">Get Quarto</a></li>
   </ul></li>
   <li><a href="#what-you-will-learn" id="toc-what-you-will-learn" class="nav-link" data-scroll-target="#what-you-will-learn">What You Will Learn</a>
   <ul class="collapse">
@@ -331,14 +332,35 @@ For the lab, download the script
 </ul>
 </div>
 </div>
-<section id="to-do" class="level3">
-<h3 class="anchored" data-anchor-id="to-do">To Do</h3>
+<section id="first-lets-go-through-your-analysis." class="level3">
+<h3 class="anchored" data-anchor-id="first-lets-go-through-your-analysis.">First Let’s Go Through Your Analysis.</h3>
 <ul>
-<li><p>Download the script (from week 9) and store in our R directory: <a href="https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example_analysis.R">link to analysis script</a></p></li>
-<li><p>Download the manuscript template and store in our R directory: <a href="https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example-manuscript.qmd">link to manuscript template</a></p></li>
-<li><p>Download the following <code>tex</code> file and save it to your R directory: <a href="https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex">latex macros</a></p></li>
-<li><p>Download the followign <code>tex</code> file and save it to your R directory: <a href="https://raw.githubusercontent.com/go-bayes/templates/main/quarto/title.tex">title preamble</a></p></li>
-<li><p>Download the following <code>csl</code> file and save it to your R directory: <a href="https://raw.githubusercontent.com/go-bayes/templates/main/csl/camb-a.csl">csl preamble</a></p></li>
+<li>Create a new Rstudio project</li>
+<li>Modify <em>these</em> scripts</li>
+</ul>
+<div class="callout-note-script-0">
+<p><a href="../laboratory/lab-10/00-setup-L10.R">Download full lab scripts 0</a></p>
+</div>
+<div class="callout-note-script-1">
+<p><a href="../laboratory/ ../laboratory/lab-10/01-init-L10.R">Download full lab scripts 1</a></p>
+</div>
+<div class="callout-note-script-2">
+<p><a href="../laboratory/lab-10/02-make-wide-L10.R">Download full lab scripts 2</a></p>
+</div>
+<div class="callout-note-script-3">
+<p><a href="../laboratory/lab-10/03-models-L10.R">Download full lab scripts 3</a></p>
+</div>
+</section>
+<section id="get-quarto" class="level3">
+<h3 class="anchored" data-anchor-id="get-quarto">Get Quarto</h3>
+<ul>
+<li>Download the quarto manuscript template and store in your R directory: <a href="https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/quarto/template-quarto-manuscript.qmd">link to manuscript template</a></li>
+</ul>
+<!-- - Download the following `tex` file and save it to your R directory: -->
+<!-- [latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex) -->
+<ul>
+<li><p>Download the following <code>tex</code> file and save it to your R directory: <a href="https://raw.githubusercontent.com/go-bayes/templates/main/quarto/title.tex">title preamble</a></p></li>
+<li><p>Download the following <code>csl</code> file and save it to your R directory: <a href="https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/csl/apa-ann-7.csl">csl preamble</a></p></li>
 <li><p>Make sure you can install all libraries required of the manuscript template.</p></li>
 <li><p>Come to the seminar prepared to work through the analysis</p></li>
 </ul>
@@ -359,20 +381,20 @@ For the lab, download the script
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.0 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
-  - Chang W (2023). _extrafont: Tools for Using Fonts_. R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.
+<pre><code>  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 1.0.35 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
+  - Chang W (2023). _extrafont: Tools for Using Fonts_. doi:10.32614/CRAN.package.extrafont &lt;https://doi.org/10.32614/CRAN.package.extrafont&gt;, R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.
   - Grolemund G, Wickham H (2011). "Dates and Times Made Easy with lubridate." _Journal of Statistical Software_, *40*(3), 1-25. &lt;https://www.jstatsoft.org/v40/i03/&gt;.
-  - Müller K, Wickham H (2023). _tibble: Simple Data Frames_. R package version 3.2.1, &lt;https://CRAN.R-project.org/package=tibble&gt;.
-  - R Core Team (2024). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. &lt;https://www.R-project.org/&gt;.
+  - Müller K, Wickham H (2023). _tibble: Simple Data Frames_. doi:10.32614/CRAN.package.tibble &lt;https://doi.org/10.32614/CRAN.package.tibble&gt;, R package version 3.2.1, &lt;https://CRAN.R-project.org/package=tibble&gt;.
+  - R Core Team (2025). _R: A Language and Environment for Statistical Computing_. R Foundation for Statistical Computing, Vienna, Austria. &lt;https://www.R-project.org/&gt;.
   - Wickham H (2016). _ggplot2: Elegant Graphics for Data Analysis_. Springer-Verlag New York. ISBN 978-3-319-24277-4, &lt;https://ggplot2.tidyverse.org&gt;.
-  - Wickham H (2023). _forcats: Tools for Working with Categorical Variables (Factors)_. R package version 1.0.0, &lt;https://CRAN.R-project.org/package=forcats&gt;.
-  - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. R package version 1.5.1, &lt;https://CRAN.R-project.org/package=stringr&gt;.
+  - Wickham H (2023). _forcats: Tools for Working with Categorical Variables (Factors)_. doi:10.32614/CRAN.package.forcats &lt;https://doi.org/10.32614/CRAN.package.forcats&gt;, R package version 1.0.0, &lt;https://CRAN.R-project.org/package=forcats&gt;.
+  - Wickham H (2023). _stringr: Simple, Consistent Wrappers for Common String Operations_. doi:10.32614/CRAN.package.stringr &lt;https://doi.org/10.32614/CRAN.package.stringr&gt;, R package version 1.5.1, &lt;https://CRAN.R-project.org/package=stringr&gt;.
   - Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). "Welcome to the tidyverse." _Journal of Open Source Software_, *4*(43), 1686. doi:10.21105/joss.01686 &lt;https://doi.org/10.21105/joss.01686&gt;.
-  - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.
-  - Wickham H, Henry L (2023). _purrr: Functional Programming Tools_. R package version 1.0.2, &lt;https://CRAN.R-project.org/package=purrr&gt;.
-  - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.
-  - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.
-  - Xie Y (2024). _tinytex: Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents_. R package version 0.54, &lt;https://github.com/rstudio/tinytex&gt;. Xie Y (2019). "TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX Live." _TUGboat_, *40*(1), 30-32. &lt;https://tug.org/TUGboat/Contents/contents40-1.html&gt;.</code></pre>
+  - Wickham H, François R, Henry L, Müller K, Vaughan D (2023). _dplyr: A Grammar of Data Manipulation_. doi:10.32614/CRAN.package.dplyr &lt;https://doi.org/10.32614/CRAN.package.dplyr&gt;, R package version 1.1.4, &lt;https://CRAN.R-project.org/package=dplyr&gt;.
+  - Wickham H, Henry L (2025). _purrr: Functional Programming Tools_. doi:10.32614/CRAN.package.purrr &lt;https://doi.org/10.32614/CRAN.package.purrr&gt;, R package version 1.0.4, &lt;https://CRAN.R-project.org/package=purrr&gt;.
+  - Wickham H, Hester J, Bryan J (2024). _readr: Read Rectangular Text Data_. doi:10.32614/CRAN.package.readr &lt;https://doi.org/10.32614/CRAN.package.readr&gt;, R package version 2.1.5, &lt;https://CRAN.R-project.org/package=readr&gt;.
+  - Wickham H, Vaughan D, Girlich M (2024). _tidyr: Tidy Messy Data_. doi:10.32614/CRAN.package.tidyr &lt;https://doi.org/10.32614/CRAN.package.tidyr&gt;, R package version 1.3.1, &lt;https://CRAN.R-project.org/package=tidyr&gt;.
+  - Xie Y (2025). _tinytex: Helper Functions to Install and Maintain TeX Live, and Compile LaTeX Documents_. R package version 0.57, &lt;https://github.com/rstudio/tinytex&gt;. Xie Y (2019). "TinyTeX: A lightweight, cross-platform, and easy-to-maintain LaTeX distribution based on TeX Live." _TUGboat_, *40*(1), 30-32. &lt;https://tug.org/TUGboat/Contents/contents40-1.html&gt;.</code></pre>
 </div>
 </div>
 
@@ -894,52 +916,78 @@ For the lab, download the script
 <span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a><span class="fu">### To Do</span></span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download the script (from week 9) and store in our R directory: <span class="co">[</span><span class="ot">link to analysis script </span><span class="co">](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example_analysis.R)</span></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="fu">### First Let's Go Through Your Analysis. </span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a><span class="ss">-  </span>Create a new Rstudio project</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a><span class="ss">-  </span>Modify *these* scripts</span>
 <span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download the manuscript template and store in our R directory: <span class="co">[</span><span class="ot">link to manuscript template</span><span class="co">](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example-manuscript.qmd)</span></span>
-<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- - Download the following `tex` file and save it to your R directory: --&gt;</span></span>
-<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- [latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex) --&gt;</span></span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a>::: {.callout-note-script-0}</span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download full lab scripts 0</span><span class="co">](../laboratory/lab-10/00-setup-L10.R)</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download the following <span class="in">`tex`</span> file and save it to your R directory:</span>
-<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">title preamble</span><span class="co">](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/title.tex)</span></span>
-<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a>::: {.callout-note-script-1}</span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download full lab scripts 1</span><span class="co">](../laboratory/ ../laboratory/lab-10/01-init-L10.R)</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download the following <span class="in">`csl`</span> file and save it to your R directory:</span>
-<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">csl preamble</span><span class="co">](https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/csl/apa-ann-7.csl)</span></span>
-<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Make sure you can install all libraries required of the manuscript template.</span>
-<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Come to the seminar prepared to work through the analysis</span>
-<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a>::: {.callout-note-script-2}</span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download full lab scripts 2</span><span class="co">]( ../laboratory/lab-10/02-make-wide-L10.R)</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a>::: {.callout-note-script-3}</span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Download full lab scripts 3</span><span class="co">](../laboratory/lab-10/03-models-L10.R)</span></span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a><span class="fu">## What You Will Learn</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to create a publication quality manuscript** </span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to create a workflow for references** </span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to import results into your manuscript** </span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a><span class="fu">### Get Quarto</span></span>
 <span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to make graphs of your results (using) `margot`** </span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download the quarto manuscript template and store in your R directory: <span class="co">[</span><span class="ot">link to manuscript template</span><span class="co">](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/quarto/template-quarto-manuscript.qmd)</span></span>
 <span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to report your results**</span>
-<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to interpret your results**</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- - Download the following `tex` file and save it to your R directory: --&gt;</span></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="co">&lt;!-- [latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex) --&gt;</span></span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="fu">### Packages</span></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download the following <span class="in">`tex`</span> file and save it to your R directory:</span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">title preamble</span><span class="co">](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/title.tex)</span></span>
 <span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span>
-<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-104"><a href="#cb3-104" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download the following <span class="in">`csl`</span> file and save it to your R directory:</span>
+<span id="cb3-105"><a href="#cb3-105" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">csl preamble</span><span class="co">](https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/csl/apa-ann-7.csl)</span></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Make sure you can install all libraries required of the manuscript template.</span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Come to the seminar prepared to work through the analysis</span>
 <span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="fu">## What You Will Learn</span></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to create a publication quality manuscript** </span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to create a workflow for references** </span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to import results into your manuscript** </span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to make graphs of your results (using) `margot`** </span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to report your results**</span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**How to interpret your results**</span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a><span class="fu">### Packages</span></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a></span>
 </code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

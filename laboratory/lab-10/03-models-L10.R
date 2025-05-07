@@ -1,7 +1,6 @@
 # script 3: causal workflow for estimating average treatment effects using margot
 # may 2025
 # questions: joseph.bulbulia@vuw.ac.nz
-devtools::load_all("/Users/joseph/GIT/margot/")
 
 
 # +--------------------------+
@@ -62,9 +61,10 @@ pacman::p_load(
   ggplot2 ,        # graphs
   rlang ,          # functions for base types/Core R/ 'Tidyverse'
   purrr ,          # functional programming tools.
-  patchwork,      # nice graph placement
+  patchwork,       # nice graph placement
   janitor,         # nice labels
-  glue            # format/ interpolate a string
+  glue,            # format/ interpolate a string
+  kableExtra.      %tables
 )
 
 
@@ -476,7 +476,7 @@ binary_results$transformed_table |> rename("E-Value" = "E_Value", "E-Value bound
   kbl(format = 'markdown')
 
 # check
-cat(binary_results_health$interpretation)
+cat(binary_results$interpretation)
 
 # interpretation
 cat(binary_results$interpretation)

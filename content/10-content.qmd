@@ -82,16 +82,9 @@ Download Quarto here:
 :::
 
 
-
-
-
-
-
 ### Get Quarto
 
-- Download the script (from week 9) and store in our R directory: [link to analysis script ](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example_analysis.R)
-
-- Download the manuscript template and store in our R directory: [link to manuscript template](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example-manuscript.qmd)
+- Download the quarto manuscript template and store in your R directory: [link to manuscript template](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/quarto/template-quarto-manuscript.qmd)
 
 <!-- - Download the following `tex` file and save it to your R directory: -->
 <!-- [latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex) -->
