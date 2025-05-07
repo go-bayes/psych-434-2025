@@ -577,36 +577,48 @@ For information about the variables in the synthetic data, download the New Zeal
 
 :::
 
-
-### Script 1:
+## Script 0: Synthetic Data Fetch
 
 
 
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/01-example-script-data-wrangling.R
+#| file: ../laboratory/lab-10/00-setup-L10.R
+```
 
+
+
+
+
+## Script 1: Initial Data Wrangling
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/lab-10/01-init-L10.R
 
 ```
 
 
-### Script 2
+
+
+## Script 2: Make Wide Data Format With Censoring Weights
 
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/02-example-script-data-wrangling-2.R
+#| file: ../laboratory/lab-10/02-make-wide-L10.R
 
 ```
 
 
-### Script 3
+## Script 3: Models & Graphs
 
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/03-example-script-estimation-results.R
+#| file: ../laboratory/lab-10/03-models-L10.R
 
 ```
 

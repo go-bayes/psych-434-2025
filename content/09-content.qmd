@@ -90,11 +90,11 @@ Doing a causal analysis
 
 
 
-## Script 0 is here
+## Script 0: Synthetic Data Fetch
 
 **Run in full. No need to change anything.**  
 
-This script prepares your data. Run it once -- running it twice would be like turning the ignition off just to start your car again: unnecessary/silly.
+This script prepares your data. Run it once -- running it twice would be like turning the ignition off just to start your car again.
 
 
 ```{r}
@@ -106,20 +106,21 @@ This script prepares your data. Run it once -- running it twice would be like tu
 
 ## Script 01 Initial Data Wrangling
 
-Five checkpoints in the *wrangle-1* script are as follows;
-
+Key checkpoints in the *wrangle-1* script are as follows;
 
 ### First — pick your exposure* 
 
-Decide which variable is the “cause”. Here it is `extraversion`. Verify it exists at baseline (`t0_`) *and* at the exposure wave (`t1_`). glimpse it, eyeball missingness, and record the choice:
+Decide which variable is the “cause”. Here it is `extraversion`. Verify it exists at baseline (`t0_`) *and* at the exposure wave (`t1_`)
 
 ```r
 name_exposure <- "hours_community"
 here_save(name_exposure, "name_exposure")
 ```
 
+
 ### Second -- choose a binary cut-point
-binary splits simplify interpretation but can torture data. plot the distribution and mark obvious breaks:
+
+Causal inference requires a contrast between two conditions. The splits give us the conditions of a hypothetical experiment.
 
 ```r
 margot_plot_categorical(df,
@@ -127,7 +128,7 @@ margot_plot_categorical(df,
                         custom_breaks  = c(0, 1))
 ```
 
-Ask: which break meaningfully separate groups into two exposure groups? Is the split balanced? adjust `custom_breaks` until the answer is “yes”. then commit:
+Ask: which break meaningfully separate groups into two exposure groups? Is the split *theoretically motivated**? adjust `custom_breaks` until the answer is “yes”. then commit:
 
 
 ```r
@@ -138,14 +139,19 @@ create_ordered_variable(df,
 
 
 ### Third — select outcomes that fit your interests
-outcomes live in themed buckets (health, psych, life, social…). Choose the measures your hypothesis needs; save the vector for the manuscript:
+
+This example considers multi-dimensional wellbeing outcomes. You can select from these outcomes if you like.  Or you can pick different outcomes. **Discuss with us if you are confused***.
 
 ```r
 outcome_vars <- c("lifesat", "pwi", "self_esteem")
 here_save(outcome_vars, "outcome_vars")
 ```
 
-### Fourth — lock in wave structure
+
+Everything downstream—eligibility, transitions... depends on this trio.
+
+
+### Fouth — locking in the wave structure.
 
 Define one baseline wave, one or more exposure waves, and one outcome wave:
 
@@ -155,11 +161,12 @@ exposure_waves <- "2019"
 outcome_wave   <- "2020"
 ```
 
-Everything downstream—eligibility, transitions... depends on this trio.
+Note waves run from October --> September of the year folloowing the wave.
 
 
-### Fifth — save as you go, or regret later
-Use `margot::here_save()` (objects) and `here_save_qs()` (large objects) right after you create something you’ll cite. The convention keeps analysis, tables, and manuscript in sync.
+### Fifth — save as you go.
+
+Use `margot::here_save()` (objects) and `here_save_qs()` (large objects) right after you create something you’ll cite in your report. The convention keeps analysis, tables, and manuscript in sync.
 
 ```r
 here_save(dat_long_final,          "dat_long_final")
@@ -172,7 +179,8 @@ here_save(percent_missing_baseline,  "percent_missing_baseline")
 Decide early (exposure, cut-point, outcomes, waves), *checkpoint* everything with `here_save()`, and the rest of the pipeline flows.
 
 
-## Script 1 is here:
+
+## Script 1: Initial Data Wrangling is HERE
 
 ```{r}
 #| include: true
@@ -182,9 +190,10 @@ Decide early (exposure, cut-point, outcomes, waves), *checkpoint* everything wit
 ```
 
 
-## Script 2: what script 2 does while you sip your coffee
+## Script 2: What script 2 does while you sip your coffee
 
 **Purpose**  
+
 Convert the tidy long data into a grf-ready wide matrix and correct for dropout bias with inverse-probability-of-censoring weighting (IPCW).
 
 ### Step 1 – go wide automatically
@@ -197,7 +206,7 @@ colnames(df_wide)
 naniar::vis_miss(df_wide)
 ```
 
-### Step 2 – encode + scale for algorithms
+### Step 2 – Encode + scale for algorithms
 
 `margot_process_longitudinal_data_wider()` turns factors into dummies, scales continuous variables, and appends loss-to-follow-up flags. The result is `df_wide_encoded`.  
 
@@ -208,12 +217,12 @@ table(df_wide_encoded$t0_not_lost_following_wave)
 ```
 
 
-### Step 3 – build IPCW weights*
+### Step 3 – Build IPCW weights*
 
 Two probability forests estimate the chance of being observed at t1 and t2. `margot_adjust_weights()` then trims extreme values and normalises the weights. these appear as `t0_adjusted_weights` and `t1_adjusted_weights`.  The weigths should not be too extreme (e.g. values > 10)
 
 ```r
-hist(df_wide_encoded$t0_adjusted_weights)
+hist(df_wide_encoded$t1_adjusted_weights)
 ```
 
 **Why?** observations that resemble those who dropped out are up-weighted, so estimates stay unbiased when data vanish.
@@ -227,7 +236,6 @@ Rows with `*_lost_following_wave == 1` are removed, leaving `df_grf`. This datas
 naniar::vis_miss(df_grf)   # should be a blank canvas
 ```
 
----
 
 ### Step 5 – checkpoint everything
 
@@ -236,19 +244,17 @@ Each major object (`df_wide`, `df_wide_encoded`, `df_grf`, the weight vectors) i
 
 ### Takeaway: what you must do
 
-1. **run the script without edits.**  
+1. **Run the script without edits.**  
 2. skim the weight histograms; if you see huge spikes, ask for help.  
 3. confirm `df_grf` has the expected number of rows and no missing cells.
 
 
-**take-away**:
-
-Script 2 is a conveyor belt: long → wide → weighted → clean. your only job is to eyeball the parcels before they roll into the modelling bay.
+Script 2 is a conveyor belt: long $\to$ wide  $\to$ weighted  $\to$ clean. yYur only job is to eyeball the parcels before they roll into the modelling bay.
 
 
 
 
-## Script 2 is here:
+## Script 2: Make Wide Data Format With Censoring Weights is HERE
 
 ```{r}
 #| include: true
@@ -283,6 +289,7 @@ If anything is `NULL`, return to scripts 1–2 and debug.
 
 
 ### 3 Sanity-check with a toy forest  
+
 Fit one outcome on ¼ of the data to confirm the pipeline before burning CPU hours.
 
 ```r
@@ -300,16 +307,17 @@ Success = a plot appears without errors.
 
 
 ### 4 Full model batches + ATE tables  
+
 Loop over the five outcome domains, saving each model to `models_example_2/`.
 
 ```r
-models_binary_health <- margot_causal_forest(
+models_binary <- margot_causal_forest(
   data = df_grf,
-  outcome_vars = t2_outcome_health_z,
+  outcome_vars = t2_outcome_z,
   covariates   = X, W = W, weights = weights,
   save_models  = TRUE, save_data = TRUE
 )
-here_save_qs(models_binary_health, "models_binary_health")
+here_save_qs(models_binary_health, "models_binary")
 ```
 
 Then create ATE plots and interpretations with `margot_plot()`.  Save as these go straight into the manuscript.
@@ -327,7 +335,7 @@ Then create ATE plots and interpretations with `margot_plot()`.  Save as these g
 -  **Flip** outcomes you want to *minimise* (e.g. depression) so positive CATE = good.  
 
 ```r
-flipped <- margot_flip_forests(all_models,
+flipped <- margot_flip_forests(models_binary,
                                    flip_outcomes =
                                    c("t2_kessler_latent_depression_z"), 
                                    recalc_policy = TRUE)
@@ -346,7 +354,7 @@ When theory predicts effect modification—age bands, income thirds, etc.—use 
 
 ```r
 planned_subset_results <- margot_planned_subgroups_batch(
-  domain_models = list(models_binary_health, …),
+  domain_models = list(models_binary, …),
   X             = X,
   subset_types  = list(wealth = subsets_standard_wealth, …)
 )
@@ -354,13 +362,13 @@ planned_subset_results <- margot_planned_subgroups_batch(
 If you do subgroup analyses, save the markdown tables/ plots using the protocols for the main analysis (For you to do, not done in the script.)
 
 
-
 ### Takeaway  
 
 Run the script in order, **eyes on three checkpoints**: the toy forest plot, convincing Qini/RATE curves/interpretations, and sensible policy-tree leaves. Everything else is auto-saved for the manuscript.
 
 
-## Script 3 is here:
+## Script 3: Models & Graphs is HERE
+
 
 ```{r}
 #| include: true
