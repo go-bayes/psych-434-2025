@@ -662,550 +662,584 @@ Important
 <span id="cb8-87"><a href="#cb8-87"></a>  ) <span class="sc">|&gt;</span></span>
 <span id="cb8-88"><a href="#cb8-88"></a>  <span class="fu">droplevels</span>()</span>
 <span id="cb8-89"><a href="#cb8-89"></a></span>
-<span id="cb8-90"><a href="#cb8-90"></a><span class="co"># define study variables ----------------------------------------------------</span></span>
-<span id="cb8-91"><a href="#cb8-91"></a><span class="co"># ** key decision 1: define your exposure variable **</span></span>
-<span id="cb8-92"><a href="#cb8-92"></a>name_exposure <span class="ot">&lt;-</span> <span class="st">"extraversion"</span></span>
-<span id="cb8-93"><a href="#cb8-93"></a>exposure_var_binary <span class="ot">=</span> <span class="fu">paste0</span>(name_exposure, <span class="st">"_binary"</span>)</span>
-<span id="cb8-94"><a href="#cb8-94"></a>exposure_var  <span class="ot">&lt;-</span> <span class="fu">c</span>(name_exposure, <span class="fu">paste0</span>(name_exposure, <span class="st">"_binary"</span>))</span>
-<span id="cb8-95"><a href="#cb8-95"></a></span>
-<span id="cb8-96"><a href="#cb8-96"></a><span class="co"># ** key decision 2: define your study waves **</span></span>
-<span id="cb8-97"><a href="#cb8-97"></a>baseline_wave      <span class="ot">&lt;-</span> <span class="st">"2018"</span>        <span class="co"># baseline measurement</span></span>
-<span id="cb8-98"><a href="#cb8-98"></a>exposure_waves     <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2019"</span>)     <span class="co"># when exposure is measured</span></span>
-<span id="cb8-99"><a href="#cb8-99"></a>outcome_wave       <span class="ot">&lt;-</span> <span class="st">"2020"</span>        <span class="co"># when outcomes are measured</span></span>
-<span id="cb8-100"><a href="#cb8-100"></a>all_waves          <span class="ot">&lt;-</span> <span class="fu">c</span>(baseline_wave, exposure_waves, outcome_wave)</span>
-<span id="cb8-101"><a href="#cb8-101"></a></span>
-<span id="cb8-102"><a href="#cb8-102"></a><span class="co"># save key variables --------------------------------------------------------</span></span>
-<span id="cb8-103"><a href="#cb8-103"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(name_exposure, <span class="st">"name_exposure"</span>,push_mods)</span>
-<span id="cb8-104"><a href="#cb8-104"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(exposure_var, <span class="st">"exposure_var"</span>, push_mods)</span>
-<span id="cb8-105"><a href="#cb8-105"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(exposure_var_binary, <span class="st">"exposure_var_binary"</span>, push_mods)</span>
-<span id="cb8-106"><a href="#cb8-106"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(all_waves,<span class="st">"all_waves"</span>, push_mods)</span>
-<span id="cb8-107"><a href="#cb8-107"></a></span>
-<span id="cb8-108"><a href="#cb8-108"></a><span class="co"># ** key decision 3: define baseline covariates **</span></span>
-<span id="cb8-109"><a href="#cb8-109"></a><span class="co"># these are demographics, traits, etc. measured at baseline</span></span>
-<span id="cb8-110"><a href="#cb8-110"></a>baseline_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-111"><a href="#cb8-111"></a>  <span class="co"># demographics</span></span>
-<span id="cb8-112"><a href="#cb8-112"></a>  <span class="st">"age"</span>, <span class="st">"born_nz_binary"</span>, <span class="st">"education_level_coarsen"</span>,</span>
-<span id="cb8-113"><a href="#cb8-113"></a>  <span class="st">"employed_binary"</span>, <span class="st">"eth_cat"</span>, <span class="st">"male_binary"</span>,</span>
-<span id="cb8-114"><a href="#cb8-114"></a>  <span class="st">"not_heterosexual_binary"</span>, <span class="st">"parent_binary"</span>, <span class="st">"partner_binary"</span>,</span>
-<span id="cb8-115"><a href="#cb8-115"></a>  <span class="st">"rural_gch_2018_l"</span>, <span class="st">"sample_frame_opt_in_binary"</span>,</span>
-<span id="cb8-116"><a href="#cb8-116"></a>  </span>
-<span id="cb8-117"><a href="#cb8-117"></a>  <span class="co"># personality traits (excluding exposure)</span></span>
-<span id="cb8-118"><a href="#cb8-118"></a>  <span class="st">"agreeableness"</span>, <span class="st">"conscientiousness"</span>, <span class="st">"neuroticism"</span>, <span class="st">"openness"</span>,</span>
-<span id="cb8-119"><a href="#cb8-119"></a>  </span>
-<span id="cb8-120"><a href="#cb8-120"></a>  <span class="co"># health and lifestyle</span></span>
-<span id="cb8-121"><a href="#cb8-121"></a>  <span class="st">"alcohol_frequency"</span>, <span class="st">"alcohol_intensity"</span>, <span class="st">"hlth_disability_binary"</span>,</span>
-<span id="cb8-122"><a href="#cb8-122"></a>  <span class="st">"log_hours_children"</span>, <span class="st">"log_hours_commute"</span>, <span class="st">"log_hours_exercise"</span>,</span>
-<span id="cb8-123"><a href="#cb8-123"></a>  <span class="st">"log_hours_housework"</span>, <span class="st">"log_household_inc"</span>,</span>
-<span id="cb8-124"><a href="#cb8-124"></a>  <span class="st">"short_form_health"</span>, <span class="st">"smoker_binary"</span>,</span>
-<span id="cb8-125"><a href="#cb8-125"></a>  </span>
-<span id="cb8-126"><a href="#cb8-126"></a>  <span class="co"># social and psychological</span></span>
-<span id="cb8-127"><a href="#cb8-127"></a>  <span class="st">"belong"</span>, <span class="st">"nz_dep2018"</span>, <span class="st">"nzsei_13_l"</span>,</span>
-<span id="cb8-128"><a href="#cb8-128"></a>  <span class="st">"political_conservative"</span>, <span class="st">"religion_identification_level"</span></span>
-<span id="cb8-129"><a href="#cb8-129"></a>)</span>
-<span id="cb8-130"><a href="#cb8-130"></a></span>
-<span id="cb8-131"><a href="#cb8-131"></a><span class="co"># sort for easier reference</span></span>
-<span id="cb8-132"><a href="#cb8-132"></a>baseline_vars <span class="ot">&lt;-</span> <span class="fu">sort</span>(baseline_vars)</span>
-<span id="cb8-133"><a href="#cb8-133"></a></span>
-<span id="cb8-134"><a href="#cb8-134"></a>baseline_vars_no_log_init <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-135"><a href="#cb8-135"></a>  baseline_vars,</span>
-<span id="cb8-136"><a href="#cb8-136"></a>  <span class="fu">c</span>(</span>
-<span id="cb8-137"><a href="#cb8-137"></a>    <span class="st">"hours_children"</span>,</span>
-<span id="cb8-138"><a href="#cb8-138"></a>    <span class="st">"hours_commute"</span>,</span>
-<span id="cb8-139"><a href="#cb8-139"></a>    <span class="st">"hours_exercise"</span>,</span>
-<span id="cb8-140"><a href="#cb8-140"></a>    <span class="st">"hours_housework"</span>,</span>
-<span id="cb8-141"><a href="#cb8-141"></a>    <span class="st">"hours_community"</span>,</span>
-<span id="cb8-142"><a href="#cb8-142"></a>    <span class="st">"household_inc"</span></span>
-<span id="cb8-143"><a href="#cb8-143"></a>  )</span>
-<span id="cb8-144"><a href="#cb8-144"></a>)</span>
-<span id="cb8-145"><a href="#cb8-145"></a>baseline_vars_no_log <span class="ot">=</span> <span class="fu">setdiff</span>(baseline_vars_no_log_init, <span class="fu">c</span>(</span>
-<span id="cb8-146"><a href="#cb8-146"></a>  <span class="st">"log_hours_children"</span>,</span>
-<span id="cb8-147"><a href="#cb8-147"></a>  <span class="st">"log_hours_commute"</span>,</span>
-<span id="cb8-148"><a href="#cb8-148"></a>  <span class="st">"log_hours_exercise"</span>,</span>
-<span id="cb8-149"><a href="#cb8-149"></a>  <span class="st">"log_hours_housework"</span>,</span>
-<span id="cb8-150"><a href="#cb8-150"></a>  <span class="st">"log_hours_community"</span>,</span>
-<span id="cb8-151"><a href="#cb8-151"></a>  <span class="st">"log_household_inc"</span></span>
-<span id="cb8-152"><a href="#cb8-152"></a>))</span>
-<span id="cb8-153"><a href="#cb8-153"></a></span>
-<span id="cb8-154"><a href="#cb8-154"></a><span class="co"># sort</span></span>
-<span id="cb8-155"><a href="#cb8-155"></a>baseline_vars_no_log <span class="ot">&lt;-</span> <span class="fu">sort</span>(baseline_vars_no_log)</span>
-<span id="cb8-156"><a href="#cb8-156"></a></span>
-<span id="cb8-157"><a href="#cb8-157"></a><span class="co"># save</span></span>
-<span id="cb8-158"><a href="#cb8-158"></a><span class="fu">here_save</span>(baseline_vars_no_log, <span class="st">"baseline_vars_no_log"</span>)</span>
-<span id="cb8-159"><a href="#cb8-159"></a></span>
-<span id="cb8-160"><a href="#cb8-160"></a><span class="co"># ** key decision 4: define outcome variables **</span></span>
-<span id="cb8-161"><a href="#cb8-161"></a>outcome_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-162"><a href="#cb8-162"></a>  <span class="co"># health outcomes</span></span>
-<span id="cb8-163"><a href="#cb8-163"></a>  <span class="st">"alcohol_frequency_weekly"</span>, <span class="st">"alcohol_intensity"</span>,</span>
-<span id="cb8-164"><a href="#cb8-164"></a>  <span class="st">"hlth_bmi"</span>, <span class="st">"log_hours_exercise"</span>, <span class="st">"hlth_sleep_hours"</span>, </span>
-<span id="cb8-165"><a href="#cb8-165"></a>  <span class="st">"short_form_health"</span>,</span>
-<span id="cb8-166"><a href="#cb8-166"></a>  </span>
-<span id="cb8-167"><a href="#cb8-167"></a>  <span class="co"># psychological outcomes</span></span>
-<span id="cb8-168"><a href="#cb8-168"></a>  <span class="st">"hlth_fatigue"</span>, <span class="st">"kessler_latent_anxiety"</span>, </span>
-<span id="cb8-169"><a href="#cb8-169"></a>  <span class="st">"kessler_latent_depression"</span>, <span class="st">"rumination"</span>,</span>
-<span id="cb8-170"><a href="#cb8-170"></a>  </span>
-<span id="cb8-171"><a href="#cb8-171"></a>  <span class="co"># wellbeing outcomes</span></span>
-<span id="cb8-172"><a href="#cb8-172"></a>  <span class="st">"bodysat"</span>, <span class="st">"forgiveness"</span>, <span class="st">"gratitude"</span>, <span class="st">"lifesat"</span>, </span>
-<span id="cb8-173"><a href="#cb8-173"></a>  <span class="st">"meaning_purpose"</span>, <span class="st">"meaning_sense"</span>, <span class="st">"perfectionism"</span>, </span>
-<span id="cb8-174"><a href="#cb8-174"></a>  <span class="st">"pwi"</span>, <span class="st">"self_control"</span>, <span class="st">"self_esteem"</span>, </span>
-<span id="cb8-175"><a href="#cb8-175"></a>  <span class="st">"sexual_satisfaction"</span>,</span>
-<span id="cb8-176"><a href="#cb8-176"></a>  </span>
-<span id="cb8-177"><a href="#cb8-177"></a>  <span class="co"># social outcomes</span></span>
-<span id="cb8-178"><a href="#cb8-178"></a>  <span class="st">"belong"</span>, <span class="st">"neighbourhood_community"</span>, <span class="st">"support"</span></span>
-<span id="cb8-179"><a href="#cb8-179"></a>)</span>
-<span id="cb8-180"><a href="#cb8-180"></a></span>
-<span id="cb8-181"><a href="#cb8-181"></a><span class="co"># sort for easier reference</span></span>
-<span id="cb8-182"><a href="#cb8-182"></a>outcome_vars <span class="ot">&lt;-</span> <span class="fu">sort</span>(outcome_vars)</span>
-<span id="cb8-183"><a href="#cb8-183"></a></span>
-<span id="cb8-184"><a href="#cb8-184"></a><span class="co"># outcome vars no log</span></span>
-<span id="cb8-185"><a href="#cb8-185"></a>outcome_vars_no_log_init <span class="ot">&lt;-</span> <span class="fu">c</span>(outcome_vars,<span class="st">"hours_exercise"</span>)</span>
-<span id="cb8-186"><a href="#cb8-186"></a></span>
-<span id="cb8-187"><a href="#cb8-187"></a>outcome_vars_no_log <span class="ot">=</span> <span class="fu">setdiff</span>(outcome_vars_no_log_init, <span class="fu">c</span>(</span>
-<span id="cb8-188"><a href="#cb8-188"></a>  <span class="st">"log_hours_exercise"</span></span>
-<span id="cb8-189"><a href="#cb8-189"></a>))</span>
-<span id="cb8-190"><a href="#cb8-190"></a></span>
-<span id="cb8-191"><a href="#cb8-191"></a></span>
-<span id="cb8-192"><a href="#cb8-192"></a><span class="co"># sort</span></span>
-<span id="cb8-193"><a href="#cb8-193"></a>outcome_vars_no_log <span class="ot">&lt;-</span> <span class="fu">sort</span>(outcome_vars_no_log_init)</span>
-<span id="cb8-194"><a href="#cb8-194"></a></span>
-<span id="cb8-195"><a href="#cb8-195"></a><span class="co"># save</span></span>
-<span id="cb8-196"><a href="#cb8-196"></a><span class="fu">here_save</span>(baseline_vars_no_log, <span class="st">"baseline_vars_no_log"</span>)</span>
-<span id="cb8-197"><a href="#cb8-197"></a></span>
-<span id="cb8-198"><a href="#cb8-198"></a></span>
-<span id="cb8-199"><a href="#cb8-199"></a><span class="co"># outcome variables by domain ---------------------------------------------</span></span>
-<span id="cb8-200"><a href="#cb8-200"></a>raw_outcomes_health <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-201"><a href="#cb8-201"></a>  <span class="st">"alcohol_frequency_weekly"</span>, </span>
-<span id="cb8-202"><a href="#cb8-202"></a>  <span class="st">"alcohol_intensity"</span>,</span>
-<span id="cb8-203"><a href="#cb8-203"></a>  <span class="st">"hlth_bmi"</span>, </span>
-<span id="cb8-204"><a href="#cb8-204"></a>  <span class="st">"log_hours_exercise"</span>, </span>
-<span id="cb8-205"><a href="#cb8-205"></a>  <span class="st">"hlth_sleep_hours"</span>, </span>
-<span id="cb8-206"><a href="#cb8-206"></a>  <span class="st">"short_form_health"</span></span>
-<span id="cb8-207"><a href="#cb8-207"></a>)</span>
-<span id="cb8-208"><a href="#cb8-208"></a><span class="co"># sort</span></span>
-<span id="cb8-209"><a href="#cb8-209"></a>raw_outcomes_health <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_health)</span>
+<span id="cb8-90"><a href="#cb8-90"></a></span>
+<span id="cb8-91"><a href="#cb8-91"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-92"><a href="#cb8-92"></a><span class="co"># KEY DECISION 1</span></span>
+<span id="cb8-93"><a href="#cb8-93"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-94"><a href="#cb8-94"></a></span>
+<span id="cb8-95"><a href="#cb8-95"></a><span class="co"># check out variables</span></span>
+<span id="cb8-96"><a href="#cb8-96"></a><span class="fu">colnames</span>(df_nz_long)</span>
+<span id="cb8-97"><a href="#cb8-97"></a></span>
+<span id="cb8-98"><a href="#cb8-98"></a><span class="co"># define study variables ----------------------------------------------------</span></span>
+<span id="cb8-99"><a href="#cb8-99"></a><span class="co"># ** key decision 1: define your exposure variable **</span></span>
+<span id="cb8-100"><a href="#cb8-100"></a>name_exposure <span class="ot">&lt;-</span> <span class="st">"extraversion"</span></span>
+<span id="cb8-101"><a href="#cb8-101"></a>exposure_var_binary <span class="ot">=</span> <span class="fu">paste0</span>(name_exposure, <span class="st">"_binary"</span>)</span>
+<span id="cb8-102"><a href="#cb8-102"></a>exposure_var  <span class="ot">&lt;-</span> <span class="fu">c</span>(name_exposure, <span class="fu">paste0</span>(name_exposure, <span class="st">"_binary"</span>))</span>
+<span id="cb8-103"><a href="#cb8-103"></a></span>
+<span id="cb8-104"><a href="#cb8-104"></a><span class="co"># ** key decision 2: define your study waves **</span></span>
+<span id="cb8-105"><a href="#cb8-105"></a>baseline_wave      <span class="ot">&lt;-</span> <span class="st">"2018"</span>        <span class="co"># baseline measurement</span></span>
+<span id="cb8-106"><a href="#cb8-106"></a>exposure_waves     <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"2019"</span>)     <span class="co"># when exposure is measured</span></span>
+<span id="cb8-107"><a href="#cb8-107"></a>outcome_wave       <span class="ot">&lt;-</span> <span class="st">"2020"</span>        <span class="co"># when outcomes are measured</span></span>
+<span id="cb8-108"><a href="#cb8-108"></a>all_waves          <span class="ot">&lt;-</span> <span class="fu">c</span>(baseline_wave, exposure_waves, outcome_wave)</span>
+<span id="cb8-109"><a href="#cb8-109"></a></span>
+<span id="cb8-110"><a href="#cb8-110"></a><span class="co"># save key variables --------------------------------------------------------</span></span>
+<span id="cb8-111"><a href="#cb8-111"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(name_exposure, <span class="st">"name_exposure"</span>,push_mods)</span>
+<span id="cb8-112"><a href="#cb8-112"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(exposure_var, <span class="st">"exposure_var"</span>, push_mods)</span>
+<span id="cb8-113"><a href="#cb8-113"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(exposure_var_binary, <span class="st">"exposure_var_binary"</span>, push_mods)</span>
+<span id="cb8-114"><a href="#cb8-114"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(all_waves,<span class="st">"all_waves"</span>, push_mods)</span>
+<span id="cb8-115"><a href="#cb8-115"></a></span>
+<span id="cb8-116"><a href="#cb8-116"></a></span>
+<span id="cb8-117"><a href="#cb8-117"></a></span>
+<span id="cb8-118"><a href="#cb8-118"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-119"><a href="#cb8-119"></a><span class="co"># DECISION 2: BASELINE:  IT WILL MAKE SENSE TO KEEP BASELINE VARIABLES </span></span>
+<span id="cb8-120"><a href="#cb8-120"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-121"><a href="#cb8-121"></a></span>
+<span id="cb8-122"><a href="#cb8-122"></a></span>
+<span id="cb8-123"><a href="#cb8-123"></a><span class="co"># ** key decision 2: define baseline covariates **</span></span>
+<span id="cb8-124"><a href="#cb8-124"></a><span class="co"># these are demographics, traits, etc. measured at baseline</span></span>
+<span id="cb8-125"><a href="#cb8-125"></a><span class="co"># no need to change these defaults</span></span>
+<span id="cb8-126"><a href="#cb8-126"></a>baseline_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-127"><a href="#cb8-127"></a>  <span class="co"># demographics</span></span>
+<span id="cb8-128"><a href="#cb8-128"></a>  <span class="st">"age"</span>, <span class="st">"born_nz_binary"</span>, <span class="st">"education_level_coarsen"</span>,</span>
+<span id="cb8-129"><a href="#cb8-129"></a>  <span class="st">"employed_binary"</span>, <span class="st">"eth_cat"</span>, <span class="st">"male_binary"</span>,</span>
+<span id="cb8-130"><a href="#cb8-130"></a>  <span class="st">"not_heterosexual_binary"</span>, <span class="st">"parent_binary"</span>, <span class="st">"partner_binary"</span>,</span>
+<span id="cb8-131"><a href="#cb8-131"></a>  <span class="st">"rural_gch_2018_l"</span>, <span class="st">"sample_frame_opt_in_binary"</span>,</span>
+<span id="cb8-132"><a href="#cb8-132"></a>  </span>
+<span id="cb8-133"><a href="#cb8-133"></a>  <span class="co"># personality traits (excluding exposure)</span></span>
+<span id="cb8-134"><a href="#cb8-134"></a>  <span class="st">"agreeableness"</span>, <span class="st">"conscientiousness"</span>, <span class="st">"neuroticism"</span>, <span class="st">"openness"</span>,</span>
+<span id="cb8-135"><a href="#cb8-135"></a>  </span>
+<span id="cb8-136"><a href="#cb8-136"></a>  <span class="co"># health and lifestyle</span></span>
+<span id="cb8-137"><a href="#cb8-137"></a>  <span class="st">"alcohol_frequency"</span>, <span class="st">"alcohol_intensity"</span>, <span class="st">"hlth_disability_binary"</span>,</span>
+<span id="cb8-138"><a href="#cb8-138"></a>  <span class="st">"log_hours_children"</span>, <span class="st">"log_hours_commute"</span>, <span class="st">"log_hours_exercise"</span>,</span>
+<span id="cb8-139"><a href="#cb8-139"></a>  <span class="st">"log_hours_housework"</span>, <span class="st">"log_household_inc"</span>,</span>
+<span id="cb8-140"><a href="#cb8-140"></a>  <span class="st">"short_form_health"</span>, <span class="st">"smoker_binary"</span>,</span>
+<span id="cb8-141"><a href="#cb8-141"></a>  </span>
+<span id="cb8-142"><a href="#cb8-142"></a>  <span class="co"># social and psychological</span></span>
+<span id="cb8-143"><a href="#cb8-143"></a>  <span class="st">"belong"</span>, <span class="st">"nz_dep2018"</span>, <span class="st">"nzsei_13_l"</span>,</span>
+<span id="cb8-144"><a href="#cb8-144"></a>  <span class="st">"political_conservative"</span>, <span class="st">"religion_identification_level"</span></span>
+<span id="cb8-145"><a href="#cb8-145"></a>)</span>
+<span id="cb8-146"><a href="#cb8-146"></a></span>
+<span id="cb8-147"><a href="#cb8-147"></a><span class="co"># sort for easier reference</span></span>
+<span id="cb8-148"><a href="#cb8-148"></a>baseline_vars <span class="ot">&lt;-</span> <span class="fu">sort</span>(baseline_vars)</span>
+<span id="cb8-149"><a href="#cb8-149"></a></span>
+<span id="cb8-150"><a href="#cb8-150"></a>baseline_vars_no_log_init <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-151"><a href="#cb8-151"></a>  baseline_vars,</span>
+<span id="cb8-152"><a href="#cb8-152"></a>  <span class="fu">c</span>(</span>
+<span id="cb8-153"><a href="#cb8-153"></a>    <span class="st">"hours_children"</span>,</span>
+<span id="cb8-154"><a href="#cb8-154"></a>    <span class="st">"hours_commute"</span>,</span>
+<span id="cb8-155"><a href="#cb8-155"></a>    <span class="st">"hours_exercise"</span>,</span>
+<span id="cb8-156"><a href="#cb8-156"></a>    <span class="st">"hours_housework"</span>,</span>
+<span id="cb8-157"><a href="#cb8-157"></a>    <span class="st">"hours_community"</span>,</span>
+<span id="cb8-158"><a href="#cb8-158"></a>    <span class="st">"household_inc"</span></span>
+<span id="cb8-159"><a href="#cb8-159"></a>  )</span>
+<span id="cb8-160"><a href="#cb8-160"></a>)</span>
+<span id="cb8-161"><a href="#cb8-161"></a>baseline_vars_no_log <span class="ot">=</span> <span class="fu">setdiff</span>(baseline_vars_no_log_init, <span class="fu">c</span>(</span>
+<span id="cb8-162"><a href="#cb8-162"></a>  <span class="st">"log_hours_children"</span>,</span>
+<span id="cb8-163"><a href="#cb8-163"></a>  <span class="st">"log_hours_commute"</span>,</span>
+<span id="cb8-164"><a href="#cb8-164"></a>  <span class="st">"log_hours_exercise"</span>,</span>
+<span id="cb8-165"><a href="#cb8-165"></a>  <span class="st">"log_hours_housework"</span>,</span>
+<span id="cb8-166"><a href="#cb8-166"></a>  <span class="st">"log_hours_community"</span>,</span>
+<span id="cb8-167"><a href="#cb8-167"></a>  <span class="st">"log_household_inc"</span></span>
+<span id="cb8-168"><a href="#cb8-168"></a>))</span>
+<span id="cb8-169"><a href="#cb8-169"></a></span>
+<span id="cb8-170"><a href="#cb8-170"></a><span class="co"># sort</span></span>
+<span id="cb8-171"><a href="#cb8-171"></a>baseline_vars_no_log <span class="ot">&lt;-</span> <span class="fu">sort</span>(baseline_vars_no_log)</span>
+<span id="cb8-172"><a href="#cb8-172"></a></span>
+<span id="cb8-173"><a href="#cb8-173"></a><span class="co"># save</span></span>
+<span id="cb8-174"><a href="#cb8-174"></a><span class="fu">here_save</span>(baseline_vars_no_log, <span class="st">"baseline_vars_no_log"</span>)</span>
+<span id="cb8-175"><a href="#cb8-175"></a></span>
+<span id="cb8-176"><a href="#cb8-176"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-177"><a href="#cb8-177"></a><span class="co"># KEY DECISION 3: DEFINE OUTCOME VARIABLES </span></span>
+<span id="cb8-178"><a href="#cb8-178"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-179"><a href="#cb8-179"></a></span>
+<span id="cb8-180"><a href="#cb8-180"></a><span class="co"># ** key decision 3: define outcome variables **</span></span>
+<span id="cb8-181"><a href="#cb8-181"></a>outcome_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-182"><a href="#cb8-182"></a>  <span class="co"># health outcomes</span></span>
+<span id="cb8-183"><a href="#cb8-183"></a>  <span class="st">"alcohol_frequency_weekly"</span>, <span class="st">"alcohol_intensity"</span>,</span>
+<span id="cb8-184"><a href="#cb8-184"></a>  <span class="st">"hlth_bmi"</span>, <span class="st">"log_hours_exercise"</span>, <span class="st">"hlth_sleep_hours"</span>, </span>
+<span id="cb8-185"><a href="#cb8-185"></a>  <span class="st">"short_form_health"</span>,</span>
+<span id="cb8-186"><a href="#cb8-186"></a>  </span>
+<span id="cb8-187"><a href="#cb8-187"></a>  <span class="co"># psychological outcomes</span></span>
+<span id="cb8-188"><a href="#cb8-188"></a>  <span class="st">"hlth_fatigue"</span>, <span class="st">"kessler_latent_anxiety"</span>, </span>
+<span id="cb8-189"><a href="#cb8-189"></a>  <span class="st">"kessler_latent_depression"</span>, <span class="st">"rumination"</span>,</span>
+<span id="cb8-190"><a href="#cb8-190"></a>  </span>
+<span id="cb8-191"><a href="#cb8-191"></a>  <span class="co"># wellbeing outcomes</span></span>
+<span id="cb8-192"><a href="#cb8-192"></a>  <span class="st">"bodysat"</span>, <span class="st">"forgiveness"</span>, <span class="st">"gratitude"</span>, <span class="st">"lifesat"</span>, </span>
+<span id="cb8-193"><a href="#cb8-193"></a>  <span class="st">"meaning_purpose"</span>, <span class="st">"meaning_sense"</span>, <span class="st">"perfectionism"</span>, </span>
+<span id="cb8-194"><a href="#cb8-194"></a>  <span class="st">"pwi"</span>, <span class="st">"self_control"</span>, <span class="st">"self_esteem"</span>, </span>
+<span id="cb8-195"><a href="#cb8-195"></a>  <span class="st">"sexual_satisfaction"</span>,</span>
+<span id="cb8-196"><a href="#cb8-196"></a>  </span>
+<span id="cb8-197"><a href="#cb8-197"></a>  <span class="co"># social outcomes</span></span>
+<span id="cb8-198"><a href="#cb8-198"></a>  <span class="st">"belong"</span>, <span class="st">"neighbourhood_community"</span>, <span class="st">"support"</span></span>
+<span id="cb8-199"><a href="#cb8-199"></a>)</span>
+<span id="cb8-200"><a href="#cb8-200"></a></span>
+<span id="cb8-201"><a href="#cb8-201"></a><span class="co"># sort for easier reference</span></span>
+<span id="cb8-202"><a href="#cb8-202"></a>outcome_vars <span class="ot">&lt;-</span> <span class="fu">sort</span>(outcome_vars)</span>
+<span id="cb8-203"><a href="#cb8-203"></a></span>
+<span id="cb8-204"><a href="#cb8-204"></a><span class="co"># outcome vars no log</span></span>
+<span id="cb8-205"><a href="#cb8-205"></a>outcome_vars_no_log_init <span class="ot">&lt;-</span> <span class="fu">c</span>(outcome_vars,<span class="st">"hours_exercise"</span>)</span>
+<span id="cb8-206"><a href="#cb8-206"></a></span>
+<span id="cb8-207"><a href="#cb8-207"></a>outcome_vars_no_log <span class="ot">=</span> <span class="fu">setdiff</span>(outcome_vars_no_log_init, <span class="fu">c</span>(</span>
+<span id="cb8-208"><a href="#cb8-208"></a>  <span class="st">"log_hours_exercise"</span></span>
+<span id="cb8-209"><a href="#cb8-209"></a>))</span>
 <span id="cb8-210"><a href="#cb8-210"></a></span>
-<span id="cb8-211"><a href="#cb8-211"></a><span class="co"># save </span></span>
-<span id="cb8-212"><a href="#cb8-212"></a><span class="fu">here_save</span>(raw_outcomes_health, <span class="st">"raw_outcomes_health"</span>)</span>
-<span id="cb8-213"><a href="#cb8-213"></a></span>
-<span id="cb8-214"><a href="#cb8-214"></a><span class="co"># with no log</span></span>
-<span id="cb8-215"><a href="#cb8-215"></a>raw_outcomes_health_no_log <span class="ot">&lt;-</span> <span class="fu">c</span>(raw_outcomes_health, <span class="st">"hours_exercise"</span>)</span>
-<span id="cb8-216"><a href="#cb8-216"></a></span>
-<span id="cb8-217"><a href="#cb8-217"></a><span class="co"># sort</span></span>
-<span id="cb8-218"><a href="#cb8-218"></a>raw_outcomes_health_no_log <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_health_no_log)</span>
+<span id="cb8-211"><a href="#cb8-211"></a></span>
+<span id="cb8-212"><a href="#cb8-212"></a><span class="co"># sort</span></span>
+<span id="cb8-213"><a href="#cb8-213"></a>outcome_vars_no_log <span class="ot">&lt;-</span> <span class="fu">sort</span>(outcome_vars_no_log_init)</span>
+<span id="cb8-214"><a href="#cb8-214"></a></span>
+<span id="cb8-215"><a href="#cb8-215"></a><span class="co"># save</span></span>
+<span id="cb8-216"><a href="#cb8-216"></a><span class="fu">here_save</span>(baseline_vars_no_log, <span class="st">"baseline_vars_no_log"</span>)</span>
+<span id="cb8-217"><a href="#cb8-217"></a></span>
+<span id="cb8-218"><a href="#cb8-218"></a></span>
 <span id="cb8-219"><a href="#cb8-219"></a></span>
-<span id="cb8-220"><a href="#cb8-220"></a><span class="co"># save </span></span>
-<span id="cb8-221"><a href="#cb8-221"></a><span class="fu">here_save</span>(raw_outcomes_health_no_log, <span class="st">"raw_outcomes_health_no_log"</span>)</span>
-<span id="cb8-222"><a href="#cb8-222"></a></span>
-<span id="cb8-223"><a href="#cb8-223"></a><span class="co"># define psych outcomes labels</span></span>
-<span id="cb8-224"><a href="#cb8-224"></a>raw_outcomes_psych <span class="ot">&lt;-</span> <span class="fu">c</span>( </span>
-<span id="cb8-225"><a href="#cb8-225"></a>  <span class="st">"hlth_fatigue"</span>, </span>
-<span id="cb8-226"><a href="#cb8-226"></a>  <span class="st">"kessler_latent_anxiety"</span>, </span>
-<span id="cb8-227"><a href="#cb8-227"></a>  <span class="st">"kessler_latent_depression"</span>,  </span>
-<span id="cb8-228"><a href="#cb8-228"></a>  <span class="st">"rumination"</span></span>
-<span id="cb8-229"><a href="#cb8-229"></a>)</span>
-<span id="cb8-230"><a href="#cb8-230"></a></span>
+<span id="cb8-220"><a href="#cb8-220"></a></span>
+<span id="cb8-221"><a href="#cb8-221"></a></span>
+<span id="cb8-222"><a href="#cb8-222"></a><span class="co"># outcome variables by domain ---------------------------------------------</span></span>
+<span id="cb8-223"><a href="#cb8-223"></a>raw_outcomes_health <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-224"><a href="#cb8-224"></a>  <span class="st">"alcohol_frequency_weekly"</span>, </span>
+<span id="cb8-225"><a href="#cb8-225"></a>  <span class="st">"alcohol_intensity"</span>,</span>
+<span id="cb8-226"><a href="#cb8-226"></a>  <span class="st">"hlth_bmi"</span>, </span>
+<span id="cb8-227"><a href="#cb8-227"></a>  <span class="st">"log_hours_exercise"</span>, </span>
+<span id="cb8-228"><a href="#cb8-228"></a>  <span class="st">"hlth_sleep_hours"</span>, </span>
+<span id="cb8-229"><a href="#cb8-229"></a>  <span class="st">"short_form_health"</span></span>
+<span id="cb8-230"><a href="#cb8-230"></a>)</span>
 <span id="cb8-231"><a href="#cb8-231"></a><span class="co"># sort</span></span>
-<span id="cb8-232"><a href="#cb8-232"></a>raw_outcomes_psych <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_psych)</span>
+<span id="cb8-232"><a href="#cb8-232"></a>raw_outcomes_health <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_health)</span>
 <span id="cb8-233"><a href="#cb8-233"></a></span>
-<span id="cb8-234"><a href="#cb8-234"></a><span class="co"># save</span></span>
-<span id="cb8-235"><a href="#cb8-235"></a><span class="fu">here_save</span>(raw_outcomes_psych, <span class="st">"raw_outcomes_psych"</span>)</span>
+<span id="cb8-234"><a href="#cb8-234"></a><span class="co"># save </span></span>
+<span id="cb8-235"><a href="#cb8-235"></a><span class="fu">here_save</span>(raw_outcomes_health, <span class="st">"raw_outcomes_health"</span>)</span>
 <span id="cb8-236"><a href="#cb8-236"></a></span>
-<span id="cb8-237"><a href="#cb8-237"></a><span class="co"># define present outcomes labels</span></span>
-<span id="cb8-238"><a href="#cb8-238"></a>raw_outcomes_present <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-239"><a href="#cb8-239"></a>  <span class="st">"bodysat"</span>,</span>
-<span id="cb8-240"><a href="#cb8-240"></a>  <span class="st">"forgiveness"</span>,</span>
-<span id="cb8-241"><a href="#cb8-241"></a>  <span class="st">"perfectionism"</span>, </span>
-<span id="cb8-242"><a href="#cb8-242"></a>  <span class="st">"self_control"</span> , </span>
-<span id="cb8-243"><a href="#cb8-243"></a>  <span class="st">"self_esteem"</span>, </span>
-<span id="cb8-244"><a href="#cb8-244"></a>  <span class="st">"sexual_satisfaction"</span> )</span>
+<span id="cb8-237"><a href="#cb8-237"></a><span class="co"># with no log</span></span>
+<span id="cb8-238"><a href="#cb8-238"></a>raw_outcomes_health_no_log <span class="ot">&lt;-</span> <span class="fu">c</span>(raw_outcomes_health, <span class="st">"hours_exercise"</span>)</span>
+<span id="cb8-239"><a href="#cb8-239"></a></span>
+<span id="cb8-240"><a href="#cb8-240"></a><span class="co"># sort</span></span>
+<span id="cb8-241"><a href="#cb8-241"></a>raw_outcomes_health_no_log <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_health_no_log)</span>
+<span id="cb8-242"><a href="#cb8-242"></a></span>
+<span id="cb8-243"><a href="#cb8-243"></a><span class="co"># save </span></span>
+<span id="cb8-244"><a href="#cb8-244"></a><span class="fu">here_save</span>(raw_outcomes_health_no_log, <span class="st">"raw_outcomes_health_no_log"</span>)</span>
 <span id="cb8-245"><a href="#cb8-245"></a></span>
-<span id="cb8-246"><a href="#cb8-246"></a><span class="co"># sort</span></span>
-<span id="cb8-247"><a href="#cb8-247"></a>raw_outcomes_present <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_present)</span>
-<span id="cb8-248"><a href="#cb8-248"></a></span>
-<span id="cb8-249"><a href="#cb8-249"></a><span class="co"># save</span></span>
-<span id="cb8-250"><a href="#cb8-250"></a><span class="fu">here_save</span>(raw_outcomes_present, <span class="st">"raw_outcomes_present"</span>)</span>
-<span id="cb8-251"><a href="#cb8-251"></a></span>
-<span id="cb8-252"><a href="#cb8-252"></a><span class="co"># define life outcomes labels</span></span>
-<span id="cb8-253"><a href="#cb8-253"></a>raw_outcomes_life <span class="ot">&lt;-</span> <span class="fu">c</span>( </span>
-<span id="cb8-254"><a href="#cb8-254"></a>  <span class="st">"gratitude"</span>, </span>
-<span id="cb8-255"><a href="#cb8-255"></a>  <span class="st">"lifesat"</span>, </span>
-<span id="cb8-256"><a href="#cb8-256"></a>  <span class="st">"meaning_purpose"</span>, </span>
-<span id="cb8-257"><a href="#cb8-257"></a>  <span class="st">"meaning_sense"</span>,</span>
-<span id="cb8-258"><a href="#cb8-258"></a>  <span class="st">"pwi"</span>  <span class="co"># move personal well-being here if not using individual facents</span></span>
-<span id="cb8-259"><a href="#cb8-259"></a>)</span>
-<span id="cb8-260"><a href="#cb8-260"></a></span>
-<span id="cb8-261"><a href="#cb8-261"></a><span class="co"># sort</span></span>
-<span id="cb8-262"><a href="#cb8-262"></a>raw_outcomes_life <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_life)</span>
-<span id="cb8-263"><a href="#cb8-263"></a></span>
-<span id="cb8-264"><a href="#cb8-264"></a><span class="co"># save</span></span>
-<span id="cb8-265"><a href="#cb8-265"></a><span class="fu">here_save</span>(raw_outcomes_life, <span class="st">"raw_outcomes_life"</span>)</span>
-<span id="cb8-266"><a href="#cb8-266"></a></span>
-<span id="cb8-267"><a href="#cb8-267"></a><span class="co"># define social outcomes labels</span></span>
-<span id="cb8-268"><a href="#cb8-268"></a>raw_outcomes_social <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-269"><a href="#cb8-269"></a>  <span class="st">"belong"</span>,</span>
-<span id="cb8-270"><a href="#cb8-270"></a>  <span class="st">"neighbourhood_community"</span>, </span>
-<span id="cb8-271"><a href="#cb8-271"></a>  <span class="st">"support"</span> </span>
-<span id="cb8-272"><a href="#cb8-272"></a>)</span>
-<span id="cb8-273"><a href="#cb8-273"></a></span>
-<span id="cb8-274"><a href="#cb8-274"></a><span class="co"># sort</span></span>
-<span id="cb8-275"><a href="#cb8-275"></a>raw_outcomes_social <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_social)</span>
-<span id="cb8-276"><a href="#cb8-276"></a></span>
-<span id="cb8-277"><a href="#cb8-277"></a><span class="co"># save</span></span>
-<span id="cb8-278"><a href="#cb8-278"></a><span class="fu">here_save</span>(raw_outcomes_social, <span class="st">"raw_outcomes_social"</span>)</span>
-<span id="cb8-279"><a href="#cb8-279"></a></span>
-<span id="cb8-280"><a href="#cb8-280"></a><span class="co"># create all outcome variable names ---------------------------------------</span></span>
-<span id="cb8-281"><a href="#cb8-281"></a><span class="co"># for tables</span></span>
-<span id="cb8-282"><a href="#cb8-282"></a>raw_outcomes_all <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb8-283"><a href="#cb8-283"></a>  baseline_vars_no_log,</span>
-<span id="cb8-284"><a href="#cb8-284"></a>  raw_outcomes_health_no_log,</span>
-<span id="cb8-285"><a href="#cb8-285"></a>  raw_outcomes_psych,</span>
-<span id="cb8-286"><a href="#cb8-286"></a>  raw_outcomes_present,</span>
-<span id="cb8-287"><a href="#cb8-287"></a>  raw_outcomes_life,</span>
-<span id="cb8-288"><a href="#cb8-288"></a>  raw_outcomes_social</span>
-<span id="cb8-289"><a href="#cb8-289"></a>)</span>
-<span id="cb8-290"><a href="#cb8-290"></a></span>
-<span id="cb8-291"><a href="#cb8-291"></a><span class="co"># select only unique measures</span></span>
-<span id="cb8-292"><a href="#cb8-292"></a>raw_outcomes_all <span class="ot">&lt;-</span> <span class="fu">unique</span>(raw_outcomes_all)</span>
-<span id="cb8-293"><a href="#cb8-293"></a></span>
-<span id="cb8-294"><a href="#cb8-294"></a><span class="co"># save</span></span>
-<span id="cb8-295"><a href="#cb8-295"></a><span class="fu">here_save</span>(raw_outcomes_all, <span class="st">"raw_outcomes_all"</span>)</span>
+<span id="cb8-246"><a href="#cb8-246"></a><span class="co"># define psych outcomes labels</span></span>
+<span id="cb8-247"><a href="#cb8-247"></a>raw_outcomes_psych <span class="ot">&lt;-</span> <span class="fu">c</span>( </span>
+<span id="cb8-248"><a href="#cb8-248"></a>  <span class="st">"hlth_fatigue"</span>, </span>
+<span id="cb8-249"><a href="#cb8-249"></a>  <span class="st">"kessler_latent_anxiety"</span>, </span>
+<span id="cb8-250"><a href="#cb8-250"></a>  <span class="st">"kessler_latent_depression"</span>,  </span>
+<span id="cb8-251"><a href="#cb8-251"></a>  <span class="st">"rumination"</span></span>
+<span id="cb8-252"><a href="#cb8-252"></a>)</span>
+<span id="cb8-253"><a href="#cb8-253"></a></span>
+<span id="cb8-254"><a href="#cb8-254"></a><span class="co"># sort</span></span>
+<span id="cb8-255"><a href="#cb8-255"></a>raw_outcomes_psych <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_psych)</span>
+<span id="cb8-256"><a href="#cb8-256"></a></span>
+<span id="cb8-257"><a href="#cb8-257"></a><span class="co"># save</span></span>
+<span id="cb8-258"><a href="#cb8-258"></a><span class="fu">here_save</span>(raw_outcomes_psych, <span class="st">"raw_outcomes_psych"</span>)</span>
+<span id="cb8-259"><a href="#cb8-259"></a></span>
+<span id="cb8-260"><a href="#cb8-260"></a><span class="co"># define present outcomes labels</span></span>
+<span id="cb8-261"><a href="#cb8-261"></a>raw_outcomes_present <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-262"><a href="#cb8-262"></a>  <span class="st">"bodysat"</span>,</span>
+<span id="cb8-263"><a href="#cb8-263"></a>  <span class="st">"forgiveness"</span>,</span>
+<span id="cb8-264"><a href="#cb8-264"></a>  <span class="st">"perfectionism"</span>, </span>
+<span id="cb8-265"><a href="#cb8-265"></a>  <span class="st">"self_control"</span> , </span>
+<span id="cb8-266"><a href="#cb8-266"></a>  <span class="st">"self_esteem"</span>, </span>
+<span id="cb8-267"><a href="#cb8-267"></a>  <span class="st">"sexual_satisfaction"</span> )</span>
+<span id="cb8-268"><a href="#cb8-268"></a></span>
+<span id="cb8-269"><a href="#cb8-269"></a><span class="co"># sort</span></span>
+<span id="cb8-270"><a href="#cb8-270"></a>raw_outcomes_present <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_present)</span>
+<span id="cb8-271"><a href="#cb8-271"></a></span>
+<span id="cb8-272"><a href="#cb8-272"></a><span class="co"># save</span></span>
+<span id="cb8-273"><a href="#cb8-273"></a><span class="fu">here_save</span>(raw_outcomes_present, <span class="st">"raw_outcomes_present"</span>)</span>
+<span id="cb8-274"><a href="#cb8-274"></a></span>
+<span id="cb8-275"><a href="#cb8-275"></a><span class="co"># define life outcomes labels</span></span>
+<span id="cb8-276"><a href="#cb8-276"></a>raw_outcomes_life <span class="ot">&lt;-</span> <span class="fu">c</span>( </span>
+<span id="cb8-277"><a href="#cb8-277"></a>  <span class="st">"gratitude"</span>, </span>
+<span id="cb8-278"><a href="#cb8-278"></a>  <span class="st">"lifesat"</span>, </span>
+<span id="cb8-279"><a href="#cb8-279"></a>  <span class="st">"meaning_purpose"</span>, </span>
+<span id="cb8-280"><a href="#cb8-280"></a>  <span class="st">"meaning_sense"</span>,</span>
+<span id="cb8-281"><a href="#cb8-281"></a>  <span class="st">"pwi"</span>  <span class="co"># move personal well-being here if not using individual facents</span></span>
+<span id="cb8-282"><a href="#cb8-282"></a>)</span>
+<span id="cb8-283"><a href="#cb8-283"></a></span>
+<span id="cb8-284"><a href="#cb8-284"></a><span class="co"># sort</span></span>
+<span id="cb8-285"><a href="#cb8-285"></a>raw_outcomes_life <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_life)</span>
+<span id="cb8-286"><a href="#cb8-286"></a></span>
+<span id="cb8-287"><a href="#cb8-287"></a><span class="co"># save</span></span>
+<span id="cb8-288"><a href="#cb8-288"></a><span class="fu">here_save</span>(raw_outcomes_life, <span class="st">"raw_outcomes_life"</span>)</span>
+<span id="cb8-289"><a href="#cb8-289"></a></span>
+<span id="cb8-290"><a href="#cb8-290"></a><span class="co"># define social outcomes labels</span></span>
+<span id="cb8-291"><a href="#cb8-291"></a>raw_outcomes_social <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-292"><a href="#cb8-292"></a>  <span class="st">"belong"</span>,</span>
+<span id="cb8-293"><a href="#cb8-293"></a>  <span class="st">"neighbourhood_community"</span>, </span>
+<span id="cb8-294"><a href="#cb8-294"></a>  <span class="st">"support"</span> </span>
+<span id="cb8-295"><a href="#cb8-295"></a>)</span>
 <span id="cb8-296"><a href="#cb8-296"></a></span>
-<span id="cb8-297"><a href="#cb8-297"></a></span>
-<span id="cb8-298"><a href="#cb8-298"></a></span>
-<span id="cb8-299"><a href="#cb8-299"></a><span class="co"># time-varying confounder if needed ---------------------------------------</span></span>
-<span id="cb8-300"><a href="#cb8-300"></a></span>
-<span id="cb8-301"><a href="#cb8-301"></a><span class="co"># ** key decision 5: define time-varying confounders **</span></span>
-<span id="cb8-302"><a href="#cb8-302"></a><span class="co"># these are variables that could affect the outcome but cannot be affected by exposure</span></span>
-<span id="cb8-303"><a href="#cb8-303"></a>confounder_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
-<span id="cb8-304"><a href="#cb8-304"></a>  <span class="st">"hlth_disability_binary"</span>  <span class="co"># consider carefully if this could be affected by the exposure</span></span>
-<span id="cb8-305"><a href="#cb8-305"></a>)</span>
-<span id="cb8-306"><a href="#cb8-306"></a></span>
-<span id="cb8-307"><a href="#cb8-307"></a><span class="co"># save variables for reproducibility ----------------------------------------</span></span>
-<span id="cb8-308"><a href="#cb8-308"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(baseline_vars,    <span class="st">"baseline_vars"</span>, push_mods)</span>
-<span id="cb8-309"><a href="#cb8-309"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(outcome_vars,     <span class="st">"outcome_vars"</span>, push_mods)</span>
-<span id="cb8-310"><a href="#cb8-310"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(confounder_vars,  <span class="st">"confounder_vars"</span>, push_mods)</span>
-<span id="cb8-311"><a href="#cb8-311"></a></span>
-<span id="cb8-312"><a href="#cb8-312"></a><span class="co"># select eligible participants ----------------------------------------------</span></span>
-<span id="cb8-313"><a href="#cb8-313"></a><span class="co"># only include participants who have exposure data at baseline</span></span>
-<span id="cb8-314"><a href="#cb8-314"></a>ids_baseline <span class="ot">&lt;-</span> dat_prep <span class="sc">|&gt;</span> </span>
-<span id="cb8-315"><a href="#cb8-315"></a>  <span class="fu">filter</span>(wave <span class="sc">==</span> baseline_wave, <span class="sc">!</span><span class="fu">is.na</span>(<span class="sc">!!</span><span class="fu">sym</span>(name_exposure))) <span class="sc">|&gt;</span> </span>
-<span id="cb8-316"><a href="#cb8-316"></a>  <span class="fu">pull</span>(id)</span>
-<span id="cb8-317"><a href="#cb8-317"></a></span>
-<span id="cb8-318"><a href="#cb8-318"></a><span class="co"># filter data to include only eligible participants and relevant waves</span></span>
-<span id="cb8-319"><a href="#cb8-319"></a>dat_long_1 <span class="ot">&lt;-</span> dat_prep <span class="sc">|&gt;</span> </span>
-<span id="cb8-320"><a href="#cb8-320"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> ids_baseline, wave <span class="sc">%in%</span> all_waves) <span class="sc">|&gt;</span> </span>
-<span id="cb8-321"><a href="#cb8-321"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb8-322"><a href="#cb8-322"></a></span>
-<span id="cb8-323"><a href="#cb8-323"></a><span class="co"># ** key decision 6: determine binary cutpoint for exposure **</span></span>
-<span id="cb8-324"><a href="#cb8-324"></a><span class="co"># visualise distribution to decide on appropriate cutpoint</span></span>
-<span id="cb8-325"><a href="#cb8-325"></a>dat_long_exposure <span class="ot">&lt;-</span> dat_long_1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">%in%</span> exposure_waves)</span>
+<span id="cb8-297"><a href="#cb8-297"></a><span class="co"># sort</span></span>
+<span id="cb8-298"><a href="#cb8-298"></a>raw_outcomes_social <span class="ot">&lt;-</span> <span class="fu">sort</span>(raw_outcomes_social)</span>
+<span id="cb8-299"><a href="#cb8-299"></a></span>
+<span id="cb8-300"><a href="#cb8-300"></a><span class="co"># save</span></span>
+<span id="cb8-301"><a href="#cb8-301"></a><span class="fu">here_save</span>(raw_outcomes_social, <span class="st">"raw_outcomes_social"</span>)</span>
+<span id="cb8-302"><a href="#cb8-302"></a></span>
+<span id="cb8-303"><a href="#cb8-303"></a><span class="co"># create all outcome variable names ---------------------------------------</span></span>
+<span id="cb8-304"><a href="#cb8-304"></a><span class="co"># for tables</span></span>
+<span id="cb8-305"><a href="#cb8-305"></a>raw_outcomes_all <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb8-306"><a href="#cb8-306"></a>  baseline_vars_no_log,</span>
+<span id="cb8-307"><a href="#cb8-307"></a>  raw_outcomes_health_no_log,</span>
+<span id="cb8-308"><a href="#cb8-308"></a>  raw_outcomes_psych,</span>
+<span id="cb8-309"><a href="#cb8-309"></a>  raw_outcomes_present,</span>
+<span id="cb8-310"><a href="#cb8-310"></a>  raw_outcomes_life,</span>
+<span id="cb8-311"><a href="#cb8-311"></a>  raw_outcomes_social</span>
+<span id="cb8-312"><a href="#cb8-312"></a>)</span>
+<span id="cb8-313"><a href="#cb8-313"></a></span>
+<span id="cb8-314"><a href="#cb8-314"></a><span class="co"># select only unique measures</span></span>
+<span id="cb8-315"><a href="#cb8-315"></a>raw_outcomes_all <span class="ot">&lt;-</span> <span class="fu">unique</span>(raw_outcomes_all)</span>
+<span id="cb8-316"><a href="#cb8-316"></a></span>
+<span id="cb8-317"><a href="#cb8-317"></a><span class="co"># save</span></span>
+<span id="cb8-318"><a href="#cb8-318"></a><span class="fu">here_save</span>(raw_outcomes_all, <span class="st">"raw_outcomes_all"</span>)</span>
+<span id="cb8-319"><a href="#cb8-319"></a></span>
+<span id="cb8-320"><a href="#cb8-320"></a></span>
+<span id="cb8-321"><a href="#cb8-321"></a></span>
+<span id="cb8-322"><a href="#cb8-322"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-323"><a href="#cb8-323"></a><span class="co"># KEY DECISION 4: DEFINE OUTCOME VARIABLES </span></span>
+<span id="cb8-324"><a href="#cb8-324"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-325"><a href="#cb8-325"></a></span>
 <span id="cb8-326"><a href="#cb8-326"></a></span>
-<span id="cb8-327"><a href="#cb8-327"></a><span class="co"># plot distribution to help with cutpoint decision</span></span>
-<span id="cb8-328"><a href="#cb8-328"></a>graph_cut <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_plot_categorical</span>(</span>
-<span id="cb8-329"><a href="#cb8-329"></a>  dat_long_exposure,</span>
-<span id="cb8-330"><a href="#cb8-330"></a>  <span class="at">col_name         =</span> name_exposure,</span>
-<span id="cb8-331"><a href="#cb8-331"></a>  <span class="at">sd_multipliers =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="co"># select to suit</span></span>
-<span id="cb8-332"><a href="#cb8-332"></a>  <span class="co"># either use n_divisions for equal-sized groups:</span></span>
-<span id="cb8-333"><a href="#cb8-333"></a>  <span class="co"># n_divisions      = 2,</span></span>
-<span id="cb8-334"><a href="#cb8-334"></a>  <span class="co"># or use custom_breaks for specific values:</span></span>
-<span id="cb8-335"><a href="#cb8-335"></a>  <span class="at">custom_breaks    =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>),  <span class="co"># ** adjust as needed **</span></span>
-<span id="cb8-336"><a href="#cb8-336"></a>  <span class="at">cutpoint_inclusive =</span> <span class="st">"upper"</span>,</span>
-<span id="cb8-337"><a href="#cb8-337"></a>  <span class="at">show_mean        =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-338"><a href="#cb8-338"></a>  <span class="at">show_sd          =</span> <span class="cn">TRUE</span></span>
-<span id="cb8-339"><a href="#cb8-339"></a>)</span>
-<span id="cb8-340"><a href="#cb8-340"></a><span class="fu">print</span>(graph_cut)</span>
-<span id="cb8-341"><a href="#cb8-341"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(graph_cut, <span class="st">"graph_cut"</span>, push_mods)</span>
-<span id="cb8-342"><a href="#cb8-342"></a></span>
-<span id="cb8-343"><a href="#cb8-343"></a><span class="co"># create binary exposure variable based on chosen cutpoint</span></span>
-<span id="cb8-344"><a href="#cb8-344"></a>dat_long_2 <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">create_ordered_variable</span>(</span>
-<span id="cb8-345"><a href="#cb8-345"></a>  dat_long_1,</span>
-<span id="cb8-346"><a href="#cb8-346"></a>  <span class="at">var_name           =</span> name_exposure,</span>
-<span id="cb8-347"><a href="#cb8-347"></a>  <span class="at">custom_breaks      =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>),  <span class="co"># ** adjust based on your decision **</span></span>
-<span id="cb8-348"><a href="#cb8-348"></a>  <span class="at">cutpoint_inclusive =</span> <span class="st">"upper"</span></span>
-<span id="cb8-349"><a href="#cb8-349"></a>)</span>
+<span id="cb8-327"><a href="#cb8-327"></a><span class="co"># time-varying confounder if needed ---------------------------------------</span></span>
+<span id="cb8-328"><a href="#cb8-328"></a></span>
+<span id="cb8-329"><a href="#cb8-329"></a><span class="co"># ** key decision 4: define time-varying confounders **</span></span>
+<span id="cb8-330"><a href="#cb8-330"></a><span class="co"># these are variables that could affect the outcome but cannot be affected by exposure</span></span>
+<span id="cb8-331"><a href="#cb8-331"></a>confounder_vars <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb8-332"><a href="#cb8-332"></a>  <span class="st">"hlth_disability_binary"</span>  <span class="co"># consider carefully if this could be affected by the exposure</span></span>
+<span id="cb8-333"><a href="#cb8-333"></a>)</span>
+<span id="cb8-334"><a href="#cb8-334"></a></span>
+<span id="cb8-335"><a href="#cb8-335"></a><span class="co"># save variables for reproducibility ----------------------------------------</span></span>
+<span id="cb8-336"><a href="#cb8-336"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(baseline_vars,    <span class="st">"baseline_vars"</span>, push_mods)</span>
+<span id="cb8-337"><a href="#cb8-337"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(outcome_vars,     <span class="st">"outcome_vars"</span>, push_mods)</span>
+<span id="cb8-338"><a href="#cb8-338"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(confounder_vars,  <span class="st">"confounder_vars"</span>, push_mods)</span>
+<span id="cb8-339"><a href="#cb8-339"></a></span>
+<span id="cb8-340"><a href="#cb8-340"></a><span class="co"># select eligible participants ----------------------------------------------</span></span>
+<span id="cb8-341"><a href="#cb8-341"></a><span class="co"># only include participants who have exposure data at baseline</span></span>
+<span id="cb8-342"><a href="#cb8-342"></a>ids_baseline <span class="ot">&lt;-</span> dat_prep <span class="sc">|&gt;</span> </span>
+<span id="cb8-343"><a href="#cb8-343"></a>  <span class="fu">filter</span>(wave <span class="sc">==</span> baseline_wave, <span class="sc">!</span><span class="fu">is.na</span>(<span class="sc">!!</span><span class="fu">sym</span>(name_exposure))) <span class="sc">|&gt;</span> </span>
+<span id="cb8-344"><a href="#cb8-344"></a>  <span class="fu">pull</span>(id)</span>
+<span id="cb8-345"><a href="#cb8-345"></a></span>
+<span id="cb8-346"><a href="#cb8-346"></a><span class="co"># filter data to include only eligible participants and relevant waves</span></span>
+<span id="cb8-347"><a href="#cb8-347"></a>dat_long_1 <span class="ot">&lt;-</span> dat_prep <span class="sc">|&gt;</span> </span>
+<span id="cb8-348"><a href="#cb8-348"></a>  <span class="fu">filter</span>(id <span class="sc">%in%</span> ids_baseline, wave <span class="sc">%in%</span> all_waves) <span class="sc">|&gt;</span> </span>
+<span id="cb8-349"><a href="#cb8-349"></a>  <span class="fu">droplevels</span>()</span>
 <span id="cb8-350"><a href="#cb8-350"></a></span>
-<span id="cb8-351"><a href="#cb8-351"></a><span class="co"># process binary variables and log-transform --------------------------------</span></span>
-<span id="cb8-352"><a href="#cb8-352"></a><span class="co"># convert binary factors to 0/1 format</span></span>
-<span id="cb8-353"><a href="#cb8-353"></a>dat_long_3 <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_process_binary_vars</span>(dat_long_2)</span>
+<span id="cb8-351"><a href="#cb8-351"></a><span class="co"># ** key decision 6: determine binary cutpoint for exposure **</span></span>
+<span id="cb8-352"><a href="#cb8-352"></a><span class="co"># visualise distribution to decide on appropriate cutpoint</span></span>
+<span id="cb8-353"><a href="#cb8-353"></a>dat_long_exposure <span class="ot">&lt;-</span> dat_long_1 <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">%in%</span> exposure_waves)</span>
 <span id="cb8-354"><a href="#cb8-354"></a></span>
-<span id="cb8-355"><a href="#cb8-355"></a><span class="co"># log-transform hours and income variables: tables for manuscript</span></span>
-<span id="cb8-356"><a href="#cb8-356"></a>dat_long_tables <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_log_transform_vars</span>(</span>
-<span id="cb8-357"><a href="#cb8-357"></a>  dat_long_3,</span>
-<span id="cb8-358"><a href="#cb8-358"></a>  <span class="at">vars            =</span> <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">"hours_"</span>), <span class="st">"household_inc"</span>),</span>
-<span id="cb8-359"><a href="#cb8-359"></a>  <span class="at">prefix          =</span> <span class="st">"log_"</span>,</span>
-<span id="cb8-360"><a href="#cb8-360"></a>  <span class="at">keep_original   =</span> <span class="cn">TRUE</span>  <span class="co"># keep both original and transformed variables</span></span>
-<span id="cb8-361"><a href="#cb8-361"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-362"><a href="#cb8-362"></a>  <span class="co"># select only variables needed for analysis</span></span>
-<span id="cb8-363"><a href="#cb8-363"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(baseline_vars_no_log, exposure_var, outcome_vars_no_log, <span class="st">"id"</span>, <span class="st">"wave"</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb8-364"><a href="#cb8-364"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb8-365"><a href="#cb8-365"></a></span>
-<span id="cb8-366"><a href="#cb8-366"></a><span class="co"># log-transform hours and income variables: tables for analysis (only logged versions of vars)</span></span>
-<span id="cb8-367"><a href="#cb8-367"></a>dat_long_final <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_log_transform_vars</span>(</span>
-<span id="cb8-368"><a href="#cb8-368"></a>  dat_long_3,</span>
-<span id="cb8-369"><a href="#cb8-369"></a>  <span class="at">vars            =</span> <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">"hours_"</span>), <span class="st">"household_inc"</span>),</span>
-<span id="cb8-370"><a href="#cb8-370"></a>  <span class="at">prefix          =</span> <span class="st">"log_"</span>,</span>
-<span id="cb8-371"><a href="#cb8-371"></a>  <span class="at">keep_original   =</span> <span class="cn">FALSE</span>  <span class="co"># omit original variables</span></span>
-<span id="cb8-372"><a href="#cb8-372"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb8-373"><a href="#cb8-373"></a>  <span class="co"># select only variables needed for analysis</span></span>
-<span id="cb8-374"><a href="#cb8-374"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(baseline_vars, exposure_var, outcome_vars, <span class="st">"id"</span>, <span class="st">"wave"</span>))) <span class="sc">|&gt;</span> </span>
-<span id="cb8-375"><a href="#cb8-375"></a>  <span class="fu">droplevels</span>()</span>
-<span id="cb8-376"><a href="#cb8-376"></a></span>
-<span id="cb8-377"><a href="#cb8-377"></a></span>
-<span id="cb8-378"><a href="#cb8-378"></a><span class="co"># check missing data --------------------------------------------------------</span></span>
-<span id="cb8-379"><a href="#cb8-379"></a><span class="co"># this is crucial to understand potential biases</span></span>
-<span id="cb8-380"><a href="#cb8-380"></a>missing_summary <span class="ot">&lt;-</span> naniar<span class="sc">::</span><span class="fu">miss_var_summary</span>(dat_long_final)</span>
-<span id="cb8-381"><a href="#cb8-381"></a><span class="fu">print</span>(missing_summary)</span>
-<span id="cb8-382"><a href="#cb8-382"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(missing_summary, <span class="st">"missing_summary"</span>, push_mods)</span>
-<span id="cb8-383"><a href="#cb8-383"></a></span>
-<span id="cb8-384"><a href="#cb8-384"></a><span class="co"># visualise missing data pattern</span></span>
-<span id="cb8-385"><a href="#cb8-385"></a><span class="co"># ** -- takes a while to render ** </span></span>
-<span id="cb8-386"><a href="#cb8-386"></a>vis_miss <span class="ot">&lt;-</span> naniar<span class="sc">::</span><span class="fu">vis_miss</span>(dat_long_final, <span class="at">warn_large_data =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb8-387"><a href="#cb8-387"></a><span class="fu">print</span>(vis_miss)</span>
-<span id="cb8-388"><a href="#cb8-388"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(vis_miss, <span class="st">"vis_miss"</span>, push_mods)</span>
-<span id="cb8-389"><a href="#cb8-389"></a></span>
-<span id="cb8-390"><a href="#cb8-390"></a><span class="co"># calculate percentage of missing data at baseline</span></span>
-<span id="cb8-391"><a href="#cb8-391"></a>dat_baseline_pct <span class="ot">&lt;-</span> dat_long_final <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">==</span> baseline_wave)</span>
-<span id="cb8-392"><a href="#cb8-392"></a>percent_missing_baseline <span class="ot">&lt;-</span> naniar<span class="sc">::</span><span class="fu">pct_miss</span>(dat_baseline_pct)</span>
-<span id="cb8-393"><a href="#cb8-393"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(percent_missing_baseline, <span class="st">"percent_missing_baseline"</span>, push_mods)</span>
-<span id="cb8-394"><a href="#cb8-394"></a></span>
-<span id="cb8-395"><a href="#cb8-395"></a><span class="co"># save prepared dataset for next stage --------------------------------------</span></span>
-<span id="cb8-396"><a href="#cb8-396"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(dat_long_final, <span class="st">"dat_long_prepare"</span>, push_mods)</span>
-<span id="cb8-397"><a href="#cb8-397"></a></span>
-<span id="cb8-398"><a href="#cb8-398"></a><span class="co"># visualise individual changes in exposure over time ------------------------</span></span>
-<span id="cb8-399"><a href="#cb8-399"></a><span class="co"># useful for understanding exposure dynamics</span></span>
-<span id="cb8-400"><a href="#cb8-400"></a>individual_plot <span class="ot">&lt;-</span> <span class="fu">margot_plot_individual_responses</span>(</span>
-<span id="cb8-401"><a href="#cb8-401"></a>  dat_long_1,</span>
-<span id="cb8-402"><a href="#cb8-402"></a>  <span class="at">y_vars =</span> name_exposure,</span>
-<span id="cb8-403"><a href="#cb8-403"></a>  <span class="at">id_col =</span> <span class="st">"id"</span>,</span>
-<span id="cb8-404"><a href="#cb8-404"></a>  <span class="at">waves =</span> <span class="fu">c</span>(<span class="dv">2018</span><span class="sc">:</span><span class="dv">2019</span>),</span>
-<span id="cb8-405"><a href="#cb8-405"></a>  <span class="at">random_draws =</span> <span class="dv">56</span>,  <span class="co"># number of randomly selected individuals to show</span></span>
-<span id="cb8-406"><a href="#cb8-406"></a>  <span class="at">theme =</span> <span class="fu">theme_classic</span>(),</span>
-<span id="cb8-407"><a href="#cb8-407"></a>  <span class="at">scale_range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>),  <span class="co"># range of the exposure variable</span></span>
-<span id="cb8-408"><a href="#cb8-408"></a>  <span class="at">full_response_scale =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb8-409"><a href="#cb8-409"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
-<span id="cb8-410"><a href="#cb8-410"></a>)</span>
-<span id="cb8-411"><a href="#cb8-411"></a><span class="fu">print</span>(individual_plot)</span>
-<span id="cb8-412"><a href="#cb8-412"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(individual_plot, <span class="st">"individual_plot_exposure"</span>, push_mods)</span>
-<span id="cb8-413"><a href="#cb8-413"></a></span>
-<span id="cb8-414"><a href="#cb8-414"></a><span class="co"># create transition matrices to check positivity ----------------------------</span></span>
-<span id="cb8-415"><a href="#cb8-415"></a><span class="co"># this helps assess whether there are sufficient observations in all exposure states</span></span>
-<span id="cb8-416"><a href="#cb8-416"></a>dt_positivity <span class="ot">&lt;-</span> dat_long_final <span class="sc">|&gt;</span></span>
-<span id="cb8-417"><a href="#cb8-417"></a>  <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave, exposure_waves)) <span class="sc">|&gt;</span></span>
-<span id="cb8-418"><a href="#cb8-418"></a>  <span class="fu">select</span>(<span class="sc">!!</span><span class="fu">sym</span>(name_exposure), id, wave) <span class="sc">|&gt;</span></span>
-<span id="cb8-419"><a href="#cb8-419"></a>  <span class="fu">mutate</span>(<span class="at">exposure =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(<span class="sc">!!</span><span class="fu">sym</span>(name_exposure)), <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-420"><a href="#cb8-420"></a>  <span class="co"># create binary exposure based on cutpoint</span></span>
-<span id="cb8-421"><a href="#cb8-421"></a>  <span class="fu">mutate</span>(<span class="at">exposure_binary =</span> <span class="fu">ifelse</span>(exposure <span class="sc">&gt;=</span> <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb8-422"><a href="#cb8-422"></a>  <span class="fu">mutate</span>(<span class="at">wave =</span> <span class="fu">as.numeric</span>(wave) <span class="sc">-</span><span class="dv">1</span> )</span>
-<span id="cb8-423"><a href="#cb8-423"></a></span>
-<span id="cb8-424"><a href="#cb8-424"></a><span class="co"># create transition tables</span></span>
-<span id="cb8-425"><a href="#cb8-425"></a>transition_tables <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_transition_table</span>(</span>
-<span id="cb8-426"><a href="#cb8-426"></a>  dt_positivity,</span>
-<span id="cb8-427"><a href="#cb8-427"></a>  <span class="at">state_var =</span> <span class="st">"exposure"</span>,</span>
-<span id="cb8-428"><a href="#cb8-428"></a>  <span class="at">id_var =</span> <span class="st">"id"</span>,</span>
-<span id="cb8-429"><a href="#cb8-429"></a>  <span class="at">waves =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb8-430"><a href="#cb8-430"></a>  <span class="at">wave_var =</span> <span class="st">"wave"</span>,</span>
-<span id="cb8-431"><a href="#cb8-431"></a>  <span class="at">table_name =</span> <span class="st">"transition_table"</span></span>
-<span id="cb8-432"><a href="#cb8-432"></a>)</span>
-<span id="cb8-433"><a href="#cb8-433"></a><span class="fu">print</span>(transition_tables<span class="sc">$</span>tables[[<span class="dv">1</span>]])</span>
-<span id="cb8-434"><a href="#cb8-434"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(transition_tables, <span class="st">"transition_tables"</span>, push_mods)</span>
-<span id="cb8-435"><a href="#cb8-435"></a></span>
-<span id="cb8-436"><a href="#cb8-436"></a><span class="co"># create binary transition tables</span></span>
-<span id="cb8-437"><a href="#cb8-437"></a>transition_tables_binary <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_transition_table</span>(</span>
-<span id="cb8-438"><a href="#cb8-438"></a>  dt_positivity,</span>
-<span id="cb8-439"><a href="#cb8-439"></a>  <span class="at">state_var =</span> <span class="st">"exposure_binary"</span>,</span>
-<span id="cb8-440"><a href="#cb8-440"></a>  <span class="at">id_var =</span> <span class="st">"id"</span>,</span>
-<span id="cb8-441"><a href="#cb8-441"></a>  <span class="at">waves =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
-<span id="cb8-442"><a href="#cb8-442"></a>  <span class="at">wave_var =</span> <span class="st">"wave"</span>,</span>
-<span id="cb8-443"><a href="#cb8-443"></a>  <span class="at">table_name =</span> <span class="st">"transition_table_binary"</span></span>
-<span id="cb8-444"><a href="#cb8-444"></a>)</span>
-<span id="cb8-445"><a href="#cb8-445"></a><span class="fu">print</span>(transition_tables_binary<span class="sc">$</span>tables[[<span class="dv">1</span>]])</span>
-<span id="cb8-446"><a href="#cb8-446"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(transition_tables_binary, <span class="st">"transition_tables_binary"</span>, push_mods)</span>
-<span id="cb8-447"><a href="#cb8-447"></a></span>
-<span id="cb8-448"><a href="#cb8-448"></a><span class="co"># create descriptive tables -------------------------------------------------</span></span>
-<span id="cb8-449"><a href="#cb8-449"></a><span class="co"># define variable labels for tables and plots -------------------------------</span></span>
-<span id="cb8-450"><a href="#cb8-450"></a><span class="co"># ** key decision 7: define clear labels for all variables **</span></span>
-<span id="cb8-451"><a href="#cb8-451"></a><span class="co"># create labels by category for better organisation</span></span>
-<span id="cb8-452"><a href="#cb8-452"></a></span>
-<span id="cb8-453"><a href="#cb8-453"></a><span class="co"># exposure variable labels</span></span>
-<span id="cb8-454"><a href="#cb8-454"></a>var_labels_exposure <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-455"><a href="#cb8-455"></a>  <span class="st">"extraversion"</span> <span class="ot">=</span> <span class="st">"Extraversion"</span>,</span>
-<span id="cb8-456"><a href="#cb8-456"></a>  <span class="st">"extraversion_binary"</span> <span class="ot">=</span> <span class="st">"Extraversion (binary)"</span></span>
-<span id="cb8-457"><a href="#cb8-457"></a>)</span>
-<span id="cb8-458"><a href="#cb8-458"></a></span>
-<span id="cb8-459"><a href="#cb8-459"></a><span class="co"># baseline variable labels</span></span>
-<span id="cb8-460"><a href="#cb8-460"></a>var_labels_baseline <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-461"><a href="#cb8-461"></a>  <span class="co"># demographics</span></span>
-<span id="cb8-462"><a href="#cb8-462"></a>  <span class="st">"age"</span> <span class="ot">=</span> <span class="st">"Age"</span>,</span>
-<span id="cb8-463"><a href="#cb8-463"></a>  <span class="st">"born_nz_binary"</span> <span class="ot">=</span> <span class="st">"Born in NZ"</span>,</span>
-<span id="cb8-464"><a href="#cb8-464"></a>  <span class="st">"education_level_coarsen"</span> <span class="ot">=</span> <span class="st">"Education Level"</span>,</span>
-<span id="cb8-465"><a href="#cb8-465"></a>  <span class="st">"employed_binary"</span> <span class="ot">=</span> <span class="st">"Employed"</span>,</span>
-<span id="cb8-466"><a href="#cb8-466"></a>  <span class="st">"eth_cat"</span> <span class="ot">=</span> <span class="st">"Ethnicity"</span>,</span>
-<span id="cb8-467"><a href="#cb8-467"></a>  <span class="st">"male_binary"</span> <span class="ot">=</span> <span class="st">"Male"</span>,</span>
-<span id="cb8-468"><a href="#cb8-468"></a>  <span class="st">"not_heterosexual_binary"</span> <span class="ot">=</span> <span class="st">"Non-heterosexual"</span>,</span>
-<span id="cb8-469"><a href="#cb8-469"></a>  <span class="st">"parent_binary"</span> <span class="ot">=</span> <span class="st">"Parent"</span>,</span>
-<span id="cb8-470"><a href="#cb8-470"></a>  <span class="st">"partner_binary"</span> <span class="ot">=</span> <span class="st">"Has Partner"</span>,</span>
-<span id="cb8-471"><a href="#cb8-471"></a>  <span class="st">"rural_gch_2018_l"</span> <span class="ot">=</span> <span class="st">"Rural Classification"</span>,</span>
-<span id="cb8-472"><a href="#cb8-472"></a>  <span class="st">"sample_frame_opt_in_binary"</span> <span class="ot">=</span> <span class="st">"Sample Frame Opt-In"</span>,</span>
-<span id="cb8-473"><a href="#cb8-473"></a>  </span>
-<span id="cb8-474"><a href="#cb8-474"></a>  <span class="co"># economic &amp; social status</span></span>
-<span id="cb8-475"><a href="#cb8-475"></a>  <span class="st">"household_inc"</span> <span class="ot">=</span> <span class="st">"Household Income"</span>,</span>
-<span id="cb8-476"><a href="#cb8-476"></a>  <span class="st">"log_household_inc"</span> <span class="ot">=</span> <span class="st">"Log Household Income"</span>,</span>
-<span id="cb8-477"><a href="#cb8-477"></a>  <span class="st">"nz_dep2018"</span> <span class="ot">=</span> <span class="st">"NZ Deprivation Index"</span>,</span>
-<span id="cb8-478"><a href="#cb8-478"></a>  <span class="st">"nzsei_13_l"</span> <span class="ot">=</span> <span class="st">"Occupational Prestige Index"</span>,</span>
-<span id="cb8-479"><a href="#cb8-479"></a>  <span class="st">"household_inc"</span> <span class="ot">=</span> <span class="st">"Household Income"</span>,</span>
-<span id="cb8-480"><a href="#cb8-480"></a></span>
-<span id="cb8-481"><a href="#cb8-481"></a>  </span>
-<span id="cb8-482"><a href="#cb8-482"></a>  <span class="co"># personality traits</span></span>
-<span id="cb8-483"><a href="#cb8-483"></a>  <span class="st">"agreeableness"</span> <span class="ot">=</span> <span class="st">"Agreeableness"</span>,</span>
-<span id="cb8-484"><a href="#cb8-484"></a>  <span class="st">"conscientiousness"</span> <span class="ot">=</span> <span class="st">"Conscientiousness"</span>,</span>
-<span id="cb8-485"><a href="#cb8-485"></a>  <span class="st">"neuroticism"</span> <span class="ot">=</span> <span class="st">"Neuroticism"</span>,</span>
-<span id="cb8-486"><a href="#cb8-486"></a>  <span class="st">"openness"</span> <span class="ot">=</span> <span class="st">"Openness"</span>,</span>
-<span id="cb8-487"><a href="#cb8-487"></a>  </span>
-<span id="cb8-488"><a href="#cb8-488"></a>  <span class="co"># beliefs &amp; attitudes</span></span>
-<span id="cb8-489"><a href="#cb8-489"></a>  <span class="st">"political_conservative"</span> <span class="ot">=</span> <span class="st">"Political Conservatism"</span>,</span>
-<span id="cb8-490"><a href="#cb8-490"></a>  <span class="st">"religion_identification_level"</span> <span class="ot">=</span> <span class="st">"Religious Identification"</span>,</span>
-<span id="cb8-491"><a href="#cb8-491"></a>  </span>
-<span id="cb8-492"><a href="#cb8-492"></a>  <span class="co"># health behaviors</span></span>
-<span id="cb8-493"><a href="#cb8-493"></a>  <span class="st">"alcohol_frequency"</span> <span class="ot">=</span> <span class="st">"Alcohol Frequency"</span>,</span>
-<span id="cb8-494"><a href="#cb8-494"></a>  <span class="st">"alcohol_intensity"</span> <span class="ot">=</span> <span class="st">"Alcohol Intensity"</span>,</span>
-<span id="cb8-495"><a href="#cb8-495"></a>  <span class="st">"hlth_disability_binary"</span> <span class="ot">=</span> <span class="st">"Disability Status"</span>,</span>
-<span id="cb8-496"><a href="#cb8-496"></a>  <span class="st">"smoker_binary"</span> <span class="ot">=</span> <span class="st">"Smoker"</span>,</span>
-<span id="cb8-497"><a href="#cb8-497"></a>  <span class="st">"hours_exercise"</span> <span class="ot">=</span> <span class="st">"Hours of Exercise"</span>,</span>
-<span id="cb8-498"><a href="#cb8-498"></a>  </span>
-<span id="cb8-499"><a href="#cb8-499"></a>  </span>
-<span id="cb8-500"><a href="#cb8-500"></a>  <span class="co"># time use</span></span>
-<span id="cb8-501"><a href="#cb8-501"></a>  <span class="st">"hours_children"</span> <span class="ot">=</span> <span class="st">"Hours with Children"</span>,</span>
-<span id="cb8-502"><a href="#cb8-502"></a>  <span class="st">"hours_commute"</span> <span class="ot">=</span> <span class="st">"Hours Commuting"</span>,</span>
-<span id="cb8-503"><a href="#cb8-503"></a>  <span class="st">"hours_exercise"</span> <span class="ot">=</span> <span class="st">"Hours Exercising"</span>,</span>
-<span id="cb8-504"><a href="#cb8-504"></a>  <span class="st">"hours_housework"</span> <span class="ot">=</span> <span class="st">"Hours on Housework"</span>,</span>
-<span id="cb8-505"><a href="#cb8-505"></a>  <span class="st">"log_hours_children"</span> <span class="ot">=</span> <span class="st">"Log Hours with Children"</span>,</span>
-<span id="cb8-506"><a href="#cb8-506"></a>  <span class="st">"log_hours_commute"</span> <span class="ot">=</span> <span class="st">"Log Hours Commuting"</span>,</span>
-<span id="cb8-507"><a href="#cb8-507"></a>  <span class="st">"log_hours_exercise"</span> <span class="ot">=</span> <span class="st">"Log Hours Exercising"</span>,</span>
-<span id="cb8-508"><a href="#cb8-508"></a>  <span class="st">"log_hours_housework"</span> <span class="ot">=</span> <span class="st">"Log Hours on Housework"</span></span>
-<span id="cb8-509"><a href="#cb8-509"></a>)</span>
-<span id="cb8-510"><a href="#cb8-510"></a></span>
-<span id="cb8-511"><a href="#cb8-511"></a><span class="co"># outcome variable labels, organized by domain</span></span>
-<span id="cb8-512"><a href="#cb8-512"></a></span>
-<span id="cb8-513"><a href="#cb8-513"></a>var_labels_health <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-514"><a href="#cb8-514"></a>  <span class="st">"alcohol_frequency_weekly"</span> <span class="ot">=</span> <span class="st">"Alcohol Frequency (weekly)"</span>,</span>
-<span id="cb8-515"><a href="#cb8-515"></a>  <span class="st">"alcohol_intensity"</span> <span class="ot">=</span> <span class="st">"Alcohol Intensity"</span>,</span>
-<span id="cb8-516"><a href="#cb8-516"></a>  <span class="st">"hlth_bmi"</span> <span class="ot">=</span> <span class="st">"Body Mass Index"</span>,</span>
-<span id="cb8-517"><a href="#cb8-517"></a>  <span class="st">"hlth_sleep_hours"</span> <span class="ot">=</span> <span class="st">"Sleep"</span>,</span>
-<span id="cb8-518"><a href="#cb8-518"></a>  <span class="st">"hours_exercise"</span> <span class="ot">=</span> <span class="st">"Hours of Exercise"</span>,</span>
-<span id="cb8-519"><a href="#cb8-519"></a>  <span class="st">"short_form_health"</span> <span class="ot">=</span> <span class="st">"Short Form Health"</span></span>
-<span id="cb8-520"><a href="#cb8-520"></a>)</span>
-<span id="cb8-521"><a href="#cb8-521"></a></span>
-<span id="cb8-522"><a href="#cb8-522"></a><span class="co"># define psych outcomes</span></span>
-<span id="cb8-523"><a href="#cb8-523"></a>var_labels_psych <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-524"><a href="#cb8-524"></a>  <span class="st">"hlth_fatigue"</span> <span class="ot">=</span> <span class="st">"Fatigue"</span>,</span>
-<span id="cb8-525"><a href="#cb8-525"></a>  <span class="st">"kessler_latent_anxiety"</span> <span class="ot">=</span> <span class="st">"Anxiety"</span>,</span>
-<span id="cb8-526"><a href="#cb8-526"></a>  <span class="st">"kessler_latent_depression"</span> <span class="ot">=</span> <span class="st">"Depression"</span>,</span>
-<span id="cb8-527"><a href="#cb8-527"></a>  <span class="st">"rumination"</span> <span class="ot">=</span> <span class="st">"Rumination"</span></span>
-<span id="cb8-528"><a href="#cb8-528"></a>)</span>
-<span id="cb8-529"><a href="#cb8-529"></a></span>
-<span id="cb8-530"><a href="#cb8-530"></a><span class="co"># define present outcomes</span></span>
-<span id="cb8-531"><a href="#cb8-531"></a>var_labels_present <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-532"><a href="#cb8-532"></a>  <span class="st">"bodysat"</span> <span class="ot">=</span> <span class="st">"Body Satisfaction"</span>,</span>
-<span id="cb8-533"><a href="#cb8-533"></a>  <span class="st">"foregiveness"</span> <span class="ot">=</span> <span class="st">"Forgiveness"</span>,</span>
-<span id="cb8-534"><a href="#cb8-534"></a>  <span class="st">"perfectionism"</span> <span class="ot">=</span> <span class="st">"Perfectionism"</span>,</span>
-<span id="cb8-535"><a href="#cb8-535"></a>  <span class="st">"self_control"</span> <span class="ot">=</span> <span class="st">"Self Control"</span>,</span>
-<span id="cb8-536"><a href="#cb8-536"></a>  <span class="st">"self_esteem"</span> <span class="ot">=</span> <span class="st">"Self Esteem"</span>,</span>
-<span id="cb8-537"><a href="#cb8-537"></a>  <span class="st">"sexual_satisfaction"</span> <span class="ot">=</span> <span class="st">"Sexual Satisfaction"</span></span>
-<span id="cb8-538"><a href="#cb8-538"></a>)</span>
-<span id="cb8-539"><a href="#cb8-539"></a></span>
-<span id="cb8-540"><a href="#cb8-540"></a><span class="co"># define life outcomes</span></span>
-<span id="cb8-541"><a href="#cb8-541"></a>var_labels_life <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-542"><a href="#cb8-542"></a>  <span class="st">"gratitude"</span> <span class="ot">=</span> <span class="st">"Gratitude"</span>,</span>
-<span id="cb8-543"><a href="#cb8-543"></a>  <span class="st">"lifesat"</span> <span class="ot">=</span> <span class="st">"Life Satisfaction"</span>,</span>
-<span id="cb8-544"><a href="#cb8-544"></a>  <span class="st">"meaning_purpose"</span> <span class="ot">=</span> <span class="st">"Meaning: Purpose"</span>,</span>
-<span id="cb8-545"><a href="#cb8-545"></a>  <span class="co"># exposure variable</span></span>
-<span id="cb8-546"><a href="#cb8-546"></a>  <span class="st">"meaning_sense"</span> <span class="ot">=</span> <span class="st">"Meaning: Sense"</span>,</span>
-<span id="cb8-547"><a href="#cb8-547"></a>  <span class="st">"pwi = Personal Well-being Index"</span></span>
-<span id="cb8-548"><a href="#cb8-548"></a>)</span>
-<span id="cb8-549"><a href="#cb8-549"></a></span>
-<span id="cb8-550"><a href="#cb8-550"></a><span class="co"># define social outcome names</span></span>
-<span id="cb8-551"><a href="#cb8-551"></a>var_labels_social <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
-<span id="cb8-552"><a href="#cb8-552"></a>  <span class="st">"belong"</span> <span class="ot">=</span> <span class="st">"Social Belonging"</span>,</span>
-<span id="cb8-553"><a href="#cb8-553"></a>  <span class="st">"neighbourhood_community"</span> <span class="ot">=</span> <span class="st">"Neighbourhood Community"</span>,</span>
-<span id="cb8-554"><a href="#cb8-554"></a>  <span class="st">"support"</span> <span class="ot">=</span> <span class="st">"Social Support"</span></span>
-<span id="cb8-555"><a href="#cb8-555"></a>)</span>
-<span id="cb8-556"><a href="#cb8-556"></a><span class="co"># combine all label lists</span></span>
-<span id="cb8-557"><a href="#cb8-557"></a>var_labels_all <span class="ot">=</span> <span class="fu">c</span>(</span>
-<span id="cb8-558"><a href="#cb8-558"></a>  var_labels_baseline,</span>
-<span id="cb8-559"><a href="#cb8-559"></a>  var_labels_exposure,</span>
-<span id="cb8-560"><a href="#cb8-560"></a>  var_labels_health,</span>
-<span id="cb8-561"><a href="#cb8-561"></a>  var_labels_psych,</span>
-<span id="cb8-562"><a href="#cb8-562"></a>  var_labels_present,</span>
-<span id="cb8-563"><a href="#cb8-563"></a>  var_labels_life,</span>
-<span id="cb8-564"><a href="#cb8-564"></a>  var_labels_social</span>
-<span id="cb8-565"><a href="#cb8-565"></a>)</span>
-<span id="cb8-566"><a href="#cb8-566"></a></span>
-<span id="cb8-567"><a href="#cb8-567"></a><span class="co"># save for manuscript</span></span>
-<span id="cb8-568"><a href="#cb8-568"></a><span class="fu">here_save</span>(var_labels_all, <span class="st">"var_labels_all"</span>, push_mods)</span>
-<span id="cb8-569"><a href="#cb8-569"></a></span>
-<span id="cb8-570"><a href="#cb8-570"></a></span>
-<span id="cb8-571"><a href="#cb8-571"></a><span class="co"># tables ------------------------------------------------------------------</span></span>
-<span id="cb8-572"><a href="#cb8-572"></a><span class="co"># create baseline characteristics table</span></span>
-<span id="cb8-573"><a href="#cb8-573"></a>dat_baseline <span class="ot">=</span> dat_long_tables <span class="sc">|&gt;</span></span>
-<span id="cb8-574"><a href="#cb8-574"></a>  <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave)) <span class="sc">|&gt;</span></span>
-<span id="cb8-575"><a href="#cb8-575"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb8-576"><a href="#cb8-576"></a>    <span class="at">male_binary =</span> <span class="fu">factor</span>(male_binary),</span>
-<span id="cb8-577"><a href="#cb8-577"></a>    <span class="at">parent_binary =</span> <span class="fu">factor</span>(parent_binary),</span>
-<span id="cb8-578"><a href="#cb8-578"></a>    <span class="at">smoker_binary =</span> <span class="fu">factor</span>(smoker_binary),</span>
-<span id="cb8-579"><a href="#cb8-579"></a>    <span class="at">born_nz_binary =</span> <span class="fu">factor</span>(born_nz_binary),</span>
-<span id="cb8-580"><a href="#cb8-580"></a>    <span class="at">employed_binary =</span> <span class="fu">factor</span>(employed_binary),</span>
-<span id="cb8-581"><a href="#cb8-581"></a>    <span class="at">not_heterosexual_binary =</span> <span class="fu">factor</span>(not_heterosexual_binary),</span>
-<span id="cb8-582"><a href="#cb8-582"></a>    <span class="at">sample_frame_opt_in_binary =</span> <span class="fu">factor</span>(sample_frame_opt_in_binary)</span>
-<span id="cb8-583"><a href="#cb8-583"></a>  )</span>
-<span id="cb8-584"><a href="#cb8-584"></a></span>
-<span id="cb8-585"><a href="#cb8-585"></a>baseline_table <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_make_tables</span>(</span>
-<span id="cb8-586"><a href="#cb8-586"></a>  <span class="at">data =</span> dat_baseline,</span>
-<span id="cb8-587"><a href="#cb8-587"></a>  <span class="at">vars =</span> baseline_vars,</span>
-<span id="cb8-588"><a href="#cb8-588"></a>  <span class="at">by =</span> <span class="st">"wave"</span>,</span>
-<span id="cb8-589"><a href="#cb8-589"></a>  <span class="at">labels =</span> var_labels_all,</span>
-<span id="cb8-590"><a href="#cb8-590"></a>  <span class="at">table1_opts =</span> <span class="fu">list</span>(<span class="at">overall =</span> <span class="cn">FALSE</span>, <span class="at">transpose =</span> <span class="cn">FALSE</span>),</span>
-<span id="cb8-591"><a href="#cb8-591"></a>  <span class="at">format =</span> <span class="st">"markdown"</span></span>
-<span id="cb8-592"><a href="#cb8-592"></a>)</span>
-<span id="cb8-593"><a href="#cb8-593"></a><span class="fu">print</span>(baseline_table)</span>
-<span id="cb8-594"><a href="#cb8-594"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(baseline_table, <span class="st">"baseline_table"</span>, push_mods)</span>
-<span id="cb8-595"><a href="#cb8-595"></a></span>
-<span id="cb8-596"><a href="#cb8-596"></a><span class="co"># create exposure table by wave</span></span>
-<span id="cb8-597"><a href="#cb8-597"></a>exposure_table <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_make_tables</span>(</span>
-<span id="cb8-598"><a href="#cb8-598"></a>  <span class="at">data =</span> dat_long_tables <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave, exposure_waves)),</span>
-<span id="cb8-599"><a href="#cb8-599"></a>  <span class="at">vars =</span> exposure_var,</span>
-<span id="cb8-600"><a href="#cb8-600"></a>  <span class="at">by =</span> <span class="st">"wave"</span>,</span>
-<span id="cb8-601"><a href="#cb8-601"></a>  <span class="at">labels =</span> var_labels_all,</span>
-<span id="cb8-602"><a href="#cb8-602"></a>  <span class="at">factor_vars =</span> exposure_var_binary,</span>
-<span id="cb8-603"><a href="#cb8-603"></a>  <span class="at">table1_opts =</span> <span class="fu">list</span>(<span class="at">overall =</span> <span class="cn">FALSE</span>, <span class="at">transpose =</span> <span class="cn">FALSE</span>),</span>
-<span id="cb8-604"><a href="#cb8-604"></a>  <span class="at">format =</span> <span class="st">"markdown"</span></span>
-<span id="cb8-605"><a href="#cb8-605"></a>)</span>
-<span id="cb8-606"><a href="#cb8-606"></a><span class="fu">print</span>(exposure_table)</span>
-<span id="cb8-607"><a href="#cb8-607"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(exposure_table, <span class="st">"exposure_table"</span>, push_mods)</span>
-<span id="cb8-608"><a href="#cb8-608"></a></span>
-<span id="cb8-609"><a href="#cb8-609"></a><span class="co"># create outcomes table by wave</span></span>
-<span id="cb8-610"><a href="#cb8-610"></a>outcomes_table <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_make_tables</span>(</span>
-<span id="cb8-611"><a href="#cb8-611"></a>  <span class="at">data =</span> dat_long_tables <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave, outcome_wave)),</span>
-<span id="cb8-612"><a href="#cb8-612"></a>  <span class="at">vars =</span> outcome_vars_no_log,</span>
-<span id="cb8-613"><a href="#cb8-613"></a>  <span class="at">by =</span> <span class="st">"wave"</span>,</span>
-<span id="cb8-614"><a href="#cb8-614"></a>  <span class="at">labels =</span> var_labels,</span>
-<span id="cb8-615"><a href="#cb8-615"></a>  <span class="at">format =</span> <span class="st">"markdown"</span></span>
-<span id="cb8-616"><a href="#cb8-616"></a>)</span>
-<span id="cb8-617"><a href="#cb8-617"></a><span class="fu">print</span>(outcomes_table)</span>
-<span id="cb8-618"><a href="#cb8-618"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(outcomes_table, <span class="st">"outcomes_table"</span>, push_mods)</span>
-<span id="cb8-619"><a href="#cb8-619"></a></span>
-<span id="cb8-620"><a href="#cb8-620"></a><span class="co"># note: completed data preparation step -------------------------------------</span></span>
-<span id="cb8-621"><a href="#cb8-621"></a><span class="co"># you're now ready for the next steps:</span></span>
-<span id="cb8-622"><a href="#cb8-622"></a><span class="co"># 1. creating wide-format dataset for analysis </span></span>
-<span id="cb8-623"><a href="#cb8-623"></a><span class="co"># 2. applying causal inference methods</span></span>
-<span id="cb8-624"><a href="#cb8-624"></a><span class="co"># 3. conducting sensitivity analyses</span></span>
-<span id="cb8-625"><a href="#cb8-625"></a></span>
-<span id="cb8-626"><a href="#cb8-626"></a><span class="co"># key decisions summary:</span></span>
-<span id="cb8-627"><a href="#cb8-627"></a><span class="co"># 1. exposure variable: extraversion</span></span>
-<span id="cb8-628"><a href="#cb8-628"></a><span class="co"># 2. study waves: baseline (2018), exposure (2019), outcome (2020)</span></span>
-<span id="cb8-629"><a href="#cb8-629"></a><span class="co"># 3. baseline covariates: demographics, traits, health measures (excluding exposure)</span></span>
-<span id="cb8-630"><a href="#cb8-630"></a><span class="co"># 4. outcomes: health, psychological, wellbeing, and social variables</span></span>
-<span id="cb8-631"><a href="#cb8-631"></a><span class="co"># 5. time-varying confounders: disability status??</span></span>
-<span id="cb8-632"><a href="#cb8-632"></a><span class="co"># 6. binary cutpoint for exposure: 4 on the extraversion scale</span></span>
-<span id="cb8-633"><a href="#cb8-633"></a><span class="co"># 7. label names for tables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-355"><a href="#cb8-355"></a><span class="co"># plot distribution to help with cutpoint decision</span></span>
+<span id="cb8-356"><a href="#cb8-356"></a>graph_cut <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_plot_categorical</span>(</span>
+<span id="cb8-357"><a href="#cb8-357"></a>  dat_long_exposure,</span>
+<span id="cb8-358"><a href="#cb8-358"></a>  <span class="at">col_name         =</span> name_exposure,</span>
+<span id="cb8-359"><a href="#cb8-359"></a>  <span class="at">sd_multipliers =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>), <span class="co"># select to suit</span></span>
+<span id="cb8-360"><a href="#cb8-360"></a>  <span class="co"># either use n_divisions for equal-sized groups:</span></span>
+<span id="cb8-361"><a href="#cb8-361"></a>  <span class="co"># n_divisions      = 2,</span></span>
+<span id="cb8-362"><a href="#cb8-362"></a>  <span class="co"># or use custom_breaks for specific values:</span></span>
+<span id="cb8-363"><a href="#cb8-363"></a>  <span class="at">custom_breaks    =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>),  <span class="co"># ** adjust as needed **</span></span>
+<span id="cb8-364"><a href="#cb8-364"></a>  <span class="at">cutpoint_inclusive =</span> <span class="st">"upper"</span>,</span>
+<span id="cb8-365"><a href="#cb8-365"></a>  <span class="at">show_mean        =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-366"><a href="#cb8-366"></a>  <span class="at">show_sd          =</span> <span class="cn">TRUE</span></span>
+<span id="cb8-367"><a href="#cb8-367"></a>)</span>
+<span id="cb8-368"><a href="#cb8-368"></a><span class="fu">print</span>(graph_cut)</span>
+<span id="cb8-369"><a href="#cb8-369"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(graph_cut, <span class="st">"graph_cut"</span>, push_mods)</span>
+<span id="cb8-370"><a href="#cb8-370"></a></span>
+<span id="cb8-371"><a href="#cb8-371"></a><span class="co"># create binary exposure variable based on chosen cutpoint</span></span>
+<span id="cb8-372"><a href="#cb8-372"></a>dat_long_2 <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">create_ordered_variable</span>(</span>
+<span id="cb8-373"><a href="#cb8-373"></a>  dat_long_1,</span>
+<span id="cb8-374"><a href="#cb8-374"></a>  <span class="at">var_name           =</span> name_exposure,</span>
+<span id="cb8-375"><a href="#cb8-375"></a>  <span class="at">custom_breaks      =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>),  <span class="co"># ** adjust based on your decision **</span></span>
+<span id="cb8-376"><a href="#cb8-376"></a>  <span class="at">cutpoint_inclusive =</span> <span class="st">"upper"</span></span>
+<span id="cb8-377"><a href="#cb8-377"></a>)</span>
+<span id="cb8-378"><a href="#cb8-378"></a></span>
+<span id="cb8-379"><a href="#cb8-379"></a><span class="co"># process binary variables and log-transform --------------------------------</span></span>
+<span id="cb8-380"><a href="#cb8-380"></a><span class="co"># convert binary factors to 0/1 format</span></span>
+<span id="cb8-381"><a href="#cb8-381"></a>dat_long_3 <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_process_binary_vars</span>(dat_long_2)</span>
+<span id="cb8-382"><a href="#cb8-382"></a></span>
+<span id="cb8-383"><a href="#cb8-383"></a><span class="co"># log-transform hours and income variables: tables for manuscript</span></span>
+<span id="cb8-384"><a href="#cb8-384"></a>dat_long_tables <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_log_transform_vars</span>(</span>
+<span id="cb8-385"><a href="#cb8-385"></a>  dat_long_3,</span>
+<span id="cb8-386"><a href="#cb8-386"></a>  <span class="at">vars            =</span> <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">"hours_"</span>), <span class="st">"household_inc"</span>),</span>
+<span id="cb8-387"><a href="#cb8-387"></a>  <span class="at">prefix          =</span> <span class="st">"log_"</span>,</span>
+<span id="cb8-388"><a href="#cb8-388"></a>  <span class="at">keep_original   =</span> <span class="cn">TRUE</span>  <span class="co"># keep both original and transformed variables</span></span>
+<span id="cb8-389"><a href="#cb8-389"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-390"><a href="#cb8-390"></a>  <span class="co"># select only variables needed for analysis</span></span>
+<span id="cb8-391"><a href="#cb8-391"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(baseline_vars_no_log, exposure_var, outcome_vars_no_log, <span class="st">"id"</span>, <span class="st">"wave"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb8-392"><a href="#cb8-392"></a>  <span class="fu">droplevels</span>()</span>
+<span id="cb8-393"><a href="#cb8-393"></a></span>
+<span id="cb8-394"><a href="#cb8-394"></a><span class="co"># log-transform hours and income variables: tables for analysis (only logged versions of vars)</span></span>
+<span id="cb8-395"><a href="#cb8-395"></a>dat_long_final <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_log_transform_vars</span>(</span>
+<span id="cb8-396"><a href="#cb8-396"></a>  dat_long_3,</span>
+<span id="cb8-397"><a href="#cb8-397"></a>  <span class="at">vars            =</span> <span class="fu">c</span>(<span class="fu">starts_with</span>(<span class="st">"hours_"</span>), <span class="st">"household_inc"</span>),</span>
+<span id="cb8-398"><a href="#cb8-398"></a>  <span class="at">prefix          =</span> <span class="st">"log_"</span>,</span>
+<span id="cb8-399"><a href="#cb8-399"></a>  <span class="at">keep_original   =</span> <span class="cn">FALSE</span>  <span class="co"># omit original variables</span></span>
+<span id="cb8-400"><a href="#cb8-400"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb8-401"><a href="#cb8-401"></a>  <span class="co"># select only variables needed for analysis</span></span>
+<span id="cb8-402"><a href="#cb8-402"></a>  <span class="fu">select</span>(<span class="fu">all_of</span>(<span class="fu">c</span>(baseline_vars, exposure_var, outcome_vars, <span class="st">"id"</span>, <span class="st">"wave"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb8-403"><a href="#cb8-403"></a>  <span class="fu">droplevels</span>()</span>
+<span id="cb8-404"><a href="#cb8-404"></a></span>
+<span id="cb8-405"><a href="#cb8-405"></a></span>
+<span id="cb8-406"><a href="#cb8-406"></a><span class="co"># check missing data --------------------------------------------------------</span></span>
+<span id="cb8-407"><a href="#cb8-407"></a><span class="co"># this is crucial to understand potential biases</span></span>
+<span id="cb8-408"><a href="#cb8-408"></a>missing_summary <span class="ot">&lt;-</span> naniar<span class="sc">::</span><span class="fu">miss_var_summary</span>(dat_long_final)</span>
+<span id="cb8-409"><a href="#cb8-409"></a><span class="fu">print</span>(missing_summary)</span>
+<span id="cb8-410"><a href="#cb8-410"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(missing_summary, <span class="st">"missing_summary"</span>, push_mods)</span>
+<span id="cb8-411"><a href="#cb8-411"></a></span>
+<span id="cb8-412"><a href="#cb8-412"></a><span class="co"># visualise missing data pattern</span></span>
+<span id="cb8-413"><a href="#cb8-413"></a><span class="co"># ** -- takes a while to render ** </span></span>
+<span id="cb8-414"><a href="#cb8-414"></a>vis_miss <span class="ot">&lt;-</span> naniar<span class="sc">::</span><span class="fu">vis_miss</span>(dat_long_final, <span class="at">warn_large_data =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb8-415"><a href="#cb8-415"></a><span class="fu">print</span>(vis_miss)</span>
+<span id="cb8-416"><a href="#cb8-416"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(vis_miss, <span class="st">"vis_miss"</span>, push_mods)</span>
+<span id="cb8-417"><a href="#cb8-417"></a></span>
+<span id="cb8-418"><a href="#cb8-418"></a><span class="co"># calculate percentage of missing data at baseline</span></span>
+<span id="cb8-419"><a href="#cb8-419"></a>dat_baseline_pct <span class="ot">&lt;-</span> dat_long_final <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">==</span> baseline_wave)</span>
+<span id="cb8-420"><a href="#cb8-420"></a>percent_missing_baseline <span class="ot">&lt;-</span> naniar<span class="sc">::</span><span class="fu">pct_miss</span>(dat_baseline_pct)</span>
+<span id="cb8-421"><a href="#cb8-421"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(percent_missing_baseline, <span class="st">"percent_missing_baseline"</span>, push_mods)</span>
+<span id="cb8-422"><a href="#cb8-422"></a></span>
+<span id="cb8-423"><a href="#cb8-423"></a><span class="co"># save prepared dataset for next stage --------------------------------------</span></span>
+<span id="cb8-424"><a href="#cb8-424"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(dat_long_final, <span class="st">"dat_long_prepare"</span>, push_mods)</span>
+<span id="cb8-425"><a href="#cb8-425"></a></span>
+<span id="cb8-426"><a href="#cb8-426"></a><span class="co"># visualise individual changes in exposure over time ------------------------</span></span>
+<span id="cb8-427"><a href="#cb8-427"></a><span class="co"># useful for understanding exposure dynamics</span></span>
+<span id="cb8-428"><a href="#cb8-428"></a>individual_plot <span class="ot">&lt;-</span> <span class="fu">margot_plot_individual_responses</span>(</span>
+<span id="cb8-429"><a href="#cb8-429"></a>  dat_long_1,</span>
+<span id="cb8-430"><a href="#cb8-430"></a>  <span class="at">y_vars =</span> name_exposure,</span>
+<span id="cb8-431"><a href="#cb8-431"></a>  <span class="at">id_col =</span> <span class="st">"id"</span>,</span>
+<span id="cb8-432"><a href="#cb8-432"></a>  <span class="at">waves =</span> <span class="fu">c</span>(<span class="dv">2018</span><span class="sc">:</span><span class="dv">2019</span>),</span>
+<span id="cb8-433"><a href="#cb8-433"></a>  <span class="at">random_draws =</span> <span class="dv">56</span>,  <span class="co"># number of randomly selected individuals to show</span></span>
+<span id="cb8-434"><a href="#cb8-434"></a>  <span class="at">theme =</span> <span class="fu">theme_classic</span>(),</span>
+<span id="cb8-435"><a href="#cb8-435"></a>  <span class="at">scale_range =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">7</span>),  <span class="co"># range of the exposure variable</span></span>
+<span id="cb8-436"><a href="#cb8-436"></a>  <span class="at">full_response_scale =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-437"><a href="#cb8-437"></a>  <span class="at">seed =</span> <span class="dv">123</span></span>
+<span id="cb8-438"><a href="#cb8-438"></a>)</span>
+<span id="cb8-439"><a href="#cb8-439"></a><span class="fu">print</span>(individual_plot)</span>
+<span id="cb8-440"><a href="#cb8-440"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(individual_plot, <span class="st">"individual_plot_exposure"</span>, push_mods)</span>
+<span id="cb8-441"><a href="#cb8-441"></a></span>
+<span id="cb8-442"><a href="#cb8-442"></a><span class="co"># create transition matrices to check positivity ----------------------------</span></span>
+<span id="cb8-443"><a href="#cb8-443"></a><span class="co"># this helps assess whether there are sufficient observations in all exposure states</span></span>
+<span id="cb8-444"><a href="#cb8-444"></a>dt_positivity <span class="ot">&lt;-</span> dat_long_final <span class="sc">|&gt;</span></span>
+<span id="cb8-445"><a href="#cb8-445"></a>  <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave, exposure_waves)) <span class="sc">|&gt;</span></span>
+<span id="cb8-446"><a href="#cb8-446"></a>  <span class="fu">select</span>(<span class="sc">!!</span><span class="fu">sym</span>(name_exposure), id, wave) <span class="sc">|&gt;</span></span>
+<span id="cb8-447"><a href="#cb8-447"></a>  <span class="fu">mutate</span>(<span class="at">exposure =</span> <span class="fu">round</span>(<span class="fu">as.numeric</span>(<span class="sc">!!</span><span class="fu">sym</span>(name_exposure)), <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-448"><a href="#cb8-448"></a>  <span class="co"># create binary exposure based on cutpoint</span></span>
+<span id="cb8-449"><a href="#cb8-449"></a>  <span class="fu">mutate</span>(<span class="at">exposure_binary =</span> <span class="fu">ifelse</span>(exposure <span class="sc">&gt;=</span> <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-450"><a href="#cb8-450"></a>  <span class="fu">mutate</span>(<span class="at">wave =</span> <span class="fu">as.numeric</span>(wave) <span class="sc">-</span><span class="dv">1</span> )</span>
+<span id="cb8-451"><a href="#cb8-451"></a></span>
+<span id="cb8-452"><a href="#cb8-452"></a><span class="co"># create transition tables</span></span>
+<span id="cb8-453"><a href="#cb8-453"></a>transition_tables <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_transition_table</span>(</span>
+<span id="cb8-454"><a href="#cb8-454"></a>  dt_positivity,</span>
+<span id="cb8-455"><a href="#cb8-455"></a>  <span class="at">state_var =</span> <span class="st">"exposure"</span>,</span>
+<span id="cb8-456"><a href="#cb8-456"></a>  <span class="at">id_var =</span> <span class="st">"id"</span>,</span>
+<span id="cb8-457"><a href="#cb8-457"></a>  <span class="at">waves =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb8-458"><a href="#cb8-458"></a>  <span class="at">wave_var =</span> <span class="st">"wave"</span>,</span>
+<span id="cb8-459"><a href="#cb8-459"></a>  <span class="at">table_name =</span> <span class="st">"transition_table"</span></span>
+<span id="cb8-460"><a href="#cb8-460"></a>)</span>
+<span id="cb8-461"><a href="#cb8-461"></a><span class="fu">print</span>(transition_tables<span class="sc">$</span>tables[[<span class="dv">1</span>]])</span>
+<span id="cb8-462"><a href="#cb8-462"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(transition_tables, <span class="st">"transition_tables"</span>, push_mods)</span>
+<span id="cb8-463"><a href="#cb8-463"></a></span>
+<span id="cb8-464"><a href="#cb8-464"></a><span class="co"># create binary transition tables</span></span>
+<span id="cb8-465"><a href="#cb8-465"></a>transition_tables_binary <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_transition_table</span>(</span>
+<span id="cb8-466"><a href="#cb8-466"></a>  dt_positivity,</span>
+<span id="cb8-467"><a href="#cb8-467"></a>  <span class="at">state_var =</span> <span class="st">"exposure_binary"</span>,</span>
+<span id="cb8-468"><a href="#cb8-468"></a>  <span class="at">id_var =</span> <span class="st">"id"</span>,</span>
+<span id="cb8-469"><a href="#cb8-469"></a>  <span class="at">waves =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>),</span>
+<span id="cb8-470"><a href="#cb8-470"></a>  <span class="at">wave_var =</span> <span class="st">"wave"</span>,</span>
+<span id="cb8-471"><a href="#cb8-471"></a>  <span class="at">table_name =</span> <span class="st">"transition_table_binary"</span></span>
+<span id="cb8-472"><a href="#cb8-472"></a>)</span>
+<span id="cb8-473"><a href="#cb8-473"></a><span class="fu">print</span>(transition_tables_binary<span class="sc">$</span>tables[[<span class="dv">1</span>]])</span>
+<span id="cb8-474"><a href="#cb8-474"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(transition_tables_binary, <span class="st">"transition_tables_binary"</span>, push_mods)</span>
+<span id="cb8-475"><a href="#cb8-475"></a></span>
+<span id="cb8-476"><a href="#cb8-476"></a></span>
+<span id="cb8-477"><a href="#cb8-477"></a></span>
+<span id="cb8-478"><a href="#cb8-478"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-479"><a href="#cb8-479"></a><span class="co"># KEY DECISION 5: DEFINE OUTCOME VARIABLES </span></span>
+<span id="cb8-480"><a href="#cb8-480"></a><span class="do">###############################################################################</span></span>
+<span id="cb8-481"><a href="#cb8-481"></a></span>
+<span id="cb8-482"><a href="#cb8-482"></a><span class="co"># create descriptive tables -------------------------------------------------</span></span>
+<span id="cb8-483"><a href="#cb8-483"></a><span class="co"># define variable labels for tables and plots -------------------------------</span></span>
+<span id="cb8-484"><a href="#cb8-484"></a><span class="co"># ** key decision 5: define clear labels for all variables **</span></span>
+<span id="cb8-485"><a href="#cb8-485"></a><span class="co"># create labels by category for better organisation</span></span>
+<span id="cb8-486"><a href="#cb8-486"></a></span>
+<span id="cb8-487"><a href="#cb8-487"></a><span class="co"># exposure variable labels</span></span>
+<span id="cb8-488"><a href="#cb8-488"></a>var_labels_exposure <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-489"><a href="#cb8-489"></a>  <span class="st">"extraversion"</span> <span class="ot">=</span> <span class="st">"Extraversion"</span>,</span>
+<span id="cb8-490"><a href="#cb8-490"></a>  <span class="st">"extraversion_binary"</span> <span class="ot">=</span> <span class="st">"Extraversion (binary)"</span></span>
+<span id="cb8-491"><a href="#cb8-491"></a>)</span>
+<span id="cb8-492"><a href="#cb8-492"></a></span>
+<span id="cb8-493"><a href="#cb8-493"></a><span class="co"># baseline variable labels</span></span>
+<span id="cb8-494"><a href="#cb8-494"></a>var_labels_baseline <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-495"><a href="#cb8-495"></a>  <span class="co"># demographics</span></span>
+<span id="cb8-496"><a href="#cb8-496"></a>  <span class="st">"age"</span> <span class="ot">=</span> <span class="st">"Age"</span>,</span>
+<span id="cb8-497"><a href="#cb8-497"></a>  <span class="st">"born_nz_binary"</span> <span class="ot">=</span> <span class="st">"Born in NZ"</span>,</span>
+<span id="cb8-498"><a href="#cb8-498"></a>  <span class="st">"education_level_coarsen"</span> <span class="ot">=</span> <span class="st">"Education Level"</span>,</span>
+<span id="cb8-499"><a href="#cb8-499"></a>  <span class="st">"employed_binary"</span> <span class="ot">=</span> <span class="st">"Employed"</span>,</span>
+<span id="cb8-500"><a href="#cb8-500"></a>  <span class="st">"eth_cat"</span> <span class="ot">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span id="cb8-501"><a href="#cb8-501"></a>  <span class="st">"male_binary"</span> <span class="ot">=</span> <span class="st">"Male"</span>,</span>
+<span id="cb8-502"><a href="#cb8-502"></a>  <span class="st">"not_heterosexual_binary"</span> <span class="ot">=</span> <span class="st">"Non-heterosexual"</span>,</span>
+<span id="cb8-503"><a href="#cb8-503"></a>  <span class="st">"parent_binary"</span> <span class="ot">=</span> <span class="st">"Parent"</span>,</span>
+<span id="cb8-504"><a href="#cb8-504"></a>  <span class="st">"partner_binary"</span> <span class="ot">=</span> <span class="st">"Has Partner"</span>,</span>
+<span id="cb8-505"><a href="#cb8-505"></a>  <span class="st">"rural_gch_2018_l"</span> <span class="ot">=</span> <span class="st">"Rural Classification"</span>,</span>
+<span id="cb8-506"><a href="#cb8-506"></a>  <span class="st">"sample_frame_opt_in_binary"</span> <span class="ot">=</span> <span class="st">"Sample Frame Opt-In"</span>,</span>
+<span id="cb8-507"><a href="#cb8-507"></a>  </span>
+<span id="cb8-508"><a href="#cb8-508"></a>  <span class="co"># economic &amp; social status</span></span>
+<span id="cb8-509"><a href="#cb8-509"></a>  <span class="st">"household_inc"</span> <span class="ot">=</span> <span class="st">"Household Income"</span>,</span>
+<span id="cb8-510"><a href="#cb8-510"></a>  <span class="st">"log_household_inc"</span> <span class="ot">=</span> <span class="st">"Log Household Income"</span>,</span>
+<span id="cb8-511"><a href="#cb8-511"></a>  <span class="st">"nz_dep2018"</span> <span class="ot">=</span> <span class="st">"NZ Deprivation Index"</span>,</span>
+<span id="cb8-512"><a href="#cb8-512"></a>  <span class="st">"nzsei_13_l"</span> <span class="ot">=</span> <span class="st">"Occupational Prestige Index"</span>,</span>
+<span id="cb8-513"><a href="#cb8-513"></a>  <span class="st">"household_inc"</span> <span class="ot">=</span> <span class="st">"Household Income"</span>,</span>
+<span id="cb8-514"><a href="#cb8-514"></a></span>
+<span id="cb8-515"><a href="#cb8-515"></a>  </span>
+<span id="cb8-516"><a href="#cb8-516"></a>  <span class="co"># personality traits</span></span>
+<span id="cb8-517"><a href="#cb8-517"></a>  <span class="st">"agreeableness"</span> <span class="ot">=</span> <span class="st">"Agreeableness"</span>,</span>
+<span id="cb8-518"><a href="#cb8-518"></a>  <span class="st">"conscientiousness"</span> <span class="ot">=</span> <span class="st">"Conscientiousness"</span>,</span>
+<span id="cb8-519"><a href="#cb8-519"></a>  <span class="st">"neuroticism"</span> <span class="ot">=</span> <span class="st">"Neuroticism"</span>,</span>
+<span id="cb8-520"><a href="#cb8-520"></a>  <span class="st">"openness"</span> <span class="ot">=</span> <span class="st">"Openness"</span>,</span>
+<span id="cb8-521"><a href="#cb8-521"></a>  </span>
+<span id="cb8-522"><a href="#cb8-522"></a>  <span class="co"># beliefs &amp; attitudes</span></span>
+<span id="cb8-523"><a href="#cb8-523"></a>  <span class="st">"political_conservative"</span> <span class="ot">=</span> <span class="st">"Political Conservatism"</span>,</span>
+<span id="cb8-524"><a href="#cb8-524"></a>  <span class="st">"religion_identification_level"</span> <span class="ot">=</span> <span class="st">"Religious Identification"</span>,</span>
+<span id="cb8-525"><a href="#cb8-525"></a>  </span>
+<span id="cb8-526"><a href="#cb8-526"></a>  <span class="co"># health behaviors</span></span>
+<span id="cb8-527"><a href="#cb8-527"></a>  <span class="st">"alcohol_frequency"</span> <span class="ot">=</span> <span class="st">"Alcohol Frequency"</span>,</span>
+<span id="cb8-528"><a href="#cb8-528"></a>  <span class="st">"alcohol_intensity"</span> <span class="ot">=</span> <span class="st">"Alcohol Intensity"</span>,</span>
+<span id="cb8-529"><a href="#cb8-529"></a>  <span class="st">"hlth_disability_binary"</span> <span class="ot">=</span> <span class="st">"Disability Status"</span>,</span>
+<span id="cb8-530"><a href="#cb8-530"></a>  <span class="st">"smoker_binary"</span> <span class="ot">=</span> <span class="st">"Smoker"</span>,</span>
+<span id="cb8-531"><a href="#cb8-531"></a>  <span class="st">"hours_exercise"</span> <span class="ot">=</span> <span class="st">"Hours of Exercise"</span>,</span>
+<span id="cb8-532"><a href="#cb8-532"></a>  </span>
+<span id="cb8-533"><a href="#cb8-533"></a>  </span>
+<span id="cb8-534"><a href="#cb8-534"></a>  <span class="co"># time use</span></span>
+<span id="cb8-535"><a href="#cb8-535"></a>  <span class="st">"hours_children"</span> <span class="ot">=</span> <span class="st">"Hours with Children"</span>,</span>
+<span id="cb8-536"><a href="#cb8-536"></a>  <span class="st">"hours_commute"</span> <span class="ot">=</span> <span class="st">"Hours Commuting"</span>,</span>
+<span id="cb8-537"><a href="#cb8-537"></a>  <span class="st">"hours_exercise"</span> <span class="ot">=</span> <span class="st">"Hours Exercising"</span>,</span>
+<span id="cb8-538"><a href="#cb8-538"></a>  <span class="st">"hours_housework"</span> <span class="ot">=</span> <span class="st">"Hours on Housework"</span>,</span>
+<span id="cb8-539"><a href="#cb8-539"></a>  <span class="st">"log_hours_children"</span> <span class="ot">=</span> <span class="st">"Log Hours with Children"</span>,</span>
+<span id="cb8-540"><a href="#cb8-540"></a>  <span class="st">"log_hours_commute"</span> <span class="ot">=</span> <span class="st">"Log Hours Commuting"</span>,</span>
+<span id="cb8-541"><a href="#cb8-541"></a>  <span class="st">"log_hours_exercise"</span> <span class="ot">=</span> <span class="st">"Log Hours Exercising"</span>,</span>
+<span id="cb8-542"><a href="#cb8-542"></a>  <span class="st">"log_hours_housework"</span> <span class="ot">=</span> <span class="st">"Log Hours on Housework"</span></span>
+<span id="cb8-543"><a href="#cb8-543"></a>)</span>
+<span id="cb8-544"><a href="#cb8-544"></a></span>
+<span id="cb8-545"><a href="#cb8-545"></a><span class="co"># outcome variable labels, organized by domain</span></span>
+<span id="cb8-546"><a href="#cb8-546"></a></span>
+<span id="cb8-547"><a href="#cb8-547"></a>var_labels_health <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-548"><a href="#cb8-548"></a>  <span class="st">"alcohol_frequency_weekly"</span> <span class="ot">=</span> <span class="st">"Alcohol Frequency (weekly)"</span>,</span>
+<span id="cb8-549"><a href="#cb8-549"></a>  <span class="st">"alcohol_intensity"</span> <span class="ot">=</span> <span class="st">"Alcohol Intensity"</span>,</span>
+<span id="cb8-550"><a href="#cb8-550"></a>  <span class="st">"hlth_bmi"</span> <span class="ot">=</span> <span class="st">"Body Mass Index"</span>,</span>
+<span id="cb8-551"><a href="#cb8-551"></a>  <span class="st">"hlth_sleep_hours"</span> <span class="ot">=</span> <span class="st">"Sleep"</span>,</span>
+<span id="cb8-552"><a href="#cb8-552"></a>  <span class="st">"hours_exercise"</span> <span class="ot">=</span> <span class="st">"Hours of Exercise"</span>,</span>
+<span id="cb8-553"><a href="#cb8-553"></a>  <span class="st">"short_form_health"</span> <span class="ot">=</span> <span class="st">"Short Form Health"</span></span>
+<span id="cb8-554"><a href="#cb8-554"></a>)</span>
+<span id="cb8-555"><a href="#cb8-555"></a></span>
+<span id="cb8-556"><a href="#cb8-556"></a><span class="co"># define psych outcomes</span></span>
+<span id="cb8-557"><a href="#cb8-557"></a>var_labels_psych <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-558"><a href="#cb8-558"></a>  <span class="st">"hlth_fatigue"</span> <span class="ot">=</span> <span class="st">"Fatigue"</span>,</span>
+<span id="cb8-559"><a href="#cb8-559"></a>  <span class="st">"kessler_latent_anxiety"</span> <span class="ot">=</span> <span class="st">"Anxiety"</span>,</span>
+<span id="cb8-560"><a href="#cb8-560"></a>  <span class="st">"kessler_latent_depression"</span> <span class="ot">=</span> <span class="st">"Depression"</span>,</span>
+<span id="cb8-561"><a href="#cb8-561"></a>  <span class="st">"rumination"</span> <span class="ot">=</span> <span class="st">"Rumination"</span></span>
+<span id="cb8-562"><a href="#cb8-562"></a>)</span>
+<span id="cb8-563"><a href="#cb8-563"></a></span>
+<span id="cb8-564"><a href="#cb8-564"></a><span class="co"># define present outcomes</span></span>
+<span id="cb8-565"><a href="#cb8-565"></a>var_labels_present <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-566"><a href="#cb8-566"></a>  <span class="st">"bodysat"</span> <span class="ot">=</span> <span class="st">"Body Satisfaction"</span>,</span>
+<span id="cb8-567"><a href="#cb8-567"></a>  <span class="st">"foregiveness"</span> <span class="ot">=</span> <span class="st">"Forgiveness"</span>,</span>
+<span id="cb8-568"><a href="#cb8-568"></a>  <span class="st">"perfectionism"</span> <span class="ot">=</span> <span class="st">"Perfectionism"</span>,</span>
+<span id="cb8-569"><a href="#cb8-569"></a>  <span class="st">"self_control"</span> <span class="ot">=</span> <span class="st">"Self Control"</span>,</span>
+<span id="cb8-570"><a href="#cb8-570"></a>  <span class="st">"self_esteem"</span> <span class="ot">=</span> <span class="st">"Self Esteem"</span>,</span>
+<span id="cb8-571"><a href="#cb8-571"></a>  <span class="st">"sexual_satisfaction"</span> <span class="ot">=</span> <span class="st">"Sexual Satisfaction"</span></span>
+<span id="cb8-572"><a href="#cb8-572"></a>)</span>
+<span id="cb8-573"><a href="#cb8-573"></a></span>
+<span id="cb8-574"><a href="#cb8-574"></a><span class="co"># define life outcomes</span></span>
+<span id="cb8-575"><a href="#cb8-575"></a>var_labels_life <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-576"><a href="#cb8-576"></a>  <span class="st">"gratitude"</span> <span class="ot">=</span> <span class="st">"Gratitude"</span>,</span>
+<span id="cb8-577"><a href="#cb8-577"></a>  <span class="st">"lifesat"</span> <span class="ot">=</span> <span class="st">"Life Satisfaction"</span>,</span>
+<span id="cb8-578"><a href="#cb8-578"></a>  <span class="st">"meaning_purpose"</span> <span class="ot">=</span> <span class="st">"Meaning: Purpose"</span>,</span>
+<span id="cb8-579"><a href="#cb8-579"></a>  <span class="co"># exposure variable</span></span>
+<span id="cb8-580"><a href="#cb8-580"></a>  <span class="st">"meaning_sense"</span> <span class="ot">=</span> <span class="st">"Meaning: Sense"</span>,</span>
+<span id="cb8-581"><a href="#cb8-581"></a>  <span class="st">"pwi = Personal Well-being Index"</span></span>
+<span id="cb8-582"><a href="#cb8-582"></a>)</span>
+<span id="cb8-583"><a href="#cb8-583"></a></span>
+<span id="cb8-584"><a href="#cb8-584"></a><span class="co"># define social outcome names</span></span>
+<span id="cb8-585"><a href="#cb8-585"></a>var_labels_social <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb8-586"><a href="#cb8-586"></a>  <span class="st">"belong"</span> <span class="ot">=</span> <span class="st">"Social Belonging"</span>,</span>
+<span id="cb8-587"><a href="#cb8-587"></a>  <span class="st">"neighbourhood_community"</span> <span class="ot">=</span> <span class="st">"Neighbourhood Community"</span>,</span>
+<span id="cb8-588"><a href="#cb8-588"></a>  <span class="st">"support"</span> <span class="ot">=</span> <span class="st">"Social Support"</span></span>
+<span id="cb8-589"><a href="#cb8-589"></a>)</span>
+<span id="cb8-590"><a href="#cb8-590"></a><span class="co"># combine all label lists</span></span>
+<span id="cb8-591"><a href="#cb8-591"></a>var_labels_all <span class="ot">=</span> <span class="fu">c</span>(</span>
+<span id="cb8-592"><a href="#cb8-592"></a>  var_labels_baseline,</span>
+<span id="cb8-593"><a href="#cb8-593"></a>  var_labels_exposure,</span>
+<span id="cb8-594"><a href="#cb8-594"></a>  var_labels_health,</span>
+<span id="cb8-595"><a href="#cb8-595"></a>  var_labels_psych,</span>
+<span id="cb8-596"><a href="#cb8-596"></a>  var_labels_present,</span>
+<span id="cb8-597"><a href="#cb8-597"></a>  var_labels_life,</span>
+<span id="cb8-598"><a href="#cb8-598"></a>  var_labels_social</span>
+<span id="cb8-599"><a href="#cb8-599"></a>)</span>
+<span id="cb8-600"><a href="#cb8-600"></a></span>
+<span id="cb8-601"><a href="#cb8-601"></a><span class="co"># save for manuscript</span></span>
+<span id="cb8-602"><a href="#cb8-602"></a><span class="fu">here_save</span>(var_labels_all, <span class="st">"var_labels_all"</span>, push_mods)</span>
+<span id="cb8-603"><a href="#cb8-603"></a></span>
+<span id="cb8-604"><a href="#cb8-604"></a></span>
+<span id="cb8-605"><a href="#cb8-605"></a><span class="co"># tables ------------------------------------------------------------------</span></span>
+<span id="cb8-606"><a href="#cb8-606"></a><span class="co"># create baseline characteristics table</span></span>
+<span id="cb8-607"><a href="#cb8-607"></a>dat_baseline <span class="ot">=</span> dat_long_tables <span class="sc">|&gt;</span></span>
+<span id="cb8-608"><a href="#cb8-608"></a>  <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave)) <span class="sc">|&gt;</span></span>
+<span id="cb8-609"><a href="#cb8-609"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb8-610"><a href="#cb8-610"></a>    <span class="at">male_binary =</span> <span class="fu">factor</span>(male_binary),</span>
+<span id="cb8-611"><a href="#cb8-611"></a>    <span class="at">parent_binary =</span> <span class="fu">factor</span>(parent_binary),</span>
+<span id="cb8-612"><a href="#cb8-612"></a>    <span class="at">smoker_binary =</span> <span class="fu">factor</span>(smoker_binary),</span>
+<span id="cb8-613"><a href="#cb8-613"></a>    <span class="at">born_nz_binary =</span> <span class="fu">factor</span>(born_nz_binary),</span>
+<span id="cb8-614"><a href="#cb8-614"></a>    <span class="at">employed_binary =</span> <span class="fu">factor</span>(employed_binary),</span>
+<span id="cb8-615"><a href="#cb8-615"></a>    <span class="at">not_heterosexual_binary =</span> <span class="fu">factor</span>(not_heterosexual_binary),</span>
+<span id="cb8-616"><a href="#cb8-616"></a>    <span class="at">sample_frame_opt_in_binary =</span> <span class="fu">factor</span>(sample_frame_opt_in_binary)</span>
+<span id="cb8-617"><a href="#cb8-617"></a>  )</span>
+<span id="cb8-618"><a href="#cb8-618"></a></span>
+<span id="cb8-619"><a href="#cb8-619"></a>baseline_table <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_make_tables</span>(</span>
+<span id="cb8-620"><a href="#cb8-620"></a>  <span class="at">data =</span> dat_baseline,</span>
+<span id="cb8-621"><a href="#cb8-621"></a>  <span class="at">vars =</span> baseline_vars,</span>
+<span id="cb8-622"><a href="#cb8-622"></a>  <span class="at">by =</span> <span class="st">"wave"</span>,</span>
+<span id="cb8-623"><a href="#cb8-623"></a>  <span class="at">labels =</span> var_labels_all,</span>
+<span id="cb8-624"><a href="#cb8-624"></a>  <span class="at">table1_opts =</span> <span class="fu">list</span>(<span class="at">overall =</span> <span class="cn">FALSE</span>, <span class="at">transpose =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb8-625"><a href="#cb8-625"></a>  <span class="at">format =</span> <span class="st">"markdown"</span></span>
+<span id="cb8-626"><a href="#cb8-626"></a>)</span>
+<span id="cb8-627"><a href="#cb8-627"></a><span class="fu">print</span>(baseline_table)</span>
+<span id="cb8-628"><a href="#cb8-628"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(baseline_table, <span class="st">"baseline_table"</span>, push_mods)</span>
+<span id="cb8-629"><a href="#cb8-629"></a></span>
+<span id="cb8-630"><a href="#cb8-630"></a><span class="co"># create exposure table by wave</span></span>
+<span id="cb8-631"><a href="#cb8-631"></a>exposure_table <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_make_tables</span>(</span>
+<span id="cb8-632"><a href="#cb8-632"></a>  <span class="at">data =</span> dat_long_tables <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave, exposure_waves)),</span>
+<span id="cb8-633"><a href="#cb8-633"></a>  <span class="at">vars =</span> exposure_var,</span>
+<span id="cb8-634"><a href="#cb8-634"></a>  <span class="at">by =</span> <span class="st">"wave"</span>,</span>
+<span id="cb8-635"><a href="#cb8-635"></a>  <span class="at">labels =</span> var_labels_all,</span>
+<span id="cb8-636"><a href="#cb8-636"></a>  <span class="at">factor_vars =</span> exposure_var_binary,</span>
+<span id="cb8-637"><a href="#cb8-637"></a>  <span class="at">table1_opts =</span> <span class="fu">list</span>(<span class="at">overall =</span> <span class="cn">FALSE</span>, <span class="at">transpose =</span> <span class="cn">FALSE</span>),</span>
+<span id="cb8-638"><a href="#cb8-638"></a>  <span class="at">format =</span> <span class="st">"markdown"</span></span>
+<span id="cb8-639"><a href="#cb8-639"></a>)</span>
+<span id="cb8-640"><a href="#cb8-640"></a><span class="fu">print</span>(exposure_table)</span>
+<span id="cb8-641"><a href="#cb8-641"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(exposure_table, <span class="st">"exposure_table"</span>, push_mods)</span>
+<span id="cb8-642"><a href="#cb8-642"></a></span>
+<span id="cb8-643"><a href="#cb8-643"></a><span class="co"># create outcomes table by wave</span></span>
+<span id="cb8-644"><a href="#cb8-644"></a>outcomes_table <span class="ot">&lt;-</span> margot<span class="sc">::</span><span class="fu">margot_make_tables</span>(</span>
+<span id="cb8-645"><a href="#cb8-645"></a>  <span class="at">data =</span> dat_long_tables <span class="sc">|&gt;</span> <span class="fu">filter</span>(wave <span class="sc">%in%</span> <span class="fu">c</span>(baseline_wave, outcome_wave)),</span>
+<span id="cb8-646"><a href="#cb8-646"></a>  <span class="at">vars =</span> outcome_vars_no_log,</span>
+<span id="cb8-647"><a href="#cb8-647"></a>  <span class="at">by =</span> <span class="st">"wave"</span>,</span>
+<span id="cb8-648"><a href="#cb8-648"></a>  <span class="at">labels =</span> var_labels,</span>
+<span id="cb8-649"><a href="#cb8-649"></a>  <span class="at">format =</span> <span class="st">"markdown"</span></span>
+<span id="cb8-650"><a href="#cb8-650"></a>)</span>
+<span id="cb8-651"><a href="#cb8-651"></a><span class="fu">print</span>(outcomes_table)</span>
+<span id="cb8-652"><a href="#cb8-652"></a>margot<span class="sc">::</span><span class="fu">here_save</span>(outcomes_table, <span class="st">"outcomes_table"</span>, push_mods)</span>
+<span id="cb8-653"><a href="#cb8-653"></a></span>
+<span id="cb8-654"><a href="#cb8-654"></a><span class="co"># note: completed data preparation step -------------------------------------</span></span>
+<span id="cb8-655"><a href="#cb8-655"></a><span class="co"># you're now ready for the next steps:</span></span>
+<span id="cb8-656"><a href="#cb8-656"></a><span class="co"># 1. creating wide-format dataset for analysis </span></span>
+<span id="cb8-657"><a href="#cb8-657"></a><span class="co"># 2. applying causal inference methods</span></span>
+<span id="cb8-658"><a href="#cb8-658"></a><span class="co"># 3. conducting sensitivity analyses</span></span>
+<span id="cb8-659"><a href="#cb8-659"></a></span>
+<span id="cb8-660"><a href="#cb8-660"></a><span class="co"># key decisions summary:</span></span>
+<span id="cb8-661"><a href="#cb8-661"></a><span class="co"># exposure variable: extraversion</span></span>
+<span id="cb8-662"><a href="#cb8-662"></a><span class="co"># study waves: baseline (2018), exposure (2019), outcome (2020)</span></span>
+<span id="cb8-663"><a href="#cb8-663"></a><span class="co"># baseline covariates: demographics, traits, health measures (excluding exposure)</span></span>
+<span id="cb8-664"><a href="#cb8-664"></a><span class="co"># outcomes: health, psychological, wellbeing, and social variables</span></span>
+<span id="cb8-665"><a href="#cb8-665"></a><span class="co"># time-varying confounders: disability status??</span></span>
+<span id="cb8-666"><a href="#cb8-666"></a><span class="co"># binary cutpoint for exposure: 4 on the extraversion scale</span></span>
+<span id="cb8-667"><a href="#cb8-667"></a><span class="co"># label names for tables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>

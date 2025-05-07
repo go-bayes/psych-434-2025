@@ -87,6 +87,14 @@ dat_prep <- df_nz_long |>
   ) |>
   droplevels()
 
+
+###############################################################################
+# KEY DECISION 1
+###############################################################################
+
+# check out variables
+colnames(df_nz_long)
+
 # define study variables ----------------------------------------------------
 # ** key decision 1: define your exposure variable **
 name_exposure <- "extraversion"
@@ -105,8 +113,16 @@ margot::here_save(exposure_var, "exposure_var", push_mods)
 margot::here_save(exposure_var_binary, "exposure_var_binary", push_mods)
 margot::here_save(all_waves,"all_waves", push_mods)
 
-# ** key decision 3: define baseline covariates **
+
+
+###############################################################################
+# DECISION 2: BASELINE:  IT WILL MAKE SENSE TO KEEP BASELINE VARIABLES 
+###############################################################################
+
+
+# ** key decision 2: define baseline covariates **
 # these are demographics, traits, etc. measured at baseline
+# no need to change these defaults
 baseline_vars <- c(
   # demographics
   "age", "born_nz_binary", "education_level_coarsen",
@@ -157,7 +173,11 @@ baseline_vars_no_log <- sort(baseline_vars_no_log)
 # save
 here_save(baseline_vars_no_log, "baseline_vars_no_log")
 
-# ** key decision 4: define outcome variables **
+###############################################################################
+# KEY DECISION 3: DEFINE OUTCOME VARIABLES 
+###############################################################################
+
+# ** key decision 3: define outcome variables **
 outcome_vars <- c(
   # health outcomes
   "alcohol_frequency_weekly", "alcohol_intensity",
@@ -194,6 +214,9 @@ outcome_vars_no_log <- sort(outcome_vars_no_log_init)
 
 # save
 here_save(baseline_vars_no_log, "baseline_vars_no_log")
+
+
+
 
 
 # outcome variables by domain ---------------------------------------------
@@ -296,9 +319,14 @@ here_save(raw_outcomes_all, "raw_outcomes_all")
 
 
 
+###############################################################################
+# KEY DECISION 4: DEFINE OUTCOME VARIABLES 
+###############################################################################
+
+
 # time-varying confounder if needed ---------------------------------------
 
-# ** key decision 5: define time-varying confounders **
+# ** key decision 4: define time-varying confounders **
 # these are variables that could affect the outcome but cannot be affected by exposure
 confounder_vars <- c(
   "hlth_disability_binary"  # consider carefully if this could be affected by the exposure
@@ -445,9 +473,15 @@ transition_tables_binary <- margot::margot_transition_table(
 print(transition_tables_binary$tables[[1]])
 margot::here_save(transition_tables_binary, "transition_tables_binary", push_mods)
 
+
+
+###############################################################################
+# KEY DECISION 5: DEFINE OUTCOME VARIABLES 
+###############################################################################
+
 # create descriptive tables -------------------------------------------------
 # define variable labels for tables and plots -------------------------------
-# ** key decision 7: define clear labels for all variables **
+# ** key decision 5: define clear labels for all variables **
 # create labels by category for better organisation
 
 # exposure variable labels
@@ -624,10 +658,10 @@ margot::here_save(outcomes_table, "outcomes_table", push_mods)
 # 3. conducting sensitivity analyses
 
 # key decisions summary:
-# 1. exposure variable: extraversion
-# 2. study waves: baseline (2018), exposure (2019), outcome (2020)
-# 3. baseline covariates: demographics, traits, health measures (excluding exposure)
-# 4. outcomes: health, psychological, wellbeing, and social variables
-# 5. time-varying confounders: disability status??
-# 6. binary cutpoint for exposure: 4 on the extraversion scale
-# 7. label names for tables
+# exposure variable: extraversion
+# study waves: baseline (2018), exposure (2019), outcome (2020)
+# baseline covariates: demographics, traits, health measures (excluding exposure)
+# outcomes: health, psychological, wellbeing, and social variables
+# time-varying confounders: disability status??
+# binary cutpoint for exposure: 4 on the extraversion scale
+# label names for tables

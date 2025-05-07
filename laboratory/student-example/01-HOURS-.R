@@ -87,19 +87,22 @@ dat_prep <- df_nz_long |>
   ) |>
   droplevels()
 
-
-###############################################################################
-# KEY DECISION 1
-###############################################################################
-
-# check out variables
-colnames(df_nz_long)
-
 # define study variables ----------------------------------------------------
+
+###############################################################################
+# IT WILL MAKE SENSE TO KEEP THESE VARIABLES 
+###############################################################################
+
 # ** key decision 1: define your exposure variable **
-name_exposure <- "extraversion"
+name_exposure <- "kessler_nervous"
 exposure_var_binary = paste0(name_exposure, "_binary")
 exposure_var  <- c(name_exposure, paste0(name_exposure, "_binary"))
+
+# exposure variable labels
+var_labels_exposure <- list(
+  "kessler_nervous" = "Kessler 6 Nervous",
+  "kessler_nervous_binary" = "Kessler 6 Nervous (binary)"
+)
 
 # ** key decision 2: define your study waves **
 baseline_wave      <- "2018"        # baseline measurement
@@ -107,22 +110,22 @@ exposure_waves     <- c("2019")     # when exposure is measured
 outcome_wave       <- "2020"        # when outcomes are measured
 all_waves          <- c(baseline_wave, exposure_waves, outcome_wave)
 
+
+
+
 # save key variables --------------------------------------------------------
 margot::here_save(name_exposure, "name_exposure",push_mods)
 margot::here_save(exposure_var, "exposure_var", push_mods)
 margot::here_save(exposure_var_binary, "exposure_var_binary", push_mods)
 margot::here_save(all_waves,"all_waves", push_mods)
 
-
-
-###############################################################################
-# DECISION 2: BASELINE:  IT WILL MAKE SENSE TO KEEP BASELINE VARIABLES 
-###############################################################################
-
-
-# ** key decision 2: define baseline covariates **
+# ** key decision 3: define baseline covariates **
 # these are demographics, traits, etc. measured at baseline
-# no need to change these defaults
+
+###############################################################################
+# IT WILL MAKE SENSE TO KEEP THESE VARIABLES 
+###############################################################################
+
 baseline_vars <- c(
   # demographics
   "age", "born_nz_binary", "education_level_coarsen",
@@ -173,142 +176,27 @@ baseline_vars_no_log <- sort(baseline_vars_no_log)
 # save
 here_save(baseline_vars_no_log, "baseline_vars_no_log")
 
-###############################################################################
-# KEY DECISION 3: DEFINE OUTCOME VARIABLES 
-###############################################################################
-
-# ** key decision 3: define outcome variables **
+# ** key decision 4: define outcome variables **
 outcome_vars <- c(
-  # health outcomes
-  "alcohol_frequency_weekly", "alcohol_intensity",
-  "hlth_bmi", "log_hours_exercise", "hlth_sleep_hours", 
-  "short_form_health",
-  
-  # psychological outcomes
-  "hlth_fatigue", "kessler_latent_anxiety", 
-  "kessler_latent_depression", "rumination",
-  
-  # wellbeing outcomes
-  "bodysat", "forgiveness", "gratitude", "lifesat", 
-  "meaning_purpose", "meaning_sense", "perfectionism", 
-  "pwi", "self_control", "self_esteem", 
-  "sexual_satisfaction",
-  
-  # social outcomes
-  "belong", "neighbourhood_community", "support"
+  "kessler_effort",
+  "kessler_depressed",
+  "kessler_hopeless",
+  "kessler_restless",
+  "kessler_worthless"
 )
 
 # sort for easier reference
 outcome_vars <- sort(outcome_vars)
 
-# outcome vars no log
-outcome_vars_no_log_init <- c(outcome_vars,"hours_exercise")
-
-outcome_vars_no_log = setdiff(outcome_vars_no_log_init, c(
-  "log_hours_exercise"
-))
-
-
-# sort
-outcome_vars_no_log <- sort(outcome_vars_no_log_init)
-
 # save
-here_save(baseline_vars_no_log, "baseline_vars_no_log")
+here_save(outcome_vars, "outcome_vars")
 
 
-
-
-
-# outcome variables by domain ---------------------------------------------
-raw_outcomes_health <- c(
-  "alcohol_frequency_weekly", 
-  "alcohol_intensity",
-  "hlth_bmi", 
-  "log_hours_exercise", 
-  "hlth_sleep_hours", 
-  "short_form_health"
-)
-# sort
-raw_outcomes_health <- sort(raw_outcomes_health)
-
-# save 
-here_save(raw_outcomes_health, "raw_outcomes_health")
-
-# with no log
-raw_outcomes_health_no_log <- c(raw_outcomes_health, "hours_exercise")
-
-# sort
-raw_outcomes_health_no_log <- sort(raw_outcomes_health_no_log)
-
-# save 
-here_save(raw_outcomes_health_no_log, "raw_outcomes_health_no_log")
-
-# define psych outcomes labels
-raw_outcomes_psych <- c( 
-  "hlth_fatigue", 
-  "kessler_latent_anxiety", 
-  "kessler_latent_depression",  
-  "rumination"
-)
-
-# sort
-raw_outcomes_psych <- sort(raw_outcomes_psych)
-
-# save
-here_save(raw_outcomes_psych, "raw_outcomes_psych")
-
-# define present outcomes labels
-raw_outcomes_present <- c(
-  "bodysat",
-  "forgiveness",
-  "perfectionism", 
-  "self_control" , 
-  "self_esteem", 
-  "sexual_satisfaction" )
-
-# sort
-raw_outcomes_present <- sort(raw_outcomes_present)
-
-# save
-here_save(raw_outcomes_present, "raw_outcomes_present")
-
-# define life outcomes labels
-raw_outcomes_life <- c( 
-  "gratitude", 
-  "lifesat", 
-  "meaning_purpose", 
-  "meaning_sense",
-  "pwi"  # move personal well-being here if not using individual facents
-)
-
-# sort
-raw_outcomes_life <- sort(raw_outcomes_life)
-
-# save
-here_save(raw_outcomes_life, "raw_outcomes_life")
-
-# define social outcomes labels
-raw_outcomes_social <- c(
-  "belong",
-  "neighbourhood_community", 
-  "support" 
-)
-
-# sort
-raw_outcomes_social <- sort(raw_outcomes_social)
-
-# save
-here_save(raw_outcomes_social, "raw_outcomes_social")
 
 # create all outcome variable names ---------------------------------------
 # for tables
 raw_outcomes_all = c(
-  baseline_vars_no_log,
-  raw_outcomes_health_no_log,
-  raw_outcomes_psych,
-  raw_outcomes_present,
-  raw_outcomes_life,
-  raw_outcomes_social
+  outcome_vars
 )
 
 # select only unique measures
@@ -319,14 +207,9 @@ here_save(raw_outcomes_all, "raw_outcomes_all")
 
 
 
-###############################################################################
-# KEY DECISION 4: DEFINE OUTCOME VARIABLES 
-###############################################################################
-
-
 # time-varying confounder if needed ---------------------------------------
 
-# ** key decision 4: define time-varying confounders **
+# ** key decision 5: define time-varying confounders **
 # these are variables that could affect the outcome but cannot be affected by exposure
 confounder_vars <- c(
   "hlth_disability_binary"  # consider carefully if this could be affected by the exposure
@@ -473,22 +356,10 @@ transition_tables_binary <- margot::margot_transition_table(
 print(transition_tables_binary$tables[[1]])
 margot::here_save(transition_tables_binary, "transition_tables_binary", push_mods)
 
-
-
-###############################################################################
-# KEY DECISION 5: DEFINE OUTCOME VARIABLES 
-###############################################################################
-
 # create descriptive tables -------------------------------------------------
 # define variable labels for tables and plots -------------------------------
-# ** key decision 5: define clear labels for all variables **
+# ** key decision 7: define clear labels for all variables **
 # create labels by category for better organisation
-
-# exposure variable labels
-var_labels_exposure <- list(
-  "extraversion" = "Extraversion",
-  "extraversion_binary" = "Extraversion (binary)"
-)
 
 # baseline variable labels
 var_labels_baseline <- list(
@@ -511,7 +382,7 @@ var_labels_baseline <- list(
   "nz_dep2018" = "NZ Deprivation Index",
   "nzsei_13_l" = "Occupational Prestige Index",
   "household_inc" = "Household Income",
-
+  
   
   # personality traits
   "agreeableness" = "Agreeableness",
@@ -658,10 +529,10 @@ margot::here_save(outcomes_table, "outcomes_table", push_mods)
 # 3. conducting sensitivity analyses
 
 # key decisions summary:
-# exposure variable: extraversion
-# study waves: baseline (2018), exposure (2019), outcome (2020)
-# baseline covariates: demographics, traits, health measures (excluding exposure)
-# outcomes: health, psychological, wellbeing, and social variables
-# time-varying confounders: disability status??
-# binary cutpoint for exposure: 4 on the extraversion scale
-# label names for tables
+# 1. exposure variable: extraversion
+# 2. study waves: baseline (2018), exposure (2019), outcome (2020)
+# 3. baseline covariates: demographics, traits, health measures (excluding exposure)
+# 4. outcomes: health, psychological, wellbeing, and social variables
+# 5. time-varying confounders: disability status??
+# 6. binary cutpoint for exposure: 4 on the extraversion scale
+# 7. label names for tables

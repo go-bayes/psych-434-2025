@@ -65,16 +65,16 @@ Download Quarto here:
 
 - Download the manuscript template and store in our R directory: [link to manuscript template](https://raw.githubusercontent.com/go-bayes/psyc-434-2024/main/scripts/example-manuscript.qmd)
 
+<!-- - Download the following `tex` file and save it to your R directory: -->
+<!-- [latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex) -->
+
+
 - Download the following `tex` file and save it to your R directory:
-[latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex)
-
-
-- Download the followign `tex` file and save it to your R directory:
 [title preamble](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/title.tex)
 
 
 - Download the following `csl` file and save it to your R directory:
-[csl preamble](https://raw.githubusercontent.com/go-bayes/templates/main/csl/camb-a.csl)
+[csl preamble](https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/csl/apa-ann-7.csl)
 
 - Make sure you can install all libraries required of the manuscript template.
 - Come to the seminar prepared to work through the analysis
