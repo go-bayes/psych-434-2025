@@ -65,7 +65,7 @@ Doing a causal analysis
 
 
 
-## LABORATORY
+# Part 1: Laboratory
 
 
 
@@ -89,7 +89,6 @@ Doing a causal analysis
 :::
 
 
-
 ## Script 0: Synthetic Data Fetch
 
 **Run in full. No need to change anything.**  
@@ -103,12 +102,45 @@ This script prepares your data. Run it once -- running it twice would be like tu
 #| file: ../laboratory/lab-10/00-setup-L10.R
 ```
 
+## Script 1: Initial Data Wrangling is HERE
 
-## Script 01 Initial Data Wrangling
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/lab-10/01-init-L10.R
+
+```
+
+
+## Script 2: Make Wide Data Format With Censoring Weights is HERE
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/lab-10/02-make-wide-L10.R
+
+```
+
+
+
+## Script 3: Models & Graphs is HERE
+
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/lab-10/03-models-L10.R
+
+```
+
+
+## Code Explanations
+
+### Script 01 Initial Data Wrangling
 
 Key checkpoints in the *wrangle-1* script are as follows;
 
-### First — pick your exposure* 
+#### First — pick your exposure* 
 
 Decide which variable is the “cause”. Here it is `extraversion`. Verify it exists at baseline (`t0_`) *and* at the exposure wave (`t1_`)
 
@@ -118,7 +150,7 @@ here_save(name_exposure, "name_exposure")
 ```
 
 
-### Second -- choose a binary cut-point
+#### Second -- choose a binary cut-point
 
 Causal inference requires a contrast between two conditions. The splits give us the conditions of a hypothetical experiment.
 
@@ -138,7 +170,7 @@ create_ordered_variable(df,
 ```
 
 
-### Third — select outcomes that fit your interests
+#### Third — select outcomes that fit your interests
 
 This example considers multi-dimensional wellbeing outcomes. You can select from these outcomes if you like.  Or you can pick different outcomes. **Discuss with us if you are confused***.
 
@@ -151,7 +183,7 @@ here_save(outcome_vars, "outcome_vars")
 Everything downstream—eligibility, transitions... depends on this trio.
 
 
-### Fouth — locking in the wave structure.
+#### Fouth — locking in the wave structure.
 
 Define one baseline wave, one or more exposure waves, and one outcome wave:
 
@@ -164,7 +196,7 @@ outcome_wave   <- "2020"
 Note waves run from October --> September of the year folloowing the wave.
 
 
-### Fifth — save as you go.
+#### Fifth — save as you go.
 
 Use `margot::here_save()` (objects) and `here_save_qs()` (large objects) right after you create something you’ll cite in your report. The convention keeps analysis, tables, and manuscript in sync.
 
@@ -174,29 +206,20 @@ here_save(percent_missing_baseline,  "percent_missing_baseline")
 ```
 
 
-### Take-away: Think about the hypothetical experiment you wish to perform with observational data. 
+#### Take-away: Think about the hypothetical experiment you wish to perform with observational data. 
 
 Decide early (exposure, cut-point, outcomes, waves), *checkpoint* everything with `here_save()`, and the rest of the pipeline flows.
 
 
 
-## Script 1: Initial Data Wrangling is HERE
 
-```{r}
-#| include: true
-#| eval: false
-#| file: ../laboratory/lab-10/01-init-L10.R
-
-```
-
-
-## Script 2: What script 2 does while you sip your coffee
+### Script 2: Prepare Final Wide Data
 
 **Purpose**  
 
 Convert the tidy long data into a grf-ready wide matrix and correct for dropout bias with inverse-probability-of-censoring weighting (IPCW).
 
-### Step 1 – go wide automatically
+#### Step 1 – go wide automatically
 
 `margot_wide_machine()` reshapes each wave into `t0_`, `t1_`, `t2_` columns. You gave it all the names in script 1, so no new choices here. Inspect `df_wide` just to be sure the columns look sensible (baseline before exposure before outcome).
 
@@ -206,7 +229,7 @@ colnames(df_wide)
 naniar::vis_miss(df_wide)
 ```
 
-### Step 2 – Encode + scale for algorithms
+#### Step 2 – Encode + scale for algorithms
 
 `margot_process_longitudinal_data_wider()` turns factors into dummies, scales continuous variables, and appends loss-to-follow-up flags. The result is `df_wide_encoded`.  
 
@@ -217,7 +240,7 @@ table(df_wide_encoded$t0_not_lost_following_wave)
 ```
 
 
-### Step 3 – Build IPCW weights*
+#### Step 3 – Build IPCW weights*
 
 Two probability forests estimate the chance of being observed at t1 and t2. `margot_adjust_weights()` then trims extreme values and normalises the weights. these appear as `t0_adjusted_weights` and `t1_adjusted_weights`.  The weigths should not be too extreme (e.g. values > 10)
 
@@ -229,7 +252,7 @@ hist(df_wide_encoded$t1_adjusted_weights)
 
 
 
-### Step 4 – drop the censored 
+#### Step 4 – drop the censored 
 Rows with `*_lost_following_wave == 1` are removed, leaving `df_grf`. This dataset feeds the causal forest and should now have **no missing values** in any `t1_` or `t2_` column. Missingness is permitted in `t0_` columns
 
 ```r
@@ -237,12 +260,12 @@ naniar::vis_miss(df_grf)   # should be a blank canvas
 ```
 
 
-### Step 5 – checkpoint everything
+#### Step 5 – checkpoint everything
 
 Each major object (`df_wide`, `df_wide_encoded`, `df_grf`, the weight vectors) is saved with `here_save()` or `here_save_qs()`. this keeps the analysis reproducible and the manuscript tables in sync.
 
 
-### Takeaway: what you must do
+#### Takeaway: what you must do
 
 1. **Run the script without edits.**  
 2. skim the weight histograms; if you see huge spikes, ask for help.  
@@ -254,20 +277,13 @@ Script 2 is a conveyor belt: long $\to$ wide  $\to$ weighted  $\to$ clean. yYur 
 
 
 
-## Script 2: Make Wide Data Format With Censoring Weights is HERE
-
-```{r}
-#| include: true
-#| eval: false
-#| file: ../laboratory/lab-10/02-make-wide-L10.R
-
-```
 
 
-## Script 3 The Analysis
+
+### Script 3 The Analysis
 
 
-### 1 Reproducibility scaffold  
+#### 1 Reproducibility scaffold  
 
 ```r
 set.seed(123)                 # lock randomness  
@@ -277,7 +293,7 @@ No choices here—just **run** and move on.
 
 
 
-### 2 Pull in prepared objects  
+#### 2 Pull in prepared objects  
 
 ```r
 df_grf           <- here_read("df_grf")     # wide, weighted data  
@@ -288,7 +304,7 @@ If anything is `NULL`, return to scripts 1–2 and debug.
 
 
 
-### 3 Sanity-check with a toy forest  
+#### 3 Sanity-check with a toy forest  
 
 Fit one outcome on ¼ of the data to confirm the pipeline before burning CPU hours.
 
@@ -306,7 +322,7 @@ margot_plot_policy_combo(cf_out, max_depth = 1L)
 Success = a plot appears without errors.
 
 
-### 4 Full model batches + ATE tables  
+#### 4 Full model batches + ATE tables  
 
 Loop over the five outcome domains, saving each model to `models_example_2/`.
 
@@ -324,7 +340,7 @@ Then create ATE plots and interpretations with `margot_plot()`.  Save as these g
 
 
 
-### 5 Heterogeneity hunt (CATE)  
+#### 5 Heterogeneity hunt (CATE)  
 
 *Evidence phase*  
 
@@ -348,7 +364,7 @@ flipped <- margot_flip_forests(models_binary,
 Check that every split variable exists in the original data and that leaves map sensibly onto subgroups (no cells with < 30 observations).
 
 
-### 6 Report subgroup analyses (optional)  
+#### 6 Report subgroup analyses (optional)  
 
 When theory predicts effect modification—age bands, income thirds, etc.—use `margot_planned_subgroups_batch()`. The helper auto-generates tables and mini-plots; just pass the subset definitions you crafted:
 
@@ -362,24 +378,15 @@ planned_subset_results <- margot_planned_subgroups_batch(
 If you do subgroup analyses, save the markdown tables/ plots using the protocols for the main analysis (For you to do, not done in the script.)
 
 
-### Takeaway  
+#### Takeaway  
 
 Run the script in order, **eyes on three checkpoints**: the toy forest plot, convincing Qini/RATE curves/interpretations, and sensible policy-tree leaves. Everything else is auto-saved for the manuscript.
 
 
-## Script 3: Models & Graphs is HERE
-
-
-```{r}
-#| include: true
-#| eval: false
-#| file: ../laboratory/lab-10/03-models-L10.R
-
-```
 
 
 
-## Part 2: 
+# Part 2: 
 
 - **Sensitivity Analysis: E-values**
 - **Workflow**

@@ -501,10 +501,19 @@ Yadlowsky, Steve, Scott Fleming, Nigam Shah, Emma Brunskill, and Stefan Wager. 2
 <section id="rate-autoc-example" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="rate-autoc-example">7 RATE AUTOC EXAMPLE</h3>
 <p>Although OOB predictions are ‘out-of-sample’ for individual trees, the full forest still reuses information. A simple remedy when estimating the RATE AUTOC and Qini is to split the data, <strong>training</strong> the forest on one fold and <strong>testing</strong> RATE/Qini on the other. Again, this explicit splitting blocks optimistic bias and yields honest test statistics (such as confidence intervals) <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al. 2024</a>)</span>.</p>
-<div class="no-row-height column-margin column-container"></div><div class="cell column-screen">
-<p>NULL</p>
+<div class="no-row-height column-margin column-container"></div><div class="cell page-columns page-full">
+<div id="fig-rate-example" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-fig figure page-columns page-full">
+<div aria-describedby="fig-rate-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<img src="08-content_files/figure-html/fig-rate-example-1.png" class="img-fluid figure-img column-screen" width="672">
 </div>
-<p><strong>?@fig-rate-example</strong> depicts a typical RATE AUTOC curve with sample splitting. A steep initial rise indicates that a small, correctly targeted programme could deliver large gains. Note that the curve begins dipping below zero past about 30% of the sample. At that point we might be doing worse than the ATE by targeting the CATE – at least for some.</p>
+<figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-rate-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: RATE AUTOC: Hours Socialising → Sense of Meaning
+</figcaption>
+</figure>
+</div>
+</div>
+<p><a href="#fig-rate-example" class="quarto-xref">Figure&nbsp;1</a> depicts a typical RATE AUTOC curve with sample splitting. A steep initial rise indicates that a small, correctly targeted programme could deliver large gains. Note that the curve begins dipping below zero past about 30% of the sample. At that point we might be doing worse than the ATE by targeting the CATE – at least for some.</p>
 <div class="page-columns page-full"><p><strong>Remember – figuring out who will benefit from a treatment is a difficult statistical problem <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al. 2024</a>)</span>.</strong></p><div class="no-row-height column-margin column-container"><div id="ref-grf2024" class="csl-entry" role="listitem">
 Tibshirani, Julie, Susan Athey, Erik Sverdrup, and Stefan Wager. 2024. <em>Grf: Generalized Random Forests</em>. <a href="https://github.com/grf-labs/grf">https://github.com/grf-labs/grf</a>.
 </div></div></div>
@@ -520,12 +529,12 @@ Tibshirani, Julie, Susan Athey, Erik Sverdrup, and Stefan Wager. 2024. <em>Grf: 
 <img src="08-content_files/figure-html/fig-qini-example-1.png" class="img-fluid figure-img column-screen" width="672">
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-qini-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Qini Curve: Hours Socialising → Social Belonging
+Figure&nbsp;2: Qini Curve: Hours Socialising → Social Belonging
 </figcaption>
 </figure>
 </div>
 </div>
-<p><a href="#fig-qini-example" class="quarto-xref">Figure&nbsp;1</a>: we find that focussing on the top 20 % of individuals nets a gain of 0.08 units (95 % CI 0.04–0.12). Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19). After that the curve flattens – once we’ve treated everyone who offers a decent return, there are no more ‘big fish’ left to catch.</p>
+<p><a href="#fig-qini-example" class="quarto-xref">Figure&nbsp;2</a>: we find that focussing on the top 20 % of individuals nets a gain of 0.08 units (95 % CI 0.04–0.12). Widening the net to 50 % bumps the haul to 0.13 units (95 % CI 0.07–0.19). After that the curve flattens – once we’ve treated everyone who offers a decent return, there are no more ‘big fish’ left to catch.</p>
 <hr>
 </section>
 <section id="from-a-black-box-to-simple-rules-policy-trees" class="level3 page-columns page-full">
@@ -547,7 +556,7 @@ Sverdrup, Erik, Ayush Kanodia, Zhengyuan Zhou, Susan Athey, and Stefan Wager. 20
 <img src="08-content_files/figure-html/fig-decision-tree-1.png" class="img-fluid figure-img column-screen" width="672">
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig" id="fig-decision-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Decision tree for Social Belonging
+Figure&nbsp;3: Decision tree for Social Belonging
 </figcaption>
 </figure>
 </div>
@@ -561,7 +570,7 @@ Figure&nbsp;2: Decision tree for Social Belonging
 <img src="08-content_files/figure-html/fig-policy-map-1.png" class="img-fluid figure-img" width="1536">
 </div>
 <figcaption class="quarto-float-caption-margin quarto-float-caption quarto-float-fig margin-caption" id="fig-policy-map-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: Predicted treatment assignment (predictions out of training sample)
+Figure&nbsp;4: Predicted treatment assignment (predictions out of training sample)
 </figcaption>
 </figure>
 </div>
