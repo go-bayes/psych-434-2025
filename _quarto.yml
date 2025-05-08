@@ -1,7 +1,9 @@
 project:
   type: website
   output-dir: docs
-
+  render:
+    - "*.qmd"                        # render all .qmd files
+    - "!template-quarto-manuscript.qmd"  # except this one
 title-block-banner: true
 
 execute:
@@ -49,6 +51,7 @@ format:
     toc: true
     css: styles.css
     html-math-method: katex
+
 
 license: CC BY-NC-SA
 

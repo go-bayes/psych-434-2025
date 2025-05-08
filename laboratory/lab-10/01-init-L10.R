@@ -13,20 +13,22 @@ rstudioapi::restartSession()
 # set seed for reproducibility
 set.seed(123)
 
+# essential library ---------------------------------------------------------
 # install and load 'margot' from GitHub if missing
-if (!requireNamespace("margot", quietly = TRUE)) {
-  message("installing 'margot' from GitHub")
-  devtools::install_github("go-bayes/margot", upgrade = "never")
+if (!require(margot, quietly = TRUE)) {
+  devtools::install_github("go-bayes/margot")
+  library(margot)
 }
 
-if (packageVersion("margot") < "1.0.36") {
-  stop("please install margot >= 1.0.36 for this workflow\n
+
+if (packageVersion("margot") < "1.0.37") {
+  stop("please install margot >= 1.0.37 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
 
+# call library
 library("margot")
-
 
 # load packages -------------------------------------------------------------
 # pacman will install missing packages automatically
@@ -42,37 +44,13 @@ pacman::p_load(
   grf,             # machine learning forests
   kableExtra,      # tables
   ggplot2,         # graphs
-  doParallel       # parallel processing
+  doParallel,       # parallel processing
   grf,             # causal forests
-  janitor          # variables names
-  stringr          # variable names
-  patchwork        # graphs
+  janitor,          # variables names
+  stringr,          # variable names
+  patchwork,        # graphs
   table1           # tables
 )
-
-# check margot version ------------------------------------------------------
-if (packageVersion("margot") < "1.0.35") {
-  stop("please install margot >= 1.0.35 for this workflow\n
-       run: devtools::install_github(\"go-bayes/margot\")
-")
-}
-
-
-# check margot version ------------------------------------------------------
-if (packageVersion("margot") < "1.0.35") {
-  stop("please install margot >= 1.0.35 for this workflow\n
-       run: devtools::install_github(\"go-bayes/margot\")
-")
-}
-
-library("margot")
-
-# install and load other packages from CRAN if missing
-if (!requireNamespace("tidyverse", quietly = TRUE)) {
-  install.packages("tidyverse")
-}
-library(tidyverse)
-
 
 
 # create directories --------------------------------------------------------
@@ -150,6 +128,11 @@ print(colnames(df_nz_long))
 
 
 # define study variables ----------------------------------------------------
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+
 # ** key decision 1: define your exposure variable **
 name_exposure <- "extraversion"
 
@@ -158,6 +141,10 @@ var_labels_exposure <- list(
   "extraversion" = "Extraversion",
   "extraversion_binary" = "Extraversion (binary)"
 )
+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
 # +--------------------------+
 # |   END MODIFY SECTION     |
@@ -207,7 +194,15 @@ baseline_vars <- c(
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
 
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+
 # ** key decision 3: define outcome variables **
+# here, we are focussing on a subset of wellbeing outcomes
+# chose outcomes relevant to * your * study. Might be all/some/none/exactly 
+# these:
 outcome_vars <- c(
   # health outcomes
   # "alcohol_frequency_weekly", "alcohol_intensity",
@@ -222,8 +217,8 @@ outcome_vars <- c(
   "kessler_latent_depression", 
   "rumination",
   
-  # wellbeing outcomes
-  "bodysat", 
+  # well-being outcomes
+  # "bodysat", 
   #"forgiveness", "gratitude", 
   "lifesat", "meaning_purpose", "meaning_sense", 
   # "perfectionism", 
@@ -235,6 +230,11 @@ outcome_vars <- c(
   # social outcomes
   "belong", "neighbourhood_community", "support"
 )
+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
 
 # +--------------------------+
 # |   END MODIFY SECTION     |
@@ -257,6 +257,9 @@ exposure_var  <- c(name_exposure, paste0(name_exposure, "_binary"))
 baseline_vars <- sort(baseline_vars)
 outcome_vars <- sort(outcome_vars)
 
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
 # save key variables --------------------------------------------------------
 margot::here_save(name_exposure, "name_exposure")
 margot::here_save(var_labels_exposure,"var_labels_exposure")
@@ -268,6 +271,10 @@ margot::here_save(baseline_wave, "baseline_wave")
 margot::here_save(exposure_waves, "exposure_waves")
 margot::here_save(outcome_wave, "outcome_wave")
 margot::here_save(all_waves,"all_waves")
+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
 # +--------------------------+
 # |     END DO NOT ALTER     |
@@ -288,6 +295,9 @@ margot::here_save(all_waves,"all_waves")
 # talk to me if you think you might night tighter eligibility criteria.
 
 ids_baseline <- dat_prep |> 
+  # allow missing exposure at baseline
+  filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
+  # option: do not allow missing exposure at baseline
   filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
   pull(id)
 
@@ -534,12 +544,22 @@ dat_baseline = dat_long_final |>
   )
 
 
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+
 # save sample weights from baseline wave
 # save sample weights
 t0_sample_weights <- dat_baseline$sample_weights
 here_save(t0_sample_weights, "t0_sample_weights")
 
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
+
+# make baseline table -----------------------------------------------------
 
 baseline_table <- margot::margot_make_tables(
   data = dat_baseline,

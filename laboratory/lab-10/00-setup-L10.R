@@ -10,28 +10,24 @@ rstudioapi::restartSession()
 # set seed for reproducibility
 set.seed(123)
 
-
-# check margot ------------------------------------------------------------
-
+# essential library ---------------------------------------------------------
 # install and load 'margot' from GitHub if missing
-if (!requireNamespace("margot", quietly = TRUE)) {
-  message("installing 'margot' from GitHub")
-  devtools::install_github("go-bayes/margot", upgrade = "never")
+if (!require(margot, quietly = TRUE)) {
+  devtools::install_github("go-bayes/margot")
+  library(margot)
 }
 
 
-if (packageVersion("margot") < "1.0.35") {
-  stop("please install margot >= 1.0.35 for this workflow\n
+if (packageVersion("margot") < "1.0.37") {
+  stop("please install margot >= 1.0.37 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
 
+# call library
 library("margot")
 
-
 # load packages ----------------------------------------------------------
-
-
 # install and load other packages from CRAN if missing
 if (!requireNamespace("tidyverse", quietly = TRUE)) {
   install.packages("tidyverse")

@@ -7,7 +7,7 @@ format:
     error: false
     messages: false
     code-overflow: scroll
-    highlight-style: kate
+    highlight-style: Ayu
     code-line-numbers: true
     code-fold: false
     code-tools:
@@ -61,7 +61,7 @@ flipped_names <- here_read("flipped_names", push_mods)
 label_mapping_all <- here_read("label_mapping_all")
 
 # set boilerplate path (set to your own machine)
-master_path <- "/Users/joseph/GIT/templates/boilerplate_data"
+# master_path <- "/Users/joseph/GIT/templates/boilerplate_data"
 
 # set directory database path
 here_data_path = here::here("data")
@@ -315,26 +315,8 @@ The workflow below introduces **heterogeneous-treatment-effect (HTE) analysis** 
 (6) **policy trees**—and know how each fits into an applied research pipelin (new)
 :::
 
-::: {.callout-important}
-### For the lab  
 
-The lab puts the six ideas above to practical use. 
-
-There are **Three** R scripts we will be using over the next few weeks. 
-
-First:
-
-[Script 1](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/01-example-script-data-wrangling.R)
-
-[Script 2](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/02-example-script-data-wrangling-2.R)
-
-[Script 3](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/laboratory/03-example-script-estimation-results.R)
-
-:::
-
-
-
-## Heterogeneous-Treatment-Effect Analysis with **causal forests**
+# PART 1 Heterogeneous-Treatment-Effect Analysis with **causal forests**
 
 ### Why worry about heterogeneity?  
 
@@ -565,7 +547,7 @@ In the lab section you will reproduce each stage on a simulated dataset.
 ---
 
 
-## Lab: Data Preparation and Analysis Scripts
+# PART 1 Laboratory: Data Preparation and Analysis Scripts
 
 
 ### Link to data dictionary

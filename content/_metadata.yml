@@ -32,3 +32,7 @@ format:
     code-tools:
       source: true
       toggle: FALSE
+
+render:
+  - "*.qmd"                        # render all .qmd files
+  - "!template-quarto-manuscript.qmd"  # except this one

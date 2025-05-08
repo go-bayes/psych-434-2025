@@ -19,17 +19,14 @@ set.seed(123)
 
 
 # essential library ---------------------------------------------------------
-
-
-
 if (!require(margot, quietly = TRUE)) {
   devtools::install_github("go-bayes/margot")
   library(margot)
 }
 
 
-if (packageVersion("margot") < "1.0.36") {
-  stop("please install margot >= 1.0.36 for this workflow\n
+if (packageVersion("margot") < "1.0.37") {
+  stop("please install margot >= 1.0.37 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -46,7 +43,6 @@ packageVersion(pkg = "margot")
 # pacman will install missing packages automatically
 if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
 pacman::p_load(
-  margot,          # off-cran causal workflow tools
   tidyverse,       # data wrangling + plotting
   qs,              # fast data i/o
   here,            # project-relative file paths
@@ -142,7 +138,7 @@ label_mapping_all <- list(
   "t2_kessler_latent_anxiety_z" = "Anxiety",
   "t2_kessler_latent_depression_z" = "Depression",
   "t2_rumination_z" = "Rumination",
-  "t2_bodysat_z" = "Body Satisfaction",
+  # "t2_bodysat_z" = "Body Satisfaction",
   "t2_foregiveness_z" = "Forgiveness",
   "t2_perfectionism_z" = "Perfectionism", 
   "t2_self_esteem_z" = "Self Esteem",
@@ -165,6 +161,12 @@ here_save(label_mapping_all, "label_mapping_all")
 # check
 label_mapping_all
 
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# select options that make sense fo your study/results
+# might need to be tweaked after the analysis
 
 # make options -------------------------------------------------------------
 # titles
@@ -216,7 +218,6 @@ outcomes_options_all <- margot_plot_create_options(
 
 
 # policy tree graph settings ----------------------------------------------
-
 decision_tree_defaults <- list(
   span_ratio       = .3,
   text_size        = 3.8,
@@ -290,8 +291,9 @@ cf_out <- margot_causal_forest(
   save_models  = TRUE
 )
 
-# inspect Qini curve ------------------------------------------------------
+# inspect propensities ------------------------------------------------------
 qini_tbl <- margot::margot_inspect_qini(cf_out, propensity_bounds = c(0.01, 0.97))
+
 # show
 print(qini_tbl)
 
@@ -307,7 +309,9 @@ combo1 <- margot_plot_policy_combo(
   # +--------------------------+
   max_depth        = 1L,          # depth-1 tree
   decision_tree_args = list(text_size = 4),
-  policy_tree_args   = list(point_alpha = 0.7)
+  policy_tree_args   = list(point_alpha = 0.7),
+  original_df        = original_df,
+  label_mapping      = label_mapping_all
 )
 
 # show
@@ -356,6 +360,15 @@ models_batch_1L <- margot_policy(
 models_batch_1L[[1]][[3]]  # combo plot
 models_batch_1L[[1]][[4]]  # qini plot
 
+# sub plots
+models_batch_1L[[1]][[1]]  # predictions of policy tree
+models_batch_1L[[1]][[2]]  # policy tree
+
+# qini interpretations at different spends
+# negative is bad
+models_batch_1L[[1]][[5]]  
+
+# 2L tree
 models_batch_2L <- margot_policy(
   cf_out,
   save_plots         = FALSE,
@@ -374,24 +387,37 @@ models_batch_2L <- margot_policy(
   max_depth          = 2L)
 # view first model's plots
 models_batch_2L[[1]][[3]]  # combo plot
-models_batch_2L[[1]][[4]]  # qini plot
+models_batch_2L[[1]][[4]]  # qini plot - not convincing
 
 # 2. flip the selected outcomes (and regen trees)
 # use -- when the outcome is undesirable and we want to minimise it 
 # (assuming the exposure is something we'd prescribe)
+
+# select models whose outcomes are undesirable  when the intervention is meant to be 'good'
+# such variables will be specific to your study 
+
+# +--------------------------+
+# |    MODIFY THIS           |
+# +--------------------------+
+
+flip_outcomes_test = c("t2_kessler_latent_depression_z")
+
+# function to get the labels from the models (labels were defined above)
+flipped_names_test <- margot_get_labels(flip_outcomes_test, label_mapping_all)
+
+# +--------------------------+
+# |   END MODIFY             |
+# +--------------------------+
+
+# run flip forests
 cf_out_f <- margot_flip_forests(
   model_results = cf_out,
-  # +--------------------------+
-  # |    MODIFY THIS           |
-  # +--------------------------+
-  flip_outcomes = c("t2_kessler_latent_depression_z"),
-  # +--------------------------+
-  # |   END MODIFY             |
-  # +--------------------------+
+  flip_outcomes = flip_outcomes_test,
   recalc_policy = TRUE
 )
 
-# where there are very low or high propensity scores (prob of exposure) we might consider trimming
+# where there are very low or high propensity scores (prob of exposure) 
+# we might consider trimming
 margot::margot_inspect_qini(cf_out_f, propensity_bounds = c(0.01, 0.97))
 
 
@@ -418,19 +444,67 @@ models_batch_flipped_2L <- margot_policy(
   max_depth     = 2L
 )
 
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
 # flipped
 # interpretation: exposure minimising depression
 models_batch_flipped_2L[[1]][[3]]
 
+
+# *** NOTE DIFFERENCES IN INTERPRETATION
+
 # not flipped: exposure as maximizing depression
 models_batch_2L[[1]][[3]]
 
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+# interpretation example 
 
-# full model -------------------------------------------------------------
+# test interpretations ----------------------------------------------------
+
+
+# policy tree interpretation: search depth = 1
+interpret_model_policy_test_1L <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 1)
+cat(interpret_model_policy_test_1L)
+
+
+# policy tree interpretation: search depth = 2
+interpret_model_policy_test_2L <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 2)
+cat(interpret_model_policy_test_2L)
+
+
+
+# interpret rate ----------------------------------------------------------
+
+# create rate analysis table
+rate_table_all_test <- margot_rate(
+  models = cf_out_f,
+  policy = "treat_best",  # or "withold_best" but don't attempt fitting curves or policytrees
+  label_mapping = label_mapping_all
+)
+
+# view rate tables
+rate_table_all_test$rate_autoc |> kbl("markdown")
+rate_table_all_test$rate_qini |> kbl("markdown")
+
+
+# generate interpretation
+rate_interpretation_all <- margot_interpret_rate(
+  rate_table_all_test, 
+  flipped_outcomes = flipped_names_test
+)
+
 
 # ** uncomment to run full model**
 
-# # health models -----------------------------------------------------------
+# causal forest model -----------------------------------------------------------
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 models_binary <- margot::margot_causal_forest(
   data = df_grf,
   outcome_vars = t2_outcome_z,
@@ -444,21 +518,44 @@ models_binary <- margot::margot_causal_forest(
   train_proportion = 0.7
 )
 
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 # save model
 margot::here_save_qs(models_binary, "models_binary", push_mods)
-
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
 # read results ------------------------------------------------------------
-
 # if you save models you do not need to re-run them
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# reading models takes time
+# if you want to check the size of an object use
+# margot::margot_size(object)
+
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 models_binary <- margot::here_read_qs("models_binary", push_mods)
 
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
+# count models by category
+# just a check
+cat("Number of original models:\n", length(models_binary$results), "\n")
 
 
-
-# make graphs -------------------------------------------------------------
 # make ate plots ----------------------------------------------------------
-# health plots ------------------------------------------------------------
 binary_results <- margot_plot(
   models_binary$combined_table,
   options = outcomes_options_all,
@@ -513,11 +610,6 @@ margot_bind_tables_markdown
 here_save(margot_bind_tables_markdown, "margot_bind_tables_markdown")
 
 
-# count models by category
-cat("Number of original models:\n", length(models_binary$results), "\n")
-
-
-
 # evaluate models ---------------------------------------------------------
 # trim models if extreme propensity scores dominate
 # diag_tbl_98 <- margot_inspect_qini(models_binary,
@@ -552,9 +644,6 @@ flip_outcomes_standard = c(
   "t2_rumination_z" #  ← select
   #"t2_perfectionism_z" # the exposure variable was not investigated
 )
-# +--------------------------+
-# |   END MODIFY             |
-# +--------------------------+
 
 
 # we will investigate losses to these outcomes
@@ -563,29 +652,19 @@ flip_outcomes_standard = c(
 
 # WHICH OUTCOMES -- if any ARE UNDESIREABLE? 
 
-# +--------------------------+
-# |    MODIFY THIS           |
-# +--------------------------+
-flipped_names <- c(
-  # v"Alcohol Frequency",
-  #  "Alcohol Intensity",
-  #  "BMI",
-  #  "Fatigue",
-  "Anxiety", "Depression", "Rumination"  #  ← select
-  # "Perfectionism")
-  # +--------------------------+
-  # |   END MODIFY             |
-  # +--------------------------+
-)
-
-
 # NOT IF THE EXPOSURE IS NEGATIVE, FOCUS ON WHICH OUTCOMES, if any, ARE POSITIVE AND FLIP THESE?
 flip_outcomes <- flip_outcomes_standard #c( setdiff(t2_outcomes_all, flip_outcomes_standard) )
 
 # check
 flip_outcomes
 
-# checks
+
+# +--------------------------+
+# |   END MODIFY             |
+# +--------------------------+
+
+
+# checks for when exposure is *damaging** 
 # neg_check <- vapply(all_models$results[ paste0("model_", flip_outcomes) ],
 #                     \(x) mean(x$tau_hat, na.rm = TRUE) < 0, logical(1))
 # stopifnot(all(neg_check))   # every chosen outcome has a negative mean cate
@@ -614,37 +693,57 @@ here_save(flipped_names, "flipped_names")
 
 # ** give it time **
 # ** once run/ comment out **
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 models_binary_flipped_all <- margot_flip_forests(models_binary,
                                                  flip_outcomes = flip_outcomes,
                                                  recalc_policy = TRUE)
 
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 # save
 here_save_qs(models_binary_flipped_all, "models_binary_flipped_all", push_mods)
 
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 # read back if needed
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
-
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
 # where there are very low or high propensity scores (prob of exposure) we might consider trimming
 # margot::margot_inspect_qini(models_binary_flipped_all, propensity_bounds = c(0.05, 0.95))
 # 
 # 
 # # if we had extreme scores (not used here)
-# models_binary_flipped_all_t <- margot_rescue_qini(model_results      = models_binary_flipped_all,
+# models_binary_flipped_all_t <- margot_rescue_qini(model_results  = models_binary_flipped_all,
 #                                              propensity_bounds  = c(0.05, 0.95))
 
 
 
 # omnibus heterogeneity tests --------------------------------------------
 # test for treatment effect heterogeneity across all outcomes
-# result_ominbus_hetero_all <- margot::margot_omnibus_hetero_test(models_binary_flipped_all, 
-#                                                                 label_mapping = label_mapping_all)
-# 
-# # view results table
-# result_ominbus_hetero_all$summary_table |> kbl("markdown")
-# 
-# # view test interpretation
-# cat(result_ominbus_hetero_all$brief_interpretation)
+result_ominbus_hetero_all <- margot::margot_omnibus_hetero_test(models_binary_flipped_all,
+                                                                label_mapping = label_mapping_all)
+
+# view results table
+result_ominbus_hetero_all$summary_table |> kbl("markdown")
+
+# view test interpretation
+cat(result_ominbus_hetero_all$brief_interpretation)
 
 # rate test analysis -----------------------------------------------------
 
@@ -755,7 +854,7 @@ models_batch_qini_2L <- margot_policy(
   output_dir = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$qini_model_names,
+  model_names = rate_interpretation_all$qini_results,
   max_depth  = 2L,
   # ← new argument
   original_df = original_df,
@@ -833,7 +932,7 @@ interpretation_qini_curves_2L$summary_table |> kbl("markdown")
 
 
 
-# policy tree analysis ---------------------------------------------------
+# policy tree analysis depth 1 L------------------------------------------------
 # make policy trees
 # 1 l decision trees are generally very bad
 plots_policy_trees_1L <- margot_policy(
@@ -853,7 +952,7 @@ plots_policy_trees_1L <- margot_policy(
 n_models <- length(rate_interpretation_all$either_model_names)
 
 # # use purrr to map through and print each model
-# purrr::map(1:n_models_1L, function(i) {
+# purrr::map(1:n_models, function(i) {
 #   # print model name as a header
 #   cat("# model", i, "\n")
 #   # print the corresponding model plot
@@ -862,15 +961,20 @@ n_models <- length(rate_interpretation_all$either_model_names)
 #   cat("\n\n")
 # })
 
-model_outputs <- purrr::map(1:n_models, ~plots_policy_trees_1L[[.x]][[3]])
+model_outputs_1L <- purrr::map(1:n_models, ~plots_policy_trees_1L[[.x]][[3]])
 
 # name the list elements by model number
-names(model_outputs) <- paste0("model_", 1:n_models)
+names(model_outputs_1L) <- paste0("model_", 1:n_models)
 
 
-model_outputs$model_1
+# check number of models == n_models
+model_outputs_1L$model_1 # convincing?
+model_outputs_1L$model_2 # convincing?
+model_outputs_1L$model_3 # convincing?
 
-# policy tree analysis ---------------------------------------------------
+
+
+# policy tree analysis depth 2L -------------------------------------------------
 # make policy trees
 # *** 2l is much more persuasive ***
 plots_policy_trees_2L <- margot_policy(
@@ -889,9 +993,15 @@ plots_policy_trees_2L <- margot_policy(
 n_models <- length(rate_interpretation_all$either_model_names)
 
 model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[3]])
+names(model_outputs_2L) <- paste0("model_", 1:n_models)
 
-model_outputs_2L[[1]]
+# checks
+model_outputs_2L$model_1
+model_outputs_2L$model_2
+model_outputs_2L$model_3
 
+
+# convincing?
 interpret_plots_policy_trees_2L <- margot_interpret_policy_batch(
   models_binary_flipped_all, model_names = rate_interpretation_all$either_model_names)
 
@@ -929,19 +1039,18 @@ n_models
 model_outputs_1L_all <- purrr::map(1:n_models, ~all_plots_policy_trees_1L[[.x]][[3]])
 
 # view
-model_outputs_1L_all[[1]] # ← not convincing 
-model_outputs_1L_all[[2]] # ←  
-model_outputs_1L_all[[3]] # ← not convincing  
-model_outputs_1L_all[[4]] # ← not convincing 
-model_outputs_1L_all[[5]] # ← not convincing 
-model_outputs_1L_all[[6]] # ← not convincing  
-model_outputs_1L_all[[7]] # ← not convincing  
-model_outputs_1L_all[[8]] #
-model_outputs_1L_all[[9]] # ← not convincing  
-model_outputs_1L_all[[10]] # ← not convincing  
-model_outputs_1L_all[[11]] # ← not convincing  
-model_outputs_1L_all[[12]] # ← not convincing  
-model_outputs_1L_all[[13]] # ← not convincing  
+model_outputs_1L_all[[1]] # ← convincing? 
+model_outputs_1L_all[[2]] # ← convincing? 
+model_outputs_1L_all[[3]] # ← convincing? 
+model_outputs_1L_all[[4]] # ← convincing? 
+model_outputs_1L_all[[5]] # ← convincing? 
+model_outputs_1L_all[[6]] # ← convincing? 
+model_outputs_1L_all[[7]] # ← convincing? 
+model_outputs_1L_all[[8]] # ← convincing? 
+model_outputs_1L_all[[9]] # ← convincing?  
+model_outputs_1L_all[[10]] # ← convincing? 
+model_outputs_1L_all[[11]] # ← convincing? 
+model_outputs_1L_all[[12]] # ← convincing? 
 
 
 
@@ -973,19 +1082,18 @@ n_models
 model_outputs_2L_all <- purrr::map(1:n_models, ~all_plots_policy_trees_2L[[.x]][[3]])
 
 # view
-model_outputs_2L_all[[1]] # ← 
-model_outputs_2L_all[[2]] # ← 
-model_outputs_2L_all[[3]] # 
-model_outputs_2L_all[[4]] # 
-model_outputs_2L_all[[5]] # ← 
-model_outputs_2L_all[[6]] # ←
-model_outputs_2L_all[[7]] # ← 
-model_outputs_2L_all[[8]] #
-model_outputs_2L_all[[9]] # ←
-model_outputs_2L_all[[10]] # 
-model_outputs_2L_all[[11]] #  
-model_outputs_2L_all[[12]] # ← not convincing 
-model_outputs_2L_all[[13]] # 
+model_outputs_2L_all[[1]] # ← convincing? 
+model_outputs_2L_all[[2]] # ← convincing? 
+model_outputs_2L_all[[3]] # ← convincing? 
+model_outputs_2L_all[[4]] # ← convincing? 
+model_outputs_2L_all[[5]] # ← convincing? 
+model_outputs_2L_all[[6]] # ← convincing? 
+model_outputs_2L_all[[7]] # ← convincing? 
+model_outputs_2L_all[[8]] # ← convincing? 
+model_outputs_2L_all[[9]] # ← convincing? 
+model_outputs_2L_all[[10]] # ← convincing? 
+model_outputs_2L_all[[11]] # ← convincing? 
+model_outputs_2L_all[[12]] # ←  convincing 
 
 
 # interpretation
@@ -1334,4 +1442,5 @@ margot::margot_plot_decision_tree(
 
 
 # adjust only the alpha
-margot::margot_plot_policy_tree(models_binary_social, "model_t2_support_z", point_alpha = .1)
+margot::margot_plot_policy_tree(models_binary, "model_t2_support_z", point_alpha = .1)
+margot::margot_plot_policy_tree(models_binary, "model_t2_support_z", point_alpha = .9)

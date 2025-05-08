@@ -10,7 +10,7 @@ format:
     error: FALSE
     messages: FALSE
     code-overflow: scroll
-    highlight-style: oblivion
+    highlight-style: Ayu
     code-tools:
       source: true
       toggle: FALSE

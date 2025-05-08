@@ -10,7 +10,7 @@ format:
     error: FALSE
     messages: FALSE
     code-overflow: scroll
-    highlight-style: kate
+    highlight-style: Ayu
     code-line-numbers: true
     code-fold: true
     code-tools:
@@ -144,10 +144,23 @@ Key checkpoints in the *wrangle-1* script are as follows;
 
 Decide which variable is the “cause”. Here it is `extraversion`. Verify it exists at baseline (`t0_`) *and* at the exposure wave (`t1_`)
 
+
 ```r
-name_exposure <- "hours_community"
-here_save(name_exposure, "name_exposure")
+# define study variables ----------------------------------------------------
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# ** key decision 1: define your exposure variable **
+
+name_exposure <- "extraversion"
+
+# exposure variable labels
+var_labels_exposure <- list(
+  "extraversion" = "Extraversion",
+  "extraversion_binary" = "Extraversion (binary)"
+)
 ```
+
 
 
 #### Second -- choose a binary cut-point
@@ -256,8 +269,10 @@ hist(df_wide_encoded$t1_adjusted_weights)
 Rows with `*_lost_following_wave == 1` are removed, leaving `df_grf`. This dataset feeds the causal forest and should now have **no missing values** in any `t1_` or `t2_` column. Missingness is permitted in `t0_` columns
 
 ```r
-naniar::vis_miss(df_grf)   # should be a blank canvas
+naniar::vis_miss(df_grf)  
 ```
+
+![Graph of Missingness in Final Cleaned Dataset, time is ordered left (early) to right (late), no missing values in outcomes, missingness permitted for baseline variables](../laboratory/missing_final_data_plot.jpg){width=100%}
 
 
 #### Step 5 – checkpoint everything
@@ -352,8 +367,7 @@ Then create ATE plots and interpretations with `margot_plot()`.  Save as these g
 
 ```r
 flipped <- margot_flip_forests(models_binary,
-                                   flip_outcomes =
-                                   c("t2_kessler_latent_depression_z"), 
+                                   flip_outcomes = flip_outcomes,
                                    recalc_policy = TRUE)
 ```
 

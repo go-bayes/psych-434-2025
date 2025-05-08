@@ -13,36 +13,19 @@ rstudioapi::restartSession()
 set.seed(123)
 
 # libraries ---------------------------------------------------------------
-if (!requireNamespace("margot", quietly = TRUE)) {
-  message("installing 'margot' from GitHub")
-  devtools::install_github("go-bayes/margot", upgrade = "never")
+# essential library ---------------------------------------------------------
+if (!require(margot, quietly = TRUE)) {
+  devtools::install_github("go-bayes/margot")
 }
-library(margot)
-
-# install and load other packages from CRAN if missing
-if (!requireNamespace("tidyverse", quietly = TRUE)) {
-  install.packages("tidyverse")
-}
-library(tidyverse)
-
-# install and load other packages from CRAN if missing
-if (!requireNamespace("grf", quietly = TRUE)) {
-  install.packages("grf")
-}
-library(grf)
 
 
-# required version of margot ----------------------------------------------
-
-
-
-if (packageVersion("margot") < "1.0.36") {
-  stop("please install margot >= 1.0.36 for this workflow\n
+if (packageVersion("margot") < "1.0.37") {
+  stop("please install margot >= 1.0.37 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
 
-library("margot")
+library(margot)
 
 # load packages -------------------------------------------------------------
 # pacman will install missing packages automatically
@@ -96,9 +79,7 @@ ordinal_columns <- c("t0_education_level_coarsen",
                      "t0_eth_cat",
                      "t0_rural_gch_2018_l")
 
-
-
-#check
+# check is this the exposure variable that you want? 
 name_exposure_binary
 name_exposure_continuous
 
@@ -169,8 +150,13 @@ colnames(df_wide)
 # return sample weights
 df_wide$t0_sample_weights <-  t0_sample_weights
 
+# save
+margot::here_save(df_wide, "df_wide")
+
+
 #df_wide <- margot::here_read("df_wide")
 naniar::vis_miss(df_wide, warn_large_data = FALSE)
+
 
 # order data with missingness assigned to work with grf and lmtp
 # if any outcome is censored all are censored
@@ -266,12 +252,32 @@ D_0 <- as.factor(df_wide_encoded$t0_lost_following_wave)
 # get co-variates
 cen_0 <- df_wide_encoded[, E]
 
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 # probability forest for censoring
 # this will take time
 cen_forest_0 <- probability_forest(cen_0, D_0)
 
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 # get predictions
 predictions_grf_0 <- predict(cen_forest_0, newdata = cen_0, type = "response")
+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
+
 
 # get propensity scores
 pscore_0 <- predictions_grf_0$pred[, 2]
@@ -309,11 +315,28 @@ D_1 <- as.factor(df_wide_encoded_1$t1_lost_following_wave)
 cen_1 <- df_wide_encoded_1[, E_and_exposure]
 
 # probability forest for censoring
-#  *** this will take time ***
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 cen_forest_1 <- probability_forest(cen_1, D_1, sample.weights = df_wide_encoded_1$t0_adjusted_weights)
 
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# !!!! THIS WILL TAKE TIME  !!!!!
 # predict forest
+
 predictions_grf_1 <- predict(cen_forest_1, newdata = cen_1, type = "response")
+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
 # get propensity score
 pscore_1 <- predictions_grf_1$pred[, 2]
@@ -322,6 +345,7 @@ pscore_1 <- predictions_grf_1$pred[, 2]
 hist(pscore_1)
 
 # use margot_adjust_weights for t1
+# we will use these weights for inference in our models
 t1_weights <- margot_adjust_weights(
   pscore = pscore_1,
   trim = TRUE,
@@ -371,9 +395,19 @@ df_grf <- df_wide_encoded_1 |>
   relocate(all_of(t1_name_exposure_binary), .before = starts_with("t2_")) |>
   droplevels()
 
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# make sure to do this
 # save final data
 margot::here_save(df_grf, "df_grf")
 df_grf <- margot::here_read("df_grf")
+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
 
 # check final dataset
 colnames(df_grf)
@@ -388,7 +422,7 @@ missing_final_data_plot
 # save plot
 margot_save_png(missing_final_data_plot, prefix = "missing_final_data")
 
-#checks
+# checks
 colnames(df_grf)
 str(df_grf)
 

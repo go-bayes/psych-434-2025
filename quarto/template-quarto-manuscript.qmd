@@ -69,11 +69,12 @@ fontfamily: libertinus
 bibliography: /Users/joseph/GIT/templates/bib/references.bib
 csl: /Users/joseph/GIT/templates/csl/camb-a.csl
 ---
+
 ```{r}
 #| label: load-libraries
 #| echo: false
 #| include: false
-#| eval: true
+#| eval: false
 
 # boilerplate package
 if (!require(boilerplate, quietly = TRUE)) {
@@ -905,7 +906,7 @@ text_explain_grf <- boilerplate_generate_text(
   ),
   db = unified_db
 )
-```
+
 
 
 

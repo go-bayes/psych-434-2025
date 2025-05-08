@@ -47,4 +47,5 @@
 data/
 save_directory/
 
-
+# .quartoignore
+template-quarto-manuscript.qmd
