@@ -492,11 +492,6 @@ table(df_wide_encoded$t0_not_lost_following_wave)
 
 #### Step 3 – Build IPCW weights*
 
-Two probability forests estimate the chance of being observed at t1 and t2. `margot_adjust_weights()` then trims extreme values and normalises the weights. these appear as `t0_adjusted_weights` and `t1_adjusted_weights`.  The weigths should not be too extreme (e.g. values > 10)
-
-```r
-hist(df_wide_encoded$t1_adjusted_weights)
-```
 
 **Why?** observations that resemble those who dropped out are up-weighted, so estimates stay unbiased when data vanish.
 
@@ -520,8 +515,7 @@ Each major object (`df_wide`, `df_wide_encoded`, `df_grf`, the weight vectors) i
 #### Takeaway: what you must do
 
 1. **Run the script without edits.**  
-2. skim the weight histograms; if you see huge spikes, ask for help.  
-3. confirm `df_grf` has the expected number of rows and no missing cells.
+2. confirm `df_grf` has the expected number of rows and no missing cells.
 
 
 Script 2 is a conveyor belt: long $\to$ wide  $\to$ weighted  $\to$ clean. yYur only job is to eyeball the parcels before they roll into the modelling bay.
