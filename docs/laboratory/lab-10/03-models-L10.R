@@ -58,7 +58,8 @@ pacman::p_load(
   purrr ,          # functional programming tools.
   patchwork,      # nice graph placement
   janitor,         # nice labels
-  glue            # format/ interpolate a string
+  glue,            # format/ interpolate a string
+  cli
 )
 
 
@@ -161,6 +162,8 @@ here_save(label_mapping_all, "label_mapping_all")
 # check
 label_mapping_all
 
+cli::cli_h1("created and saved label_mapping for use in graphs/tables ✔")
+
 
 # +--------------------------+
 # |          ALERT           |
@@ -253,8 +256,15 @@ E      <- margot::here_read('E',      push_mods)
 # check exposure binary
 stopifnot(all(df_grf[[t1_name_exposure_binary]][!is.na(df_grf[[t1_name_exposure_binary]])] %in% 0:1))
 # set exposure and weights
+
 W       <- as.vector(df_grf[[t1_name_exposure_binary]]) # note it is the processed weights for attrition "t1"
-weights <- df_grf$t1_adjusted_weights
+
+# old workflow
+# weights <- df_grf$t1_adjusted_weights
+
+# new weights workflow, use "combo_weights" -- see revised script 2
+weights<- df_grf$combo_weights
+
 hist(weights) # quick check for extreme weights
 # select covariates and drop numeric attributes
 X <- margot::remove_numeric_attributes(df_grf[E])
@@ -425,6 +435,28 @@ margot::margot_inspect_qini(cf_out_f, propensity_bounds = c(0.01, 0.97))
 # cf_out_flipped_trimmed <- margot_rescue_qini(model_results      = cf_out_f,
 #                                              propensity_bounds  = c(0.05, 0.95)) 
 
+
+# flipped batch model
+models_batch_flipped_1L <- margot_policy(
+  cf_out_f,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  # +--------------------------+
+  # |    MODIFY THIS           |
+  # +--------------------------+
+  model_names = c("model_t2_kessler_latent_depression_z"),
+  # +--------------------------+
+  # |   END MODIFY             |
+  # +--------------------------+
+  original_df = original_df,
+  label_mapping = label_mapping_all,
+  max_depth     = 1L
+)
+
+models_batch_flipped_1L[[1]][[3]]
+
 # flipped batch model
 models_batch_flipped_2L <- margot_policy(
   cf_out_f,
@@ -462,16 +494,20 @@ models_batch_2L[[1]][[3]]
 # +--------------------------+
 # interpretation example 
 
+
+cli::cli_h1("created and saved label_mapping for use in graphs/tables ✔")
+
+
 # test interpretations ----------------------------------------------------
 
 
 # policy tree interpretation: search depth = 1
-interpret_model_policy_test_1L <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 1)
+interpret_model_policy_test_1L <- margot_interpret_policy_batch(cf_out_f, max_depth = 1)
 cat(interpret_model_policy_test_1L)
 
 
 # policy tree interpretation: search depth = 2
-interpret_model_policy_test_2L <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 2)
+interpret_model_policy_test_2L <- margot_interpret_policy_batch(cf_out_f, max_depth = 2)
 cat(interpret_model_policy_test_2L)
 
 
@@ -495,6 +531,10 @@ rate_interpretation_all <- margot_interpret_rate(
   rate_table_all_test, 
   flipped_outcomes = flipped_names_test
 )
+
+
+
+cli::cli_h1("testing on smaller dataset completed ✔")
 
 
 # ** uncomment to run full model**
@@ -528,6 +568,10 @@ margot::here_save_qs(models_binary, "models_binary", push_mods)
 # +--------------------------+
 # |        END ALERT         |
 # +--------------------------+
+
+
+cli::cli_h1("causal forest model completed and saved ✔")
+
 
 # read results ------------------------------------------------------------
 # if you save models you do not need to re-run them
@@ -679,6 +723,7 @@ flipped_names
 # save for publication
 here_save(flipped_names, "flipped_names")
 
+cli::cli_h1("flipped outcomes identified and names saved ✔")
 
 
 # flip negatively oriented outcomes --------------------------------------
@@ -700,8 +745,10 @@ here_save(flipped_names, "flipped_names")
 # +--------------------------+
 # !!!! THIS WILL TAKE TIME  !!!!!
 models_binary_flipped_all <- margot_flip_forests(models_binary,
-                                                 flip_outcomes = s,
+                                                 flip_outcomes = flip_outcomes_standard,
                                                  recalc_policy = TRUE)
+
+cli::cli_h1("flipped forest models completed ✔")
 
 # +--------------------------+
 # |          ALERT           |
@@ -777,6 +824,10 @@ rate_interpretation_all$qini_model_names
 rate_interpretation_all$both_model_names
 rate_interpretation_all$autoc_model_names
 
+
+cli::cli_h1("produced rate tables and interpretations ✔")
+
+
 # autoc plots ------------------------------------------------------------
 # generate batch rate plots for models with significant heterogeneity
 batch_rate_autoc_plots <- margot_plot_rate_batch(
@@ -844,7 +895,11 @@ models_batch_qini_2L_test <- margot_plot_policy_combo(
   original_df = original_df,
   label_mapping = label_mapping_all
 )
-rate_interpretation_all$qini_model_names
+rate_interpretation_all$autoc_model_names
+
+
+cli::cli_h1("produced rate graphs ✔")
+
 
 # qini --------------------------------------------------------------------
 # run the margot_policy function
@@ -854,7 +909,7 @@ models_batch_qini_2L <- margot_policy(
   output_dir = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$qini_results,
+  model_names = rate_interpretation_all$qini_model_names,
   max_depth  = 2L,
   # ← new argument
   original_df = original_df,
@@ -866,6 +921,7 @@ plots <- lapply(seq_along(models_batch_qini_2L), function(i) {
   models_batch_qini_2L[[i]][[4]]  # extract the 4th element (plot) from each model
 })
 
+plots
 # name the plots
 names(plots) <- rate_interpretation_all$qini_model_names
 
@@ -914,6 +970,9 @@ if (length(plots) == 0) {
   
   combined_plot  # removed return since this isn't in a function
 }
+
+cli::cli_h1("produced essential qini graphs ✔")
+
 
 # interpretation ----------------------------------------------------------
 # interpret qini curves
@@ -970,7 +1029,7 @@ names(model_outputs_1L) <- paste0("model_", 1:n_models)
 # check number of models == n_models
 model_outputs_1L$model_1 # convincing?
 model_outputs_1L$model_2 # convincing?
-model_outputs_1L$model_3 # convincing?
+# model_outputs_1L$model_3 # convincing?
 
 
 
@@ -996,10 +1055,10 @@ model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[3]])
 names(model_outputs_2L) <- paste0("model_", 1:n_models)
 
 
-# view plots (three in this example)
+# view plots (two in this example)
 model_outputs_2L$model_1
 model_outputs_2L$model_2
-model_outputs_2L$model_3
+#model_outputs_2L$model_3
 
 
 # convincing?

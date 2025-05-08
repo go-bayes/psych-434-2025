@@ -49,7 +49,8 @@ pacman::p_load(
   janitor,          # variables names
   stringr,          # variable names
   patchwork,        # graphs
-  table1           # tables
+  table1,          # tables,
+  cli
 )
 
 
@@ -66,6 +67,7 @@ if (!dir.exists("save_directory")) {
 # set up data directory structure
 data_dir    <- here::here("data")
 push_mods <- here::here("save_directory") 
+
 
 # load data -----------------------------------------------------------------
 df_nz_long <- margot::here_read_qs("df_nz_long", data_dir)
@@ -141,6 +143,9 @@ exposure_waves     <- c("2019")     # when exposure is measured
 outcome_wave       <- "2020"        # when outcomes are measured
 all_waves          <- c(baseline_wave, exposure_waves, outcome_wave)
 
+cli::cli_h1("set waves for three-wave study ✔")
+
+
 # +--------------------------+
 # |END OPTIONALLY MODIFY SEC.|
 # +--------------------------+
@@ -166,6 +171,9 @@ var_labels_exposure <- list(
   "extraversion" = "Extraversion",
   "extraversion_binary" = "Extraversion (binary)"
 )
+
+cli::cli_h1("set variable name for exposure ✔")
+
 # +--------------------------+
 # |        END ALERT         |
 # +--------------------------+
@@ -217,6 +225,9 @@ outcome_vars <- c(
   # social outcomes
   "belong", "neighbourhood_community", "support"
 )
+
+cli::cli_h1("set variable name for outcomes ✔")
+
 # +--------------------------+
 # |   END MODIFY SECTION     |
 # +--------------------------+
@@ -258,6 +269,10 @@ baseline_vars <- c(
   "belong", "nz_dep2018", "nzsei_13_l",
   "political_conservative", "religion_identification_level"
 )
+
+
+cli::cli_h1("set baseline covariate names  ✔")
+
 # +--------------------------+
 # |        END ALERT         |
 # +--------------------------+
@@ -298,6 +313,9 @@ margot::here_save(exposure_waves, "exposure_waves")
 margot::here_save(outcome_wave, "outcome_wave")
 margot::here_save(all_waves,"all_waves")
 
+cli::cli_h1("saved names and labels to be used for manuscript  ✔")
+
+
 # +--------------------------+
 # |     END DO NOT ALTER     |
 # +--------------------------+
@@ -327,6 +345,10 @@ ids_baseline <- dat_prep |>
   # this gives us greater confidence that we recover a incident effect
   filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
   pull(id)
+
+
+cli::cli_h1("set eligibility criteria for baseline cohort ✔")
+
 
 # filter data to include only eligible participants and relevant waves
 dat_long_1 <- dat_prep |> 
@@ -363,6 +385,9 @@ here_save(lower_cut, "lower_cut")
 here_save(upper_cut, "upper_cut")
 here_save(threshold, "threshold")
 
+cli::cli_h1("set thresholds for binary variable (if variable is continuous) ✔")
+
+
 # make graph
 graph_cut <- margot::margot_plot_categorical(
   dat_long_exposure,
@@ -390,6 +415,10 @@ dat_long_2 <- margot::create_ordered_variable(
   custom_breaks      = cut_points,  # ** -- adjust based on your decision above -- **
   cutpoint_inclusive = "upper"
 )
+
+
+cli::cli_h1("created binary variable (if variable is continuous) ✔")
+
 
 # +--------------------------+
 # |   END MODIFY SECTION     |
@@ -442,6 +471,10 @@ margot::here_save(percent_missing_baseline, "percent_missing_baseline", push_mod
 
 # save prepared dataset for next stage --------------------------------------
 margot::here_save(dat_long_final, "dat_long_final", push_mods)
+
+
+cli::cli_h1("made and saved final long data set for further processign in script 02 ✔")
+
 
 # +--------------------------+
 # |     END DO NOT ALTER     |

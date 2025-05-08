@@ -46,8 +46,7 @@ pacman::p_load(
   janitor,         # variables names
   stringr,         # variable names
   patchwork,       # graphs
-  table1,           # tables
-  cli
+  table1           # tables
 )
 
 # save paths -------------------------------------------------------------------
@@ -233,6 +232,7 @@ naniar::gg_miss_var(df_wide_encoded)
 #save data
 here_save(df_wide_encoded, "df_wide_encoded")
 
+
 # new weights approach ---------------------------------------------------------
 
 
@@ -380,10 +380,6 @@ here_save(E, "E")
 length(E)
 colnames(df_analysis)
 
-
-cli::cli_h1("naming convention matcheds `grf` ✔")
-
-
 # arrange
 df_grf <- df_analysis |>
   relocate(ends_with("_weights"), .before = starts_with("t0_")) |>
@@ -403,9 +399,6 @@ colnames(df_grf)
 # make sure to do this
 # save final data
 margot::here_save(df_grf, "df_grf")
-
-cli::cli_h1("saved data `df_grf` for models ✔")
-
 
 # +--------------------------+
 # |        END ALERT         |

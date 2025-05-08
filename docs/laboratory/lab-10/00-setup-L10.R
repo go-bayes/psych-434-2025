@@ -27,6 +27,8 @@ if (packageVersion("margot") < "1.0.37") {
 # call library
 library("margot")
 
+
+
 # load packages ----------------------------------------------------------
 # install and load other packages from CRAN if missing
 if (!requireNamespace("tidyverse", quietly = TRUE)) {
@@ -44,6 +46,10 @@ if (!requireNamespace("here", quietly = TRUE)) {
 }
 library(here)
 
+if (!requireNamespace("cli", quietly = TRUE)) {
+  install.packages("cli")
+}
+library("cli")
 
 
 # create data directory if it doesn't exist -----------------------------
@@ -54,6 +60,9 @@ if (!dir.exists("data")) {
 # define file paths ------------------------------------------------------
 # use here() to build paths relative to your project root
 data_dir <- here::here("data")
+
+cli::cli_h1("created data folder ✔")
+
 
 # download synthetic data ------------------------------------------------
 # specify the url for the data file
@@ -76,6 +85,8 @@ print(colnames(df_nz_long))
 # save a copy of the data ------------------------------------------------
 # save the dataset to your data directory for future use
 here_save_qs(df_nz_long, "df_nz_long", data_dir)
+
+cli::cli_h1("downloaded data to data folder for furture use ✔")
 
 # +--------------------------+
 # |     END DO NOT ALTER     |

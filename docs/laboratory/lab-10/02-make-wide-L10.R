@@ -46,7 +46,8 @@ pacman::p_load(
   janitor,         # variables names
   stringr,         # variable names
   patchwork,       # graphs
-  table1           # tables
+  table1,           # tables
+  cli
 )
 
 # save paths -------------------------------------------------------------------
@@ -153,9 +154,11 @@ df_wide$t0_sample_weights <-  t0_sample_weights
 # save
 margot::here_save(df_wide, "df_wide")
 
-
 #df_wide <- margot::here_read("df_wide")
 naniar::vis_miss(df_wide, warn_large_data = FALSE)
+
+# view
+glimpse(df_wide)
 
 
 # order data with missingness assigned to work with grf and lmtp
@@ -179,6 +182,8 @@ df_wide_encoded  <- margot::margot_process_longitudinal_data_wider(
   scale_continuous = TRUE,
   censored_if_any_lost = FALSE
 )
+
+margot_process_longitudinal_data_wider()
 
 # check
 colnames(df_wide_encoded)
@@ -219,181 +224,177 @@ stopifnot(all(is.na(df_wide_encoded[[t1_name_exposure_binary]]) |
                 df_wide_encoded[["t0_not_lost_following_wave"]] == 1))
 
 # view
-head(df_wide_encoded)
+glimpse(df_wide_encoded)
 
 #naniar::vis_miss(df_wide_encoded, warn_large_data = FALSE)
 naniar::gg_miss_var(df_wide_encoded)
 
 
-# predict attrition and create censoring weights --------------------------
-# step 1: prepare baseline covariates
-# select all t0_ variables except the exposure binary and any _lost indicators, then sort their names
-t0_var_names <- df_wide_encoded |>
-  select(-all_of(t0_name_exposure_binary)) |>
-  select(starts_with("t0_"),-ends_with("_lost"),-ends_with("lost_following_wave"), -ends_with("_weights")) |>
-  colnames() |>
-  sort()
+#save data
+here_save(df_wide_encoded, "df_wide_encoded")
 
-# get unique values (to be safe)
-E <- unique(t0_var_names)
-
-# view
-print(E)
-
-# save baseline covariates
-margot::here_save(E, "E")
-
-# view
-print(E)
-
-# step 2: calculate weights for t0
-D_0 <- as.factor(df_wide_encoded$t0_lost_following_wave)
-
-# get co-variates
-cen_0 <- df_wide_encoded[, E]
+# new weights approach ---------------------------------------------------------
 
 
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
-# !!!! THIS WILL TAKE TIME  !!!!!
-# probability forest for censoring
-# this will take time
-cen_forest_0 <- probability_forest(cen_0, D_0)
+# panel attrition workflow using grf (two-stage IPCW + design weights)
+# -----------------------------------------------------------------------------
+# builds weights in two stages:
+#   w0 : baseline -> t1  (baseline covariates)
+#   w1 : t1 survivors -> t2  (baseline + time-1 exposure)
+# final weight = t0_sample_weights × w0 × w1, then trimmed & normalised.
+# -----------------------------------------------------------------------------
 
-# +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
+# ── 0 setup ───────────────────────────────────────────────────────────────────
 
+library(tidyverse)        # wrangling
+library(glue)             # strings
+library(grf)              # forests
+library(cli)              # progress
 
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
-# !!!! THIS WILL TAKE TIME  !!!!!
-# get predictions
-predictions_grf_0 <- predict(cen_forest_0, newdata = cen_0, type = "response")
+set.seed(123)
 
-# +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
+# -----------------------------------------------------------------------------
+# 1 import full, unfiltered baseline file
+# -----------------------------------------------------------------------------
 
+df <- margot::here_read("df_wide_encoded")
+cli::cli_alert_info(glue("{nrow(df)} rows × {ncol(df)} columns loaded"))
 
+# -----------------------------------------------------------------------------
+# 2 stage‑0 censoring: dropout between t0 → t1
+# -----------------------------------------------------------------------------
 
-# get propensity scores
-pscore_0 <- predictions_grf_0$pred[, 2]
+baseline_covars <- df %>%
+  select(starts_with("t0_"), -ends_with("_lost"), -ends_with("lost_following_wave"), -ends_with("_weights")) %>%
+  colnames() %>% sort()
 
-# use margot_adjust_weights for t0
-t0_weights <- margot_adjust_weights(
-  pscore = pscore_0,
-  trim = TRUE,
-  normalize = TRUE,
-  # lower trimming
-  lower_percentile = 0.00,
-  # upper trimming
-  upper_percentile = 0.99,
-  censoring_indicator = df_wide_encoded$t0_lost_following_wave,
-  sample_weights = df_wide_encoded$t0_sample_weights
-)
+X0 <- as.matrix(df[, baseline_covars])
+D0 <- factor(df$t0_lost_following_wave, levels = c(0, 1))   # 0 = stayed, 1 = lost
 
-# view
-hist(t0_weights$adjusted_weights)
+cli::cli_h1("stage 0: probability forest for baseline dropout …")
 
-# give weights
-df_wide_encoded$t0_adjusted_weights <- t0_weights$adjusted_weights
+pf0 <- probability_forest(X0, D0)
+P0  <- predict(pf0, X0)$pred[, 2]               # P(dropout by t1)
+w0  <- ifelse(D0 == 1, 0, 1 / (1 - P0))         # IPCW for stage 0
+df$w0 <- w0
 
-#check
-naniar::vis_miss(df_wide_encoded, warn_large_data = FALSE)
+# -----------------------------------------------------------------------------
+# 3 stage‑1 censoring: dropout between t1 → t2 (baseline + exposure)
+# -----------------------------------------------------------------------------
 
-# remove lost next wave (censored)
-df_wide_encoded_1 <- df_wide_encoded %>%
-  filter(t0_lost_following_wave == 0) %>%
+exposure_var <- "t1_extraversion_binary"       # ← edit if needed
+
+df1 <- df %>% filter(t0_lost_following_wave == 0)
+
+# remove rows with missing exposure for stage‑1 model
+cen1_data <- df1 %>% filter(!is.na(.data[[exposure_var]]))
+
+X1 <- as.matrix(cbind(
+  cen1_data[, baseline_covars],
+  cen1_data[[exposure_var]]
+))
+colnames(X1)[ncol(X1)] <- exposure_var
+
+D1 <- factor(cen1_data$t1_lost_following_wave, levels = c(0, 1))
+
+cli::cli_h1("stage 1: probability forest for second‑wave dropout …")
+
+pf1 <- probability_forest(X1, D1)               # 1 = lost before t2
+P1  <- predict(pf1, X1)$pred[, 2]
+w1  <- ifelse(D1 == 1, 0, 1 / (1 - P1))
+
+# map w1 back to df1 (rows with NA exposure get weight 0)
+df1$w1 <- 0
+df1$w1[match(cen1_data$id, df1$id)] <- w1
+
+# -----------------------------------------------------------------------------
+# 4 combine design × IPCW weights
+# -----------------------------------------------------------------------------
+
+# bring forward w0 for the matching rows (safe join)
+w0_vec <- df$w0[match(df1$id, df$id)]
+
+# combined weight before trim / normalise
+raw_w <- df1$t0_sample_weights * w0_vec * df1$w1
+
+df1$raw_weight <- raw_w
+
+# trim + normalise (exclude NA & zeros)
+pos <- raw_w[!is.na(raw_w) & raw_w > 0]
+
+lb  <- quantile(pos, 0.00, na.rm = TRUE)
+ub  <- quantile(pos, 0.99, na.rm = TRUE)
+
+trimmed <- pmin(pmax(raw_w, lb), ub)
+normalised <- trimmed / mean(trimmed, na.rm = TRUE)
+
+df1$combo_weights <- normalised <- trimmed / mean(trimmed)
+
+df1$combo_weights <- normalised
+
+hist(df1$combo_weights[df1$t1_lost_following_wave == 0],
+     main = "combined weights (observed)", xlab = "weight")
+
+# -----------------------------------------------------------------------------
+# 5 analysis set: observed through t2 (not censored at either stage)
+# -----------------------------------------------------------------------------
+
+df_analysis <- df1 %>%
+  filter(t1_lost_following_wave == 0) %>%
   droplevels()
 
-# step 4: calculate weights for t1
-E_and_exposure <- c(E, t1_name_exposure_continuous)
-D_1 <- as.factor(df_wide_encoded_1$t1_lost_following_wave)
-cen_1 <- df_wide_encoded_1[, E_and_exposure]
+margot::here_save(df_analysis, "df_analysis_weighted_two_stage")
 
-# probability forest for censoring
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
-# !!!! THIS WILL TAKE TIME  !!!!!
-cen_forest_1 <- probability_forest(cen_1, D_1, sample.weights = df_wide_encoded_1$t0_adjusted_weights)
+cli::cli_alert_success(glue("analysis sample: {nrow(df_analysis)} obs"))
 
-# +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
+# TEST DO NOT UNCOMMENT
+# -----------------------------------------------------------------------------
+# 6 causal forest (edit outcome var if needed)
+# -----------------------------------------------------------------------------
+# 
+# outcome_var <- "t2_kessler_latent_depression_z"   # ← edit
+# 
+# Y <- df_analysis[[outcome_var]]
+# W <- df_analysis[[exposure_var]]
+# X <- as.matrix(df_analysis[, baseline_covars])
+# 
+# cf <- causal_forest(
+#   X, Y, W,
+#   sample.weights = df_analysis$combo_weights,
+#   num.trees      = 2000
+# )
+# 
+# print(average_treatment_effect(cf))
+# margot::here_save(cf,          "cf_ipcw_two_stage")
+# -----------------------------------------------------------------------------
+# 7 save objects
+# -----------------------------------------------------------------------------
 
 
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
-# !!!! THIS WILL TAKE TIME  !!!!!
-# predict forest
+cli::cli_h1("two-stage IPCW workflow complete ✔")
 
-predictions_grf_1 <- predict(cen_forest_1, newdata = cen_1, type = "response")
 
-# +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
+# # maintain workflow 
+E <- baseline_covars
+here_save(E, "E")
+length(E)
+colnames(df_analysis)
 
-# get propensity score
-pscore_1 <- predictions_grf_1$pred[, 2]
 
-# check
-hist(pscore_1)
+cli::cli_h1("naming convention matcheds `grf` ✔")
 
-# use margot_adjust_weights for t1
-# we will use these weights for inference in our models
-t1_weights <- margot_adjust_weights(
-  pscore = pscore_1,
-  trim = TRUE,
-  normalize = TRUE,
-  lower_percentile = 0.00,
-  # upper trimming
-  upper_percentile = 0.99,
-  censoring_indicator = df_wide_encoded_1$t1_lost_following_wave,
-  sample_weights = df_wide_encoded_1$t0_adjusted_weights # combine with weights
-)
-
-# add weights -- these will be the weights we use
-df_wide_encoded_1$t1_adjusted_weights <- t1_weights$adjusted_weights
-
-#check
-naniar::vis_miss(df_wide_encoded_1, warn_large_data = FALSE)
-
-# save
-here_save(df_wide_encoded_1, "df_wide_encoded_1")
-
-# check names
-colnames(df_wide_encoded_1)
-
-# check
-df_wide_encoded_1[[t1_name_exposure_binary]]
-
-# step 5: prepare final dataset
-nrow(df_wide_encoded_1)
-table(df_wide_encoded_1$t1_lost_following_wave)
 
 # arrange
-df_grf <- df_wide_encoded_1 |>
-  filter(t1_lost_following_wave == 0) |>
-  select(
-    where(is.factor),
-    ends_with("_binary"),
-    ends_with("_lost_following_wave"),
-    ends_with("_z"),
-    ends_with("_weights"),
-    starts_with("t0_"),
-    starts_with("t1_"),
-    starts_with("t2_"),
-  ) |>
+df_grf <- df_analysis |>
+  relocate(ends_with("_weights"), .before = starts_with("t0_")) |>
+  relocate(ends_with("_weight"), .before = ends_with("_weights")) |>
   relocate(starts_with("t0_"), .before = starts_with("t1_")) |>
   relocate(starts_with("t1_"), .before = starts_with("t2_")) |>
   relocate("t0_not_lost_following_wave", .before = starts_with("t1_")) |>
   relocate(all_of(t1_name_exposure_binary), .before = starts_with("t2_")) |>
   droplevels()
+
+colnames(df_grf)
 
 
 # +--------------------------+
@@ -402,7 +403,9 @@ df_grf <- df_wide_encoded_1 |>
 # make sure to do this
 # save final data
 margot::here_save(df_grf, "df_grf")
-df_grf <- margot::here_read("df_grf")
+
+cli::cli_h1("saved data `df_grf` for models ✔")
+
 
 # +--------------------------+
 # |        END ALERT         |
