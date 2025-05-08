@@ -140,18 +140,49 @@ This script prepares your data. Run it once -- running it twice would be like tu
 
 Key checkpoints in the *wrangle-1* script are as follows;
 
-#### First — pick your exposure* 
 
-Decide which variable is the “cause”. Here it is `extraversion`. Verify it exists at baseline (`t0_`) *and* at the exposure wave (`t1_`)
+#### First — pick your three study waves* 
+
+Note waves run from October --> September of the year following the wave.
+
+Note: 
+- baseline variables must appear in the baseline wave
+- the exposure variable must appear in both the baseline wave and exposure wave (but need not appear in the outcome wave)
+- outcome variables must appear in both the baseline wave and outcome wave (but need not appear in the exposure wave.)
+
+
+```r
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# +--------------------------+
+# | OPTIONALLY MODIFY SECTION|
+# +--------------------------+
+
+# **  define your study waves **
+baseline_wave      <- "2018"        # baseline measurement
+exposure_waves     <- c("2019")     # when exposure is measured
+outcome_wave       <- "2020"        # when outcomes are measured
+all_waves          <- c(baseline_wave, exposure_waves, outcome_wave)
+```
+
+
+
+#### Second — pick your exposure 
+
+Decide which variable is the 'cause'. Here it is `extraversion`. Verify it exists at baseline (`t0_`) *and* at the exposure wave (`t1_`)
 
 
 ```r
 # define study variables ----------------------------------------------------
+# ** key decision 2: define your exposure variable **
+
 # +--------------------------+
 # |          ALERT           |
 # +--------------------------+
-# ** key decision 1: define your exposure variable **
-
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
 name_exposure <- "extraversion"
 
 # exposure variable labels
@@ -159,57 +190,222 @@ var_labels_exposure <- list(
   "extraversion" = "Extraversion",
   "extraversion_binary" = "Extraversion (binary)"
 )
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
 ```
 
 
+#### Third -- choose your outcome variables (ensuring they are in the baseline wave and outcome wave)
 
-#### Second -- choose a binary cut-point
+
+
+```r
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
+# ** key decision 3: define outcome variables **
+# here, we are focussing on a subset of wellbeing outcomes
+# chose outcomes relevant to * your * study. Might be all/some/none/exactly 
+# these:
+outcome_vars <- c(
+  # health outcomes
+  # "alcohol_frequency_weekly", "alcohol_intensity",
+  # "hlth_bmi", 
+  "log_hours_exercise", 
+  # "hlth_sleep_hours", 
+  # "short_form_health",
+  
+  # psychological outcomes
+  # "hlth_fatigue", 
+  "kessler_latent_anxiety", 
+  "kessler_latent_depression", 
+  "rumination",
+  
+  # well-being outcomes
+  # "bodysat", 
+  #"forgiveness", "gratitude", 
+  "lifesat", "meaning_purpose", "meaning_sense", 
+  # "perfectionism", 
+  "pwi", 
+  #"self_control", 
+  "self_esteem", 
+  #"sexual_satisfaction",
+  
+  # social outcomes
+  "belong", "neighbourhood_community", "support"
+)
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+```
+
+
+#### Fourth: define baseline covariates
+
+Define baseline variables. The primary role of these variables is to control unmeasured confounding. We will also use these variables to investigate treatment effect heterogeneity. Note that the exposure at baseline and the outcomes at baseline will automatically be included in this set later. 
+
+**You may use the following variables without modifying them.**
+
+
+```r
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# +--------------------------+
+# | OPTIONALLY MODIFY SECTION|
+# +--------------------------+
+# define baseline variables -----------------------------------------------
+# key decision 4 **  define baseline covariates **
+# these are demographics, traits, etc. measured at baseline, that are common
+# causes of the exposure and outcome.  
+# note we will automatically include baseline measures of the exposure and outcome
+# later in the workflow.
+
+baseline_vars <- c(
+  # demographics
+  "age", "born_nz_binary", "education_level_coarsen",
+  "employed_binary", "eth_cat", "male_binary",
+  "not_heterosexual_binary", "parent_binary", "partner_binary",
+  "rural_gch_2018_l", "sample_frame_opt_in_binary",
+  
+  # personality traits (excluding exposure)
+  "agreeableness", "conscientiousness", "neuroticism", "openness",
+  
+  # health and lifestyle
+  "alcohol_frequency", "alcohol_intensity", "hlth_disability_binary",
+  "log_hours_children", "log_hours_commute", "log_hours_exercise",
+  "log_hours_housework", "log_household_inc",
+  "short_form_health", "smoker_binary",
+  
+  # social and psychological
+  "belong", "nz_dep2018", "nzsei_13_l",
+  "political_conservative", "religion_identification_level"
+)
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
+
+```
+
+#### Five -- select baseline cohort population using eligibility criteria that are sensible for your study
+
+
+```r
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# +--------------------------+
+# | OPTIONALLY MODIFY SECTION|
+# +--------------------------+
+
+# select eligible participants ----------------------------------------------
+# only include participants who have exposure data at baseline
+
+# You might require tighter conditions 
+# for example, if you are interested in the effects of hours of childcare, 
+# you might want to select only those who were parents at baseline. 
+# talk to me if you think you might night tighter eligibility criteria.
+
+ids_baseline <- dat_prep |> 
+  # allow missing exposure at baseline
+  # this would give us greater confidence that we generalise to the target population
+  # filter(wave == baseline_wave) |> 
+  # option: do not allow missing exposure at baseline
+  # this gives us greater confidence that we recover a incident effect
+  filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
+  pull(id)
+
+# filter data to include only eligible participants and relevant waves
+dat_long_1 <- dat_prep |> 
+  filter(id %in% ids_baseline, wave %in% all_waves) |> 
+  droplevels()
+
+# +--------------------------+
+# |END OPTIONALLY MODIFY SEC.|
+# +--------------------------+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+```
+
+
+#### Six -- choose a binary cut-point
+
 
 Causal inference requires a contrast between two conditions. The splits give us the conditions of a hypothetical experiment.
 
-```r
-margot_plot_categorical(df,
-                        col_name       = name_exposure,
-                        custom_breaks  = c(0, 1))
-```
-
-Ask: which break meaningfully separate groups into two exposure groups? Is the split *theoretically motivated**? adjust `custom_breaks` until the answer is “yes”. then commit:
 
 
 ```r
-create_ordered_variable(df,
-                        var_name       = name_exposure,
-                        custom_breaks  = c(0, 1))
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
+# define cutpoints
+cut_points = c(1, 4)
+
+# use later in positivity graph
+lower_cut <- cut_points[[1]]
+upper_cut <- cut_points[[2]]
+threshold <- '>' # if upper
+
+# save for manuscript
+here_save(lower_cut, "lower_cut")
+here_save(upper_cut, "upper_cut")
+here_save(threshold, "threshold")
+
+# make graph
+graph_cut <- margot::margot_plot_categorical(
+  dat_long_exposure,
+  col_name         = name_exposure,
+  sd_multipliers = c(-1, 1), # select to suit
+  # either use n_divisions for equal-sized groups:
+  # n_divisions      = 2,
+  # or use custom_breaks for specific values:
+  custom_breaks    = cut_points,  # ** adjust as needed **
+  # could be "lower", no difference in this case, as no one == 4
+  cutpoint_inclusive = "upper",
+  show_mean        = TRUE,
+  show_median      = FALSE,
+  show_sd          = TRUE
+)
+print(graph_cut)
+
+# save your graph
+margot::here_save(graph_cut, "graph_cut", push_mods)
 ```
 
+Ask: which break meaningfully separate groups into two exposure groups? Is the split *theoretically motivated**? adjust `custom_breaks` until the answer is 'yes'. then commit:
 
-#### Third — select outcomes that fit your interests
-
-This example considers multi-dimensional wellbeing outcomes. You can select from these outcomes if you like.  Or you can pick different outcomes. **Discuss with us if you are confused***.
 
 ```r
-outcome_vars <- c("lifesat", "pwi", "self_esteem")
-here_save(outcome_vars, "outcome_vars")
+dat_long_2 <- margot::create_ordered_variable(
+  dat_long_1,
+  var_name           = name_exposure,
+  custom_breaks      = cut_points,  # ** -- adjust based on your decision above -- **
+  cutpoint_inclusive = "upper"
+)s
 ```
 
 
-Everything downstream—eligibility, transitions... depends on this trio.
 
-
-#### Fouth — locking in the wave structure.
-
-Define one baseline wave, one or more exposure waves, and one outcome wave:
-
-```r
-baseline_wave  <- "2018"
-exposure_waves <- "2019"
-outcome_wave   <- "2020"
-```
-
-Note waves run from October --> September of the year folloowing the wave.
-
-
-#### Fifth — save as you go.
+#### Seven — save as you go.
 
 Use `margot::here_save()` (objects) and `here_save_qs()` (large objects) right after you create something you’ll cite in your report. The convention keeps analysis, tables, and manuscript in sync.
 
@@ -219,11 +415,52 @@ here_save(percent_missing_baseline,  "percent_missing_baseline")
 ```
 
 
+#### Remember to check the positivity assumption 
+
+Is there change between `t0_` and `t1_` in the exposure variable? 
+
+```r
+# create transition matrices to check positivity ----------------------------
+# this helps assess whether there are sufficient observations in all exposure states
+dt_positivity <- dat_long_final |>
+  filter(wave %in% c(baseline_wave, exposure_waves)) |>
+  select(!!sym(name_exposure), id, wave) |>
+  mutate(exposure = round(as.numeric(!!sym(name_exposure)), 0)) |>
+  # create binary exposure based on cutpoint
+  mutate(exposure_binary = ifelse(exposure > upper_cut, 1, 0)) |> # check
+  ## *-- modify this --* 
+  mutate(wave = as.numeric(wave) -1 )
+
+# create transition tables
+transition_tables <- margot::margot_transition_table(
+  dt_positivity,
+  state_var = "exposure",
+  id_var = "id",
+  waves = c(0, 1),
+  wave_var = "wave",
+  table_name = "transition_table"
+)
+print(transition_tables$tables[[1]])
+margot::here_save(transition_tables, "transition_tables", push_mods)
+
+# create binary transition tables
+transition_tables_binary <- margot::margot_transition_table(
+  dt_positivity,
+  state_var = "exposure_binary",
+  id_var = "id",
+  waves = c(0, 1),
+  wave_var = "wave",
+  table_name = "transition_table_binary"
+)
+print(transition_tables_binary$tables[[1]])
+margot::here_save(transition_tables_binary, "transition_tables_binary", push_mods)
+
+```
+
+
 #### Take-away: Think about the hypothetical experiment you wish to perform with observational data. 
 
 Decide early (exposure, cut-point, outcomes, waves), *checkpoint* everything with `here_save()`, and the rest of the pipeline flows.
-
-
 
 
 ### Script 2: Prepare Final Wide Data
@@ -291,10 +528,6 @@ Script 2 is a conveyor belt: long $\to$ wide  $\to$ weighted  $\to$ clean. yYur 
 
 
 
-
-
-
-
 ### Script 3 The Analysis
 
 
@@ -355,7 +588,7 @@ Then create ATE plots and interpretations with `margot_plot()`.  Save as these g
 
 
 
-#### 5 Heterogeneity hunt (CATE)  
+#### 5 Heterogeneous Treatment Effects (CATE)  
 
 *Evidence phase*  
 
@@ -366,9 +599,41 @@ Then create ATE plots and interpretations with `margot_plot()`.  Save as these g
 -  **Flip** outcomes you want to *minimise* (e.g. depression) so positive CATE = good.  
 
 ```r
-flipped <- margot_flip_forests(models_binary,
-                                   flip_outcomes = flip_outcomes,
-                                   recalc_policy = TRUE)
+# flipping models: outcomes we want to minimise given the exposure --------
+# standard negative outcomes/  not used in this example
+# +--------------------------+
+# |    MODIFY THIS           |
+# +--------------------------+
+flip_outcomes_standard = c(
+  #"t2_alcohol_frequency_weekly_z",
+  #"t2_alcohol_intensity_z",
+  #"t2_hlth_bmi_z",
+  #"t2_hlth_fatigue_z",
+  "t2_kessler_latent_anxiety_z", #  ← select
+  "t2_kessler_latent_depression_z",#  ← select
+  "t2_rumination_z" #  ← select
+  #"t2_perfectionism_z" # the exposure variable was not investigated
+)
+
+# when exposure is negative and you want to focus on how much worse off
+# some people are use this: 
+# flip_outcomes<- c( setdiff(t2_outcomes_all, flip_outcomes_standard) )
+
+# our example has the exposure as positive
+flip_outcomes <- flip_outcomes_standard
+```
+
+Don't forget to get and save the labels for these models:
+
+```r
+# get labels
+flipped_names <- margot_get_labels(flip_outcomes, label_mapping_all)
+
+# check
+flipped_names
+
+# save for publication
+here_save(flipped_names, "flipped_names")
 ```
 
 -  Fit **policy trees** (`margot_policy()`, `max_depth = 2L`) to discover actionable rules.  
@@ -378,18 +643,221 @@ flipped <- margot_flip_forests(models_binary,
 Check that every split variable exists in the original data and that leaves map sensibly onto subgroups (no cells with < 30 observations).
 
 
+Key workflow is: 
+
+```r
+# run the margot_policy function
+# policy tree analysis depth 2L -------------------------------------------------
+# make policy trees
+# *** 2l is much more persuasive ***
+plots_policy_trees_2L <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_names = rate_interpretation_all$either_model_names,
+  # defined above
+  original_df = original_df,
+  label_mapping = label_mapping_all,
+  max_depth = 2L
+)
+
+n_models <- length(rate_interpretation_all$either_model_names)
+
+model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[3]])
+names(model_outputs_2L) <- paste0("model_", 1:n_models)
+
+# view plots (three in this example)
+model_outputs_2L$model_1
+model_outputs_2L$model_2
+model_outputs_2L$model_3
+```
+
+
+You get the interpretation with this: 
+
+```r
+interpret_plots_policy_trees_2L <- margot_interpret_policy_batch(
+  models_binary_flipped_all, model_names = rate_interpretation_all$either_model_names)
+```
+
+
+If you were wanting to evaluate all models qualitatively, with appropriate caution you could use this code, 
+**BUT** warn your audience and inspect results to see if the predictive plots capture well-defined subgroups.
+
+
+```r
+# ALL model 2L
+all_plots_policy_trees_2L <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  # model_names = rate_interpretation_all$either_model_names, # use all
+  # defined above
+  original_df = original_df,
+  label_mapping = label_mapping_all,
+  max_depth = 2L
+)
+n_models_all <- length(models_binary_flipped_all$results)
+n_models_all
+
+model_outputs_2L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_2L[[.x]][[3]])
+names(model_outputs_2L_all) <- paste0("model_", 1:n_models_all)
+
+# view
+model_outputs_2L_all$model_1 # ← convincing? 
+model_outputs_2L_all$model_2 # ← convincing? 
+model_outputs_2L_all$model_3 # ← convincing? 
+model_outputs_2L_all$model_4 # ← convincing? 
+model_outputs_2L_all$model_5 # ← convincing? 
+model_outputs_2L_all$model_6 # ← convincing? 
+model_outputs_2L_all$model_7 # ← convincing? 
+model_outputs_2L_all$model_8 # ← convincing? 
+model_outputs_2L_all$model_9 # ← convincing?  
+model_outputs_2L_all$model_10 # ← convincing? 
+model_outputs_2L_all$model_11 # ← convincing? 
+model_outputs_2L_all$model_12 # ← convincing? 
+
+```
+
+And then to interpret:
+
+```r
+# interpretation
+interpret_plots_policy_trees_2L_all <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 2)
+
+# view interpretation
+cat(interpret_plots_policy_trees_2L_all)
+```
+
+*Note that we do not save these outputs for the mansuscript.  We will instead re-generate the graphs and interpretations when we import results into the quarto result template.  We'll cover this part of the workflow in the remaining weeks. 
+
+
 #### 6 Report subgroup analyses (optional)  
 
 When theory predicts effect modification—age bands, income thirds, etc.—use `margot_planned_subgroups_batch()`. The helper auto-generates tables and mini-plots; just pass the subset definitions you crafted:
 
+First we need to set up continitions for continuous variables, like this: 
+
 ```r
-planned_subset_results <- margot_planned_subgroups_batch(
-  domain_models = list(models_binary, …),
-  X             = X,
-  subset_types  = list(wealth = subsets_standard_wealth, …)
+# step 1 get information for wealth for conditonal comparisons
+head(df_grf$t0_log_household_inc_z)
+
+# get mean on original data scale
+log_mean_inc <- mean(original_df$t0_log_household_inc, na.rm = TRUE)
+
+# get sd on original data scale
+log_sd_inc <- sd(original_df$t0_log_household_inc, na.rm = TRUE)
+
+# function to get back to data scale
+margot_back_transform_log_z(
+  log_mean = log_mean_inc,
+  log_sd = log_sd_inc,
+  z_scores = c(-1, 0, 1),
+  label = "data_scale"
+)
+
+# define complex conditions for subsetting
+complex_condition_political <- X[, "t0_political_conservative_z"] > -1 &
+  X[, "t0_political_conservative_z"] < 1
+
+complex_condition_wealth <- X[, "t0_log_household_inc_z"] > -1 &
+  X[, "t0_log_household_inc_z"] < 1
+
+complex_condition_age <- X[, "t0_age_z"] > -1 &
+  X[, "t0_age_z"] < 1
+
+# # if we have specific groups to compare
+# complex_condition_age_under_neg_1_sd  <- X[, "t0_age_z"] < -1
+# complex_condition_age_gr_eq_neg_1_sd  <- X[, "t0_age_z"] > -1
+
+# check ages to get number
+mean(original_df$t0_age) - sd(original_df$t0_age)
+mean(original_df$t0_age) + sd(original_df$t0_age)
+
+
+# wealth subsets
+subsets_standard_wealth <- list(
+  Poor = list(
+    var = "t0_log_household_inc_z",
+    value = -1,
+    operator = "<",
+    description = "Effects among those HShold income < -1 SD (NZD ~41k)",
+    label = "Poor"  # label remains as is, but could be changed if desired
+  ),
+  MiddleIncome = list(subset_condition = complex_condition_wealth, description = "Effects among those HS_hold income within +/-1SD (> NZD 41k < NZD 191k)"),
+  Rich = list(
+    var = "t0_log_household_inc_z",
+    value = 1,
+    operator = ">",
+    description = "Effects among those HS_hold income > +1 SD (NZD 191k)",
+    label = "Rich"
+  )
 )
 ```
-If you do subgroup analyses, save the markdown tables/ plots using the protocols for the main analysis (For you to do, not done in the script.)
+
+Or for categorical variables like this: 
+
+```r
+# ethnicity subsets
+subsets_standard_ethnicity <- list(
+  Asian = list(
+    var = "t0_eth_cat_asian_binary",
+    value = 1,
+    description = "Asians"
+  ),
+  Euro = list(
+    var = "t0_eth_cat_euro_binary",
+    value = 1,
+    description = "Europeans (Pakeha)"
+  ),
+  Pacific = list(
+    var = "t0_eth_cat_pacific_binary",
+    value = 1,
+    description = "Pacific Peoples"
+  ),
+  Maori = list(
+    var = "t0_eth_cat_maori_binary",
+    value = 1,
+    description = "Māori"
+  )
+)
+```
+
+We set up subtypes like this: 
+
+
+```r
+# set up subset types in a list
+subset_types <- list(
+  wealth = subsets_standard_wealth,
+  ethnicity = subsets_standard_ethnicity,
+)
+
+
+# run model
+planned_subset_results <- margot_planned_subgroups_batch(
+  domain_models = domain_models,
+  X = X,
+  base_defaults = base_defaults_binary,
+  subset_types = subset_types,
+  original_df = original_df,
+  domain_names = domain_names,
+  subtitles = subtitles
+)
+
+
+# results
+cat(planned_subset_results$wellbeing$wealth$explanation)
+cat(planned_subset_results$wellbeing$ethnicity$explanation)
+```
+
+And then we can carry on to graphs and tables as described in the scripts. Note that an interesting set of subgroups to investigate by 'default` are: gender/age/ethnicity. However, unless there are theoretical reasons to expect such differences we should be *very cautious* about inferring too much. 
+As we can see from the policy trees, heterogeneity doesn't unfold at our pre-defined categories, but rather in surprising ways.
+
 
 
 #### Takeaway  

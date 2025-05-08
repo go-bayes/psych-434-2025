@@ -629,11 +629,14 @@ here_save(margot_bind_tables_markdown, "margot_bind_tables_markdown")
 # +--------------------------+
 
 # flipping models: outcomes we want to minimise given the exposure --------
-# standard negative outcomes/  not used in this study
-
+# standard negative outcomes/  not used in this example
+# flipping models: outcomes we want to minimise given the exposure --------
+# standard negative outcomes/  not used in this example
 # +--------------------------+
 # |    MODIFY THIS           |
 # +--------------------------+
+
+# WHICH OUTCOMES -- if any ARE UNDESIREABLE? 
 flip_outcomes_standard = c(
   #"t2_alcohol_frequency_weekly_z",
   #"t2_alcohol_intensity_z",
@@ -645,15 +648,14 @@ flip_outcomes_standard = c(
   #"t2_perfectionism_z" # the exposure variable was not investigated
 )
 
-
-# we will investigate losses to these outcomes
-# usual flipped names for positive interventions
-# commented out for this study
-
-# WHICH OUTCOMES -- if any ARE UNDESIREABLE? 
+# when exposure is negative and you want to focus on how much worse off
+# some people are use this: 
 
 # NOT IF THE EXPOSURE IS NEGATIVE, FOCUS ON WHICH OUTCOMES, if any, ARE POSITIVE AND FLIP THESE?
-flip_outcomes <- flip_outcomes_standard #c( setdiff(t2_outcomes_all, flip_outcomes_standard) )
+# flip_outcomes<- c( setdiff(t2_outcomes_all, flip_outcomes_standard) )
+
+# our example has the exposure as positive
+flip_outcomes <- flip_outcomes_standard
 
 # check
 flip_outcomes
@@ -662,7 +664,6 @@ flip_outcomes
 # +--------------------------+
 # |   END MODIFY             |
 # +--------------------------+
-
 
 # checks for when exposure is *damaging** 
 # neg_check <- vapply(all_models$results[ paste0("model_", flip_outcomes) ],
@@ -699,7 +700,7 @@ here_save(flipped_names, "flipped_names")
 # +--------------------------+
 # !!!! THIS WILL TAKE TIME  !!!!!
 models_binary_flipped_all <- margot_flip_forests(models_binary,
-                                                 flip_outcomes = flip_outcomes,
+                                                 flip_outcomes = s,
                                                  recalc_policy = TRUE)
 
 # +--------------------------+
@@ -746,7 +747,6 @@ result_ominbus_hetero_all$summary_table |> kbl("markdown")
 cat(result_ominbus_hetero_all$brief_interpretation)
 
 # rate test analysis -----------------------------------------------------
-
 # create rate analysis table
 rate_table_all <- margot_rate(
   models = models_binary_flipped_all,
@@ -995,7 +995,8 @@ n_models <- length(rate_interpretation_all$either_model_names)
 model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[3]])
 names(model_outputs_2L) <- paste0("model_", 1:n_models)
 
-# checks
+
+# view plots (three in this example)
 model_outputs_2L$model_1
 model_outputs_2L$model_2
 model_outputs_2L$model_3
@@ -1014,6 +1015,10 @@ cat(interpret_plots_policy_trees_2L)
 # +--------------------------+
 
 
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
 # +--------------------------+
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
@@ -1032,27 +1037,25 @@ all_plots_policy_trees_1L <- margot_policy(
   label_mapping = label_mapping_all,
   max_depth = 1L
 )
-n_models <- length(models_binary_flipped_all$results)
-n_models
+n_models_all <- length(models_binary_flipped_all$results)
+n_models_all
 
-
-model_outputs_1L_all <- purrr::map(1:n_models, ~all_plots_policy_trees_1L[[.x]][[3]])
+model_outputs_1L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_1L[[.x]][[3]])
+names(model_outputs_1L_all) <- paste0("model_", 1:n_models_all)
 
 # view
-model_outputs_1L_all[[1]] # ← convincing? 
-model_outputs_1L_all[[2]] # ← convincing? 
-model_outputs_1L_all[[3]] # ← convincing? 
-model_outputs_1L_all[[4]] # ← convincing? 
-model_outputs_1L_all[[5]] # ← convincing? 
-model_outputs_1L_all[[6]] # ← convincing? 
-model_outputs_1L_all[[7]] # ← convincing? 
-model_outputs_1L_all[[8]] # ← convincing? 
-model_outputs_1L_all[[9]] # ← convincing?  
-model_outputs_1L_all[[10]] # ← convincing? 
-model_outputs_1L_all[[11]] # ← convincing? 
-model_outputs_1L_all[[12]] # ← convincing? 
-
-
+model_outputs_1L_all$model_1 # ← convincing? 
+model_outputs_1L_all$model_2 # ← convincing? 
+model_outputs_1L_all$model_3 # ← convincing? 
+model_outputs_1L_all$model_4 # ← convincing? 
+model_outputs_1L_all$model_5 # ← convincing? 
+model_outputs_1L_all$model_6 # ← convincing? 
+model_outputs_1L_all$model_7 # ← convincing? 
+model_outputs_1L_all$model_8 # ← convincing? 
+model_outputs_1L_all$model_9 # ← convincing?  
+model_outputs_1L_all$model_10 # ← convincing? 
+model_outputs_1L_all$model_11 # ← convincing? 
+model_outputs_1L_all$$model_12 # ← convincing? 
 
 # interpretation
 interpret_plots_policy_trees_1L_all <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 1)
@@ -1062,7 +1065,7 @@ interpret_plots_policy_trees_1L_all <- margot_interpret_policy_batch(models_bina
 cat(interpret_plots_policy_trees_1L_all)
 
 
-# ALL model 1L
+# ALL model 2L
 all_plots_policy_trees_2L <- margot_policy(
   models_binary_flipped_all,
   save_plots = FALSE,
@@ -1075,26 +1078,25 @@ all_plots_policy_trees_2L <- margot_policy(
   label_mapping = label_mapping_all,
   max_depth = 2L
 )
-n_models <- length(models_binary_flipped_all$results)
-n_models
+n_models_all <- length(models_binary_flipped_all$results)
+n_models_all
 
-
-model_outputs_2L_all <- purrr::map(1:n_models, ~all_plots_policy_trees_2L[[.x]][[3]])
+model_outputs_2L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_2L[[.x]][[3]])
+names(model_outputs_2L_all) <- paste0("model_", 1:n_models_all)
 
 # view
-model_outputs_2L_all[[1]] # ← convincing? 
-model_outputs_2L_all[[2]] # ← convincing? 
-model_outputs_2L_all[[3]] # ← convincing? 
-model_outputs_2L_all[[4]] # ← convincing? 
-model_outputs_2L_all[[5]] # ← convincing? 
-model_outputs_2L_all[[6]] # ← convincing? 
-model_outputs_2L_all[[7]] # ← convincing? 
-model_outputs_2L_all[[8]] # ← convincing? 
-model_outputs_2L_all[[9]] # ← convincing? 
-model_outputs_2L_all[[10]] # ← convincing? 
-model_outputs_2L_all[[11]] # ← convincing? 
-model_outputs_2L_all[[12]] # ←  convincing 
-
+model_outputs_2L_all$model_1 # ← convincing? 
+model_outputs_2L_all$model_2 # ← convincing? 
+model_outputs_2L_all$model_3 # ← convincing? 
+model_outputs_2L_all$model_4 # ← convincing? 
+model_outputs_2L_all$model_5 # ← convincing? 
+model_outputs_2L_all$model_6 # ← convincing? 
+model_outputs_2L_all$model_7 # ← convincing? 
+model_outputs_2L_all$model_8 # ← convincing? 
+model_outputs_2L_all$model_9 # ← convincing?  
+model_outputs_2L_all$model_10 # ← convincing? 
+model_outputs_2L_all$model_11 # ← convincing? 
+model_outputs_2L_all$model_12 # ← convincing? 
 
 # interpretation
 interpret_plots_policy_trees_2L_all <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 2)
@@ -1103,7 +1105,9 @@ interpret_plots_policy_trees_2L_all <- margot_interpret_policy_batch(models_bina
 # view interpretation
 cat(interpret_plots_policy_trees_2L_all)
 
-
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 # +--------------------------+
 # |   END MODIFY SECTION     |
 # +--------------------------+

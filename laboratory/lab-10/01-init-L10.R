@@ -126,14 +126,39 @@ print(colnames(df_nz_long))
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
 
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# +--------------------------+
+# | OPTIONALLY MODIFY SECTION|
+# +--------------------------+
 
 # define study variables ----------------------------------------------------
+# ** key decision 1: define your three study waves **
+# **  define your study waves **
+baseline_wave      <- "2018"        # baseline measurement
+exposure_waves     <- c("2019")     # when exposure is measured
+outcome_wave       <- "2020"        # when outcomes are measured
+all_waves          <- c(baseline_wave, exposure_waves, outcome_wave)
+
+# +--------------------------+
+# |END OPTIONALLY MODIFY SEC.|
+# +--------------------------+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
+
+
+# define exposure variable ----------------------------------------------------
+# ** key decision 2: define your exposure variable **
 
 # +--------------------------+
 # |          ALERT           |
 # +--------------------------+
-
-# ** key decision 1: define your exposure variable **
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
 name_exposure <- "extraversion"
 
 # exposure variable labels
@@ -141,64 +166,26 @@ var_labels_exposure <- list(
   "extraversion" = "Extraversion",
   "extraversion_binary" = "Extraversion (binary)"
 )
-
 # +--------------------------+
 # |        END ALERT         |
 # +--------------------------+
-
 # +--------------------------+
 # |   END MODIFY SECTION     |
 # +--------------------------+
 
 
-# +--------------------------+
-# | OPTIONALLY MODIFY SECTION|
-# +--------------------------+
-
-# **  define your study waves **
-baseline_wave      <- "2018"        # baseline measurement
-exposure_waves     <- c("2019")     # when exposure is measured
-outcome_wave       <- "2020"        # when outcomes are measured
-all_waves          <- c(baseline_wave, exposure_waves, outcome_wave)
-
-# **  define baseline covariates **
-# these are demographics, traits, etc. measured at baseline
-
-baseline_vars <- c(
-  # demographics
-  "age", "born_nz_binary", "education_level_coarsen",
-  "employed_binary", "eth_cat", "male_binary",
-  "not_heterosexual_binary", "parent_binary", "partner_binary",
-  "rural_gch_2018_l", "sample_frame_opt_in_binary",
-  
-  # personality traits (excluding exposure)
-  "agreeableness", "conscientiousness", "neuroticism", "openness",
-  
-  # health and lifestyle
-  "alcohol_frequency", "alcohol_intensity", "hlth_disability_binary",
-  "log_hours_children", "log_hours_commute", "log_hours_exercise",
-  "log_hours_housework", "log_household_inc",
-  "short_form_health", "smoker_binary",
-  
-  # social and psychological
-  "belong", "nz_dep2018", "nzsei_13_l",
-  "political_conservative", "religion_identification_level"
-)
-
-# +--------------------------+
-# |END OPTIONALLY MODIFY SEC.|
-# +--------------------------+
 
 
-# +--------------------------+
-# |    MODIFY THIS SECTION   |
-# +--------------------------+
 
 
+# define outcome variables -------------------------------------------
+# ** key decision 3: define your outcome variable **
 # +--------------------------+
 # |          ALERT           |
 # +--------------------------+
-
+# +--------------------------+
+# |    MODIFY THIS SECTION   |
+# +--------------------------+
 # ** key decision 3: define outcome variables **
 # here, we are focussing on a subset of wellbeing outcomes
 # chose outcomes relevant to * your * study. Might be all/some/none/exactly 
@@ -230,15 +217,57 @@ outcome_vars <- c(
   # social outcomes
   "belong", "neighbourhood_community", "support"
 )
-
+# +--------------------------+
+# |   END MODIFY SECTION     |
+# +--------------------------+
 # +--------------------------+
 # |        END ALERT         |
 # +--------------------------+
 
 
 # +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# +--------------------------+
+# | OPTIONALLY MODIFY SECTION|
+# +--------------------------+
+# define baseline variables -----------------------------------------------
+# key decision 4 **  define baseline covariates **
+# these are demographics, traits, etc. measured at baseline, that are common
+# causes of the exposure and outcome.  
+# note we will automatically include baseline measures of the exposure and outcome
+# later in the workflow.
+
+baseline_vars <- c(
+  # demographics
+  "age", "born_nz_binary", "education_level_coarsen",
+  "employed_binary", "eth_cat", "male_binary",
+  "not_heterosexual_binary", "parent_binary", "partner_binary",
+  "rural_gch_2018_l", "sample_frame_opt_in_binary",
+  
+  # personality traits (excluding exposure)
+  "agreeableness", "conscientiousness", "neuroticism", "openness",
+  
+  # health and lifestyle
+  "alcohol_frequency", "alcohol_intensity", "hlth_disability_binary",
+  "log_hours_children", "log_hours_commute", "log_hours_exercise",
+  "log_hours_housework", "log_household_inc",
+  "short_form_health", "smoker_binary",
+  
+  # social and psychological
+  "belong", "nz_dep2018", "nzsei_13_l",
+  "political_conservative", "religion_identification_level"
+)
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+# +--------------------------+
 # |   END MODIFY SECTION     |
 # +--------------------------+
+
+
+
+
 
 # +--------------------------+
 # |       DO NOT ALTER       |
@@ -257,9 +286,6 @@ exposure_var  <- c(name_exposure, paste0(name_exposure, "_binary"))
 baseline_vars <- sort(baseline_vars)
 outcome_vars <- sort(outcome_vars)
 
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
 # save key variables --------------------------------------------------------
 margot::here_save(name_exposure, "name_exposure")
 margot::here_save(var_labels_exposure,"var_labels_exposure")
@@ -273,15 +299,14 @@ margot::here_save(outcome_wave, "outcome_wave")
 margot::here_save(all_waves,"all_waves")
 
 # +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
-
-# +--------------------------+
 # |     END DO NOT ALTER     |
 # +--------------------------+
 
 
 
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
 # +--------------------------+
 # | OPTIONALLY MODIFY SECTION|
 # +--------------------------+
@@ -296,8 +321,10 @@ margot::here_save(all_waves,"all_waves")
 
 ids_baseline <- dat_prep |> 
   # allow missing exposure at baseline
-  filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
+  # this would give us greater confidence that we generalise to the target population
+  # filter(wave == baseline_wave) |> 
   # option: do not allow missing exposure at baseline
+  # this gives us greater confidence that we recover a incident effect
   filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
   pull(id)
 
@@ -309,16 +336,34 @@ dat_long_1 <- dat_prep |>
 # +--------------------------+
 # |END OPTIONALLY MODIFY SEC.|
 # +--------------------------+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
-
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
 # +--------------------------+
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
 # plot distribution to help with cutpoint decision
-# get exposure wave to inspect exposure variable distribution
 dat_long_exposure <- dat_long_1 |> filter(wave %in% exposure_waves)
 
 # make graph 
+# define cutpoints
+cut_points = c(1, 4)
+
+# use later in positivity graph
+lower_cut <- cut_points[[1]]
+upper_cut <- cut_points[[2]]
+threshold <- '>' # if upper
+
+# save for manuscript
+here_save(lower_cut, "lower_cut")
+here_save(upper_cut, "upper_cut")
+here_save(threshold, "threshold")
+
+# make graph
 graph_cut <- margot::margot_plot_categorical(
   dat_long_exposure,
   col_name         = name_exposure,
@@ -326,9 +371,11 @@ graph_cut <- margot::margot_plot_categorical(
   # either use n_divisions for equal-sized groups:
   # n_divisions      = 2,
   # or use custom_breaks for specific values:
-  custom_breaks    = c(1, 4),  # ** adjust as needed **
+  custom_breaks    = cut_points,  # ** adjust as needed **
+  # could be "lower", no difference in this case, as no one == 4
   cutpoint_inclusive = "upper",
   show_mean        = TRUE,
+  show_median      = FALSE,
   show_sd          = TRUE
 )
 print(graph_cut)
@@ -340,13 +387,20 @@ margot::here_save(graph_cut, "graph_cut", push_mods)
 dat_long_2 <- margot::create_ordered_variable(
   dat_long_1,
   var_name           = name_exposure,
-  custom_breaks      = c(1, 4),  # ** -- adjust based on your decision above -- **
+  custom_breaks      = cut_points,  # ** -- adjust based on your decision above -- **
   cutpoint_inclusive = "upper"
 )
 
 # +--------------------------+
 # |   END MODIFY SECTION     |
 # +--------------------------+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
+
+
+
+
 
 # +--------------------------+
 # |       DO NOT ALTER       |
@@ -393,10 +447,22 @@ margot::here_save(dat_long_final, "dat_long_final", push_mods)
 # |     END DO NOT ALTER     |
 # +--------------------------+
 
+
+# check positivity --------------------------------------------------------
+
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
 # +--------------------------+
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
 
+
+# check
+threshold # defined above
+upper_cut # defined above
+
+name_exposure
 # create transition matrices to check positivity ----------------------------
 # this helps assess whether there are sufficient observations in all exposure states
 dt_positivity <- dat_long_final |>
@@ -404,7 +470,8 @@ dt_positivity <- dat_long_final |>
   select(!!sym(name_exposure), id, wave) |>
   mutate(exposure = round(as.numeric(!!sym(name_exposure)), 0)) |>
   # create binary exposure based on cutpoint
-  mutate(exposure_binary = ifelse(exposure >= 4, 1, 0)) |> ## *-- modify this --* 
+  mutate(exposure_binary = ifelse(exposure > upper_cut, 1, 0)) |> # check
+  ## *-- modify this --* 
   mutate(wave = as.numeric(wave) -1 )
 
 # create transition tables
@@ -430,6 +497,10 @@ transition_tables_binary <- margot::margot_transition_table(
 )
 print(transition_tables_binary$tables[[1]])
 margot::here_save(transition_tables_binary, "transition_tables_binary", push_mods)
+
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
 # create tables -----------------------------------------------------------
 # baseline variable labels
