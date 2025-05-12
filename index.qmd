@@ -349,10 +349,12 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
 
 
 
-- **Title**: "Causal Inference in Cultural Psychology: Examining Exposure Effects on Dimensions of Well-being Modified by Cultural or Sociodemographic Categories".
+- **Title**: "(Title should be describe your study)".
 
 - **Objective**:
-    - To quantify the causal effect of a specific exposure on well-being dimensions, modified by sociodemographic categories (`born_nz`, `eth_cat`, `big_doms`, `gen_cohort`) using the NZAVS longitudinal synthetic dataset.
+    - To quantify the Average Treatment Effect of a specific exposure on well-being dimensions using the NZAVS longitudinal synthetic dataset.
+    - To evaluate evidence for Heterogenous Treatment Effects
+    - (Optional): To performa a theoretically motivated subgroup analysis.
 
 - **Instructions**:
 
@@ -361,7 +363,7 @@ Note most of these tasks can be ticked off in a sentence or two, but all need to
         - State the research question clearly.
 
   2. **Directed Acyclic Graph (DAG)**:
-        - Construct a DAG illustrating the relationships between exposure, outcomes, sociodemographic category, and potential bias sources. Ensure clarity in labelling.
+        - Construct a DAG illustrating the relationships between exposure, outcomes, sociodemographic category, and potential bias sources.
 
   3. **Confounding Control Strategy**:
         - Outline your strategy for confounding control, justifying the chosen confounders.
