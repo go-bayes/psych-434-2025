@@ -48,17 +48,11 @@ Download Quarto here:
 
 ::: {.callout-important}
 ## Key concepts
+- Entering bibliographic details
 - Writing up your manuscript
-
 :::
 
-::: {.callout-important}
-## For the lab, download the script
-- We will go through this script step-by-step.
-:::
-
-
-### First Let's Go Through Your Analysis. 
+# Code review: YOUR analysis
 
 -  Create a new Rstudio project
 -  Modify *these* scripts
@@ -82,23 +76,42 @@ Download Quarto here:
 :::
 
 
-### Get Quarto
-
-- Download the quarto manuscript template and store in your R directory: [link to manuscript template](https://raw.githubusercontent.com/go-bayes/psych-434-2025/refs/heads/main/quarto/template-quarto-manuscript.qmd)
-
-<!-- - Download the following `tex` file and save it to your R directory: -->
-<!-- [latex macros](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/latex.tex) -->
 
 
-- Download the following `tex` file and save it to your R directory:
-[title preamble](https://raw.githubusercontent.com/go-bayes/templates/main/quarto/title.tex)
+#  Quarto with `boilerplate`
+
+::: {.callout-quarto-manuscript-template}
+[Download Quarto Template](../quarto/initial_quarto_document.qmd)
+:::
 
 
-- Download the following `csl` file and save it to your R directory:
-[csl preamble](https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/csl/apa-ann-7.csl)
+## Script 0: Set up your library/
 
-- Make sure you can install all libraries required of the manuscript template.
-- Come to the seminar prepared to work through the analysis
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/lab-11/00-boilerplate-setup.R
+```
+
+## Script 1: Adding/Revising Measures
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../laboratory/lab-11/01-add-revise-measures.R
+
+```
+
+
+## Script 3: Setting Up Your Manuscript Document
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../quarto/initial_quarto_document.qmd
+
+```
 
 
 

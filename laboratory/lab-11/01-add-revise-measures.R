@@ -1,200 +1,104 @@
-# 01 - add/revise measures
-
-
-# boilerplate library ----------------------------------------
-# install from GitHub if not already installed
-if (!require(boilerplate, quietly = TRUE)) {
-  # install devtools if necessary
-  if (!require(devtools, quietly = TRUE)) {
-    install.packages("devtools")
+# script 01: add or revise measures (for students)
+# load required packages --------------------------------------------------
+if (!requireNamespace("boilerplate", quietly = TRUE)) {
+  if (!requireNamespace("devtools", quietly = TRUE)) {
+    install.packages("devtools")  # install devtools if missing
   }
-  devtools::install_github("go-bayes/boilerplate")
+  devtools::install_github("go-bayes/boilerplate")  # install boilerplate
 }
 
-library(boilerplate)
+library(boilerplate)  # tools for measure management
+library(cli)          # user-friendly messages
+library(here)         # project-friendly file paths
 
-if (packageVersion("boilerplate") < "1.0.41") {
-  stop(
-    "please install boilerplate >= 1.0.41 for this workflow\n
-       run: devtools::install_github(\"go-bayes/boilerplate\")
-"
-  )
+# ensure correct boilerplate version --------------------------------------
+if (utils::packageVersion("boilerplate") < "1.0.41") {
+  stop("please install boilerplate >= 1.0.41: \
+       devtools::install_github('go-bayes/boilerplate')")
 }
 
+cli::cli_h1("boilerplate loaded ✔")
 
-cli::cli_h1("installed/loaded boilerplate ✔")
+# define data paths --------------------------------------------------------
+path_src   <- here::here("example_boilerplate_data")
+path_final <- here::here("final_boilerplate_data")
 
-
-
-
-
-# read boilerplate database ----------------------------------------------------
-
-# set path ----------------------------------------------------------------
-# or to whatever you names the database path
-my_boilerplate_data_path <- here::here("example_boilerplate_data")
-
-# check path is correct
-my_boilerplate_data_path
-
-
-# read boilerplate database -----------------------------------------------
-
-unified_db <- boilerplate_import(data_path = my_boilerplate_data_path)
-
-
-# create new data directory if it doesn't exist -----------------------------
-if (!dir.exists("final_boilerplate_data")) {
-  dir.create("final_boilerplate_data")  # first time only: make a folder named 'data'
+# create final data directory if needed -----------------------------------
+if (!dir.exists(path_final)) {
+  dir.create(path_final)
 }
+cli::cli_h1("data folder ready ✔")
 
-cli::cli_h1("created data folder ✔")
+# import unified database --------------------------------------------------
+unified_db <- boilerplate_import(data_path = path_src)
 
-
-
-# new data path -----------------------------------------------------------
-
-final_boilerplate_data = here::here("final_boilerplate_data")
-
-
-
-# avoid overwriting original data in case you make a mistake --------------
-
-boilerplate_save(unified_db, output_file = "unified_db",
-                   data_path = final_boilerplate_data)
-
-
-
-
-
-# eyeball structure -------------------------------------------------------
-
-str(unified_db, max.level = 2)
-
-# eyeball-measures --------------------------------------------------------
-my_unified_db$measures
-
-
-
-# which measures do you need (to fix)? ------------------------------------
-
-# load data -----------------------------------------------------------------
-data_dir  <- here::here("data")
-
-# check data
-df_nz_long <- margot::here_read_qs("df_nz_long", data_dir)
-df_nz_long$friends_money
-
-
-
-# example add entry -------------------------------------------------------
-
-
-
-# say you needed 'emp_job_satisfaction': is it defined? 
-unified_db$measures$emp_job_satisfaction
-
-cli::cli_h1("this variable is not defined ✔")
-
-
-
-# measures ----------------------------------------------------------------
-# add a measure like so: 
-
-unified_db$measures$emp_job_satisfaction <- list(
-  name = "Job Satisfaction",
-  description = "Job satisfaction was measured with a single item.",
-  reference = "[@eisenbarth2022aspects]",
-  waves = "1-present",
-  keywords = c("employment", "mental health"),
-  items = list(
-    "How satisfied are you with your current job?"
-  )
-)
-
-# save your measure like so (you do not need to create a backup)
-boilerplate::boilerplate_save(unified_db, data_path = final_boilerplate_data, create_backup = TRUE)
-
-
-
-
-
-#  revise a measure like so -----------------------------------------------
-unified_db$measures$family_time_binary
-
-unified_db$measures$family_time_binary <- list(
-  name = "Job Satisfaction",
-  description = "Code string (Binary): (0 = 0, 1 = greater than 0)",  # <- change here
-  waves = "10-13",
-  reference = "@sibley2020", # <- change here
-  keywords = c("cooperation"),
-  items = list(
-    "Please estimate how much help you have received from the following sources in the last week...family...TIME (hours)."
-  )
-)
-
-# view
-unified_db$measures$family_time_binary
-
-
-
-
-# save changes ------------------------------------------------------------
-
+# save a copy to avoid overwriting original --------------------------------
 boilerplate_save(
-  db = unified_db,
-  data_path = final_boilerplate_data,  # specify correct path
-  confirm = TRUE
+  unified_db,
+  data_path   = path_final,
+  output_file = "unified_db"
 )
 
+cli::cli_h2("database imported and saved ✔")
 
+# inspect structure and existing measures ----------------------------------
+str(unified_db, max.level = 2)     # glance at top-level structure
+print(names(unified_db$measures))  # list defined measures
 
+# example: check for a specific measure ------------------------------------
+measure_name <- "emp_job_satisfaction"
+if (is.null(unified_db$measures[[measure_name]])) {
+  cli::cli_alert_info("{measure_name} not defined yet")
+} else {
+  print(unified_db$measures[[measure_name]])
+}
 
-# if you want to read data back -------------------------------------------
-# start here: 
-unified_db <- boilerplate_import(data_path = final_boilerplate_data) # note we are using 'path final'
-
-
-
-
-
-# generate bibliography ----------------------------------------------------
-baseline_vars <- c(
-  # demographics
-  "age", "born_nz_binary", "education_level_coarsen",
-  "employed_binary", "eth_cat", "male_binary",
-  "not_heterosexual_binary", "parent_binary", "partner_binary",
-  "rural_gch_2018_l", "sample_frame_opt_in_binary",
-  
-  # personality traits (excluding exposure)
-  "agreeableness", "conscientiousness", "neuroticism", "openness",
-  
-  # health and lifestyle
-  "alcohol_frequency", "alcohol_intensity", "hlth_disability_binary",
-  "log_hours_children", "log_hours_commute", "log_hours_exercise",
-  "log_hours_housework", "log_household_inc",
-  "short_form_health", "smoker_binary",
-  
-  # social and psychological
-  "belong", "nz_dep2018", "nzsei_13_l",
-  "political_conservative", "religion_identification_level"
+# add a new measure --------------------------------------------------------
+unified_db$measures[[measure_name]] <- list(
+  name        = "Job Satisfaction",
+  description = "job satisfaction was measured with a single item.",
+  reference   = "[@eisenbarth2022aspects]",
+  waves       = "1-present",
+  keywords    = c("employment", "mental health"),
+  items       = list("how satisfied are you with your current job?")
 )
 
+# save with backup ---------------------------------------------------------
+boilerplate_save(
+  unified_db,
+  data_path     = path_final,
+  create_backup = TRUE
+)
+cli::cli_h2("new measure added and saved ✔")
 
-baseline_text  <- boilerplate_generate_measures(
-  variable_heading = "Baseline Covariates",
-  variables = baseline_vars,
-  db = unified_db,  # or use the extracted measures database
-  heading_level = 3,
-  subheading_level = 4,
-  print_waves = TRUE
+# revise an existing measure ------------------------------------------------
+revise_name <- "family_time_binary"
+cli::cli_h1("revising {revise_name}")
+
+# use modifyList to update only changed fields
+unified_db$measures[[revise_name]] <- modifyList(
+  unified_db$measures[[revise_name]],
+  list(
+    name        = "Family Time (binary)",
+    description = "code string (binary): 0 = none, 1 = any time",
+    reference   = "@sibley2020",
+    waves       = "10-13",
+    keywords    = c("cooperation")
+  )
 )
 
+# view revised measure ------------------------------------------------------
+print(unified_db$measures[[revise_name]])
 
-# see here
-cat(baseline_text)
+# save all changes -----------------------------------------------------------
+boilerplate_save(
+  unified_db,
+  data_path = path_final,
+  confirm   = TRUE
+)
+cli::cli_h2("measure revised and saved ✔")
 
+# to reload updated database, uncomment the following line --------------
+# unified_db <- boilerplate_import(data_path = path_final)
 
-# next week I'll show you how to generate a bibliograph using quarto documents
-here_save(baseline_vars, "baseline_vars")
 
