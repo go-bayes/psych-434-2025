@@ -173,10 +173,12 @@ cli::cli_h1("created and saved label_mapping for use in graphs/tables ✔")
 
 # make options -------------------------------------------------------------
 # titles
-title = "ATE Effects of {{nice_name_exposure}} on {{nice_name_outcome}}"
+ate_title = "ATE Effects of {{nice_name_exposure}} on {{nice_name_outcome}}"
 subtitle = ""
 filename_prefix = "final_report"
-
+#
+here_save(ate_title, "ate_title")
+here_save(filename_prefix, "filename_prefix")
 
 # settings
 x_offset = -.5
@@ -187,7 +189,7 @@ x_lim_hi = .5
 # defaults for ate plots
 base_defaults_binary <- list(
   type = "RD",
-  title = title_binary,
+  title = ate_title,
   e_val_bound_threshold = 1.2,
   colors = c(
     "positive" = "#E69F00",
@@ -210,6 +212,8 @@ base_defaults_binary <- list(
   legend_title_size = 10,
   include_coefficients = FALSE
 )
+
+# save
 
 # health graph options
 outcomes_options_all <- margot_plot_create_options(
@@ -805,6 +809,11 @@ rate_table_all <- margot_rate(
 rate_table_all$rate_autoc |> kbl("markdown")
 rate_table_all$rate_qini |> kbl("markdown")
 
+
+# save
+here_save(rate_table_all, "rate_table_all")
+
+
 # generate interpretation
 rate_interpretation_all <- margot_interpret_rate(
   rate_table_all, 
@@ -817,6 +826,12 @@ cat(rate_interpretation_all$qini_results)
 
 # compare rate and qini -- see grf documentation
 cat(rate_interpretation_all$comparison)
+
+
+# save
+here_save(rate_interpretation_all, "rate_interpretation_all")
+
+
 
 # check out model names for different ways of thinking about heterogeneity
 rate_interpretation_all$either_model_names
@@ -968,7 +983,7 @@ if (length(plots) == 0) {
          combined_plot,
          width = width, height = height)
   
-  combined_plot  # removed return since this isn't in a function
+  combined_plot  #
 }
 
 cli::cli_h1("produced essential qini graphs ✔")

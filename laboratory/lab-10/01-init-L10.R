@@ -118,6 +118,16 @@ dat_prep <- df_nz_long |>
 # view variable names -----------------------------------------------------
 print(colnames(df_nz_long)) 
 
+
+# get total participants
+n_total = length(unique(df_nz_long$id))
+
+# pretty number
+n_total = margot::pretty_number(n_total)
+
+# save
+here_save(n_total, "n_total")
+
 # +--------------------------+
 # |     END DO NOT ALTER     |
 # +--------------------------+
@@ -346,6 +356,14 @@ ids_baseline <- dat_prep |>
   filter(wave == baseline_wave, !is.na(!!sym(name_exposure))) |> 
   pull(id)
 
+# n eligible
+n_participants <- length(ids_baseline)
+
+# make pretty number
+n_participants = margot::pretty_number(n_participants)
+
+# save
+here_save(n_participants, "n_participants")
 
 cli::cli_h1("set eligibility criteria for baseline cohort ✔")
 
@@ -379,11 +397,17 @@ cut_points = c(1, 4)
 lower_cut <- cut_points[[1]]
 upper_cut <- cut_points[[2]]
 threshold <- '>' # if upper
+inverse_threshold <- '<='
+scale_range = 'scale range 1-7'
+
 
 # save for manuscript
 here_save(lower_cut, "lower_cut")
 here_save(upper_cut, "upper_cut")
 here_save(threshold, "threshold")
+here_save(inverse_threshold, "inverse_threshold")
+here_save(scale_range, "scale_range")
+
 
 cli::cli_h1("set thresholds for binary variable (if variable is continuous) ✔")
 
@@ -452,11 +476,14 @@ dat_long_final <- margot::margot_log_transform_vars(
   droplevels()
 
 
+
 # check missing data --------------------------------------------------------
 # this is crucial to understand potential biases
 missing_summary <- naniar::miss_var_summary(dat_long_final)
 print(missing_summary)
 margot::here_save(missing_summary, "missing_summary", push_mods)
+
+
 
 # visualise missing data pattern
 # ** -- takes a while to render ** 
@@ -616,7 +643,7 @@ var_labels_outcomes <- list(
   "lifesat" = "Life Satisfaction",
   "meaning_purpose" = "Meaning: Purpose",
   "meaning_sense" = "Meaning: Sense",
-  "pwi = Personal Well-being Index",
+  "pwi" = "Personal Well-being Index",
   "belong" = "Social Belonging",
   "neighbourhood_community" = "Neighbourhood Community",
   "support" = "Social Support"
@@ -625,6 +652,15 @@ var_labels_outcomes <- list(
 # save for manuscript
 here_save(var_labels_outcomes, "var_labels_outcomes")
 
+
+
+
+# save all variable translations
+var_labels_measures <- c(var_labels_baseline, var_labels_exposure, var_labels_outcomes)
+var_labels_measures
+
+# save for manuscript
+here_save(var_labels_measures, "var_labels_measures")
 
 # +--------------------------+
 # |   END MODIFY SECTION     |
@@ -646,7 +682,6 @@ dat_baseline = dat_long_final |>
     not_heterosexual_binary = factor(not_heterosexual_binary),
     sample_frame_opt_in_binary = factor(sample_frame_opt_in_binary)
   )
-
 
 
 # +--------------------------+

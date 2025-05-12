@@ -1,0 +1,848 @@
+---
+title: "Your Title"
+abstract: |
+  **Background**: (Brief few sentences)
+  
+  **Objectives**: 
+    1. Estimate the causal effect of YOUR EXPOSURE on YOUR OUTCOMES measured one year later.
+    2. Evaluate whether these effects vary across the population.
+    3. Provide policy guidance on which individuals might benefit most.
+  
+  **Method**: We conducted a three-wave retrospective cohort study (waves XX-XXX, October XXXX--October XXXX) using data from the New Zealand Attitudes and Values Study, a nationally representative panel. Participants were eligible if they participated in the NZAVS in the baseline wave (XXXX, were under the age of 62, and were employed > 20 hours per week. We defined the exposure as (XXXX  > NUMBER on a 1-7 Likert Scale (1 = yes, 0 = no)). To address attrition, we applied inverse probability of censoring weights; to improve external validity, we applied weighted to the population distribution of Age, Ethnicity, and Gender. We computed expected mean outcomes for the population in each exposure condition (high XXXX/low XXXXX). Under standard causal assumptions of unconfoundedness, the contrast provides an unbiased average treatment effect. We then used causal forests to detect heterogeneity in these effects and employed policy tree algorithms to identify individuals ("strong responders") likely to experience the greatest benefits.
+  
+  **Results**:   Increasing XXXXX leads to XXXXX. Heterogeneous responses to (e.g. *Forgiveness*, *Personal Well-Being*, and *Life-Satisfaction*...) reveal structural variability in subpopulations...
+  
+  **Implications**: (Brief few sentences)
+  **Keywords**: *Causal Inference*;  *Cross-validation*; *Distress*; *Employment*; *Longitudinal*; *Machine Learning*; *Religion*; *Semi-parametric*; *Targeted Learning*.
+author: 
+  - name: YOUR NAME
+    affiliation: Victoria University of Wellington, New Zealand
+    email: XXXXX
+    corresponding: yes
+keywords: [Causal Inference, Church, Cross-validation, Distress, Health, Longitudinal, Machine Learning, Religion, Semi-parametric, Targeted Learning]
+editor_options: 
+  chunk_output_type: console
+date: "last-modified"
+fontfamily: libertinus
+bibliography: references.bib
+csl: apa7.csl
+format:
+  pdf:
+    pdf-engine: lualatex
+    sanitise: true
+    keep-tex: true
+    link-citations: true
+    colorlinks: true
+    documentclass: article
+    classoption: ["single column"]
+    lof: false
+    lot: false
+    geometry:
+      - top=30mm
+      - left=25mm
+      - heightrounded
+      - headsep=22pt
+      - headheight=11pt
+      - footskip=33pt
+      - ignorehead
+      - ignorefoot
+    header-includes:
+      - \let\oldtabular\tabular
+      - \renewcommand{\tabular}{\small\oldtabular}
+      - \setlength{\tabcolsep}{4pt}  # adjust this value as needed
+execute:
+  echo: false
+  warning: false
+  include: true
+  eval: true
+---
+
+```{r}
+#| label: load-libraries
+#| echo: false
+#| include: false
+#| eval: true
+# if you want docx
+# format:
+  # docx:
+  #   default: true
+  
+# copy files to the same directory as your Quarto document
+library(here)
+## copy files to the same directory as your quarto document
+pacman::p_load(here)
+
+# copy csl file only if it doesn't exist in destination
+if (!file.exists(here::here("quarto", "apa7.csl"))) {
+  file.copy("csl/apa7.csl", here::here("quarto", "apa7.csl"))
+}
+
+# copy bibliography file only if it doesn't exist in destination
+if (!file.exists(here::here("quarto", "references.bib"))) {
+  file.copy("bibliography/references.bib", here::here("quarto", "references.bib"))
+}
+
+# install packages from github
+if (!require(boilerplate, quietly = TRUE)) {
+  # install devtools if necessary
+  if (!require(devtools, quietly = TRUE)) {
+    install.packages("devtools")
+  }
+  devtools::install_github("go-bayes/boilerplate")
+}
+
+if (!require(margot, quietly = TRUE)) {
+  # install devtools if necessary
+  if (!require(devtools, quietly = TRUE)) {
+    install.packages("devtools")
+  }
+  devtools::install_github("go-bayes/margot")
+}
+
+# check versions
+packageVersion(pkg = 'margot')      # should be > 1.0.38
+packageVersion(pkg = 'boilerplate') # should be > 1.0.42
+
+# load required libraries
+pacman::p_load(
+  boilerplate,
+  margot,
+  tinytex,
+  extrafont,
+  tidyverse,
+  kableExtra,
+  glue,
+  patchwork,
+  stringr,
+  ggplot2,
+  ggeffects,
+  parameters,
+  table1,
+  here,
+  knitr
+)
+
+# set random seed for reproducibility
+set.seed(123)
+
+# load fonts for document creation
+loadfonts(device = "all")
+
+# set path for study data (adjust to your own machine)
+push_mods <- here::here("save_directory") 
+
+# set path for database
+final_boilerplate_data <- here::here("final_boilerplate_data")
+unified_db <- boilerplate_import(data_path = final_boilerplate_data)
+
+# check available boilerplates
+cat(unified_db$methods$confounding_control$vanderweele)
+cat(unified_db$methods$sample$nzavs) # you may need to customise this
+
+# read variable definitions
+baseline_vars <- margot::here_read("baseline_vars")
+exposure_var <- margot::here_read("exposure_var")
+outcome_vars <- margot::here_read("outcome_vars")
+
+# define study waves
+baseline_wave <- margot::here_read("baseline_wave")
+exposure_waves <- margot::here_read("exposure_waves")
+outcome_wave <- margot::here_read("outcome_wave")
+
+# define study parameters
+study_years <- "2018-2021"
+name_exposure <- here_read("name_exposure")
+name_outcome_variables <- "MY OUTCOME VARIABLES IN THIS STUDY"
+name_exposure_lower <- tolower(name_exposure)  # define this early
+name_exposure_lower
+
+# eligibility criteria template
+eligibility_template <- "Participants were eligible if they participated in the {baseline wave}"
+
+# missing data at baseline
+percent_missing_baseline <- margot::here_read("percent_missing_baseline")
+
+# read tables for manuscript
+markdown_table_baseline <- margot::here_read("baseline_table")
+markdown_table_exposures <- margot::here_read("exposure_table")
+markdown_table_outcomes <- margot::here_read("outcomes_table")
+
+# sample size information
+n_total <- margot::here_read("n_total")
+n_participants <- here_read("n_participants")
+
+# variable labels for measures
+var_labels_measures <- here_read("var_labels_measures")
+label_mapping_all <- here_read("label_mapping_all")
+
+# plot titles and analysis parameters
+ate_title <- here_read("ate_title")
+flipped_names <- here_read("flipped_names")
+flipped_list <- paste(flipped_names, collapse = ", ")
+
+# import data for visualisation
+original_df <- margot::here_read('df_wide', push_mods)
+
+# define nice names and regimes early
+nice_name_exposure_variable <- stringr::str_to_sentence(name_exposure)
+name_outcomes_lower <- "multi-dimensional wellbeing"
+
+# define thresholds for exposure (moved earlier)
+lower_cut <- here_read("lower_cut")
+upper_cut <- here_read("upper_cut")
+threshold <- here_read("threshold")
+inverse_threshold <- here_read("inverse_threshold")
+scale_range <- margot::here_read("scale_range")
+
+# define exposure regimes
+name_control_regime_lower <- glue::glue("low {name_exposure_lower}")
+value_exposure_regime <- glue::glue("Set {name_exposure} {threshold} {upper_cut} {scale_range}")
+value_control_regime <- glue::glue("Set {name_exposure} {inverse_threshold} {upper_cut} {scale_range}")
+
+# contrast template for methods section (now all variables are defined)
+contrast_template <- "We used causal forests to estimate an average treatment effect as a contrast between *{name_control_regime_lower}* and *{name_exposure_lower}* on {name_outcomes_lower}."
+contrast_text <- glue(contrast_template)
+
+# verify assumptions (positivity)
+transition_tables <- margot::here_read("transition_tables")
+transition_tables_binary <- here_read("transition_tables_binary")
+
+# generate measures text for methods section
+baseline_measures_text <- boilerplate_generate_measures(
+  variable_heading = "Baseline Covariates",
+  variables = baseline_vars,
+  db = unified_db,
+  heading_level = 3,
+  subheading_level = 4,
+  print_waves = FALSE,
+  label_mappings = var_labels_measures
+)
+
+exposure_measures_text <- boilerplate_generate_measures(
+  variable_heading = "Exposure Variable",
+  variables = name_exposure,
+  db = unified_db,
+  heading_level = 3,
+  subheading_level = 4,
+  print_waves = FALSE,
+  label_mappings = var_labels_measures
+)
+
+outcome_measures_text <- boilerplate_generate_measures(
+  variable_heading = "Outcome Variables",
+  variables = outcome_vars,
+  db = unified_db,
+  heading_level = 3,
+  subheading_level = 4,
+  print_waves = FALSE,
+  label_mappings = var_labels_measures
+)
+
+# exposure description from database
+measures_exposure <- glue::glue(unified_db$measures[[name_exposure]]$description)
+
+# set plot defaults for average treatment effect (ate) plots
+base_defaults_binary <- list(
+  type = "RD",
+  title = ate_title,
+  e_val_bound_threshold = 1.2,
+  colors = c(
+    "positive" = "#E69F00",
+    "not reliable" = "grey50",
+    "negative" = "#56B4E9"
+  ),
+  x_offset = -0.5,
+  x_lim_lo = -0.5,
+  x_lim_hi = 0.5,
+  text_size = 4,
+  linewidth = 0.5,
+  estimate_scale = 1,
+  base_size = 18,
+  point_size = 2,
+  title_size = 19,
+  subtitle_size = 16,
+  legend_text_size = 10,
+  legend_title_size = 10,
+  include_coefficients = FALSE
+)
+
+# create plot options for outcomes
+outcomes_options_all <- margot_plot_create_options(
+  title = "",
+  base_defaults = base_defaults_binary,
+  subtitle = "",
+  filename_prefix = "grf"
+)
+
+# policy tree graph settings
+decision_tree_defaults <- list(
+  span_ratio = 0.3,
+  text_size = 3.8,
+  y_padding = 0.25,
+  edge_label_offset = 0.002,
+  border_size = 0.05
+)
+
+policy_tree_defaults <- list(
+  point_alpha = 0.5,
+  title_size = 12,
+  subtitle_size = 12,
+  axis_title_size = 12,
+  legend_title_size = 12,
+  split_line_color = "red",
+  split_line_alpha = 0.8,
+  split_label_color = "red",
+  split_label_nudge_factor = 0.007
+)
+
+# load model results (this may take time)
+models_binary <- margot::here_read_qs("models_binary", push_mods)
+
+# check model size
+margot::margot_size(models_binary)
+
+# create ate plots
+binary_results <- margot_plot(
+  models_binary$combined_table,
+  options = outcomes_options_all,
+  label_mapping = label_mapping_all,
+  include_coefficients = FALSE,
+  save_output = FALSE,
+  order = "evaluebound_asc",
+  original_df = original_df,
+  e_val_bound_threshold = 1.2
+)
+
+# view main plot and interpretation
+binary_results$plot
+cat(binary_results$interpretation)
+
+# load flipped models for heterogeneity analysis (this will take time)
+models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
+
+# omnibus heterogeneity tests
+result_ominbus_hetero <- margot_omnibus_hetero_test(
+  models_binary_flipped_all,
+  label_mapping = label_mapping_all,
+  alpha = 0.05,
+  detail_level = "standard", 
+  format = "markdown"
+)
+
+# view heterogeneity results
+result_ominbus_hetero$summary_table |> kbl("markdown")
+cat(result_ominbus_hetero$brief_interpretation)
+
+# rate test analysis for heterogeneity
+rate_table_all <- here_read("rate_table_all")
+rate_interpretation_all <- here_read("rate_interpretation_all")
+
+# autoc plots for models with significant heterogeneity
+batch_rate_autoc_plots <- margot_plot_rate_batch(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  model_names = rate_interpretation_all$autoc_model_names
+)
+
+# policy analysis with qini curves (depth = 2)
+models_batch_2L <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_names = rate_interpretation_all$qini_model_names,
+  max_depth = 2L,
+  original_df = original_df,
+  label_mapping = label_mapping_all
+)
+
+# extract qini plots
+qini_plots <- lapply(seq_along(models_batch_2L), function(i) {
+  models_batch_2L[[i]][[4]]
+})
+names(qini_plots) <- rate_interpretation_all$qini_model_names
+
+# interpret qini curves
+interpretation_qini_curves_2L <- margot_interpret_qini(
+  models_batch_2L,
+  model_names = rate_interpretation_all$qini_model_names,
+  label_mapping = label_mapping_all
+)
+
+# policy trees (depth = 1)
+plots_policy_trees_1L <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_names = rate_interpretation_all$either_model_names,
+  original_df = original_df,
+  label_mapping = label_mapping_all,
+  max_depth = 1L
+)
+
+# policy trees (depth = 2)
+plots_policy_trees_2L <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  model_names = rate_interpretation_all$either_model_names, # using all model names
+  original_df = original_df,
+  label_mapping = label_mapping_all,
+  max_depth = 2L
+)
+
+# interpret policy trees
+interpret_plots_policy_trees_2L <- margot_interpret_policy_batch(
+  models_binary_flipped_all, 
+  model_names = rate_interpretation_all$either_model_names
+)
+
+# define global variables for text generation
+global_vars <- list(
+  name_exposure_variable = nice_name_exposure_variable,
+  n_total = n_total,
+  n_participants = n_participants,
+  exposure_variable = name_exposure,
+  name_exposure_lower = name_exposure_lower,
+  name_control_regime_lower = name_control_regime_lower,
+  name_outcome_variables = "Multi-dimensional Wellbeing",
+  name_outcomes_lower = name_outcomes_lower,
+  name_exposure_capfirst = nice_name_exposure_variable,
+  measures_exposure = measures_exposure,
+  value_exposure_regime = value_exposure_regime,
+  value_control_regime = value_control_regime,
+  flipped_list = flipped_list,
+  baseline_wave = "NZAVS time 10, years 2018-2019",
+  exposure_waves = "NZAVS time 11, year 2019-2020",
+  outcome_wave = "NZAVS time 12, years 2020-2021",
+  protocol_url = "https://osf.io/ce4t9/"
+)
+```
+
+{{< pagebreak >}}
+
+## Method
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+library(boilerplate)
+cat(boilerplate_generate_text(
+  category = "methods",
+  sections = c(
+    "sample.nzavs",
+    "target_population",
+    "eligibility.standard",
+    "causal_intervention.grf_simple_text",
+    "analytic_approach.general_approach_cate_short",
+    "exposure_indicator",
+    "causal_identification_criteria",
+    "confounding_control.vanderweele",
+    "statistical_models.grf_short_explanation",
+    "missing_data.missing_grf_simple",
+    "sensitivity_analysis.short_evalue"
+  ),
+  global_vars = global_vars,
+  # global_vars = list( # variables you might need
+  #   exposure_variable = extraversion,
+  #   n_total = n_total,
+  #   n_participants = n_participants,
+  #   appendix_timeline = "Appendix A",
+  #   appendix_measures = "Appendix B",
+  #   measures_exposure = measures_exposure,
+  #   appendix_analytic_approach = "Appendix C",
+  #   appendix_assumptions_grf = "Appendix D",
+  #   appendix_cate_validation_grf = "Appendix D",
+  #   appendices_sample = "Appendix A",
+  #   appendix_outcomes = "Appendix B",
+  #   appendix_positivity = "Appendix E",
+  #   value_exposure_regime = "Regular Religious Service Attendance",
+  #   value_treatment_regime = "No Religious Service Attendance",
+  #   value_exposure_regime = " At each wave, if attendance is below four times per month, we shift it to four; otherwise, we leave it unchanged.",
+  #   value_control_regime = "At each wave, if attendance is above zero, we shift it to zero; otherwise, we leave it unchanged.",
+  #   name_exposure_regime = "Regular Religious Service Attendance.",
+  #   name_control_regime = "No Religious Service Attendance.",
+  #   name_exposure_threshold = "Attends Religious Service",
+  #   name_control_threshold = "No Religious Service Attendance.",
+  #   value_exposure = "1",
+  #   value_control = "0",
+  #   name_target_population = "all adults in New Zealand from the years 2018-2021",
+  #   number_exposure_waves = "one",
+  #   time_varying_confounders = "(physical disability, employment status, partner status, and parenting status)",
+  #   flipped_list = c("Neuroticism"),
+  #   grf_appendix = "Appendix D",
+  #   baseline_wave = "NZAVS time 10, years 2018-2019",
+  #   exposure_waves = "NZAVS time 11, year 2019",
+  #   outcome_wave = "NZAVS time 12, years 2020-2021",
+  #   flipped_example = "Neuroticism",
+  #   appendix_analytic_approach = "Appendix E",
+  #   protocol_url = "https://osf.io/ce4t9/"
+  # ),
+  db = unified_db
+))
+```
+
+
+{{< pagebreak >}}
+
+## Results
+
+### Average Treatement Effects
+
+
+
+```{r}
+#| label: fig-ate
+#| fig-cap: "Average Treatment Effects on Multi-dimensional Wellbeing"
+#| eval: true
+#| echo: false
+#| fig-height: 14
+#| fig-width: 18
+binary_results$plot
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: tbl-outcomes
+#| tbl-cap: "Average Treatment Effects on Multi-dimensional Wellbeing"
+#| eval: true
+#| echo: false
+
+binary_results$transformed_table |> kbl("markdown")
+
+```
+
+
+
+```{r, results = 'asis'}
+cat(binary_results$interpretation)
+```
+
+
+
+
+{{< pagebreak >}}
+
+### Heterogeneous Treatment Effects 
+
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(rate_interpretation_all$comparison)
+```
+
+Refer to [Appendix F](#appendix-cate-validation) for details.
+
+
+
+### RATE AUTOC Results
+
+
+```{r, results = 'asis'}
+# only reliable results
+cat(rate_interpretation_all$autoc_results)
+```
+
+```{r}
+#| label: fig-rate
+#| fig-cap: "RATE AUTOC Graphs"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+batch_rate_autoc_plots$model_t2_log_hours_exercise_z
+
+```
+
+
+### QINI Curve Results
+
+```{r, results = 'asis'}
+# only reliable results
+cat(rate_interpretation_all$qini_results)
+```
+
+
+```{r}
+#| label: tbl-qini
+#| tbl-cap: "Qini Curve Results"
+#| eval: true
+#| echo: false
+
+interpretation_qini_curves_2L$summary_table |> 
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  kbl(format = "markdown")
+```
+
+
+```{r, results = 'asis'}
+# only reliable results
+cat(interpretation_qini_curves_2L$qini_explanation)
+```
+
+
+```{r}
+#| label: fig-qini
+#| fig-cap: "RATE AUTOC Graphs"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+qini_plots$model_t2_meaning_sense_z
+```
+
+
+{{< pagebreak >}}
+
+### Policy Trees
+
+```{r, results = 'asis'}
+cat(interpret_plots_policy_trees_2L)
+```
+
+
+        
+```{r}
+#| label: fig-policy-1
+#| fig-cap: "Decision Tree: Exercise"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+plots_policy_trees_2L$model_t2_log_hours_exercise_z$combined_plot
+```
+
+
+
+```{r}
+#| label: fig-policy-2
+#| fig-cap: "Decision Tree: Meaning Sense"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+plots_policy_trees_2L$model_t2_meaning_sense_z$combined_plot
+```
+
+
+
+## Discussion
+
+
+
+```{r,  results='asis'}
+#| eval: true
+#| echo: false
+cat(boilerplate_generate_text(
+  category = "discussion",
+  sections = c(
+    "ethics.nzavs_2021_2027",
+    "authors_statment_empty",
+    "acknowlegements.nzavs_acknowledgements_2025",
+    "nzavs_data_availabily"
+  ),
+  global_vars = list(
+    exposure_variable = name_exposure
+  ),
+  db = unified_db
+))
+```
+
+
+
+{{< pagebreak >}}
+
+## Appendix A: Measures {#appendix-measures}
+
+
+### Measures 
+
+####  Covariate Measures 
+```{r, results='asis'}
+cat(baseline_measures_text)
+```
+
+#### Exposure Measures
+
+```{r, results='asis'}
+cat(exposure_measures_text)
+```
+
+#### Outcome Measures
+
+```{r, results='asis'}
+cat(outcome_measures_text)
+```
+
+## Appendix B: Sample {#appendix-sample}
+
+@tbl-appendix-baseline presents sample demographic statistics.
+
+::: {#tbl-appendix-baseline}
+```{r, results = 'asis'}
+#| eval: true
+#| include: true
+#| echo: false
+markdown_table_baseline
+```
+Demographic statistics for New Zealand Attitudes and Values Cohort wave 2018.
+:::
+
+
+### Exposure Variable {#appendix-exposure} 
+
+<!-- @tbl-sample-exposures presents sample statistics for the exposure variable, religious service attendance, during the baseline and exposure waves. This variable was not measured in part of NZAVS time 12 (years 2020-2021) and part of NZAVS time 13 (years 2021-2022). To address missingness, if a value was observed after NZAVS time 14, we carried the previous observation forward and created and NA indicator. If there was no future observation, the participant was treated as censored, and inverse probability of censoring weights were applied, following our standard method for handling missing observations (see mansucript **Method**/**Handling of Missing Data**). Here, our carry-forward imputation approach may result in conservative causal effect estimation because it introduces measurement error. However, this approach would not generally bias causal effect estimation away from the null because the measurement error is unsystematic and random and unrelated to the outcomes. -->
+
+
+::: {#tbl-appendix-exposures}
+```{r, results = 'asis'}
+#| eval: true
+#| include: true
+#| echo: false
+
+markdown_table_exposures
+
+```
+Demographic statistics for New Zealand Attitudes and Values Cohort waves 2018.
+:::
+
+{{< pagebreak >}}
+
+### Outcome Variables {#appendix-outcomes} 
+
+::: {#tbl-appendix-outcomes}
+```{r, results = 'asis'}
+#| eval: true
+#| include: true
+#| echo: false
+
+markdown_table_outcomes
+
+```
+Outcome variables measured at baseline (NZAVS time 10, years 2018-2019, and time 15, years 2023-2024).
+:::
+
+
+{{< pagebreak >}}
+
+
+### Appendix C: Transition Matrix to Check The Positivity Assumption {#appendix-transition}
+
+
+```{r, results = 'asis'}
+#| label: tbl-transition
+#| tbl-cap: "Transition Matrix Showing Change"
+#| eval: true
+#| include: true
+#| echo: false
+
+transition_tables_binary$tables[[1]]
+```
+
+```{r, results = 'asis'}
+cat(transition_tables_binary$explanation)
+```
+
+
+{{< pagebreak >}}
+
+
+## Appendix D: Evidence of Heterogeneity {#appendix-cate-validation}
+
+
+
+        
+```{r, results='asis'}
+#| label: tbl-omnibus
+#| eval: true
+#| echo: false
+result_ominbus_hetero$summary_table |> kbl("markdown")
+```
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(result_ominbus_hetero$interpretations)
+```
+
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(boilerplate::boilerplate_generate_text(
+  category = "results",
+  sections = c(
+    "grf.interpretation_rate"
+  ),
+  global_vars = list(
+    appendix_omnibus = "Appendix F",
+    flipped_list = flipped_list
+  ),
+  db = unified_db
+))
+```
+
+
+
+```{r, results='asis'}
+#| label: tbl-rate-autoc
+#| eval: true
+#| echo: false
+# view rate tables
+rate_table_all$rate_autoc |> kbl("markdown")
+#rate_table_all$rate_qini |> kbl("markdown")
+```
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(rate_interpretation_all$autoc_results)
+```
+
+```{r, results='asis'}
+#| label: tbl-rate-qini
+#| eval: true
+#| echo: false
+rate_table_all$rate_qini |> kbl("markdown")
+```
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(rate_interpretation_all$qini_results)
+```
+
+
+{{< pagebreak >}}
+
+<!-- ```{r,  results='asis'} -->
+<!-- #| eval: true -->
+<!-- #| echo: false -->
+<!-- #| include: true -->
+<!-- text_explain_grf <- boilerplate_generate_text( -->
+<!--   category = "appendix", -->
+<!--   sections = c( -->
+<!--     "explain.grf" -->
+<!--   ), -->
+<!--   global_vars = list( -->
+<!--     traning_proportion = "70%", -->
+<!--     train_proportion_decision_tree = "70%", -->
+<!--     appendix_letter_explain_grf = "G" -->
+<!--   ), -->
+<!--   db = unified_db -->
+<!-- ) -->
+<!-- cat(knitr::knit_child(text = text_explain_grf, quiet = TRUE)) -->
+<!-- ``` -->
+
+
+
+## References {.appendix-refs}
+
+
