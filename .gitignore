@@ -46,6 +46,7 @@
 # data
 data/
 save_directory/
+examples/
 
 # .quartoignore
 template-quarto-manuscript.qmd

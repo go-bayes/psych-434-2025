@@ -66,7 +66,7 @@ if (!dir.exists("save_directory")) {
 
 # set up data directory structure
 data_dir    <- here::here("data")
-push_mods <- here::here("save_directory") 
+push_mods <- here::here("examples") 
 
 
 # load data -----------------------------------------------------------------
@@ -175,12 +175,13 @@ cli::cli_h1("set waves for three-wave study ✔")
 # +--------------------------+
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
-name_exposure <- "extraversion"
+
+name_exposure <- "neuroticism"
 
 # exposure variable labels
 var_labels_exposure <- list(
-  "extraversion" = "Extraversion",
-  "extraversion_binary" = "Extraversion (binary)"
+  "neuroticism" = "neuroticism",
+  "neuroticism_binary" = "Neuroticism (binary)"
 )
 
 cli::cli_h1("set variable name for exposure ✔")
@@ -209,32 +210,37 @@ cli::cli_h1("set variable name for exposure ✔")
 # here, we are focussing on a subset of wellbeing outcomes
 # chose outcomes relevant to * your * study. Might be all/some/none/exactly 
 # these:
+
+# chose outcomes relevant to * your * study. might be all/some/none/exactly these:
 outcome_vars <- c(
-  # health outcomes
+  # # health outcomes
   # "alcohol_frequency_weekly", "alcohol_intensity",
-  # "hlth_bmi", 
-  "log_hours_exercise", 
-  # "hlth_sleep_hours", 
-  # "short_form_health",
-  
-  # psychological outcomes
-  # "hlth_fatigue", 
-  "kessler_latent_anxiety", 
-  "kessler_latent_depression", 
-  "rumination",
-  
-  # well-being outcomes
-  # "bodysat", 
-  #"forgiveness", "gratitude", 
-  "lifesat", "meaning_purpose", "meaning_sense", 
-  # "perfectionism", 
-  "pwi", 
-  #"self_control", 
-  "self_esteem", 
-  #"sexual_satisfaction",
+  # # "hlth_bmi", 
+  # "log_hours_exercise", 
+  # # "hlth_sleep_hours", 
+  # # "short_form_health",
+  # 
+  # # psychological outcomes
+  # # "hlth_fatigue", 
+  # "kessler_latent_anxiety", 
+  # "kessler_latent_depression", 
+  # "rumination",
+  # 
+  # # well-being outcomes
+  # # "bodysat", 
+  # #"forgiveness", "gratitude", 
+  # "lifesat", "meaning_purpose", "meaning_sense", 
+  # # "perfectionism", 
+  # "pwi", 
+  # #"self_control", 
+  # "self_esteem", 
+  # #"sexual_satisfaction",
   
   # social outcomes
-  "belong", "neighbourhood_community", "support"
+  "belong", "neighbourhood_community", "support",  # added comma here
+  
+  # social behaviours
+  "charity_donate", "log_hours_charity"
 )
 
 cli::cli_h1("set variable name for outcomes ✔")
@@ -290,9 +296,6 @@ cli::cli_h1("set baseline covariate names  ✔")
 # +--------------------------+
 # |   END MODIFY SECTION     |
 # +--------------------------+
-
-
-
 
 
 # +--------------------------+
@@ -418,9 +421,28 @@ dat_long_1 <- dat_prep |>
 # plot distribution to help with cutpoint decision
 dat_long_exposure <- dat_long_1 |> filter(wave %in% exposure_waves)
 
-# make graph 
 # define cutpoints
-cut_points = c(1, 4)
+cut_points = c(1, 5)
+
+# make graph
+graph_cut <- margot::margot_plot_categorical(
+  dat_long_exposure,
+  col_name         = name_exposure,
+  sd_multipliers = c(-1, 1), # select to suit
+  # either use n_divisions for equal-sized groups:
+ # n_divisions      = 2,
+  # or use custom_breaks for specific values:
+  custom_breaks    = cut_points,  # ** adjust as needed **
+  # could be "lower", no difference in this case, as no one == 4
+  cutpoint_inclusive = "lower",
+  show_mean        = TRUE,
+  show_median      = FALSE,
+  show_sd          = TRUE
+)
+print(graph_cut)
+
+# make graph 
+
 
 # use later in positivity graph
 lower_cut <- cut_points[[1]]
@@ -440,23 +462,6 @@ here_save(scale_range, "scale_range")
 
 cli::cli_h1("set thresholds for binary variable (if variable is continuous) ✔")
 
-
-# make graph
-graph_cut <- margot::margot_plot_categorical(
-  dat_long_exposure,
-  col_name         = name_exposure,
-  sd_multipliers = c(-1, 1), # select to suit
-  # either use n_divisions for equal-sized groups:
-  # n_divisions      = 2,
-  # or use custom_breaks for specific values:
-  custom_breaks    = cut_points,  # ** adjust as needed **
-  # could be "lower", no difference in this case, as no one == 4
-  cutpoint_inclusive = "upper",
-  show_mean        = TRUE,
-  show_median      = FALSE,
-  show_sd          = TRUE
-)
-print(graph_cut)
 
 # save your graph
 margot::here_save(graph_cut, "graph_cut", push_mods)
@@ -505,7 +510,6 @@ dat_long_final <- margot::margot_log_transform_vars(
   droplevels()
 
 
-
 # check missing data --------------------------------------------------------
 # this is crucial to understand potential biases
 missing_summary <- naniar::miss_var_summary(dat_long_final)
@@ -528,7 +532,6 @@ margot::here_save(percent_missing_baseline, "percent_missing_baseline", push_mod
 # save prepared dataset for next stage --------------------------------------
 margot::here_save(dat_long_final, "dat_long_final", push_mods)
 
-
 cli::cli_h1("made and saved final long data set for further processign in script 02 ✔")
 
 
@@ -550,7 +553,6 @@ cli::cli_h1("made and saved final long data set for further processign in script
 # check
 threshold # defined above
 upper_cut # defined above
-
 name_exposure
 # create transition matrices to check positivity ----------------------------
 # this helps assess whether there are sufficient observations in all exposure states
@@ -613,7 +615,7 @@ var_labels_baseline <- list(
   "nz_dep2018" = "NZ Deprivation Index",
   "nzsei_13_l" = "Occupational Prestige Index",
   "household_inc" = "Household Income",
-
+  
   
   # personality traits
   "agreeableness" = "Agreeableness",
@@ -652,36 +654,28 @@ outcome_vars
 
 # get names
 var_labels_outcomes <- list(
-  # "alcohol_frequency_weekly" = "Alcohol Frequency (weekly)",
-  # "alcohol_intensity" = "Alcohol Intensity",
-  # "hlth_bmi" = "Body Mass Index",
-  # "hlth_sleep_hours" = "Sleep",
-  "log_hours_exercise" = "Hours of Exercise (log)",
- # "short_form_health" = "Short Form Health",
-  "hlth_fatigue" = "Fatigue",
-  "kessler_latent_anxiety" = "Anxiety",
-  "kessler_latent_depression" = "Depression",
- # "rumination" = "Rumination",
-  "bodysat" = "Body Satisfaction",
- # "forgiveness" = "Forgiveness",
- # "perfectionism" = "Perfectionism",
- # "self_control" = "Self Control",
-  "self_esteem" = "Self Esteem",
-  "sexual_satisfaction" = "Sexual Satisfaction",
- # "gratitude" = "Gratitude",
-  "lifesat" = "Life Satisfaction",
-  "meaning_purpose" = "Meaning: Purpose",
-  "meaning_sense" = "Meaning: Sense",
-  "pwi" = "Personal Well-being Index",
+  # # "alcohol_frequency_weekly" = "Alcohol Frequency (weekly)",
+  # # "alcohol_intensity" = "Alcohol Intensity",
+  # # "hlth_bmi" = "Body Mass Index",
+  # # "hlth_sleep_hours" = "Sleep",
+  # #"log_hours_exercise" = "Hours of Exercise (log)",
+  # # "short_form_health" = "Short Form Health",
+  # #"hlth_fatigue" = "Fatigue",
+  # "kessler_latent_anxiety" = "Anxiety", "kessler_latent_depression" = "Depression", # "rumination" = "Rumination",
+  # "bodysat" = "Body Satisfaction", # "forgiveness" = "Forgiveness",
+  # # "perfectionism" = "Perfectionism",
+  # # "self_control" = "Self Control",
+  # "self_esteem" = "Self Esteem", "sexual_satisfaction" = "Sexual Satisfaction", # "gratitude" = "Gratitude",
+  # "lifesat" = "Life Satisfaction", "meaning_purpose" = "Meaning: Purpose", "meaning_sense" = "Meaning: Sense", "pwi" = "Personal Well-being Index", 
   "belong" = "Social Belonging",
   "neighbourhood_community" = "Neighbourhood Community",
-  "support" = "Social Support"
+  "support" = "Social Support",
+  "log_hours_charity" = "Hours Volunteering (Binary)",
+   "charity_donate" = "Charitable Donations"
 )
 
 # save for manuscript
 here_save(var_labels_outcomes, "var_labels_outcomes")
-
-
 
 
 # save all variable translations

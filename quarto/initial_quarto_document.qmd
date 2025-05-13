@@ -27,6 +27,8 @@ fontfamily: libertinus
 bibliography: references.bib
 csl: apa7.csl
 format:
+  docx: 
+    default: false
   pdf:
     pdf-engine: lualatex
     sanitise: true
