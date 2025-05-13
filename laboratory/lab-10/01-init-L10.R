@@ -418,11 +418,14 @@ dat_long_1 <- dat_prep |>
 # plot distribution to help with cutpoint decision
 dat_long_exposure <- dat_long_1 |> filter(wave %in% exposure_waves)
 
-# make graph 
-# define cutpoints
+
+
+# define cutpoints for graph ----------------------------------------------
+
+# define cutpoints *-- these can be adjusted --* 
 cut_points = c(1, 4)
 
-# use later in positivity graph
+# to use later in positivity graph in manuscript
 lower_cut <- cut_points[[1]]
 upper_cut <- cut_points[[2]]
 threshold <- '>' # if upper
@@ -482,8 +485,6 @@ cli::cli_h1("created binary variable (if variable is continuous) ✔")
 
 
 
-
-
 # +--------------------------+
 # |       DO NOT ALTER       |
 # +--------------------------+
@@ -495,10 +496,10 @@ dat_long_3 <- margot::margot_process_binary_vars(dat_long_2)
 # log-transform hours and income variables: tables for analysis (only logged versions of vars)
 dat_long_final <- margot::margot_log_transform_vars(
   dat_long_3,
-  vars            = c(starts_with("hours_"), "household_inc"),
+  vars            = c(starts_with("hours_"), "household_inc"), # **--- think about this ---***
   prefix          = "log_",
   keep_original   = FALSE,
-  exceptions = exposure_var # omit original variables
+  exceptions = exposure_var # omit original variables#  **--- think about this ---***
 ) |> 
   # select only variables needed for analysis
   select(all_of(c(baseline_vars, exposure_var, outcome_vars, "id", "wave", "year_measured", "sample_weights"))) |> 
@@ -550,8 +551,9 @@ cli::cli_h1("made and saved final long data set for further processign in script
 # check
 threshold # defined above
 upper_cut # defined above
+name_exposure # defined above
 
-name_exposure
+
 # create transition matrices to check positivity ----------------------------
 # this helps assess whether there are sufficient observations in all exposure states
 dt_positivity <- dat_long_final |>
@@ -572,7 +574,11 @@ transition_tables <- margot::margot_transition_table(
   wave_var = "wave",
   table_name = "transition_table"
 )
+
+# check
 print(transition_tables$tables[[1]])
+
+# save
 margot::here_save(transition_tables, "transition_tables", push_mods)
 
 # create binary transition tables
@@ -584,7 +590,11 @@ transition_tables_binary <- margot::margot_transition_table(
   wave_var = "wave",
   table_name = "transition_table_binary"
 )
+
+# check
 print(transition_tables_binary$tables[[1]])
+
+# save
 margot::here_save(transition_tables_binary, "transition_tables_binary", push_mods)
 
 # +--------------------------+

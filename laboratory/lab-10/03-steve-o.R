@@ -38,7 +38,6 @@ library("margot")
 packageVersion(pkg = "margot")
 
 
-
 # load libraries ----------------------------------------------------------
 # pacman will install missing packages automatically
 if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
@@ -61,7 +60,6 @@ pacman::p_load(
   glue,            # format/ interpolate a string
   cli
 )
-
 
 
 # directory path configuration -----------------------------------------------
@@ -116,7 +114,7 @@ t2_outcome_z
 
 # define names for titles -------------------------------------------------
 
-nice_exposure_name = "Extraversion"
+nice_exposure_name = "Neuroticism"
 nice_outcome_name = "Wellbeing"
 title = "Effect of {{nice_exposure_name}} on {{nice_outcome_name}}"
 
@@ -133,28 +131,28 @@ label_mapping_all <- list(
   #"t2_alcohol_intensity_weekly_z" = "Alcohol Intensity",
   #"t2_hlth_bmi_z" = "BMI",
   #"t2_hlth_sleep_hours_z" = "Sleep",
-  "t2_log_hours_exercise_z" = "Hours of Exercise (log)",
-  #"t2_short_form_health_z" = "Short Form Health"
-  "t2_hlth_fatigue_z" = "Fatigue",
-  "t2_kessler_latent_anxiety_z" = "Anxiety",
-  "t2_kessler_latent_depression_z" = "Depression",
-  "t2_rumination_z" = "Rumination",
-  # "t2_bodysat_z" = "Body Satisfaction",
-  "t2_foregiveness_z" = "Forgiveness",
-  "t2_perfectionism_z" = "Perfectionism", 
-  "t2_self_esteem_z" = "Self Esteem",
-  # "t2_self_control_z" = "Self Control",
-  # "t2_sexual_satisfaction_z" = "Sexual Satisfaction".
-  "t2_gratitude_z" = "Gratitude",
-  "t2_lifesat_z" = "Life Satisfaction",
-  "t2_meaning_purpose_z" = "Meaning: Purpose",
-  "t2_meaning_sense_z" = "Meaning: Sense",
-  "t2_pwi_z" = "Personal Well-being Index",
+  # "t2_log_hours_exercise_z" = "Hours of Exercise (log)",
+  # #"t2_short_form_health_z" = "Short Form Health"
+  # "t2_hlth_fatigue_z" = "Fatigue",
+  # "t2_kessler_latent_anxiety_z" = "Anxiety",
+  # "t2_kessler_latent_depression_z" = "Depression",
+  # "t2_rumination_z" = "Rumination",
+  # # "t2_bodysat_z" = "Body Satisfaction",
+  # "t2_foregiveness_z" = "Forgiveness",
+  # "t2_perfectionism_z" = "Perfectionism", 
+  # "t2_self_esteem_z" = "Self Esteem",
+  # # "t2_self_control_z" = "Self Control",
+  # # "t2_sexual_satisfaction_z" = "Sexual Satisfaction".
+  # "t2_gratitude_z" = "Gratitude",
+  # "t2_lifesat_z" = "Life Satisfaction",
+  # "t2_meaning_purpose_z" = "Meaning: Purpose",
+  # "t2_meaning_sense_z" = "Meaning: Sense",
+  # "t2_pwi_z" = "Personal Well-being Index",
   "t2_belong_z" = "Social Belonging",
   "t2_neighbourhood_community_z" = "Neighbourhood Community",
-  "t2_support_z" = "Social Support"
+  "t2_support_z" = "Social Support",
+  "t2_log_hours_charity_z" = "Hours Volunteering (log)"
 )
-
 
 # save
 here_save(label_mapping_all, "label_mapping_all")
@@ -294,7 +292,7 @@ cf_out <- margot_causal_forest(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  outcome_vars = "t2_kessler_latent_depression_z", # select variable in your outcome_variable set
+  outcome_vars = "t2_belong_z", # select variable in your outcome_variable set
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -317,7 +315,7 @@ combo1 <- margot_plot_policy_combo(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_name       = "model_t2_kessler_latent_depression_z",
+  model_name       = "model_t2_belong_z",
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -337,7 +335,7 @@ combo2 <- margot_plot_policy_combo(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_name       = "model_t2_kessler_latent_depression_z",
+  model_name       = "model_t2_belong_z",
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -414,11 +412,11 @@ models_batch_2L[[1]][[4]]  # qini plot - not convincing
 # |    MODIFY THIS           |
 # +--------------------------+
 
-flip_outcomes_test = c("t2_kessler_latent_depression_z")
+flip_outcomes_test = c("t2_belong_z")
 
 # function to get the labels from the models (labels were defined above)
 flipped_names_test <- margot_get_labels(flip_outcomes_test, label_mapping_all)
-
+flipped_names_test
 # +--------------------------+
 # |   END MODIFY             |
 # +--------------------------+
@@ -450,7 +448,7 @@ models_batch_flipped_1L <- margot_policy(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_names = c("model_t2_kessler_latent_depression_z"),
+  model_names = c("model_t2_belong_z"),
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -471,7 +469,25 @@ models_batch_flipped_2L <- margot_policy(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_names = c("model_t2_kessler_latent_depression_z"),
+  model_names = c("model_t2_belong_z"),
+  # +--------------------------+
+  # |   END MODIFY             |
+  # +--------------------------+
+  original_df = original_df,
+  label_mapping = label_mapping_all,
+  max_depth     = 2L
+)
+
+models_batch_flipped_2L <- margot_plot_decision_tree(
+  cf_out_f,
+  save_plots = FALSE,
+  output_dir = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args = policy_tree_defaults,
+  # +--------------------------+
+  # |    MODIFY THIS           |
+  # +--------------------------+
+  model_names = c("model_t2_belong_z"),
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -486,7 +502,6 @@ models_batch_flipped_2L <- margot_policy(
 # flipped
 # interpretation: exposure minimising depression
 models_batch_flipped_2L[[1]][[3]]
-
 
 # *** NOTE DIFFERENCES IN INTERPRETATION
 
@@ -587,7 +602,6 @@ cli::cli_h1("causal forest model completed and saved ✔")
 # if you want to check the size of an object use
 # margot::margot_size(object)
 
-
 # +--------------------------+
 # |          ALERT           |
 # +--------------------------+
@@ -683,19 +697,12 @@ here_save(margot_bind_tables_markdown, "margot_bind_tables_markdown")
 # +--------------------------+
 # |    MODIFY THIS           |
 # +--------------------------+
-
+t2_outcome_z
 # WHICH OUTCOMES -- if any ARE UNDESIREABLE? 
 flip_outcomes_standard = c(
-  #"t2_alcohol_frequency_weekly_z",
-  #"t2_alcohol_intensity_z",
-  #"t2_hlth_bmi_z",
-  #"t2_hlth_fatigue_z",
-  "t2_kessler_latent_anxiety_z", #  ← select
-  "t2_kessler_latent_depression_z",#  ← select
-  "t2_rumination_z" #  ← select
-  #"t2_perfectionism_z" # the exposure variable was not investigated
+  t2_outcome_z
 )
-
+flip_outcomes_standard
 # when exposure is negative and you want to focus on how much worse off
 # some people are use this: 
 
@@ -847,11 +854,12 @@ cli::cli_h1("produced rate tables and interpretations ✔")
 # generate batch rate plots for models with significant heterogeneity
 batch_rate_autoc_plots <- margot_plot_rate_batch(
   models_binary_flipped_all,
-  save_plots = FALSE,
+  save_plots = FALSE#,
   # just use rate autoc for rate plots
-  model_names = rate_interpretation_all$autoc_model_names
+ # model_names = rate_interpretation_all$autoc_model_names
 )
 
+batch_rate_autoc_plots$model_t2_support_z
 # extract individual plots from the batch result
 autoc_plots <- batch_rate_autoc_plots
 
@@ -900,18 +908,18 @@ if (length(autoc_plots) > 0) {
   message("No AUTOC plots available")
 }
 
+
 models_batch_qini_2L_test <- margot_plot_policy_combo(
   models_binary_flipped_all,
   decision_tree_args = decision_tree_defaults,
   policy_tree_args = policy_tree_defaults,
-  model_name =  "model_t2_log_hours_exercise_z",
+  model_name =  "model_t2_belong_z",
   max_depth  = 2L,
   # ← new argument
   original_df = original_df,
   label_mapping = label_mapping_all
 )
-rate_interpretation_all$autoc_model_names
-
+models_batch_qini_2L_test$combined_plot
 
 cli::cli_h1("produced rate graphs ✔")
 
@@ -924,7 +932,7 @@ models_batch_qini_2L <- margot_policy(
   output_dir = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$qini_model_names,
+#  model_names = rate_interpretation_all$qini_model_names,
   max_depth  = 2L,
   # ← new argument
   original_df = original_df,
@@ -1004,7 +1012,7 @@ cat(interpretation_qini_curves_2L$qini_explanation)
 # view summary table
 interpretation_qini_curves_2L$summary_table |> kbl("markdown")
 
-
+models_binary_flipped_all
 
 # policy tree analysis depth 1 L------------------------------------------------
 # make policy trees
@@ -1015,7 +1023,7 @@ plots_policy_trees_1L <- margot_policy(
   output_dir = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$either_model_names,
+ # model_names = rate_interpretation_all$either_model_names,
   # defined above
   original_df = original_df,
   label_mapping = label_mapping_all,
@@ -1023,7 +1031,7 @@ plots_policy_trees_1L <- margot_policy(
 )
 
 # get number of models
-n_models <- length(rate_interpretation_all$either_model_names)
+n_models <-  5 # length(rate_interpretation_all$either_model_names)
 
 # # use purrr to map through and print each model
 # purrr::map(1:n_models, function(i) {
@@ -1064,7 +1072,7 @@ plots_policy_trees_2L <- margot_policy(
   max_depth = 2L
 )
 
-n_models <- length(rate_interpretation_all$either_model_names)
+n_models <- 5 #length(rate_interpretation_all$either_model_names)
 
 model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[3]])
 names(model_outputs_2L) <- paste0("model_", 1:n_models)
@@ -1073,7 +1081,10 @@ names(model_outputs_2L) <- paste0("model_", 1:n_models)
 # view plots (two in this example)
 model_outputs_2L$model_1
 model_outputs_2L$model_2
-#model_outputs_2L$model_3
+model_outputs_2L$model_3
+model_outputs_2L$model_4
+model_outputs_2L$model_5
+
 
 
 # convincing?

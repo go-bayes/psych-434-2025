@@ -13,7 +13,7 @@ abstract: |
   **Results**:   Increasing XXXXX leads to XXXXX. Heterogeneous responses to (e.g. *Forgiveness*, *Personal Well-Being*, and *Life-Satisfaction*...) reveal structural variability in subpopulations...
   
   **Implications**: (Brief few sentences)
-  **Keywords**: *Causal Inference*;  *Cross-validation*; *Distress*; *Employment*; *Longitudinal*; *Machine Learning*; *Religion*; *Semi-parametric*; *Targeted Learning*.
+  **Keywords**: *Causal Inference*;  *Cross-validation*; *Distress*; *Employment*; *Longitudinal*; *Machine sLearning*; *Religion*; *Semi-parametric*; *Targeted Learning*.
 author: 
   - name: YOUR NAME
     affiliation: Victoria University of Wellington, New Zealand

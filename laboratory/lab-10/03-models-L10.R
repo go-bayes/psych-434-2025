@@ -11,7 +11,6 @@
 rstudioapi::restartSession()
 
 
-
 # reproducibility ---------------------------------------------------------
 
 
@@ -24,9 +23,10 @@ if (!require(margot, quietly = TRUE)) {
   library(margot)
 }
 
-
-if (packageVersion("margot") < "1.0.37") {
-  stop("please install margot >= 1.0.37 for this workflow\n
+# min version of markgot
+min_version <- "1.0.40"
+if (packageVersion("margot") < min_version) {
+  stop("please install margot >= min_version for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -59,7 +59,11 @@ pacman::p_load(
   patchwork,      # nice graph placement
   janitor,         # nice labels
   glue,            # format/ interpolate a string
-  cli
+  cli,
+  future,
+  crayon,
+  glue,
+  stringr
 )
 
 
@@ -116,10 +120,10 @@ t2_outcome_z
 
 # define names for titles -------------------------------------------------
 
-nice_exposure_name = "Extraversion"
+nice_exposure_name =  stringr::str_to_sentence(name_exposure)
 nice_outcome_name = "Wellbeing"
-title = "Effect of {{nice_exposure_name}} on {{nice_outcome_name}}"
-
+title = glue::glue("Effect of {nice_exposure_name} on {nice_outcome_name}")
+title
 # save for final rport
 here_save(title, "title")
 
@@ -289,12 +293,12 @@ W_toy        <- W[toy]
 weights_toy  <- weights[toy]
 
 # fit the model
-cf_out <- margot_causal_forest(
+cf_out <- margot_causal_forest_parallel( #<- new function ***
   data         = toy_data,
   # +--------------------------+
-  # |    MODIFY THIS           |
+  # |    MODIFY THIS           | 
   # +--------------------------+
-  outcome_vars = "t2_kessler_latent_depression_z", # select variable in your outcome_variable set
+  outcome_vars = c("t2_kessler_latent_depression_z", "t2_kessler_latent_anxiety_z"), # select variable in your outcome_variable set
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -423,12 +427,20 @@ flipped_names_test <- margot_get_labels(flip_outcomes_test, label_mapping_all)
 # |   END MODIFY             |
 # +--------------------------+
 
+# check size of objects
+lobstr::obj_size(cf_out)                         # overall
+purrr::map_dbl(cf_out, lobstr::obj_size)         # cf_out$results, cf_out$full_models, …
+
+mdl <- cf_out$results[[1]]
+purrr::map_dbl(mdl, lobstr::obj_size)            # tau_hat, dr_scores, forest, …
+
 # run flip forests
-cf_out_f <- margot_flip_forests(
+cf_out_f <- margot_flip_forests_parallel( #<- NEW FUNCTION 
   model_results = cf_out,
   flip_outcomes = flip_outcomes_test,
-  recalc_policy = TRUE
-)
+  recalc_policy = TRUE,
+  max_size_GB    = 15) # SET FOR YOUR COMPUTER
+
 
 # where there are very low or high propensity scores (prob of exposure) 
 # we might consider trimming
@@ -440,26 +452,6 @@ margot::margot_inspect_qini(cf_out_f, propensity_bounds = c(0.01, 0.97))
 #                                              propensity_bounds  = c(0.05, 0.95)) 
 
 
-# flipped batch model
-models_batch_flipped_1L <- margot_policy(
-  cf_out_f,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  # +--------------------------+
-  # |    MODIFY THIS           |
-  # +--------------------------+
-  model_names = c("model_t2_kessler_latent_depression_z"),
-  # +--------------------------+
-  # |   END MODIFY             |
-  # +--------------------------+
-  original_df = original_df,
-  label_mapping = label_mapping_all,
-  max_depth     = 1L
-)
-
-models_batch_flipped_1L[[1]][[3]]
 
 # flipped batch model
 models_batch_flipped_2L <- margot_policy(
@@ -477,7 +469,8 @@ models_batch_flipped_2L <- margot_policy(
   # +--------------------------+
   original_df = original_df,
   label_mapping = label_mapping_all,
-  max_depth     = 2L
+  max_depth     = 2L,
+  output_objects = "combined_plot" # new parameter margot v1.0.39
 )
 
 # +--------------------------+
@@ -485,7 +478,7 @@ models_batch_flipped_2L <- margot_policy(
 # +--------------------------+
 # flipped
 # interpretation: exposure minimising depression
-models_batch_flipped_2L[[1]][[3]]
+models_batch_flipped_2L$model_t2_kessler_latent_depression_z
 
 
 # *** NOTE DIFFERENCES IN INTERPRETATION
@@ -549,7 +542,7 @@ cli::cli_h1("testing on smaller dataset completed ✔")
 # |          ALERT           |
 # +--------------------------+
 # !!!! THIS WILL TAKE TIME  !!!!!
-models_binary <- margot::margot_causal_forest(
+models_binary <- margot_causal_forest_parallel(
   data = df_grf,
   outcome_vars = t2_outcome_z,
   covariates = X,
@@ -625,14 +618,10 @@ binary_results$plot
 # interpretation
 cat(binary_results$interpretation)
 
-# nice table
-tables_list <- list(
-  Wellbeing = binary_results$transformed_table
-)
 
 # make markdown tables (to be imported into the manuscript)
 margot_bind_tables_markdown <- margot_bind_tables(
-  tables_list = tables_list,
+  binary_results$transformed_table,
   #list(all_models$combined_table),
   sort_E_val_bound = "desc",
   e_val_bound_threshold = 1.2,
@@ -675,6 +664,24 @@ here_save(margot_bind_tables_markdown, "margot_bind_tables_markdown")
 # +--------------------------+
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
+
+
+# FLIPPING OUTCOMES  ------------------------------------------------------
+
+# note that the meaning of a heterogeneity will vary depending on our interests.
+# typically we are interested in whether an exposure improves life, and whether there is variability (aka HTE) in degrees of improvement.
+# in this case we must take negative outcomes and "flip" them -- recalculating the policy trees and qini curves for each
+# for example if the outcome is depression, then by flipping depression we better understand how the exposure *reduces* depression. 
+# what if the exposure is harmful? say what if we are interested in the effect of depression on wellbeing? In that case, we might
+# want to "flip" the positive outcomes. That is, we might want to understand for whom a negative exposure is extra harmful. 
+# here we imagine that extroversion is generally positive in its effects, and so we "flip" the negative outcomes. 
+# if you were interested in a negative exposure, say "neuroticism" then you would probably want to flip the positive outcomes. 
+# note there are further questions we might ask. We might consider who responds more 'weakly" to a negative exposure (or perhaps to a positive exposure).
+# Such a question could make sense if we had an exposure that was generally very strong. 
+# however, let's stay focussed on evaluating evaluating strong responders. We will flip the negative outcomes if we expect the exposure is positive,
+# and flip the positive outcomes if we expect the exposure to be generally negative. 
+# if there is no natural "positive" or negative, then just make sure the valence of the outcomes aligns, so that all are oriented in the same 
+# direction if they have a valence.  if unsure, just ask for help!
 
 # flipping models: outcomes we want to minimise given the exposure --------
 # standard negative outcomes/  not used in this example
@@ -748,9 +755,10 @@ cli::cli_h1("flipped outcomes identified and names saved ✔")
 # |          ALERT           |
 # +--------------------------+
 # !!!! THIS WILL TAKE TIME  !!!!!
-models_binary_flipped_all <- margot_flip_forests(models_binary,
+models_binary_flipped_all <- margot_flip_forests_parallel(models_binary,
                                                  flip_outcomes = flip_outcomes_standard,
-                                                 recalc_policy = TRUE)
+                                                 recalc_policy = TRUE,
+                                                 max_size_GB = 32)
 
 cli::cli_h1("flipped forest models completed ✔")
 
@@ -786,6 +794,10 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 
 
 
+
+# this tests may be included in an appendix ------------------------------
+
+
 # omnibus heterogeneity tests --------------------------------------------
 # test for treatment effect heterogeneity across all outcomes
 result_ominbus_hetero_all <- margot::margot_omnibus_hetero_test(models_binary_flipped_all,
@@ -796,6 +808,9 @@ result_ominbus_hetero_all$summary_table |> kbl("markdown")
 
 # view test interpretation
 cat(result_ominbus_hetero_all$brief_interpretation)
+
+# this tests helps us to evaluate evidence of heterogeneity ------------------------------
+
 
 # rate test analysis -----------------------------------------------------
 # create rate analysis table
@@ -843,6 +858,9 @@ rate_interpretation_all$autoc_model_names
 cli::cli_h1("produced rate tables and interpretations ✔")
 
 
+# RATE PLOTS  -------------------------------------------------------------
+
+
 # autoc plots ------------------------------------------------------------
 # generate batch rate plots for models with significant heterogeneity
 batch_rate_autoc_plots <- margot_plot_rate_batch(
@@ -884,7 +902,7 @@ if (length(autoc_plots) > 0) {
   
   # view the combined plot
   print(combined_autoc_plot)
-  
+  combined_autoc_plot
   # save the combined plot if needed
   width <- ifelse(num_cols == 1, 8, 12)
   height <- 6 * ceiling(length(autoc_plots) / num_cols)
@@ -900,21 +918,11 @@ if (length(autoc_plots) > 0) {
   message("No AUTOC plots available")
 }
 
-models_batch_qini_2L_test <- margot_plot_policy_combo(
-  models_binary_flipped_all,
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  model_name =  "model_t2_log_hours_exercise_z",
-  max_depth  = 2L,
-  # ← new argument
-  original_df = original_df,
-  label_mapping = label_mapping_all
-)
-rate_interpretation_all$autoc_model_names
-
-
 cli::cli_h1("produced rate graphs ✔")
 
+
+# QINI PLOTS --------------------------------------------------------------
+# note these will fail if there is scant evidence for diffuse HTE
 
 # qini --------------------------------------------------------------------
 # run the margot_policy function
@@ -925,46 +933,48 @@ models_batch_qini_2L <- margot_policy(
   decision_tree_args = decision_tree_defaults,
   policy_tree_args = policy_tree_defaults,
   model_names = rate_interpretation_all$qini_model_names,
-  max_depth  = 2L,
-  # ← new argument
+  max_depth  = 2L,# ← new argument
   original_df = original_df,
-  label_mapping = label_mapping_all
-)
+  label_mapping = label_mapping_all,
+  output_objects = c("qini_plot", "diff_gain_summaries")
+  )
+
 
 # extract the plots from the results
-plots <- lapply(seq_along(models_batch_qini_2L), function(i) {
-  models_batch_qini_2L[[i]][[4]]  # extract the 4th element (plot) from each model
+qini_plots <- lapply(seq_along(models_batch_qini_2L), function(i) {
+  models_batch_qini_2L[[i]][[1]]  # extract the 1st element (plot) from each model
 })
 
-plots
+qini_plots
+
 # name the plots
-names(plots) <- rate_interpretation_all$qini_model_names
+names(qini_plots) <- rate_interpretation_all$qini_model_names
 
 # determine number of columns based on number of plots
-num_cols <- ifelse(length(plots) > 3, 2, 1)
+num_cols <- ifelse(length(qini_plots) > 3, 2, 1)
 
 # load the patchwork library for combining plots
 library(patchwork)
 
 # check if there are any plots to combine
-if (length(plots) == 0) {
+if (length(qini_plots) == 0) {
   message("no plots available to combine")
   NULL  # removed return since this isn't in a function
 } else {
   # create combined plot
-  combined_plot <- plots[[1]]
+  combined_plot <- qini_plots[[1]]
   
   # only run the loop if there are at least 2 plots
-  if (length(plots) > 1) {
-    for (i in 2:length(plots)) {
+  if (length(qini_plots) > 1) {
+    for (i in 2:length(qini_plots)) {
       combined_plot <- combined_plot + plots[[i]]
     }
   }
   
   # apply the dynamic layout
-  combined_plot <- combined_plot + plot_layout(ncol = num_cols)
+  qini_combined_plot <- combined_plot + plot_layout(ncol = num_cols)
   # add titles and annotations
-  combined_plot <- combined_plot &
+  qini_combined_plot <- qini_combined_plot &
     plot_annotation(
       title = "Qini Model Plots",
       subtitle = paste0(length(plots), 
@@ -974,17 +984,17 @@ if (length(plots) == 0) {
       tag_levels = "A"  # adds a, b, c, etc. to the plots
     )
   # view
-  combined_plot
+  qini_combined_plot
   # save (optional)
   width <- ifelse(num_cols == 1, 8, 12)
   height <- 6 * ceiling(length(plots)/num_cols)  # height per row * number of rows
   # save
   ggsave(here::here(push_mods, "combined_qini_plots.pdf"),
-         combined_plot,
+         qini_combined_plot,
          width = width, height = height)
-  
-  combined_plot  #
 }
+
+print(qini_combined_plot)
 
 cli::cli_h1("produced essential qini graphs ✔")
 
@@ -1019,7 +1029,8 @@ plots_policy_trees_1L <- margot_policy(
   # defined above
   original_df = original_df,
   label_mapping = label_mapping_all,
-  max_depth = 1L
+  max_depth = 1L,
+  output_objects = "combined_plot"
 )
 
 # get number of models
@@ -1035,7 +1046,7 @@ n_models <- length(rate_interpretation_all$either_model_names)
 #   cat("\n\n")
 # })
 
-model_outputs_1L <- purrr::map(1:n_models, ~plots_policy_trees_1L[[.x]][[3]])
+model_outputs_1L <- purrr::map(1:n_models, ~plots_policy_trees_1L[[.x]][[1]])
 
 # name the list elements by model number
 names(model_outputs_1L) <- paste0("model_", 1:n_models)
@@ -1044,8 +1055,11 @@ names(model_outputs_1L) <- paste0("model_", 1:n_models)
 # check number of models == n_models
 model_outputs_1L$model_1 # convincing?
 model_outputs_1L$model_2 # convincing?
-# model_outputs_1L$model_3 # convincing?
+#model_outputs_1L$model_3 # convincing? - no third model here
 
+
+
+# THIS IS THE PREFERRED ANALYSIS FOR YOUR PAPER ---------------------------
 
 
 # policy tree analysis depth 2L -------------------------------------------------
@@ -1061,12 +1075,13 @@ plots_policy_trees_2L <- margot_policy(
   # defined above
   original_df = original_df,
   label_mapping = label_mapping_all,
-  max_depth = 2L
+  max_depth = 2L,
+  output_objects = "combined_plot"
 )
 
 n_models <- length(rate_interpretation_all$either_model_names)
 
-model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[3]])
+model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[1]])
 names(model_outputs_2L) <- paste0("model_", 1:n_models)
 
 
@@ -1096,8 +1111,10 @@ cat(interpret_plots_policy_trees_2L)
 # +--------------------------+
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
-# you can investigate policy trees for all outcomes, mindful that the rate and qini are not reliable. 
-# still, with appropriate caution, this may help to clarify psychologically interesting questions
+
+
+# IF YOU WANT TO *EXPLORE* POLICIES IRRESPECTIVE OF RATE/QINI RESU --------
+
 
 all_plots_policy_trees_1L <- margot_policy(
   models_binary_flipped_all,
@@ -1109,15 +1126,17 @@ all_plots_policy_trees_1L <- margot_policy(
   # defined above
   original_df = original_df,
   label_mapping = label_mapping_all,
-  max_depth = 1L
+  max_depth = 1L,
+  output_objects = "combined_plot"
 )
 n_models_all <- length(models_binary_flipped_all$results)
 n_models_all
 
-model_outputs_1L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_1L[[.x]][[3]])
+model_outputs_1L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_1L[[.x]][[1]])
 names(model_outputs_1L_all) <- paste0("model_", 1:n_models_all)
 
 # view
+# THIS SUGGESTS THERE IS NO GOOD POLICY WITH 1 QUESTION ONLY
 model_outputs_1L_all$model_1 # ← convincing? 
 model_outputs_1L_all$model_2 # ← convincing? 
 model_outputs_1L_all$model_3 # ← convincing? 
@@ -1129,7 +1148,7 @@ model_outputs_1L_all$model_8 # ← convincing?
 model_outputs_1L_all$model_9 # ← convincing?  
 model_outputs_1L_all$model_10 # ← convincing? 
 model_outputs_1L_all$model_11 # ← convincing? 
-model_outputs_1L_all$$model_12 # ← convincing? 
+model_outputs_1L_all$model_12 # ← convincing? 
 
 # interpretation
 interpret_plots_policy_trees_1L_all <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 1)
@@ -1137,7 +1156,6 @@ interpret_plots_policy_trees_1L_all <- margot_interpret_policy_batch(models_bina
 
 # view interpretation
 cat(interpret_plots_policy_trees_1L_all)
-
 
 # ALL model 2L
 all_plots_policy_trees_2L <- margot_policy(
@@ -1155,7 +1173,7 @@ all_plots_policy_trees_2L <- margot_policy(
 n_models_all <- length(models_binary_flipped_all$results)
 n_models_all
 
-model_outputs_2L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_2L[[.x]][[3]])
+model_outputs_2L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_2L[[.x]][[1]])
 names(model_outputs_2L_all) <- paste0("model_", 1:n_models_all)
 
 # view
@@ -1472,6 +1490,61 @@ plots_subgroup_cohort <- wrap_plots(
 # view
 print(plots_subgroup_cohort)
 
+
+
+
+# COMPARE GROUPS ----------------------------------------------------------
+planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table
+
+group_comparison_age_young_old <- margot_compare_groups(
+  planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table, # reference
+  planned_subset_results$wellbeing$cohort$results$`Age > 62`$transformed_table, # comparison
+  type = "RD",
+  label_mapping = NULL,
+  decimal_places = 4
+)
+
+# results
+group_comparison_age_young_old$results
+group_comparison_age_young_old$interpretation
+
+
+
+# compare another group ---------------------------------------------------
+
+planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table
+
+group_comparison_ethn_euro_maori <- margot_compare_groups(
+  planned_subset_results$wellbeing$ethnicity$results$Euro$transformed_table, # reference
+  planned_subset_results$wellbeing$ethnicity$results$Maori$transformed_table, # comparison
+  type = "RD",
+  label_mapping = NULL,
+  decimal_places = 4
+)
+
+# results
+group_comparison_ethn_euro_maori$results # no differences
+group_comparison_ethn_euro_maori$interpretation # no differences
+
+
+# compare another group ---------------------------------------------------
+# gender
+group_comparison_gender<- margot_compare_groups(
+  planned_subset_results$wellbeing$gender$results$Female$transformed_table, # reference
+  planned_subset_results$wellbeing$gender$results$Male$transformed_table, # comparison
+  type = "RD",
+  label_mapping = NULL,
+  decimal_places = 4
+)
+
+# results
+group_comparison_gender$results # no reliable differences
+group_comparison_gender$interpretation # no differences
+
+
+# TAKE HOME
+# first these are simulated data, so true effects are attenuated
+# second, when we allow our models to be flexible, we find that pre-defined group comparisons often come up short
 
 
 # plot options: showcased ---------------------------------------------

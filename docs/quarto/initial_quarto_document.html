@@ -1,0 +1,2987 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.20">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="YOUR NAME">
+<meta name="dcterms.date" content="2025-05-13">
+<meta name="keywords" content="Causal Inference, Cross-validation, …">
+
+<title>Your Title – PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-6bb072e51ab976e338d8fd19b221fbe5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-ecab3d01edc22a8b07c778f864461f49.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../content/course-outline.html"> 
+<span class="menu-text">Course Outline</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-content" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Content</span>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-content">    
+        <li>
+    <a class="dropdown-item" href="../content/glossary.pdf">
+ <span class="dropdown-text">Glossary</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/course-outline.html">
+ <span class="dropdown-text">Course Outline</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/01-content.html">
+ <span class="dropdown-text">Week 1: Course Introduction - R (installing packages)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/02-content.html">
+ <span class="dropdown-text">Week 2: Causal Diagrams - Elementary Structures and Rules - R (using the interface)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/03-content.html">
+ <span class="dropdown-text">Week 3: Causal Diagrams - Confounding Bias - R (regression/simulation)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/04-content.html">
+ <span class="dropdown-text">Week 4: Causal Diagrams - Interaction, Measurement Bias, Selection Bias - R (regression/simulation)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/05-content.html">
+ <span class="dropdown-text">Week 5: Causal Inference - Average Treatment Effects - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/06-content.html">
+ <span class="dropdown-text">Week 6: Conditional Average Treatment Effects (CATE) - R (regression/simulation: ATE)</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/07-quiz.html">
+ <span class="dropdown-text">Week 7: In Class Test</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/08-content.html">
+ <span class="dropdown-text">Week 8: Estimation of ATE and CATE using machine learning - R</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/09-content.html">
+ <span class="dropdown-text">Week 9: Theoretically postulated Subgroups analysis- R</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/10-content.html">
+ <span class="dropdown-text">Week 10: Hands On: Writing Up Your Analysis: Quarto Documents</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/11-content.html">
+ <span class="dropdown-text">Week 11: Measurement: Factor Analysis, CFA, MultiGroup CFA, Partial Invariance/ And How These Approaches Fail</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../content/12-content.html">
+ <span class="dropdown-text">Week 12: Student Presentations</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Your Title</h1>
+                      </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Affiliation</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author">YOUR NAME <a href="mailto:XXXXX" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              Victoria University of Wellington, New Zealand
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">May 13, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  <div>
+    <div class="abstract">
+      <div class="block-title">Abstract</div>
+      <p><strong>Background</strong>: (Brief few sentences)</p>
+      <p><strong>Objectives</strong>: 1. Estimate the causal effect of YOUR EXPOSURE on YOUR OUTCOMES measured one year later. 2. Evaluate whether these effects vary across the population. 3. Provide policy guidance on which individuals might benefit most.</p>
+      <p><strong>Method</strong>: We conducted a three-wave retrospective cohort study (waves XX-XXX, October XXXX–October XXXX) using data from the New Zealand Attitudes and Values Study, a nationally representative panel. Participants were eligible if they participated in the NZAVS in the baseline wave (XXXX, were under the age of 62, and were employed &gt; 20 hours per week. We defined the exposure as (XXXX &gt; NUMBER on a 1-7 Likert Scale (1 = yes, 0 = no)). To address attrition, we applied inverse probability of censoring weights; to improve external validity, we applied weighted to the population distribution of Age, Ethnicity, and Gender. We computed expected mean outcomes for the population in each exposure condition (high XXXX/low XXXXX). Under standard causal assumptions of unconfoundedness, the contrast provides an unbiased average treatment effect. We then used causal forests to detect heterogeneity in these effects and employed policy tree algorithms to identify individuals (“strong responders”) likely to experience the greatest benefits.</p>
+      <p><strong>Results</strong>: Increasing XXXXX leads to XXXXX. Heterogeneous responses to (e.g.&nbsp;<em>Forgiveness</em>, <em>Personal Well-Being</em>, and <em>Life-Satisfaction</em>…) reveal structural variability in subpopulations…</p>
+      <p><strong>Implications</strong>: (Brief few sentences) <strong>Keywords</strong>: <em>Causal Inference</em>; <em>Cross-validation</em>; <em>Distress</em>; <em>Employment</em>; <em>Longitudinal</em>; <em>Machine sLearning</em>; <em>Religion</em>; <em>Semi-parametric</em>; <em>Targeted Learning</em>.</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="keywords">
+      <div class="block-title">Keywords</div>
+      <p>Causal Inference, Cross-validation, …</p>
+    </div>
+  </div>
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#method" id="toc-method" class="nav-link active" data-scroll-target="#method">Method</a>
+  <ul class="collapse">
+  <li><a href="#sample" id="toc-sample" class="nav-link" data-scroll-target="#sample">Sample</a></li>
+  <li><a href="#target-population" id="toc-target-population" class="nav-link" data-scroll-target="#target-population">Target Population</a></li>
+  <li><a href="#eligibility-criteria" id="toc-eligibility-criteria" class="nav-link" data-scroll-target="#eligibility-criteria">Eligibility Criteria</a></li>
+  <li><a href="#average-treatment-effect" id="toc-average-treatment-effect" class="nav-link" data-scroll-target="#average-treatment-effect">Average Treatment Effect</a></li>
+  <li><a href="#heterogeneous-treatment-effects-and-treatment-policies" id="toc-heterogeneous-treatment-effects-and-treatment-policies" class="nav-link" data-scroll-target="#heterogeneous-treatment-effects-and-treatment-policies">Heterogeneous Treatment Effects and Treatment Policies</a></li>
+  <li><a href="#exposure-indicator" id="toc-exposure-indicator" class="nav-link" data-scroll-target="#exposure-indicator">Exposure Indicator</a></li>
+  <li><a href="#causal-identification-assumptions" id="toc-causal-identification-assumptions" class="nav-link" data-scroll-target="#causal-identification-assumptions">Causal Identification Assumptions</a></li>
+  <li><a href="#confounding-control" id="toc-confounding-control" class="nav-link" data-scroll-target="#confounding-control">Confounding Control</a></li>
+  <li><a href="#statistical-estimation" id="toc-statistical-estimation" class="nav-link" data-scroll-target="#statistical-estimation">Statistical Estimation</a></li>
+  <li><a href="#missing-data" id="toc-missing-data" class="nav-link" data-scroll-target="#missing-data">Missing Data</a></li>
+  <li><a href="#sensitivity-analysis" id="toc-sensitivity-analysis" class="nav-link" data-scroll-target="#sensitivity-analysis">Sensitivity Analysis</a></li>
+  </ul></li>
+  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a>
+  <ul class="collapse">
+  <li><a href="#average-treatement-effects" id="toc-average-treatement-effects" class="nav-link" data-scroll-target="#average-treatement-effects">Average Treatement Effects</a></li>
+  <li><a href="#heterogeneous-treatment-effects" id="toc-heterogeneous-treatment-effects" class="nav-link" data-scroll-target="#heterogeneous-treatment-effects">Heterogeneous Treatment Effects</a></li>
+  <li><a href="#comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" id="toc-comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" class="nav-link" data-scroll-target="#comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini">Comparison of targeting operating characteristic (TOC) by rank average treatment effect (RATE): AUTOC vs Qini</a></li>
+  <li><a href="#rate-autoc-results" id="toc-rate-autoc-results" class="nav-link" data-scroll-target="#rate-autoc-results">RATE AUTOC Results</a></li>
+  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</a></li>
+  <li><a href="#qini-curve-results" id="toc-qini-curve-results" class="nav-link" data-scroll-target="#qini-curve-results">QINI Curve Results</a></li>
+  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</a></li>
+  <li><a href="#policy-trees" id="toc-policy-trees" class="nav-link" data-scroll-target="#policy-trees">Policy Trees</a></li>
+  <li><a href="#policy-tree-interpretations-depth-2" id="toc-policy-tree-interpretations-depth-2" class="nav-link" data-scroll-target="#policy-tree-interpretations-depth-2">Policy Tree Interpretations (depth 2)</a></li>
+  </ul></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
+  <ul class="collapse">
+  <li><a href="#ethics" id="toc-ethics" class="nav-link" data-scroll-target="#ethics">Ethics</a></li>
+  <li><a href="#author-statement" id="toc-author-statement" class="nav-link" data-scroll-target="#author-statement">Author Statement</a></li>
+  <li><a href="#acknowledgements" id="toc-acknowledgements" class="nav-link" data-scroll-target="#acknowledgements">Acknowledgements</a></li>
+  <li><a href="#data-availability" id="toc-data-availability" class="nav-link" data-scroll-target="#data-availability">Data Availability</a></li>
+  </ul></li>
+  <li><a href="#appendix-measures" id="toc-appendix-measures" class="nav-link" data-scroll-target="#appendix-measures">Appendix A: Measures</a>
+  <ul class="collapse">
+  <li><a href="#measures" id="toc-measures" class="nav-link" data-scroll-target="#measures">Measures</a></li>
+  <li><a href="#baseline-covariates" id="toc-baseline-covariates" class="nav-link" data-scroll-target="#baseline-covariates">Baseline Covariates</a></li>
+  <li><a href="#exposure-variable" id="toc-exposure-variable" class="nav-link" data-scroll-target="#exposure-variable">Exposure Variable</a></li>
+  <li><a href="#outcome-variables" id="toc-outcome-variables" class="nav-link" data-scroll-target="#outcome-variables">Outcome Variables</a></li>
+  </ul></li>
+  <li><a href="#appendix-sample" id="toc-appendix-sample" class="nav-link" data-scroll-target="#appendix-sample">Appendix B: Sample</a>
+  <ul class="collapse">
+  <li><a href="#appendix-exposure" id="toc-appendix-exposure" class="nav-link" data-scroll-target="#appendix-exposure">Exposure Variable</a></li>
+  <li><a href="#appendix-outcomes" id="toc-appendix-outcomes" class="nav-link" data-scroll-target="#appendix-outcomes">Outcome Variables</a></li>
+  <li><a href="#appendix-transition" id="toc-appendix-transition" class="nav-link" data-scroll-target="#appendix-transition">Appendix C: Transition Matrix to Check The Positivity Assumption</a></li>
+  </ul></li>
+  <li><a href="#appendix-cate-validation" id="toc-appendix-cate-validation" class="nav-link" data-scroll-target="#appendix-cate-validation">Appendix D: Evidence of Heterogeneity</a></li>
+  <li><a href="#omnibus-heterogeneity-test-results" id="toc-omnibus-heterogeneity-test-results" class="nav-link" data-scroll-target="#omnibus-heterogeneity-test-results">Omnibus Heterogeneity Test Results</a>
+  <ul class="collapse">
+  <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation</a></li>
+  <li><a href="#results-by-outcome" id="toc-results-by-outcome" class="nav-link" data-scroll-target="#results-by-outcome">Results by Outcome</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
+  <ul class="collapse">
+  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</a></li>
+  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</a></li>
+  </ul></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="initial_quarto_document.docx"><i class="bi bi-file-word"></i>MS Word</a></li><li><a href="initial_quarto_document.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<div style="page-break-after: always;"></div>
+<section id="method" class="level2">
+<h2 class="anchored" data-anchor-id="method">Method</h2>
+<section id="sample" class="level3">
+<h3 class="anchored" data-anchor-id="sample">Sample</h3>
+<p>Data were collected as part of the New Zealand Attitudes and Values Study (NZAVS), an annual longitudinal national probability panel assessing New Zealand residents’ social attitudes, personality, ideology, and health outcomes. The panel began in 2009 and has since expanded to include over fifty researchers, with responses from 40,000 participants to date. The study operates independently of political or corporate funding and is based at a university. It employs prize draws to incentivise participation. The NZAVS tends to slightly under-sample males and individuals of Asian descent and to over-sample females and Māori (the Indigenous people of New Zealand). To enhance the representativeness of our sample population estimates for the target population of New Zealand, we apply census-based survey weights that adjust for age, gender, and ethnicity (New Zealand European, Asian, Māori, Pacific) <span class="citation" data-cites="sibley2021">(<a href="#ref-sibley2021" role="doc-biblioref">Sibley, 2021</a>)</span>. For more information about the NZAVS, visit: <a href="https://doi.org/10.17605/OSF.IO/75SNB">OSF.IO/75SNB</a>. Refer to <a href="#appendix-timeline">Appendix {{appendix_timeline}}</a> for a histogram of daily responses for this cohort.</p>
+</section>
+<section id="target-population" class="level3">
+<h3 class="anchored" data-anchor-id="target-population">Target Population</h3>
+<p>The target population for this study comprises New Zealand residents as represented in the NZAVS time 10, years 2018-2019 of the New Zealand Attitudes and Values Study (NZAVS) during the years NZAVS time 10, years 2018-2019 weighted by New Zealand Census weights for age, gender, and ethnicity (refer to <span class="citation" data-cites="sibley2021">Sibley (<a href="#ref-sibley2021" role="doc-biblioref">2021</a>)</span>). The NZAVS is a national probability study designed to reflect the broader New Zealand population accurately. Despite its comprehensive scope, the NZAVS has some limitations in its demographic representation. Notably, it tends to under-sample males and individuals of Asian descent while over-sampling females and Māori (the indigenous peoples of New Zealand). To address these disparities and enhance the accuracy of our findings, we apply New Zealand Census survey weights to the sample data.</p>
+</section>
+<section id="eligibility-criteria" class="level3">
+<h3 class="anchored" data-anchor-id="eligibility-criteria">Eligibility Criteria</h3>
+<p>To be included in the analysis of this study, participants needed to participate in the NZAVS time 10, years 2018-2019 of the study and respond to the baseline measure of Extraversion.</p>
+<p>Participants may have been lost to follow-up at the end of the study if they met eligibility criteria at NZAVS time 10, years 2018-2019. We adjusted for attrition and non-response using censoring weights, described below.</p>
+<p>A total of 39,635 individuals met these criteria and were included in the study.</p>
+</section>
+<section id="average-treatment-effect" class="level3">
+<h3 class="anchored" data-anchor-id="average-treatment-effect">Average Treatment Effect</h3>
+<p>Researchers often want to know what might happen if we could change (or “intervene on”) a particular variable for everyone in a study—much like testing a new treatment in a randomised trial. Because we cannot always run an actual trial, we imagine a <strong>target trial</strong> <span class="citation" data-cites="hernan2016">(<a href="#ref-hernan2016" role="doc-biblioref">Hernán et al., 2016</a>)</span>, a hypothetical experiment that clarifies exactly which cause-and-effect question we are trying to answer.</p>
+<p>Here, we ask:</p>
+<blockquote class="blockquote">
+<p>“How would the outcomes of interest change if, for everyone in the population, we set the exposure to <strong>{{value_exposure}}</strong>, compared with setting it to <strong>{{value_control}}</strong>, given each individual’s characteristics?”</p>
+</blockquote>
+<p>Thus we compare two scenarios:</p>
+<ol type="1">
+<li><strong>{{name_exposure_threshold}}</strong>: Everyone receives exposure level <code>{value_exposure}</code>.</li>
+<li><strong>{{name_control_threshold}}</strong>: Everyone receives exposure level <code>{value_control}</code>.</li>
+</ol>
+<p>The difference between the averages of these two scenarios is call the ‘Average Treatment Effect’ (ATE). By combining time series data with a rich set of covariates measured at baseline, we may, under the assumptions of no-measured confounding and other assumptions described below, isolate the effect of the intervening on the exposure from other variables that might distort the true causal relationship if not properly accounted for. By measuring a broad set of characteristics (such as demographics, personality traits, or other background factors) at baseline, we try to ensure that, once we adjust for them in our analysis, assignment to each of the exposure conditions is ‘as good as random.’ (Refer to Appendix <a href="#appendix-assumptions_grf">{{appendix_assumptions_grf}}</a> for an explanation of assumptions for obtaining the ATE).</p>
+</section>
+<section id="heterogeneous-treatment-effects-and-treatment-policies" class="level3">
+<h3 class="anchored" data-anchor-id="heterogeneous-treatment-effects-and-treatment-policies">Heterogeneous Treatment Effects and Treatment Policies</h3>
+<p>After estimating the overall average treatment effect (ATE) for the population, we turn to the question of whether different people respond differently. We investigate effect modifiers (or moderators)—factors that make the intervention more or less effective for certain subgroups—by estimating the Conditional Average Treatment Effect (CATE) using a causal forest approach. While the ATE reflects the overall impact, the CATE reveals how that impact can vary across individuals with different baseline characteristics. We denote the individual-level estimated treatment effect as <span class="math inline">\hat{\tau}(x)</span>, which represents the predicted benefit for an individual with covariates <span class="math inline">x</span>. A notable advantage of causal forests is that we do not have to specify potential moderators in advance; the algorithm uncovers them automatically. We can also apply search algorithms to derive priority treatment rules that target the intervention to those most likely to benefit.</p>
+<p>First, we standardised effect directions by inverting outcomes where lower scores were preferable so that positive values always indicated improvement. Specifically, we inverted Anxiety, Depression, Rumination.</p>
+<p>Next, to reduce overfitting and distinguish true heterogeneity from noise, we split the sample. We trained the causal forest on the first half and tested its predictions exclusively on the second half. In the held-out data, we checked calibration by comparing the mean of the predicted CATEs, <span class="math inline">\hat{\tau}(x)</span>, with the overall ATE. We also performed a differential prediction test <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span> to assess whether the predicted variation was genuine. As an additional check for heterogeneity, we computed the Rank-Weighted Average Treatment Effect (RATE), which quantifies the benefit of targeting individuals predicted to benefit most <span class="citation" data-cites="grf2024 wager2018">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>; <a href="#ref-wager2018" role="doc-biblioref">Wager &amp; Athey, 2018</a>)</span>.</p>
+<p>Having assessed preliminary evidence of heterogeneity using differential prediction and RATE estimation, we used Qini curves <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span> to illustrate how a targeted strategy might outperform a uniform one. Specifically, we compared:</p>
+<ol type="1">
+<li><strong>Uniform Allocation:</strong> treating (or not treating) everyone based on the ATE;</li>
+<li><strong>Targeted Allocation:</strong> treating those with the highest predicted CATEs (<span class="math inline">\hat{\tau}(x)</span>) first.</li>
+</ol>
+<p>A positive Qini value suggests that a targeted strategy can achieve better outcomes. Here, we considered whether budgets limited to 20% or 50% of the population could yield greater improvements under targeted allocation than under the uniform approach.</p>
+<p>Finally, when we found signs of genuine heterogeneity (via either RATE or Qini curves), we used policy trees <span class="citation" data-cites="policytree_package_2024 athey2021 athey_2021_policy_tree_econometrica">(<a href="#ref-athey2021" role="doc-biblioref">Athey &amp; Wager, 2021a</a>, <a href="#ref-athey_2021_policy_tree_econometrica" role="doc-biblioref">2021b</a>; <a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span> to generate simple, rule-based treatment recommendations (e.g., “Treat if baseline score &gt; X”). We implemented all heterogeneity analyses—calibration tests, RATE, Qini curves, and policy trees—in R using the grf <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>, policytree <span class="citation" data-cites="policytree_package_2024">(<a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span>, and margot <span class="citation" data-cites="margot2024">(<a href="#ref-margot2024" role="doc-biblioref">Bulbulia, 2024a</a>)</span> packages. This approach enabled us to identify individualised effects, confirm their robustness, estimate the potential value of targeting, and propose straightforward strategies for personalisation. (Refer to <a href="#appendix-explain-grf">Appendix {{appendix_explain_grf}}</a> for a detailed explanation of our approach.)</p>
+</section>
+<section id="exposure-indicator" class="level3">
+<h3 class="anchored" data-anchor-id="exposure-indicator">Exposure Indicator</h3>
+<p>The New Zealand Attitudes and Values Study assesses Extraversion using the following question:</p>
+<p>Mini-IPIP6 Extraversion dimension: (i) I am the life of the party. (ii) I don’t talk a lot. (r) (iii) I keep in the background. (r) (iv) I talk to a lot of different people at parties.(Refer to <a href="#appendix-measures">Appendix {{appendix_measures}}</a>).</p>
+</section>
+<section id="causal-identification-assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="causal-identification-assumptions">Causal Identification Assumptions</h3>
+<p>This study relies on the following identification assumptions for estimating the causal effect of Extraversion:</p>
+<ol type="1">
+<li><p><strong>Consistency</strong>: the observed outcome under the observed Extraversion is equal to the potential outcome under that exposure level. As part of consistency, we assume no interference: the potential outcomes for one individual are not affected by the Extraversion status of other individuals.</p></li>
+<li><p><strong>No unmeasured confounding</strong>: all variables that affect both Extraversion and the outcome have been measured and accounted for in the analysis.</p></li>
+<li><p><strong>Positivity</strong>: there is a non-zero probability of receiving each level of Extraversion for every combination of values of Extraversion and confounders in the population. Positivity is the only fundamental casual assumption that can be evaluated with data (refer to <a href="#appendix-positivity">Appendix {{appendix_positivity}}</a>).</p></li>
+</ol>
+</section>
+<section id="confounding-control" class="level3">
+<h3 class="anchored" data-anchor-id="confounding-control">Confounding Control</h3>
+<p>To manage confounding in our analysis, we implement <span class="citation" data-cites="vanderweele2019">VanderWeele (<a href="#ref-vanderweele2019" role="doc-biblioref">2019</a>)</span>’s <em>modified disjunctive cause criterion</em> by following these steps:</p>
+<ol type="1">
+<li><strong>Identified all common causes</strong> of both the treatment and outcomes.</li>
+<li><strong>Excluded instrumental variables</strong> that affect the exposure but not the outcome. Instrumental variables do not contribute to controlling confounding and can reduce the efficiency of the estimates.</li>
+<li><strong>Included proxies for unmeasured confounders</strong> affecting both exposure and outcome. According to the principles of d-separation <span class="citation" data-cites="pearl2009a">Pearl (<a href="#ref-pearl2009a" role="doc-biblioref">2009</a>)</span>, using proxies allows us to control for their associated unmeasured confounders indirectly.</li>
+<li><strong>Controlled for baseline exposure</strong> and <strong>baseline outcome</strong>. Both are used as proxies for unmeasured common causes, enhancing the robustness of our causal estimates, refer to <span class="citation" data-cites="vanderweele2020">VanderWeele et al. (<a href="#ref-vanderweele2020" role="doc-biblioref">2020</a>)</span>.</li>
+</ol>
+</section>
+<section id="statistical-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="statistical-estimation">Statistical Estimation</h3>
+<p>We estimate heterogeneous treatment effects with Generalized Random Forests (GRF) <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>. GRF extends random forests for causal inference by focusing on conditional average treatment effects (CATE). It handles complex interactions and non-linearities without explicit model specification, and it provides ‘honest’ estimates by splitting data between model-fitting and inference. GRF is doubly robust because it remains consistent if either the outcome model or the propensity model is correct. We evaluate policies with the <code>policytree</code> package <span class="citation" data-cites="policytree_package_2024 athey_2021_policy_tree_econometrica">(<a href="#ref-athey_2021_policy_tree_econometrica" role="doc-biblioref">Athey &amp; Wager, 2021b</a>; <a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span> and visualise results with <code>margot</code> <span class="citation" data-cites="margot2024">(<a href="#ref-margot2024" role="doc-biblioref">Bulbulia, 2024a</a>)</span>. (Refer to <a href="#appendix-explain-grf">Appendix {{appendix_explain_grf}}</a> for a detailed explanation of our approach.)</p>
+</section>
+<section id="missing-data" class="level3">
+<h3 class="anchored" data-anchor-id="missing-data">Missing Data</h3>
+<p>The GRF package accepts missing values at baseline. To obtain valid inference for missing responses we computed inverse probability of censoring weights for censoring of the exposure, given that systematic censoring following the baseline wave may lead to selection bias that limit generalistion to the baseline target population <span class="citation" data-cites="bulbulia2024wierd">(<a href="#ref-bulbulia2024wierd" role="doc-biblioref">Bulbulia, 2024b</a>)</span>. See <a href="#appendix-explain-grf">Appendix {{appendix_explain_grf}}</a>.</p>
+</section>
+<section id="sensitivity-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="sensitivity-analysis">Sensitivity Analysis</h3>
+<p>We perform sensitivity analyses using the E-value metric <span class="citation" data-cites="vanderweele2017 linden2020EVALUE">(<a href="#ref-linden2020EVALUE" role="doc-biblioref">Linden et al., 2020</a>; <a href="#ref-vanderweele2017" role="doc-biblioref">VanderWeele &amp; Ding, 2017</a>)</span>. The E-value represents the minimum association strength (on the risk ratio scale) that an unmeasured confounder would need to have with both the exposure and outcome—after adjusting for measured covariates—to explain away the observed exposure-outcome association <span class="citation" data-cites="vanderweele2020 linden2020EVALUE">(<a href="#ref-linden2020EVALUE" role="doc-biblioref">Linden et al., 2020</a>; <a href="#ref-vanderweele2020" role="doc-biblioref">VanderWeele et al., 2020</a>)</span>.</p>
+<div style="page-break-after: always;"></div>
+</section>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<section id="average-treatement-effects" class="level3">
+<h3 class="anchored" data-anchor-id="average-treatement-effects">Average Treatement Effects</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ate" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="initial_quarto_document_files/figure-html/fig-ate-1.png" class="img-fluid figure-img" width="1728">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Average Treatment Effects on Multi-dimensional Wellbeing
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+<div class="cell">
+<div id="tbl-outcomes" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Average Treatment Effects on Multi-dimensional Wellbeing
+</figcaption>
+<div aria-describedby="tbl-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 21%">
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 10%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">E[Y(1)]-E[Y(0)]</th>
+<th style="text-align: right;">2.5 %</th>
+<th style="text-align: right;">97.5 %</th>
+<th style="text-align: right;">E_Value</th>
+<th style="text-align: right;">E_Val_bound</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Social Belonging</td>
+<td style="text-align: right;">0.128</td>
+<td style="text-align: right;">0.084</td>
+<td style="text-align: right;">0.171</td>
+<td style="text-align: right;">1.496</td>
+<td style="text-align: right;">1.375</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Neighbourhood Community</td>
+<td style="text-align: right;">0.117</td>
+<td style="text-align: right;">0.071</td>
+<td style="text-align: right;">0.164</td>
+<td style="text-align: right;">1.466</td>
+<td style="text-align: right;">1.331</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Social Support</td>
+<td style="text-align: right;">0.101</td>
+<td style="text-align: right;">0.052</td>
+<td style="text-align: right;">0.150</td>
+<td style="text-align: right;">1.421</td>
+<td style="text-align: right;">1.274</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meaning: Purpose</td>
+<td style="text-align: right;">0.100</td>
+<td style="text-align: right;">0.049</td>
+<td style="text-align: right;">0.150</td>
+<td style="text-align: right;">1.418</td>
+<td style="text-align: right;">1.264</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Self Esteem</td>
+<td style="text-align: right;">0.089</td>
+<td style="text-align: right;">0.049</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: right;">1.387</td>
+<td style="text-align: right;">1.260</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meaning: Sense</td>
+<td style="text-align: right;">0.089</td>
+<td style="text-align: right;">0.036</td>
+<td style="text-align: right;">0.141</td>
+<td style="text-align: right;">1.387</td>
+<td style="text-align: right;">1.219</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Anxiety</td>
+<td style="text-align: right;">-0.070</td>
+<td style="text-align: right;">-0.118</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">1.331</td>
+<td style="text-align: right;">1.160</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Personal Well-being Index</td>
+<td style="text-align: right;">0.052</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.094</td>
+<td style="text-align: right;">1.274</td>
+<td style="text-align: right;">1.110</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Depression</td>
+<td style="text-align: right;">-0.058</td>
+<td style="text-align: right;">-0.108</td>
+<td style="text-align: right;">-0.007</td>
+<td style="text-align: right;">1.293</td>
+<td style="text-align: right;">1.088</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Life Satisfaction</td>
+<td style="text-align: right;">0.045</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">0.089</td>
+<td style="text-align: right;">1.250</td>
+<td style="text-align: right;">1.003</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rumination</td>
+<td style="text-align: right;">-0.047</td>
+<td style="text-align: right;">-0.101</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">1.257</td>
+<td style="text-align: right;">1.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hours of Exercise (log)</td>
+<td style="text-align: right;">-0.029</td>
+<td style="text-align: right;">-0.085</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">1.192</td>
+<td style="text-align: right;">1.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The following outcomes showed reliable causal evidence (E-Value lower bound &gt; 1.2): - Social Belonging: 0.128 (0.084, 0.171); On original scale, 0.14 (0.092, 0.187). E-Value bound = 1.375 - Neighbourhood Community: 0.117 (0.071, 0.164); On original scale, 0.184 (0.111, 0.257). E-Value bound = 1.331 - Social Support: 0.101 (0.052, 0.15); On original scale, 0.113 (0.058, 0.168). E-Value bound = 1.274 - Meaning: Purpose: 0.1 (0.049, 0.15); On original scale, 0.144 (0.071, 0.217). E-Value bound = 1.264 - Self Esteem: 0.089 (0.049, 0.129); On original scale, 0.113 (0.062, 0.164). E-Value bound = 1.26 - Meaning: Sense: 0.089 (0.036, 0.141); On original scale, 0.105 (0.043, 0.168). E-Value bound = 1.219</p>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="heterogeneous-treatment-effects" class="level3">
+<h3 class="anchored" data-anchor-id="heterogeneous-treatment-effects">Heterogeneous Treatment Effects</h3>
+</section>
+<section id="comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" class="level3">
+<h3 class="anchored" data-anchor-id="comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini">Comparison of targeting operating characteristic (TOC) by rank average treatment effect (RATE): AUTOC vs Qini</h3>
+<p>We applied two TOC by RATE methods to the same causal-forest <span class="math inline">\tau(x)</span> estimates:</p>
+<ul>
+<li><p><strong>AUTOC</strong> intensifies focus on top responders via logarithmic weighting.</p></li>
+<li><p><strong>Qini</strong> balances effect size and prevalence via linear weighting.</p></li>
+</ul>
+<p>When Qini and AUTOC disagree on positive RATE (only AUTOC yields a positive RATE for <strong>Hours of Exercise (log)</strong>; only Qini yields a positive RATE for Meaning: Sense), choose <strong>Qini</strong> to maximise overall benefit or <strong>AUTOC</strong> to focus on top responders.</p>
+<p>Refer to <a href="#appendix-cate-validation">Appendix F</a> for details.</p>
+</section>
+<section id="rate-autoc-results" class="level3">
+<h3 class="anchored" data-anchor-id="rate-autoc-results">RATE AUTOC Results</h3>
+</section>
+<section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc" class="level3">
+<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</h3>
+<p>AUTOC uses logarithmic weighting to focus treatment on top responders.</p>
+<p>Positive RATE estimates for: <strong>Hours of Exercise (log)</strong>.</p>
+<p>Estimates (<strong>Hours of Exercise (log)</strong>: 0.065 (95% CI 0.016, 0.114)) show robust heterogeneity.</p>
+<p>For outcomes with 95%% CI crossing zero (Meaning: Sense, Rumination, Anxiety, Personal Well-being Index, Self Esteem, Social Belonging, Social Support, Life Satisfaction, Meaning: Purpose, Depression, Neighbourhood Community), evidence is inconclusive.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-rate" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-rate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="initial_quarto_document_files/figure-html/fig-rate-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: RATE AUTOC Graphs
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="qini-curve-results" class="level3">
+<h3 class="anchored" data-anchor-id="qini-curve-results">QINI Curve Results</h3>
+</section>
+<section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" class="level3">
+<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</h3>
+<p>Qini uses linear weighting to balance effect size and prevalence for aggregate gain.</p>
+<p>Positive RATE estimates for: <strong>Meaning: Sense</strong>.</p>
+<p>Estimates (<strong>Meaning: Sense</strong>: 0.020 (95% CI 0.004, 0.036)) show robust heterogeneity.</p>
+<p>Negative RATE estimates for: <strong>Neighbourhood Community</strong>.</p>
+<p>Estimates (<strong>Neighbourhood Community</strong>: -0.026 (95% CI -0.040, -0.012)) caution against CATE prioritisation.</p>
+<p>For outcomes with 95%% CI crossing zero (Hours of Exercise (log), Personal Well-being Index, Anxiety, Self Esteem, Social Support, Life Satisfaction, Social Belonging, Rumination, Meaning: Purpose, Depression), evidence is inconclusive.</p>
+<div class="cell">
+<div id="tbl-qini" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Qini Curve Results
+</figcaption>
+<div aria-describedby="tbl-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: left;">Spend 20%</th>
+<th style="text-align: left;">Spend 50%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Meaning: Sense</td>
+<td style="text-align: left;"><strong>0.04 [0.01, 0.07]</strong></td>
+<td style="text-align: left;">-0.00 [-0.06, 0.05]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>We computed the cumulative benefits as we increase the treated fraction by prioritising conditional average treatment effects (CATE) at two different spend levels: 20% of a total budget and 50% of a total budget, where the contrast is no priority assignment. <strong>Meaning: Sense</strong> At 20% spend: CATE prioritisation is beneficial (diff: 0.04 [95% CI: 0.01, 0.07]). At 50 % spend: No reliable benefits from CATE prioritisation.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-qini" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="initial_quarto_document_files/figure-html/fig-qini-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: RATE AUTOC Graphs
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="policy-trees" class="level3">
+<h3 class="anchored" data-anchor-id="policy-trees">Policy Trees</h3>
+</section>
+<section id="policy-tree-interpretations-depth-2" class="level3">
+<h3 class="anchored" data-anchor-id="policy-tree-interpretations-depth-2">Policy Tree Interpretations (depth 2)</h3>
+<p>A shallow policy tree recommends actions based on two splits for depth=2, or one split for depth=1. We trained on 50% of the data and evaluated on the rest.</p>
+<p><strong>Findings for log Hours Exercise:</strong></p>
+<p>Split 1: Short Form Health ≤ -0.333. Within that subgroup, split 2a: Belong ≤ -0.441, → <strong>Control</strong>; Belong &gt; -0.441 → <strong>Treated</strong>.</p>
+<p>Split 2: Short Form Health &gt; -0.333. Within that subgroup, split 2b: Lifesat ≤ -0.268, → <strong>Control</strong>; Lifesat &gt; -0.268 → <strong>Treated</strong>.</p>
+<p><strong>Findings for Meaning Sense:</strong></p>
+<p>Split 1: Alcohol Intensity ≤ -0.313. Within that subgroup, split 2a: log Hours Commute ≤ -0.496, → <strong>Control</strong>; log Hours Commute &gt; -0.496 → <strong>Treated</strong>.</p>
+<p>Split 2: Alcohol Intensity &gt; -0.313. Within that subgroup, split 2b: Age ≤ 0.612, → <strong>Treated</strong>; Age &gt; 0.612 → <strong>Control</strong>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-policy-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-policy-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="initial_quarto_document_files/figure-html/fig-policy-1-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-policy-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Decision Tree: Exercise
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-policy-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-policy-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="initial_quarto_document_files/figure-html/fig-policy-2-1.png" class="img-fluid figure-img" width="864">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-policy-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Decision Tree: Meaning Sense
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<section id="ethics" class="level3">
+<h3 class="anchored" data-anchor-id="ethics">Ethics</h3>
+<p>The University of Auckland Human Participants Ethics Committee reviews the NZAVS every three years. Our most recent ethics approval statement is as follows: The New Zealand Attitudes and Values Study was approved by the University of Auckland Human Participants Ethics Committee on 26/05/2021 for six years until 26/05/2027, Reference Number UAHPEC22576.</p>
+</section>
+<section id="author-statement" class="level3">
+<h3 class="anchored" data-anchor-id="author-statement">Author Statement</h3>
+</section>
+<section id="acknowledgements" class="level3">
+<h3 class="anchored" data-anchor-id="acknowledgements">Acknowledgements</h3>
+<p>The New Zealand Attitudes and Values Study is supported by a grant from the Templeton Religious Trust (TRT0196; TRT0418). JB received support from the Max Plank Institute for the Science of Human History. The funders had no role in preparing the manuscript or deciding to publish it.</p>
+</section>
+<section id="data-availability" class="level3">
+<h3 class="anchored" data-anchor-id="data-availability">Data Availability</h3>
+<p>The data described in the paper are part of the New Zealand Attitudes and Values Study. Members of the NZAVS management team and research group hold full copies of the NZAVS data. A de-identified dataset containing only the variables analysed in this manuscript is available upon request from the corresponding author or any member of the NZAVS advisory board for replication or checking of any published study using NZAVS data. The code for the analysis can be found at <a href="https://osf.io/ab7cx/">OSF link</a>.</p>
+<div style="page-break-after: always;"></div>
+</section>
+</section>
+<section id="appendix-measures" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-measures">Appendix A: Measures</h2>
+<section id="measures" class="level3">
+<h3 class="anchored" data-anchor-id="measures">Measures</h3>
+<section id="covariate-measures" class="level4">
+<h4 class="anchored" data-anchor-id="covariate-measures">Covariate Measures</h4>
+</section>
+</section>
+<section id="baseline-covariates" class="level3">
+<h3 class="anchored" data-anchor-id="baseline-covariates">Baseline Covariates</h3>
+<section id="age" class="level4">
+<h4 class="anchored" data-anchor-id="age">Age</h4>
+<p><em>What is your date of birth?</em></p>
+<p>We asked participants’ ages in an open-ended question (“What is your age?” or “What is your date of birth”). <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="agreeableness" class="level4">
+<h4 class="anchored" data-anchor-id="agreeableness">Agreeableness</h4>
+<p><em>I sympathize with others’ feelings.</em> <em>I am not interested in other people’s problems.</em> <em>I feel others’ emotions.</em> <em>I am not really interested in others (reversed).</em></p>
+<p>Mini-IPIP6 Agreeableness dimension: (i) I sympathize with others’ feelings. (ii) I am not interested in other people’s problems. (r) (iii) I feel others’ emotions. (iv) I am not really interested in others. (r) <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="alcohol-frequency" class="level4">
+<h4 class="anchored" data-anchor-id="alcohol-frequency">Alcohol Frequency</h4>
+<p><em>“How often do you have a drink containing alcohol?”</em></p>
+<p>Participants could chose between the following responses: ‘(1 = Never - I don’t drink, 2 = Monthly or less, 3 = Up to 4 times a month, 4 = Up to 3 times a week, 5 = 4 or more times a week, 6 = Don’t know)’ <span class="citation" data-cites="Ministry_of_Health_2013">(<a href="#ref-Ministry_of_Health_2013" role="doc-biblioref">Health, 2013</a>)</span></p>
+</section>
+<section id="alcohol-intensity" class="level4">
+<h4 class="anchored" data-anchor-id="alcohol-intensity">Alcohol Intensity</h4>
+<p><em>“How many drinks containing alcohol do you have on a typical day when drinking alcohol? (number of drinks on a typical day when drinking)”</em></p>
+<p>Participants responded using an open-ended box. <span class="citation" data-cites="Ministry_of_Health_2013">(<a href="#ref-Ministry_of_Health_2013" role="doc-biblioref">Health, 2013</a>)</span></p>
+</section>
+<section id="social-belonging" class="level4">
+<h4 class="anchored" data-anchor-id="social-belonging">Social Belonging</h4>
+<p><em>Know that people in my life accept and value me.</em> <em>Feel like an outsider (reversed).</em> <em>Know that people around me share my attitudes and beliefs.</em></p>
+<p>We assessed felt belongingness with three items adapted from the Sense of Belonging Instrument (Hagerty &amp; Patusky, 1995): (1) “Know that people in my life accept and value me”; (2) “Feel like an outsider”; (3) “Know that people around me share my attitudes and beliefs”. Participants responded on a scale from 1 (Very Inaccurate) to 7 (Very Accurate). The second item was reversely coded. <span class="citation" data-cites="hagerty1995">(<a href="#ref-hagerty1995" role="doc-biblioref">Hagerty &amp; Patusky, 1995</a>)</span></p>
+</section>
+<section id="born-in-nz" class="level4">
+<h4 class="anchored" data-anchor-id="born-in-nz">Born in Nz</h4>
+<p><em>Where were you born? (please be specific, e.g., which town/city?)</em></p>
+<p>Coded binary (1 = New Zealand; 0 = elsewhere.) <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="conscientiousness" class="level4">
+<h4 class="anchored" data-anchor-id="conscientiousness">Conscientiousness</h4>
+<p><em>I get chores done right away.</em> <em>I like order.</em> <em>I make a mess of things.</em> <em>I often forget to put things back in their proper place.</em></p>
+<p>Mini-IPIP6 Conscientiousness dimension: (i) I get chores done right away. (ii) I like order. (iii) I make a mess of things. (r) (iv) I often forget to put things back in their proper place. (r) <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="education-level" class="level4">
+<h4 class="anchored" data-anchor-id="education-level">Education Level</h4>
+<p><em>What is your highest level of qualification?</em></p>
+<p>We asked participants, “What is your highest level of qualification?”. We coded participans highest finished degree according to the New Zealand Qualifications Authority. Ordinal-Rank 0-10 NZREG codes (with overseas school qualifications coded as Level 3, and all other ancillary categories coded as missing) <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="employed" class="level4">
+<h4 class="anchored" data-anchor-id="employed">Employed</h4>
+<p><em>Are you currently employed (This includes self-employed of casual work)?</em></p>
+<p>Binary response: (0 = No, 1 = Yes) <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Stats NZ Census Question)</span></p>
+</section>
+<section id="ethnicity" class="level4">
+<h4 class="anchored" data-anchor-id="ethnicity">Ethnicity</h4>
+<p><em>Which ethnic group(s) do you belong to?</em></p>
+<p>Coded string: (1 = New Zealand European; 2 = Māori; 3 = Pacific; 4 = Asian) <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> NZ Census coding.)</span></p>
+</section>
+<section id="disability-status" class="level4">
+<h4 class="anchored" data-anchor-id="disability-status">Disability Status</h4>
+<p><em>Do you have a health condition or disability that limits you and that has lasted for 6+ months?</em></p>
+<p>We assessed disability with a one-item indicator adapted from Verbrugge (1997). It asks, “Do you have a health condition or disability that limits you and that has lasted for 6+ months?” (1 = Yes, 0 = No). <span class="citation" data-cites="verbrugge1997">(<a href="#ref-verbrugge1997" role="doc-biblioref">Verbrugge, 1997</a>)</span></p>
+</section>
+<section id="log-hours-with-children" class="level4">
+<h4 class="anchored" data-anchor-id="log-hours-with-children">Log Hours with Children</h4>
+<p><em>Hours spent…looking after children.</em></p>
+<p>We took the natural log of the response + 1. <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="log-hours-commuting" class="level4">
+<h4 class="anchored" data-anchor-id="log-hours-commuting">Log Hours Commuting</h4>
+<p><em>Hours spent…travelling/commuting.</em></p>
+<p>We took the natural log of the response + 1. <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="log-hours-of-exercise" class="level4">
+<h4 class="anchored" data-anchor-id="log-hours-of-exercise">Log Hours of Exercise</h4>
+<p><em>Hours spent…exercising/physical activity.</em></p>
+<p>We took the natural log of the response + 1. <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="log-hours-on-housework" class="level4">
+<h4 class="anchored" data-anchor-id="log-hours-on-housework">Log Hours on Housework</h4>
+<p><em>Hours spent…housework/cooking.</em></p>
+<p>We took the natural log of the response + 1. <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="log-household-income" class="level4">
+<h4 class="anchored" data-anchor-id="log-household-income">Log Household Income</h4>
+<p><em>Please estimate your total household income (before tax) for the year XXXX.</em></p>
+<p>We took the natural log of the response + 1. <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="male" class="level4">
+<h4 class="anchored" data-anchor-id="male">Male</h4>
+<p><em>We asked participants’ gender in an open-ended question: “what is your gender?”</em></p>
+<p>Here, we coded all those who responded as Male as 1, and those who did not as 0. <span class="citation" data-cites="fraser_coding_2020">(<a href="#ref-fraser_coding_2020" role="doc-biblioref">Fraser et al., 2020</a>)</span></p>
+</section>
+<section id="neuroticism" class="level4">
+<h4 class="anchored" data-anchor-id="neuroticism">Neuroticism</h4>
+<p><em>I have frequent mood swings.</em> <em>I am relaxed most of the time (reversed).</em> <em>I get upset easily.</em> <em>I seldom feel blue (reversed).</em></p>
+<p>Mini-IPIP6 Neuroticism dimension: (i) I have frequent mood swings. (ii) I am relaxed most of the time. (r) (iii) I get upset easily. (iv) I seldom feel blue. (r) <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="non-heterosexual" class="level4">
+<h4 class="anchored" data-anchor-id="non-heterosexual">Non Heterosexual</h4>
+<p><em>How would you describe your sexual orientation? (e.g., heterosexual, homosexual, straight, gay, lesbian, bisexual, etc.)</em></p>
+<p>Open-ended question, coded as binary (not heterosexual = 1). <span class="citation" data-cites="greaves2017diversity">(<a href="#ref-greaves2017diversity" role="doc-biblioref">Greaves et al., 2017</a>)</span></p>
+</section>
+<section id="nz-deprivation-index" class="level4">
+<h4 class="anchored" data-anchor-id="nz-deprivation-index">Nz Deprivation Index</h4>
+<p><em>New Zealand Deprivation - Decile Index - Using 2018 Census Data</em></p>
+<p>Numerical: (1-10) <span class="citation" data-cites="atkinson2019">(<a href="#ref-atkinson2019" role="doc-biblioref">Atkinson et al., 2019</a>)</span></p>
+</section>
+<section id="occupational-prestige-index" class="level4">
+<h4 class="anchored" data-anchor-id="occupational-prestige-index">Occupational Prestige Index</h4>
+<p><em>We assessed occupational prestige and status using the New Zealand Socio-economic Index 13 (NZSEI-13).</em></p>
+<p>This index uses the income, age, and education of a reference group, in this case, the 2013 New Zealand census, to calculate a score for each occupational group. Scores range from 10 (Lowest) to 90 (Highest). This list of index scores for occupational groups was used to assign each participant a NZSEI-13 score based on their occupation. <span class="citation" data-cites="fahy2017">(<a href="#ref-fahy2017" role="doc-biblioref">Fahy et al., 2017</a>)</span></p>
+</section>
+<section id="openness" class="level4">
+<h4 class="anchored" data-anchor-id="openness">Openness</h4>
+<p><em>I have a vivid imagination.</em> <em>I have difficulty understanding abstract ideas (reversed).</em> <em>I do not have a good imagination (reversed).</em> <em>I am not interested in abstract ideas (reversed).</em></p>
+<p>Mini-IPIP6 Openness to Experience dimension: (i) I have a vivid imagination. (ii) I have difficulty understanding abstract ideas. (r) (iii) I do not have a good imagination. (r) (iv) I am not interested in abstract ideas. (r) <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="parent" class="level4">
+<h4 class="anchored" data-anchor-id="parent">Parent</h4>
+<p><em>If you are a parent, in which year was your eldest child born?</em></p>
+<p>Parents were coded as 1, while the others were coded as 0. <span class="citation" data-cites="Developed">(<a href="#ref-Developed" role="doc-biblioref"><strong>Developed?</strong></a> for the NZAVS.)</span></p>
+</section>
+<section id="has-partner" class="level4">
+<h4 class="anchored" data-anchor-id="has-partner">Has Partner</h4>
+<p><em>What is your relationship status? (e.g., single, married, de-facto, civil union, widowed, living together, etc.)</em></p>
+<p>Coded as binary (has partner = 1). <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="political-conservatism" class="level4">
+<h4 class="anchored" data-anchor-id="political-conservatism">Political Conservatism</h4>
+<p><em>Please rate how politically liberal versus conservative you see yourself as being.</em></p>
+<p>Ordinal response: (1 = Extremely Liberal, 7 = Extremely Conservative) <span class="citation" data-cites="jost_end_2006-1">(<a href="#ref-jost_end_2006-1" role="doc-biblioref">Jost, 2006</a>)</span></p>
+</section>
+<section id="religious-identification" class="level4">
+<h4 class="anchored" data-anchor-id="religious-identification">Religious Identification</h4>
+<p><em>How important is your religion to how you see yourself?</em></p>
+<p>Ordinal response: (1 = Not Important, 7 = Very Important) <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="rural-classification" class="level4">
+<h4 class="anchored" data-anchor-id="rural-classification">Rural Classification</h4>
+<p><em>High Urban Accessibility = 1, Medium Urban Accessibility = 2, Low Urban Accessibility = 3, Remote = 4, Very Remote = 5.</em></p>
+<p>“Participants residence locations were coded according to a five-level ordinal categorisation ranging from Urban to Rural.” <span class="citation" data-cites="whitehead2023unmasking">(<a href="#ref-whitehead2023unmasking" role="doc-biblioref">Whitehead et al., 2023</a>)</span></p>
+</section>
+<section id="sample-frame-opt-in" class="level4">
+<h4 class="anchored" data-anchor-id="sample-frame-opt-in">Sample Frame Opt in</h4>
+<p><em>Participant was not randomly sampled from the New Zealand Electoral Roll.</em></p>
+<p>Code string (Binary): (0 = No, 1 = Yes) <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for the NZAVS.)</span></p>
+</section>
+<section id="short-form-health" class="level4">
+<h4 class="anchored" data-anchor-id="short-form-health">Short Form Health</h4>
+<p><em>In general, would you say your health is…</em></p>
+<p>Ordinal response: (1 = Poor, 7 = Excellent) <span class="citation" data-cites="instrument1992mos">(<a href="#ref-instrument1992mos" role="doc-biblioref">Instrument Ware Jr &amp; Sherbourne, 1992</a>)</span></p>
+</section>
+<section id="smoker" class="level4">
+<h4 class="anchored" data-anchor-id="smoker">Smoker</h4>
+<p><em>Do you currently smoke tobacco cigarettes?</em></p>
+<p>Binary smoking indicator (0 = No, 1 = Yes). <span class="citation" data-cites="string_is">(<a href="#ref-string_is" role="doc-biblioref"><strong>string_is?</strong></a> Developed for NZAVS.)</span></p>
+</section>
+<section id="exposure-measures" class="level4">
+<h4 class="anchored" data-anchor-id="exposure-measures">Exposure Measures</h4>
+</section>
+</section>
+<section id="exposure-variable" class="level3">
+<h3 class="anchored" data-anchor-id="exposure-variable">Exposure Variable</h3>
+<section id="extraversion" class="level4">
+<h4 class="anchored" data-anchor-id="extraversion">Extraversion</h4>
+<p><em>I am the life of the party.</em> <em>I don’t talk a lot (reversed).</em> <em>I keep in the background (reversed).</em> <em>I talk to a lot of different people at parties.</em></p>
+<p>Mini-IPIP6 Extraversion dimension: (i) I am the life of the party. (ii) I don’t talk a lot. (r) (iii) I keep in the background. (r) (iv) I talk to a lot of different people at parties. <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="outcome-measures" class="level4">
+<h4 class="anchored" data-anchor-id="outcome-measures">Outcome Measures</h4>
+</section>
+</section>
+<section id="outcome-variables" class="level3">
+<h3 class="anchored" data-anchor-id="outcome-variables">Outcome Variables</h3>
+<section id="social-belonging-1" class="level4">
+<h4 class="anchored" data-anchor-id="social-belonging-1">Social Belonging</h4>
+<p><em>Know that people in my life accept and value me.</em> <em>Feel like an outsider (reversed).</em> <em>Know that people around me share my attitudes and beliefs.</em></p>
+<p>We assessed felt belongingness with three items adapted from the Sense of Belonging Instrument (Hagerty &amp; Patusky, 1995): (1) “Know that people in my life accept and value me”; (2) “Feel like an outsider”; (3) “Know that people around me share my attitudes and beliefs”. Participants responded on a scale from 1 (Very Inaccurate) to 7 (Very Accurate). The second item was reversely coded. <span class="citation" data-cites="hagerty1995">(<a href="#ref-hagerty1995" role="doc-biblioref">Hagerty &amp; Patusky, 1995</a>)</span></p>
+</section>
+<section id="anxiety" class="level4">
+<h4 class="anchored" data-anchor-id="anxiety">Anxiety</h4>
+<p><em>During the past 30 days, how often did…you feel restless or fidgety?</em> <em>During the past 30 days, how often did…you feel that everything was an effort?</em> <em>During the past 30 days, how often did…you feel nervous?</em></p>
+<p>Ordinal response: (0 = None Of The Time; 1 = A Little Of The Time; 2= Some Of The Time; 3 = Most Of The Time; 4 = All Of The Time) <span class="citation" data-cites="kessler2002">(<a href="#ref-kessler2002" role="doc-biblioref">Kessler et al., 2002</a>)</span></p>
+</section>
+<section id="depression" class="level4">
+<h4 class="anchored" data-anchor-id="depression">Depression</h4>
+<p><em>During the past 30 days, how often did…you feel hopeless?</em> <em>During the past 30 days, how often did…you feel so depressed that nothing could cheer you up?</em> <em>During the past 30 days, how often did…you feel you feel restless or fidgety?</em></p>
+<p>Ordinal response: (0 = None Of The Time; 1 = A Little Of The Time; 2= Some Of The Time; 3 = Most Of The Time; 4 = All Of The Time) <span class="citation" data-cites="kessler2002">(<a href="#ref-kessler2002" role="doc-biblioref">Kessler et al., 2002</a>)</span></p>
+</section>
+<section id="life-satisfaction" class="level4">
+<h4 class="anchored" data-anchor-id="life-satisfaction">Life Satisfaction</h4>
+<p><em>I am satisfied with my life.</em> <em>In most ways my life is close to ideal.</em></p>
+<p>Ordinal response (1 = Strongly Disagree to 7 = Strongly Agree). <span class="citation" data-cites="diener1985a">(<a href="#ref-diener1985a" role="doc-biblioref">Diener et al., 1985</a>)</span></p>
+</section>
+<section id="log-hours-of-exercise-1" class="level4">
+<h4 class="anchored" data-anchor-id="log-hours-of-exercise-1">Log Hours of Exercise</h4>
+<p><em>Hours spent…exercising/physical activity.</em></p>
+<p>We took the natural log of the response + 1. <span class="citation" data-cites="sibley2011">(<a href="#ref-sibley2011" role="doc-biblioref">Sibley et al., 2011</a>)</span></p>
+</section>
+<section id="meaning-purpose" class="level4">
+<h4 class="anchored" data-anchor-id="meaning-purpose">Meaning Purpose</h4>
+<p><em>My life has a clear sense of purpose</em></p>
+<p>Ordinal response (1 = Strongly Disagree to 7 = Strongly Agree). <span class="citation" data-cites="steger_meaning_2006">(<a href="#ref-steger_meaning_2006" role="doc-biblioref">Steger et al., 2006</a>)</span></p>
+</section>
+<section id="meaning-sense" class="level4">
+<h4 class="anchored" data-anchor-id="meaning-sense">Meaning Sense</h4>
+<p><em>I have a good sense of what makes my life meaningful.</em></p>
+<p>Ordinal response (1 = Strongly Disagree to 7 = Strongly Agree). <span class="citation" data-cites="steger_meaning_2006">(<a href="#ref-steger_meaning_2006" role="doc-biblioref">Steger et al., 2006</a>)</span></p>
+</section>
+<section id="neighbourhood-community" class="level4">
+<h4 class="anchored" data-anchor-id="neighbourhood-community">Neighbourhood Community</h4>
+<p><em>I feel a sense of community with others in my local neighbourhood.</em></p>
+<p>Ordinal response (1 = Strongly Disagree to 7 = Strongly Agree). <span class="citation" data-cites="sengupta2013">(<a href="#ref-sengupta2013" role="doc-biblioref">Sengupta et al., 2013</a>)</span></p>
+</section>
+<section id="personal-well-being-index" class="level4">
+<h4 class="anchored" data-anchor-id="personal-well-being-index">Personal Well Being Index</h4>
+<p>no information available for this variable.</p>
+</section>
+<section id="rumination" class="level4">
+<h4 class="anchored" data-anchor-id="rumination">Rumination</h4>
+<p><em>During the last 30 days, how often did…you have negative thoughts that repeated over and over?</em></p>
+<p>Ordinal responses: 0 = None of The Time, 1 = A little of The Time, 2 = Some of The Time, 3 = Most of The Time, 4 = All of The Time. <span class="citation" data-cites="nolen-hoeksema_effects_1993">(<a href="#ref-nolen-hoeksema_effects_1993" role="doc-biblioref">Nolen-hoeksema &amp; Morrow, 1993</a>)</span></p>
+</section>
+<section id="self-esteem" class="level4">
+<h4 class="anchored" data-anchor-id="self-esteem">Self Esteem</h4>
+<p><em>On the whole am satisfied with myself.</em> <em>Take a positive attitude toward myself.</em> <em>Am inclined to feel that I am a failure (reversed).</em></p>
+<p>Ordinal response (1 = Very inaccurate to 7 = Very accurate). <span class="citation" data-cites="Rosenberg1965">(<a href="#ref-Rosenberg1965" role="doc-biblioref">Rosenberg, 1965</a>)</span></p>
+</section>
+<section id="social-support" class="level4">
+<h4 class="anchored" data-anchor-id="social-support">Social Support</h4>
+<p><em>There are people I can depend on to help me if I really need it.</em> <em>There is no one I can turn to for guidance in times of stress (reversed).</em> <em>I know there are people I can turn to when I need help.</em></p>
+<p>Ordinal response: (1 = Strongly Disagree, 7 = Strongly Agree) <span class="citation" data-cites="cutrona1987">(<a href="#ref-cutrona1987" role="doc-biblioref">Cutrona &amp; Russell, 1987</a>)</span></p>
+</section>
+</section>
+</section>
+<section id="appendix-sample" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-sample">Appendix B: Sample</h2>
+<p><a href="#tbl-appendix-baseline" class="quarto-xref">Table&nbsp;3</a> presents sample demographic statistics.</p>
+<div id="tbl-appendix-baseline" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-appendix-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Demographic statistics for New Zealand Attitudes and Values Cohort wave 2018.
+</figcaption>
+<div aria-describedby="tbl-appendix-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">2018</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(N=39635)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Age</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">48.5 (13.9)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">51.0 [18.0, 99.0]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Agreeableness</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.35 (0.988)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.47 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">9 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Alcohol Frequency</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">2.16 (1.34)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">2.00 [0, 5.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1342 (3.4%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Alcohol Intensity</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">2.15 (2.09)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">2.00 [0, 15.0]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">2348 (5.9%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Belong</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.14 (1.07)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.31 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">7 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Born in NZ</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8510 (21.5%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">30670 (77.4%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">455 (1.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Conscientiousness</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.10 (1.06)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.23 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Education Level</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">no_qualification</td>
+<td style="text-align: left;">1003 (2.5%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">cert_1_to_4</td>
+<td style="text-align: left;">13801 (34.8%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cert_5_to_6</td>
+<td style="text-align: left;">4953 (12.5%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">university</td>
+<td style="text-align: left;">10400 (26.2%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">post_grad</td>
+<td style="text-align: left;">4220 (10.6%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">masters</td>
+<td style="text-align: left;">3297 (8.3%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">doctorate</td>
+<td style="text-align: left;">930 (2.3%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1031 (2.6%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Employed</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">8111 (20.5%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">31475 (79.4%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">49 (0.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Ethnicity</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">euro</td>
+<td style="text-align: left;">31454 (79.4%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">maori</td>
+<td style="text-align: left;">4561 (11.5%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">pacific</td>
+<td style="text-align: left;">971 (2.4%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">asian</td>
+<td style="text-align: left;">2124 (5.4%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">525 (1.3%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Disability Status</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">0.223 (0.416)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">0 [0, 1.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">745 (1.9%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Log Hours with Children</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">1.18 (1.61)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">0.0341 [0, 5.13]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1242 (3.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Log Hours Commuting</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">1.50 (0.832)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">1.61 [0, 4.40]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1242 (3.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Log Hours Exercising</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">1.55 (0.846)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">1.61 [0, 4.40]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1242 (3.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Log Hours on Housework</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">2.14 (0.782)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">2.20 [0, 5.13]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1242 (3.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Log Household Income</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">11.4 (0.765)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">11.5 [0.685, 14.9]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">3067 (7.7%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Male</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">24766 (62.5%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">14767 (37.3%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">102 (0.3%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Neuroticism</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">3.49 (1.15)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">3.48 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">10 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Non-heterosexual</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">35100 (88.6%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2562 (6.5%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1973 (5.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>NZ Deprivation Index</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">4.77 (2.73)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">4.05 [1.00, 10.0]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">255 (0.6%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Occupational Prestige Index</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">54.1 (16.5)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">54.0 [10.0, 90.0]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">536 (1.4%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Openness</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">4.96 (1.12)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.00 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">3 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Parent</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">11539 (29.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">27776 (70.1%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">320 (0.8%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Has Partner</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">0.752 (0.432)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">1.00 [0, 1.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1244 (3.1%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Political Conservatism</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">3.59 (1.38)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">3.97 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">2682 (6.8%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Religious Identification</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">2.36 (2.18)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">1.00 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1050 (2.6%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Rural Classification</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">High Urban Accessibility</td>
+<td style="text-align: left;">24406 (61.6%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Medium Urban Accessibility</td>
+<td style="text-align: left;">7431 (18.7%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Low Urban Accessibility</td>
+<td style="text-align: left;">4818 (12.2%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Remote</td>
+<td style="text-align: left;">2241 (5.7%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Very Remote</td>
+<td style="text-align: left;">486 (1.2%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">253 (0.6%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Sample Frame Opt-In</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">38485 (97.1%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">1150 (2.9%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Short Form Health</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.05 (1.17)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.04 [1.00, 7.00]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">6 (0.0%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Smoker</strong></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">35771 (90.3%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">2880 (7.3%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">984 (2.5%)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<section id="appendix-exposure" class="level3">
+<h3 class="anchored" data-anchor-id="appendix-exposure">Exposure Variable</h3>
+<!-- @tbl-sample-exposures presents sample statistics for the exposure variable, religious service attendance, during the baseline and exposure waves. This variable was not measured in part of NZAVS time 12 (years 2020-2021) and part of NZAVS time 13 (years 2021-2022). To address missingness, if a value was observed after NZAVS time 14, we carried the previous observation forward and created and NA indicator. If there was no future observation, the participant was treated as censored, and inverse probability of censoring weights were applied, following our standard method for handling missing observations (see mansucript **Method**/**Handling of Missing Data**). Here, our carry-forward imputation approach may result in conservative causal effect estimation because it introduces measurement error. However, this approach would not generally bias causal effect estimation away from the null because the measurement error is unsystematic and random and unrelated to the outcomes. -->
+<div id="tbl-appendix-exposures" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-appendix-exposures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Demographic statistics for New Zealand Attitudes and Values Cohort waves 2018.
+</figcaption>
+<div aria-describedby="tbl-appendix-exposures-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">2018</th>
+<th style="text-align: left;">2019</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(N=39635)</td>
+<td style="text-align: left;">(N=39635)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Extraversion</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">3.91 (1.20)</td>
+<td style="text-align: left;">3.86 (1.19)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">3.96 [1.00, 7.00]</td>
+<td style="text-align: left;">3.79 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">0 (0%)</td>
+<td style="text-align: left;">11117 (28.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Extraversion (binary)</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[1.0,4.0]</td>
+<td style="text-align: left;">21138 (53.3%)</td>
+<td style="text-align: left;">15637 (39.5%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">(4.0,7.0]</td>
+<td style="text-align: left;">18497 (46.7%)</td>
+<td style="text-align: left;">12881 (32.5%)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">0 (0%)</td>
+<td style="text-align: left;">11117 (28.0%)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="appendix-outcomes" class="level3">
+<h3 class="anchored" data-anchor-id="appendix-outcomes">Outcome Variables</h3>
+<div id="tbl-appendix-outcomes" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-appendix-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Outcome variables measured at baseline (NZAVS time 10, years 2018-2019, and time 15, years 2023-2024).
+</figcaption>
+<div aria-describedby="tbl-appendix-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 34%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">2018</th>
+<th style="text-align: left;">2020</th>
+<th style="text-align: left;">Overall</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">(N=39635)</td>
+<td style="text-align: left;">(N=39635)</td>
+<td style="text-align: left;">(N=79270)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Social Belonging</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.14 (1.07)</td>
+<td style="text-align: left;">5.06 (1.09)</td>
+<td style="text-align: left;">5.11 (1.08)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.31 [1.00, 7.00]</td>
+<td style="text-align: left;">5.05 [1.00, 7.00]</td>
+<td style="text-align: left;">5.30 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">7 (0.0%)</td>
+<td style="text-align: left;">13278 (33.5%)</td>
+<td style="text-align: left;">13285 (16.8%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Anxiety</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">1.21 (0.774)</td>
+<td style="text-align: left;">1.17 (0.756)</td>
+<td style="text-align: left;">1.19 (0.767)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">1.00 [0, 4.00]</td>
+<td style="text-align: left;">1.00 [0, 4.00]</td>
+<td style="text-align: left;">1.00 [0, 4.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">51 (0.1%)</td>
+<td style="text-align: left;">13275 (33.5%)</td>
+<td style="text-align: left;">13326 (16.8%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Depression</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">0.584 (0.751)</td>
+<td style="text-align: left;">0.550 (0.723)</td>
+<td style="text-align: left;">0.571 (0.740)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">0.333 [0, 4.00]</td>
+<td style="text-align: left;">0.333 [0, 4.00]</td>
+<td style="text-align: left;">0.333 [0, 4.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">54 (0.1%)</td>
+<td style="text-align: left;">13273 (33.5%)</td>
+<td style="text-align: left;">13327 (16.8%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Life Satisfaction</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.30 (1.20)</td>
+<td style="text-align: left;">5.25 (1.23)</td>
+<td style="text-align: left;">5.28 (1.21)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.50 [1.00, 7.00]</td>
+<td style="text-align: left;">5.50 [1.00, 7.00]</td>
+<td style="text-align: left;">5.50 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">260 (0.7%)</td>
+<td style="text-align: left;">13560 (34.2%)</td>
+<td style="text-align: left;">13820 (17.4%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Hours of Exercise (log)</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">1.55 (0.846)</td>
+<td style="text-align: left;">1.63 (0.839)</td>
+<td style="text-align: left;">1.58 (0.844)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">1.61 [0, 4.40]</td>
+<td style="text-align: left;">1.78 [0, 4.40]</td>
+<td style="text-align: left;">1.61 [0, 4.40]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1242 (3.1%)</td>
+<td style="text-align: left;">13770 (34.7%)</td>
+<td style="text-align: left;">15012 (18.9%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meaning: Purpose</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.20 (1.41)</td>
+<td style="text-align: left;">5.15 (1.44)</td>
+<td style="text-align: left;">5.18 (1.42)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.05 [1.00, 7.00]</td>
+<td style="text-align: left;">5.04 [1.00, 7.00]</td>
+<td style="text-align: left;">5.04 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">1010 (2.5%)</td>
+<td style="text-align: left;">13650 (34.4%)</td>
+<td style="text-align: left;">14660 (18.5%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meaning: Sense</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.71 (1.22)</td>
+<td style="text-align: left;">5.71 (1.19)</td>
+<td style="text-align: left;">5.71 (1.20)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.99 [1.00, 7.00]</td>
+<td style="text-align: left;">5.99 [1.00, 7.00]</td>
+<td style="text-align: left;">5.99 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">128 (0.3%)</td>
+<td style="text-align: left;">13162 (33.2%)</td>
+<td style="text-align: left;">13290 (16.8%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Neighbourhood Community</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">4.19 (1.66)</td>
+<td style="text-align: left;">4.38 (1.57)</td>
+<td style="text-align: left;">4.27 (1.63)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">4.03 [1.00, 7.00]</td>
+<td style="text-align: left;">4.95 [1.00, 7.00]</td>
+<td style="text-align: left;">4.04 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">212 (0.5%)</td>
+<td style="text-align: left;">13202 (33.3%)</td>
+<td style="text-align: left;">13414 (16.9%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Pwi</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">7.09 (1.66)</td>
+<td style="text-align: left;">7.18 (1.63)</td>
+<td style="text-align: left;">7.12 (1.65)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">7.29 [0, 10.0]</td>
+<td style="text-align: left;">7.47 [0, 10.0]</td>
+<td style="text-align: left;">7.46 [0, 10.0]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">41 (0.1%)</td>
+<td style="text-align: left;">13120 (33.1%)</td>
+<td style="text-align: left;">13161 (16.6%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Rumination</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">0.853 (1.00)</td>
+<td style="text-align: left;">0.797 (0.959)</td>
+<td style="text-align: left;">0.831 (0.987)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">0.955 [0, 4.00]</td>
+<td style="text-align: left;">0.0495 [0, 4.00]</td>
+<td style="text-align: left;">0.953 [0, 4.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">135 (0.3%)</td>
+<td style="text-align: left;">13335 (33.6%)</td>
+<td style="text-align: left;">13470 (17.0%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Self Esteem</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.14 (1.28)</td>
+<td style="text-align: left;">5.13 (1.27)</td>
+<td style="text-align: left;">5.14 (1.28)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">5.34 [1.00, 7.00]</td>
+<td style="text-align: left;">5.34 [1.00, 7.00]</td>
+<td style="text-align: left;">5.34 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">11 (0.0%)</td>
+<td style="text-align: left;">13280 (33.5%)</td>
+<td style="text-align: left;">13291 (16.8%)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Social Support</strong></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Mean (SD)</td>
+<td style="text-align: left;">5.95 (1.12)</td>
+<td style="text-align: left;">5.94 (1.12)</td>
+<td style="text-align: left;">5.95 (1.12)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Median [Min, Max]</td>
+<td style="text-align: left;">6.30 [1.00, 7.00]</td>
+<td style="text-align: left;">6.29 [1.00, 7.00]</td>
+<td style="text-align: left;">6.30 [1.00, 7.00]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Missing</td>
+<td style="text-align: left;">30 (0.1%)</td>
+<td style="text-align: left;">13112 (33.1%)</td>
+<td style="text-align: left;">13142 (16.6%)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="appendix-transition" class="level3">
+<h3 class="anchored" data-anchor-id="appendix-transition">Appendix C: Transition Matrix to Check The Positivity Assumption</h3>
+<div id="tbl-transition" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-transition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Transition Matrix Showing Change
+</figcaption>
+<div aria-describedby="tbl-transition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">From / To</th>
+<th style="text-align: right;">State 0</th>
+<th style="text-align: right;">State 1</th>
+<th style="text-align: right;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">State 0</td>
+<td style="text-align: right;">17572</td>
+<td style="text-align: right;">2271</td>
+<td style="text-align: right;">19843</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">State 1</td>
+<td style="text-align: right;">2400</td>
+<td style="text-align: right;">6275</td>
+<td style="text-align: right;">8675</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>These transition matrices capture shifts in states between consecutive waves. Each cell shows the count of individuals transitioning from one state to another. Rows are the initial state (From), columns the subsequent state (To). <strong>Diagonal entries</strong> (in <strong>bold</strong>) mark those who stayed in the same state.</p>
+<div style="page-break-after: always;"></div>
+</section>
+</section>
+<section id="appendix-cate-validation" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-cate-validation">Appendix D: Evidence of Heterogeneity</h2>
+<div id="tbl-omnibus" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-omnibus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7
+</figcaption>
+<div aria-describedby="tbl-omnibus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 12%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Outcome</th>
+<th style="text-align: left;">Mean Est. (SE)</th>
+<th style="text-align: left;">Mean p-value</th>
+<th style="text-align: left;">Mean Status</th>
+<th style="text-align: left;">Diff. Est. (SE)</th>
+<th style="text-align: left;">Diff. p-value</th>
+<th style="text-align: left;">Heterogeneity</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Social Belonging</td>
+<td style="text-align: left;">0.98 (0.21)</td>
+<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">-1.26 (0.59)</td>
+<td style="text-align: left;">0.984</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Anxiety</td>
+<td style="text-align: left;">0.9 (0.47)</td>
+<td style="text-align: left;">0.027</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">-1.11 (0.55)</td>
+<td style="text-align: left;">0.978</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Depression</td>
+<td style="text-align: left;">1.13 (0.96)</td>
+<td style="text-align: left;">0.118</td>
+<td style="text-align: left;">Not calibrated</td>
+<td style="text-align: left;">0.2 (0.63)</td>
+<td style="text-align: left;">0.374</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Life Satisfaction</td>
+<td style="text-align: left;">0.97 (0.44)</td>
+<td style="text-align: left;">0.015</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">-0.63 (0.55)</td>
+<td style="text-align: left;">0.874</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hours of Exercise (log)</td>
+<td style="text-align: left;">0.59 (1.88)</td>
+<td style="text-align: left;">0.377</td>
+<td style="text-align: left;">Not calibrated</td>
+<td style="text-align: left;">0.56 (0.48)</td>
+<td style="text-align: left;">0.121</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Meaning: Purpose</td>
+<td style="text-align: left;">0.92 (0.27)</td>
+<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">-0.35 (0.58)</td>
+<td style="text-align: left;">0.727</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Meaning: Sense</td>
+<td style="text-align: left;">0.95 (0.32)</td>
+<td style="text-align: left;">0.002</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">0.6 (0.42)</td>
+<td style="text-align: left;">0.080</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Neighbourhood Community</td>
+<td style="text-align: left;">1 (0.2)</td>
+<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">-1.69 (0.58)</td>
+<td style="text-align: left;">0.998</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Personal Well-being Index</td>
+<td style="text-align: left;">0.92 (0.36)</td>
+<td style="text-align: left;">0.005</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">0.65 (0.45)</td>
+<td style="text-align: left;">0.076</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rumination</td>
+<td style="text-align: left;">0.9 (0.69)</td>
+<td style="text-align: left;">0.095</td>
+<td style="text-align: left;">Not calibrated</td>
+<td style="text-align: left;">-0.2 (0.53)</td>
+<td style="text-align: left;">0.647</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Self Esteem</td>
+<td style="text-align: left;">1.01 (0.26)</td>
+<td style="text-align: left;">0.00e+00</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">0.05 (0.52)</td>
+<td style="text-align: left;">0.462</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Social Support</td>
+<td style="text-align: left;">0.94 (0.29)</td>
+<td style="text-align: left;">0.001</td>
+<td style="text-align: left;">Calibrated</td>
+<td style="text-align: left;">-0.1 (0.48)</td>
+<td style="text-align: left;">0.581</td>
+<td style="text-align: left;">No heterogeneity</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="omnibus-heterogeneity-test-results" class="level1">
+<h1>Omnibus Heterogeneity Test Results</h1>
+<section id="explanation" class="level2">
+<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
+<p>Test calibration of the forest computes the best linear fit using: 1. Forest predictions on held-out data 2. The mean forest prediction as regressors</p>
+<p>Testing uses heteroskedasticity-robust (HC3) standard errors. A coefficient of 1 for: - Mean forest prediction: indicates the mean prediction is accurate for held-out data - Differential forest prediction: indicates heterogeneity estimates are well calibrated</p>
+<p>The p-value of the differential forest prediction coefficient acts as an omnibus test for heterogeneity.</p>
+</section>
+<section id="results-by-outcome" class="level2">
+<h2 class="anchored" data-anchor-id="results-by-outcome">Results by Outcome</h2>
+<p><strong>Social Belonging</strong>: - Mean prediction: 0.98 (SE=0.21), t=4.71, p=0.00e+00, calibrated. - Differential prediction: -1.26 (SE=0.59), t=-2.15, p=0.984, no heterogeneity.</p>
+<p><strong>Anxiety</strong>: - Mean prediction: 0.9 (SE=0.47), t=1.93, p=0.027, calibrated. - Differential prediction: -1.11 (SE=0.55), t=-2.02, p=0.978, no heterogeneity.</p>
+<p><strong>Depression</strong>: - Mean prediction: 1.13 (SE=0.96), t=1.18, p=0.118, not calibrated. - Differential prediction: 0.2 (SE=0.63), t=0.32, p=0.374, no heterogeneity.</p>
+<p><strong>Life Satisfaction</strong>: - Mean prediction: 0.97 (SE=0.44), t=2.17, p=0.015, calibrated. - Differential prediction: -0.63 (SE=0.55), t=-1.15, p=0.874, no heterogeneity.</p>
+<p><strong>Hours of Exercise (log)</strong>: - Mean prediction: 0.59 (SE=1.88), t=0.31, p=0.377, not calibrated. - Differential prediction: 0.56 (SE=0.48), t=1.17, p=0.121, no heterogeneity.</p>
+<p><strong>Meaning: Purpose</strong>: - Mean prediction: 0.92 (SE=0.27), t=3.43, p=0.00e+00, calibrated. - Differential prediction: -0.35 (SE=0.58), t=-0.6, p=0.727, no heterogeneity.</p>
+<p><strong>Meaning: Sense</strong>: - Mean prediction: 0.95 (SE=0.32), t=2.93, p=0.002, calibrated. - Differential prediction: 0.6 (SE=0.42), t=1.41, p=0.080, no heterogeneity.</p>
+<p><strong>Neighbourhood Community</strong>: - Mean prediction: 1 (SE=0.2), t=4.91, p=0.00e+00, calibrated. - Differential prediction: -1.69 (SE=0.58), t=-2.9, p=0.998, no heterogeneity.</p>
+<p><strong>Personal Well-being Index</strong>: - Mean prediction: 0.92 (SE=0.36), t=2.57, p=0.005, calibrated. - Differential prediction: 0.65 (SE=0.45), t=1.43, p=0.076, no heterogeneity.</p>
+<p><strong>Rumination</strong>: - Mean prediction: 0.9 (SE=0.69), t=1.31, p=0.095, not calibrated. - Differential prediction: -0.2 (SE=0.53), t=-0.38, p=0.647, no heterogeneity.</p>
+<p><strong>Self Esteem</strong>: - Mean prediction: 1.01 (SE=0.26), t=3.84, p=0.00e+00, calibrated. - Differential prediction: 0.05 (SE=0.52), t=0.1, p=0.462, no heterogeneity.</p>
+<p><strong>Social Support</strong>: - Mean prediction: 0.94 (SE=0.29), t=3.25, p=0.001, calibrated. - Differential prediction: -0.1 (SE=0.48), t=-0.2, p=0.581, no heterogeneity.</p>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>9 of 12 models have reliably calibrated mean predictions on held-out data. None of the models show evidence of heterogeneity on held-out data.</p>
+<section id="rate-test" class="level4">
+<h4 class="anchored" data-anchor-id="rate-test">Rate Test</h4>
+<p>The RATE tells us how much better we could do by offering treatment first to those who are predicted to benefit most, rather than treating everyone the same. A higher RATE suggests that targeting people according to their CATE indicators can lead to ‘better’ overall results (where ‘higher’ always means better, recall we flipped Anxiety, Depression, Rumination).</p>
+<div id="tbl-rate-autoc" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-rate-autoc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;8
+</figcaption>
+<div aria-describedby="tbl-rate-autoc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 23%">
+<col style="width: 9%">
+<col style="width: 5%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 4%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">outcome</th>
+<th style="text-align: left;">policy</th>
+<th style="text-align: left;">target</th>
+<th style="text-align: right;">RATE Estimate</th>
+<th style="text-align: right;">Std Error</th>
+<th style="text-align: right;">2.5%</th>
+<th style="text-align: right;">97.5%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">model_t2_log_hours_exercise_z</td>
+<td style="text-align: left;"><strong>Hours of Exercise (log)</strong></td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">0.016</td>
+<td style="text-align: right;">0.114</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_meaning_sense_z</td>
+<td style="text-align: left;">Meaning: Sense</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">0.061</td>
+<td style="text-align: right;">0.034</td>
+<td style="text-align: right;">-0.006</td>
+<td style="text-align: right;">0.128</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_rumination_z</td>
+<td style="text-align: left;">Rumination</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">0.043</td>
+<td style="text-align: right;">-0.059</td>
+<td style="text-align: right;">0.109</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_kessler_latent_anxiety_z</td>
+<td style="text-align: left;">Anxiety</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">0.025</td>
+<td style="text-align: right;">-0.031</td>
+<td style="text-align: right;">0.067</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_pwi_z</td>
+<td style="text-align: left;">Personal Well-being Index</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">0.018</td>
+<td style="text-align: right;">0.028</td>
+<td style="text-align: right;">-0.037</td>
+<td style="text-align: right;">0.073</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_self_esteem_z</td>
+<td style="text-align: left;">Self Esteem</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">0.016</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">-0.027</td>
+<td style="text-align: right;">0.059</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_belong_z</td>
+<td style="text-align: left;">Social Belonging</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">-0.044</td>
+<td style="text-align: right;">0.042</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_support_z</td>
+<td style="text-align: left;">Social Support</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">0.034</td>
+<td style="text-align: right;">-0.068</td>
+<td style="text-align: right;">0.066</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_lifesat_z</td>
+<td style="text-align: left;">Life Satisfaction</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">-0.013</td>
+<td style="text-align: right;">0.024</td>
+<td style="text-align: right;">-0.060</td>
+<td style="text-align: right;">0.034</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_meaning_purpose_z</td>
+<td style="text-align: left;">Meaning: Purpose</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">-0.031</td>
+<td style="text-align: right;">0.040</td>
+<td style="text-align: right;">-0.109</td>
+<td style="text-align: right;">0.047</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_kessler_latent_depression_z</td>
+<td style="text-align: left;">Depression</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">-0.033</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">-0.094</td>
+<td style="text-align: right;">0.028</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_neighbourhood_community_z</td>
+<td style="text-align: left;">Neighbourhood Community</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">AUTOC</td>
+<td style="text-align: right;">-0.061</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">-0.135</td>
+<td style="text-align: right;">0.013</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1" class="level3">
+<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</h3>
+<p>AUTOC uses logarithmic weighting to focus treatment on top responders.</p>
+<p>Positive RATE estimates for: <strong>Hours of Exercise (log)</strong>.</p>
+<p>Estimates (<strong>Hours of Exercise (log)</strong>: 0.065 (95% CI 0.016, 0.114)) show robust heterogeneity.</p>
+<p>For outcomes with 95%% CI crossing zero (Meaning: Sense, Rumination, Anxiety, Personal Well-being Index, Self Esteem, Social Belonging, Social Support, Life Satisfaction, Meaning: Purpose, Depression, Neighbourhood Community), evidence is inconclusive.</p>
+<div id="tbl-rate-qini" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-rate-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9
+</figcaption>
+<div aria-describedby="tbl-rate-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 23%">
+<col style="width: 9%">
+<col style="width: 5%">
+<col style="width: 11%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">model</th>
+<th style="text-align: left;">outcome</th>
+<th style="text-align: left;">policy</th>
+<th style="text-align: left;">target</th>
+<th style="text-align: right;">RATE Estimate</th>
+<th style="text-align: right;">Std Error</th>
+<th style="text-align: right;">2.5%</th>
+<th style="text-align: right;">97.5%</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">model_t2_meaning_sense_z</td>
+<td style="text-align: left;"><strong>Meaning: Sense</strong></td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.036</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_log_hours_exercise_z</td>
+<td style="text-align: left;">Hours of Exercise (log)</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">0.014</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">0.030</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_pwi_z</td>
+<td style="text-align: left;">Personal Well-being Index</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.004</td>
+<td style="text-align: right;">0.024</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_kessler_latent_anxiety_z</td>
+<td style="text-align: left;">Anxiety</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.005</td>
+<td style="text-align: right;">0.023</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_self_esteem_z</td>
+<td style="text-align: left;">Self Esteem</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.008</td>
+<td style="text-align: right;">0.020</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_support_z</td>
+<td style="text-align: left;">Social Support</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.008</td>
+<td style="text-align: right;">-0.010</td>
+<td style="text-align: right;">0.022</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_lifesat_z</td>
+<td style="text-align: left;">Life Satisfaction</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">-0.002</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">-0.014</td>
+<td style="text-align: right;">0.010</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_belong_z</td>
+<td style="text-align: left;">Social Belonging</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">-0.003</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">-0.015</td>
+<td style="text-align: right;">0.009</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_rumination_z</td>
+<td style="text-align: left;">Rumination</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">-0.003</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.017</td>
+<td style="text-align: right;">0.011</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_meaning_purpose_z</td>
+<td style="text-align: left;">Meaning: Purpose</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">-0.004</td>
+<td style="text-align: right;">0.009</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.014</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">model_t2_kessler_latent_depression_z</td>
+<td style="text-align: left;">Depression</td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">-0.008</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.022</td>
+<td style="text-align: right;">0.006</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">model_t2_neighbourhood_community_z</td>
+<td style="text-align: left;"><strong>Neighbourhood Community</strong></td>
+<td style="text-align: left;">treat_best</td>
+<td style="text-align: left;">QINI</td>
+<td style="text-align: right;">-0.026</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-0.040</td>
+<td style="text-align: right;">-0.012</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1" class="level3">
+<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</h3>
+<p>Qini uses linear weighting to balance effect size and prevalence for aggregate gain.</p>
+<p>Positive RATE estimates for: <strong>Meaning: Sense</strong>.</p>
+<p>Estimates (<strong>Meaning: Sense</strong>: 0.020 (95% CI 0.004, 0.036)) show robust heterogeneity.</p>
+<p>Negative RATE estimates for: <strong>Neighbourhood Community</strong>.</p>
+<p>Estimates (<strong>Neighbourhood Community</strong>: -0.026 (95% CI -0.040, -0.012)) caution against CATE prioritisation.</p>
+<p>For outcomes with 95%% CI crossing zero (Hours of Exercise (log), Personal Well-being Index, Anxiety, Self Esteem, Social Support, Life Satisfaction, Social Belonging, Rumination, Meaning: Purpose, Depression), evidence is inconclusive.</p>
+<div style="page-break-after: always;"></div>
+<!-- ```{r,  results='asis'} -->
+<!-- #| eval: true -->
+<!-- #| echo: false -->
+<!-- #| include: true -->
+<!-- text_explain_grf <- boilerplate_generate_text( -->
+<!--   category = "appendix", -->
+<!--   sections = c( -->
+<!--     "explain.grf" -->
+<!--   ), -->
+<!--   global_vars = list( -->
+<!--     traning_proportion = "70%", -->
+<!--     train_proportion_decision_tree = "70%", -->
+<!--     appendix_letter_explain_grf = "G" -->
+<!--   ), -->
+<!--   db = unified_db -->
+<!-- ) -->
+<!-- cat(knitr::knit_child(text = text_explain_grf, quiet = TRUE)) -->
+<!-- ``` -->
+</section>
+</section>
+<section id="references" class="level2 appendix-refs">
+
+
+
+
+</section>
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
+<div id="ref-athey2021" class="csl-entry" role="listitem">
+Athey, S., &amp; Wager, S. (2021a). Policy Learning With Observational Data. <em>Econometrica</em>, <em>89</em>(1), 133–161. <a href="https://doi.org/10.3982/ECTA15732">https://doi.org/10.3982/ECTA15732</a>
+</div>
+<div id="ref-athey_2021_policy_tree_econometrica" class="csl-entry" role="listitem">
+Athey, S., &amp; Wager, S. (2021b). Policy learning with observational data. <em>Econometrica</em>, <em>89</em>(1), 133–161. https://doi.org/<a href="https://doi.org/10.3982/ECTA15732">https://doi.org/10.3982/ECTA15732</a>
+</div>
+<div id="ref-atkinson2019" class="csl-entry" role="listitem">
+Atkinson, J., Salmond, C., &amp; Crampton, P. (2019). <em>NZDep2018 index of deprivation, user<span>’</span>s manual.</em>
+</div>
+<div id="ref-margot2024" class="csl-entry" role="listitem">
+Bulbulia, J. A. (2024a). <em>Margot: MARGinal observational treatment-effects</em>. <a href="https://doi.org/10.5281/zenodo.10907724">https://doi.org/10.5281/zenodo.10907724</a>
+</div>
+<div id="ref-bulbulia2024wierd" class="csl-entry" role="listitem">
+Bulbulia, J. A. (2024b). Methods in causal inference part 3: Measurement error and external validity threats. <em>Evolutionary Human Sciences</em>, <em>6</em>, e42. <a href="https://doi.org/10.1017/ehs.2024.33">https://doi.org/10.1017/ehs.2024.33</a>
+</div>
+<div id="ref-cutrona1987" class="csl-entry" role="listitem">
+Cutrona, C. E., &amp; Russell, D. W. (1987). The provisions of social relationships and adaptation to stress. <em>Advances in Personal Relationships</em>, <em>1</em>, 37–67.
+</div>
+<div id="ref-diener1985a" class="csl-entry" role="listitem">
+Diener, E., Emmons, R. A., Larsen, R. J., &amp; Griffin, S. (1985). The Satisfaction With Life Scale. <em>Journal of Personality Assessment</em>, <em>49</em>(1), 71–75.
+</div>
+<div id="ref-fahy2017" class="csl-entry" role="listitem">
+Fahy, K. M., Lee, A., &amp; Milne, B. J. (2017). <em><span>N</span>ew <span>Z</span>ealand socio-economic index 2013</em>. Statistics New Zealand-Tatauranga Aotearoa.
+</div>
+<div id="ref-fraser_coding_2020" class="csl-entry" role="listitem">
+Fraser, G., Bulbulia, J., Greaves, L. M., Wilson, M. S., &amp; Sibley, C. G. (2020). Coding responses to an open-ended gender measure in a <span>N</span>ew <span>Z</span>ealand national sample. <em>The Journal of Sex Research</em>, <em>57</em>(8), 979–986. <a href="https://doi.org/10.1080/00224499.2019.1687640">https://doi.org/10.1080/00224499.2019.1687640</a>
+</div>
+<div id="ref-greaves2017diversity" class="csl-entry" role="listitem">
+Greaves, L. M., Barlow, F. K., Lee, C. H., Matika, C. M., Wang, W., Lindsay, C.-J., Case, C. J., Sengupta, N. K., Huang, Y., Cowie, L. J., et al. (2017). The diversity and prevalence of sexual orientation self-labels in a <span>N</span>ew <span>Z</span>ealand national sample. <em>Archives of Sexual Behavior</em>, <em>46</em>, 1325–1336.
+</div>
+<div id="ref-hagerty1995" class="csl-entry" role="listitem">
+Hagerty, B. M. K., &amp; Patusky, K. (1995). Developing a Measure Of Sense of Belonging: <em>Nursing Research</em>, <em>44</em>(1), 9–13. <a href="https://doi.org/10.1097/00006199-199501000-00003">https://doi.org/10.1097/00006199-199501000-00003</a>
+</div>
+<div id="ref-Ministry_of_Health_2013" class="csl-entry" role="listitem">
+Health, Ministry of. (2013). <em>The <span>N</span>ew <span>Z</span>ealand <span>H</span>ealth <span>S</span>urvey: Content guide 2012-2013</em>. Princeton University Press.
+</div>
+<div id="ref-hernan2016" class="csl-entry" role="listitem">
+Hernán, M. A., Sauer, B. C., Hernández-Díaz, S., Platt, R., &amp; Shrier, I. (2016). Specifying a target trial prevents immortal time bias and other self-inflicted injuries in observational analyses. <em>Journal of Clinical Epidemiology</em>, <em>79</em>, 70–75.
+</div>
+<div id="ref-instrument1992mos" class="csl-entry" role="listitem">
+Instrument Ware Jr, J., &amp; Sherbourne, C. (1992). The MOS 36-item short-form health survey (SF-36): I. Conceptual framework and item selection. <em>Medical Care</em>, <em>30</em>(6), 473–483.
+</div>
+<div id="ref-jost_end_2006-1" class="csl-entry" role="listitem">
+Jost, J. T. (2006). The end of the end of ideology. <em>American Psychologist</em>, <em>61</em>(7), 651–670. <a href="https://doi.org/10.1037/0003-066X.61.7.651">https://doi.org/10.1037/0003-066X.61.7.651</a>
+</div>
+<div id="ref-kessler2002" class="csl-entry" role="listitem">
+Kessler, R. &nbsp;C., Andrews, G., Colpe, L. &nbsp;J., Hiripi, E., Mroczek, D. &nbsp;K., Normand, S.-L. &nbsp;T., Walters, E. &nbsp;E., &amp; Zaslavsky, A. &nbsp;M. (2002). Short screening scales to monitor population prevalences and trends in non-specific psychological distress. <em>Psychological Medicine</em>, <em>32</em>(6), 959–976. <a href="https://doi.org/10.1017/S0033291702006074">https://doi.org/10.1017/S0033291702006074</a>
+</div>
+<div id="ref-linden2020EVALUE" class="csl-entry" role="listitem">
+Linden, A., Mathur, M. B., &amp; VanderWeele, T. J. (2020). Conducting sensitivity analysis for unmeasured confounding in observational studies using e-values: The evalue package. <em>The Stata Journal</em>, <em>20</em>(1), 162–175.
+</div>
+<div id="ref-nolen-hoeksema_effects_1993" class="csl-entry" role="listitem">
+Nolen-hoeksema, S., &amp; Morrow, J. (1993). Effects of rumination and distraction on naturally occurring depressed mood. <em>Cognition and Emotion</em>, <em>7</em>(6), 561–570. <a href="https://doi.org/10.1080/02699939308409206">https://doi.org/10.1080/02699939308409206</a>
+</div>
+<div id="ref-pearl2009a" class="csl-entry" role="listitem">
+Pearl, J. (2009). <em>Causality</em>. Cambridge University Press.
+</div>
+<div id="ref-Rosenberg1965" class="csl-entry" role="listitem">
+Rosenberg, M. (1965). <em>Society and the adolescent self-image</em>. Princeton University Press.
+</div>
+<div id="ref-sengupta2013" class="csl-entry" role="listitem">
+Sengupta, N. K., Luyten, N., Greaves, L. M., Osborne, D., Robertson, A., Brunton, C., Armstrong, G., &amp; Sibley, C. G. (2013). Sense of Community in <span>N</span>ew <span>Z</span>ealand Neighbourhoods: A Multi-Level Model Predicting Social Capital. <em>New Zealand Journal of Psychology</em>, <em>42</em>(1), 36–45.
+</div>
+<div id="ref-sibley2021" class="csl-entry" role="listitem">
+Sibley, C. G. (2021). <em>Sampling procedure and sample details for the <span>N</span>ew <span>Z</span>ealand <span>A</span>ttitudes and <span>V</span>alues <span>S</span>tudy</em>. <a href="https://doi.org/10.31234/osf.io/wgqvy">https://doi.org/10.31234/osf.io/wgqvy</a>
+</div>
+<div id="ref-sibley2011" class="csl-entry" role="listitem">
+Sibley, C. G., Luyten, N., Purnomo, M., Mobberley, A., Wootton, L. W., Hammond, M. D., Sengupta, N., Perry, R., West-Newman, T., Wilson, M. S., McLellan, L., Hoverd, W. J., &amp; Robertson, A. (2011). The Mini-IPIP6: Validation and extension of a short measure of the Big-Six factors of personality in <span>N</span>ew <span>Z</span>ealand. <em>New Zealand Journal of Psychology</em>, <em>40</em>(3), 142–159.
+</div>
+<div id="ref-steger_meaning_2006" class="csl-entry" role="listitem">
+Steger, M. F., Frazier, P., Oishi, S., &amp; Kaler, M. (2006). The meaning in life questionnaire: Assessing the presence of and search for meaning in life. <em>Journal of Counseling Psychology</em>, <em>53</em>(1), 80–93. <a href="https://doi.org/10.1037/0022-0167.53.1.80">https://doi.org/10.1037/0022-0167.53.1.80</a>
+</div>
+<div id="ref-policytree_package_2024" class="csl-entry" role="listitem">
+Sverdrup, E., Kanodia, A., Zhou, Z., Athey, S., &amp; Wager, S. (2024). <em>Policytree: Policy learning via doubly robust empirical welfare maximization over trees</em>. <a href="https://CRAN.R-project.org/package=policytree">https://CRAN.R-project.org/package=policytree</a>
+</div>
+<div id="ref-grf2024" class="csl-entry" role="listitem">
+Tibshirani, J., Athey, S., Sverdrup, E., &amp; Wager, S. (2024). <em>Grf: Generalized random forests</em>. <a href="https://github.com/grf-labs/grf">https://github.com/grf-labs/grf</a>
+</div>
+<div id="ref-vanderweele2019" class="csl-entry" role="listitem">
+VanderWeele, T. J. (2019). Principles of confounder selection. <em>European Journal of Epidemiology</em>, <em>34</em>(3), 211–219.
+</div>
+<div id="ref-vanderweele2017" class="csl-entry" role="listitem">
+VanderWeele, T. J., &amp; Ding, P. (2017). Sensitivity analysis in observational research: Introducing the <span>E</span>-value. <em>Annals of Internal Medicine</em>, <em>167</em>(4), 268–274. <a href="https://doi.org/10.7326/M16-2607">https://doi.org/10.7326/M16-2607</a>
+</div>
+<div id="ref-vanderweele2020" class="csl-entry" role="listitem">
+VanderWeele, T. J., Mathur, M. B., &amp; Chen, Y. (2020). Outcome-wide longitudinal designs for causal inference: A new template for empirical studies. <em>Statistical Science</em>, <em>35</em>(3), 437–466.
+</div>
+<div id="ref-verbrugge1997" class="csl-entry" role="listitem">
+Verbrugge, L. M. (1997). A global disability indicator. <em>Journal of Aging Studies</em>, <em>11</em>(4), 337–362. <a href="https://doi.org/10.1016/S0890-4065(97)90026-8">https://doi.org/10.1016/S0890-4065(97)90026-8</a>
+</div>
+<div id="ref-wager2018" class="csl-entry" role="listitem">
+Wager, S., &amp; Athey, S. (2018). Estimation and inference of heterogeneous treatment effects using random forests. <em>Journal of the American Statistical Association</em>, <em>113</em>(523), 1228–1242. <a href="https://doi.org/10.1080/01621459.2017.1319839">https://doi.org/10.1080/01621459.2017.1319839</a>
+</div>
+<div id="ref-whitehead2023unmasking" class="csl-entry" role="listitem">
+Whitehead, J., Davie, G., Graaf, B. de, Crengle, S., Lawrenson, R., Miller, R., &amp; Nixon, G. (2023). Unmasking hidden disparities: A comparative observational study examining the impact of different rurality classifications for health research in aotearoa new zealand. <em>BMJ Open</em>, <em>13</em>(4), e067927.
+</div>
+</div></section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

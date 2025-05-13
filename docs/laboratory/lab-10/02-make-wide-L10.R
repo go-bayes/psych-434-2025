@@ -19,8 +19,8 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 
-if (packageVersion("margot") < "1.0.37") {
-  stop("please install margot >= 1.0.37 for this workflow\n
+if (packageVersion("margot") < "1.0.39") {
+  stop("please install margot >= 1.0.39 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -179,8 +179,7 @@ df_wide_encoded  <- margot::margot_process_longitudinal_data_wider(
   lost_in_following_wave = "lost_following_wave",
   remove_selected_columns = TRUE,
   exposure_var = exposure_var,
-  scale_continuous = TRUE,
-  censored_if_any_lost = FALSE
+  scale_continuous = TRUE
 )
 
 margot_process_longitudinal_data_wider()
@@ -282,7 +281,7 @@ df$w0 <- w0
 # 3 stage‑1 censoring: dropout between t1 → t2 (baseline + exposure)
 # -----------------------------------------------------------------------------
 
-exposure_var <- "t1_extraversion_binary"       # ← edit if needed
+exposure_var <- t1_name_exposure_binary       # ← binary exposure variable name
 
 df1 <- df %>% filter(t0_lost_following_wave == 0)
 
