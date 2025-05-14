@@ -13,9 +13,9 @@ rstudioapi::restartSession()
 
 # reproducibility ---------------------------------------------------------
 
-
+# choose number
 set.seed(123)
-
+seed = 123
 
 # essential library ---------------------------------------------------------
 if (!require(margot, quietly = TRUE)) {
@@ -24,7 +24,7 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 # min version of markgot
-min_version <- "1.0.40"
+min_version <- "1.0.41"
 if (packageVersion("margot") < min_version) {
   stop("please install margot >= min_version for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
@@ -63,7 +63,8 @@ pacman::p_load(
   future,
   crayon,
   glue,
-  stringr
+  stringr, 
+  furr
 )
 
 
@@ -555,7 +556,6 @@ models_binary <- margot_causal_forest_parallel(
   train_proportion = 0.7
 )
 
-
 # +--------------------------+
 # |          ALERT           |
 # +--------------------------+
@@ -597,34 +597,53 @@ cat("Number of original models:\n", length(models_binary$results), "\n")
 
 
 # make ate plots ----------------------------------------------------------
-binary_results <- margot_plot(
-  models_binary$combined_table,
+
+# uncorrected results
+models_binary$combined_table
+
+#   ************* NEW - CORRECTION FOR FAMILY-WISE ERROR **********
+adj_tbl <- margot_correct_combined_table(models_binary$combined_table,
+                                         adjust = "bonferroni",
+                                         alpha  = 0.05,
+                                         scale  = "RD")
+
+# then pass to the results
+ate_results <- margot_plot(
+  adj_tbl, # <- now pass the corrected results.
   options = outcomes_options_all,
   label_mapping = label_mapping_all,
   include_coefficients = FALSE,
   save_output = FALSE,
   order = "evaluebound_asc",
   original_df = original_df,
-  e_val_bound_threshold = 1.2
+  e_val_bound_threshold = 1.1,
+  rename_ate = TRUE,
+  adjust = "bonferroni",
+  alpha = 0.05
 )
 
+
+
+
 # view
-binary_results$transformed_table |> rename("E-Value" = "E_Value", "E-Value bound" = "E_Val_bound") |>
-  kbl(format = 'markdown')
+cat(ate_results$interpretation)
 
 # check
-binary_results$plot
+ate_results$plot
 
 # interpretation
-cat(binary_results$interpretation)
+cat(ate_results$interpretation)
+
+# save
+here_save(ate_results, "ate_results")
 
 
 # make markdown tables (to be imported into the manuscript)
 margot_bind_tables_markdown <- margot_bind_tables(
-  binary_results$transformed_table,
+  adj_tbl,
   #list(all_models$combined_table),
   sort_E_val_bound = "desc",
-  e_val_bound_threshold = 1.2,
+  e_val_bound_threshold = 1.1,
   # ← choose threshold
   highlight_color = NULL,
   bold = TRUE,
@@ -792,421 +811,332 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # models_binary_flipped_all_t <- margot_rescue_qini(model_results  = models_binary_flipped_all,
 #                                              propensity_bounds  = c(0.05, 0.95))
 
+# heterogeneity and policy analysis workflow -----------------------------
+# step 1: omnibus heterogeneity test ---------------------------------------
+# test for treatment effect heterogeneity across all flipped outcomes
+#	omnibus calibration test asks: 'Can the forest rank units by τ(x) at all?'  a null result means the ordering of CATEs is 
+# indistinguishable from noise, not that all HTE is zero.
+omnibus_results <-
+  margot::margot_omnibus_hetero_test(
+    models_binary_flipped_all,
+    label_mapping = label_mapping_all
+  )
 
+# display summary and interpretation
+omnibus_results$summary_table %>% kbl("markdown")
+cat(omnibus_results$brief_interpretation, "\n")
 
+# step 2: compute rate heterogeneity metrics ------------------------------
+# calculate rate-autoc and rate-qini tables
+# note: RATE-AUTOC asks: 'If I only treat the top k\% by τ(x), do I maximise average gain?' 
+# it rewards extreme uplift but can be volatile.
+# RATE-Qini asks: 'if i treat more broadly, do I still improve aggregate outcome?' it trades intensity for coverage.
+rate_results <-
+  margot_rate(
+    models   = models_binary_flipped_all,
+    policy   = "treat_best",
+    label_mapping = label_mapping_all
+  )
 
-# this tests may be included in an appendix ------------------------------
+# show rate tables
+rate_results$rate_autoc %>% kbl("markdown")
+rate_results$rate_qini %>% kbl("markdown")
 
+# save rate results
+here_save(rate_results, "rate_results")
 
-# omnibus heterogeneity tests --------------------------------------------
-# test for treatment effect heterogeneity across all outcomes
-result_ominbus_hetero_all <- margot::margot_omnibus_hetero_test(models_binary_flipped_all,
-                                                                label_mapping = label_mapping_all)
+# generate textual interpretations for rate metrics
+rate_interp <-
+  margot_interpret_rate(
+    rate_results,
+    flipped_outcomes = flipped_names
+  )
+cat(rate_interp$autoc_results, "\n")
+cat(rate_interp$qini_results, "\n")
+cat(rate_interp$comparison, "\n")
+here_save(rate_interp, "rate_interpretation")
 
-# view results table
-result_ominbus_hetero_all$summary_table |> kbl("markdown")
-
-# view test interpretation
-cat(result_ominbus_hetero_all$brief_interpretation)
-
-# this tests helps us to evaluate evidence of heterogeneity ------------------------------
-
-
-# rate test analysis -----------------------------------------------------
-# create rate analysis table
-rate_table_all <- margot_rate(
-  models = models_binary_flipped_all,
-  policy = "treat_best",  # or "withold_best" but don't attempt fitting curves or policytrees
-  label_mapping = label_mapping_all
+# organise model groups by heterogeneity evidence
+model_groups <- list(
+  autoc  = rate_interp$autoc_model_names,
+  qini   = rate_interp$qini_model_names,
+  either = rate_interp$either_model_names
 )
 
-# view rate tables
-rate_table_all$rate_autoc |> kbl("markdown")
-rate_table_all$rate_qini |> kbl("markdown")
+cli::cli_h1("rate metrics and interpretations complete ✔")
 
-
-# save
-here_save(rate_table_all, "rate_table_all")
-
-
-# generate interpretation
-rate_interpretation_all <- margot_interpret_rate(
-  rate_table_all, 
-  flipped_outcomes = flipped_names
-)
-
-# view interpretations
-cat(rate_interpretation_all$autoc_results)
-cat(rate_interpretation_all$qini_results)
-
-# compare rate and qini -- see grf documentation
-cat(rate_interpretation_all$comparison)
-
-
-# save
-here_save(rate_interpretation_all, "rate_interpretation_all")
-
-
-
-# check out model names for different ways of thinking about heterogeneity
-rate_interpretation_all$either_model_names
-rate_interpretation_all$qini_model_names
-rate_interpretation_all$both_model_names
-rate_interpretation_all$autoc_model_names
-
-
-cli::cli_h1("produced rate tables and interpretations ✔")
-
-
-# RATE PLOTS  -------------------------------------------------------------
-
-
-# autoc plots ------------------------------------------------------------
-# generate batch rate plots for models with significant heterogeneity
-batch_rate_autoc_plots <- margot_plot_rate_batch(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  # just use rate autoc for rate plots
-  model_names = rate_interpretation_all$autoc_model_names
-)
-
-# extract individual plots from the batch result
-autoc_plots <- batch_rate_autoc_plots
-
-# determine number of columns based on number of plots
-num_cols <- ifelse(length(autoc_plots) > 3, 2, 1)
-
-# combine plots using patchwork
-library(patchwork)
-
-# only proceed if there are plots to combine
-if (length(autoc_plots) > 0) {
-  # initialize with first plot
-  combined_autoc_plot <- autoc_plots[[1]]
-  
-  # add remaining plots if any
-  if (length(autoc_plots) > 1) {
-    for (i in 2:length(autoc_plots)) {
-      combined_autoc_plot <- combined_autoc_plot + autoc_plots[[i]]
-    }
+# helper: combine and save ggplot objects ---------------------------------
+combine_and_save <- function(plots, prefix) {
+  if (length(plots) == 0) {
+    message("no ", prefix, " plots to combine")
+    return(invisible(NULL))
   }
-  
-  # apply the dynamic layout
-  combined_autoc_plot <- combined_autoc_plot +
-    plot_layout(ncol = num_cols) &
-    plot_annotation(
-      title = "AUTOC Model Plots",
-      subtitle = paste0(length(autoc_plots), " models with significant heterogeneity"),
+  cols     <- ifelse(length(plots) > 3, 2, 1)
+  combined <- purrr::reduce(plots, `+`) +
+    patchwork::plot_layout(ncol = cols) &
+    patchwork::plot_annotation(
+      title    = toupper(prefix),
+      subtitle = glue::glue("{length(plots)} models"),
       tag_levels = "A"
     )
-  
-  # view the combined plot
-  print(combined_autoc_plot)
-  combined_autoc_plot
-  # save the combined plot if needed
-  width <- ifelse(num_cols == 1, 8, 12)
-  height <- 6 * ceiling(length(autoc_plots) / num_cols)
-  
+  print(combined)
   ggsave(
-    here::here(push_mods, "combined_autoc_plots.pdf"),
-    combined_autoc_plot,
-    width = width,
-    height = height
+    here::here(push_mods, paste0("combined_", prefix, ".pdf")),
+    combined,
+    width  = ifelse(cols == 1, 8, 12),
+    height = 6 * ceiling(length(plots) / cols)
   )
-} else {
-  # handle case with no plots
-  message("No AUTOC plots available")
+  combined
 }
 
-cli::cli_h1("produced rate graphs ✔")
+# step 3: plot rate curves -----------------------------------------------
+autoc_plots <-
+  margot_plot_rate_batch(
+    models      = models_binary_flipped_all,
+    save_plots  = FALSE,
+    model_names = model_groups$autoc
+  )
+combined_autoc <- combine_and_save(autoc_plots, "rate_autoc")
 
+qini_rate_plots <-
+  margot_plot_rate_batch(
+    models      = models_binary_flipped_all,
+    save_plots  = FALSE,
+    model_names = model_groups$qini
+  )
+combined_qini_rate <- combine_and_save(qini_rate_plots, "rate_qini")
+cli::cli_h1("rate curves plotted ✔")
 
-# QINI PLOTS --------------------------------------------------------------
-# note these will fail if there is scant evidence for diffuse HTE
+# view 
+autoc_plots$model_t2_log_hours_exercise_z
+autoc_plots$model_t2_meaning_sense_z
 
-# qini --------------------------------------------------------------------
-# run the margot_policy function
-models_batch_qini_2L <- margot_policy(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$qini_model_names,
-  max_depth  = 2L,# ← new argument
-  original_df = original_df,
-  label_mapping = label_mapping_all,
-  output_objects = c("qini_plot", "diff_gain_summaries")
+# step 4: Qini model curves --------------------------------------------
+qini_policy_results <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = list(),
+    policy_tree_args   = list(),
+    model_names        = model_groups$qini,
+    original_df        = original_df,
+    label_mapping      = label_mapping_all,
+    max_depth          = 2L,
+    output_objects     = c("qini_plot", "diff_gain_summaries")
   )
 
+# extract and combine Qini plots\ nqini_plots <- purrr::map(qini_policy_results, ~ .x[[1]])
+combined_qini_curves <- combine_and_save(qini_plots, "qini_curves")
 
-# extract the plots from the results
-qini_plots <- lapply(seq_along(models_batch_qini_2L), function(i) {
-  models_batch_qini_2L[[i]][[1]]  # extract the 1st element (plot) from each model
-})
-
+# view qini plots
+qini_plots <- purrr::map(qini_policy_results, ~ .x$qini_plot)
 qini_plots
 
-# name the plots
-names(qini_plots) <- rate_interpretation_all$qini_model_names
+cli::cli_h1("Qini model curves plotted ✔")
 
-# determine number of columns based on number of plots
-num_cols <- ifelse(length(qini_plots) > 3, 2, 1)
+# step 5: main focus – 2-level policy trees -------------------------------
+# policy value (our 2-level tree on the 30 % test fold) asks: 'under a low-complexity rule, do treated units in the selected leaves really outperform?'
+policy_2L <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = decision_tree_defaults,
+    policy_tree_args   = policy_tree_defaults,
+    model_names        = model_groups$either,
+    original_df        = original_df,
+    label_mapping      = label_mapping_all,
+    max_depth          = 2L,
+    output_objects     = "combined_plot"
+  )
 
-# load the patchwork library for combining plots
-library(patchwork)
+# extract and display 2L policy tree plots
+plots_2L <- purrr::map(policy_2L, ~ .x[[1]])
+purrr::walk(plots_2L, print)
 
-# check if there are any plots to combine
-if (length(qini_plots) == 0) {
-  message("no plots available to combine")
-  NULL  # removed return since this isn't in a function
-} else {
-  # create combined plot
-  combined_plot <- qini_plots[[1]]
-  
-  # only run the loop if there are at least 2 plots
-  if (length(qini_plots) > 1) {
-    for (i in 2:length(qini_plots)) {
-      combined_plot <- combined_plot + plots[[i]]
-    }
-  }
-  
-  # apply the dynamic layout
-  qini_combined_plot <- combined_plot + plot_layout(ncol = num_cols)
-  # add titles and annotations
-  qini_combined_plot <- qini_combined_plot &
-    plot_annotation(
-      title = "Qini Model Plots",
-      subtitle = paste0(length(plots), 
-                        ifelse(length(plots) == 1, " model ", " models "), 
-                        "arranged in ", num_cols, 
-                        ifelse(num_cols == 1, " column", " columns")),
-      tag_levels = "A"  # adds a, b, c, etc. to the plots
-    )
-  # view
-  qini_combined_plot
-  # save (optional)
-  width <- ifelse(num_cols == 1, 8, 12)
-  height <- 6 * ceiling(length(plots)/num_cols)  # height per row * number of rows
-  # save
-  ggsave(here::here(push_mods, "combined_qini_plots.pdf"),
-         qini_combined_plot,
-         width = width, height = height)
-}
+# interpret 2L policy trees
+interp_2L <-
+  margot_interpret_policy_batch(
+    models_binary_flipped_all,
+    model_names = model_groups$either
+  )
+cat(interp_2L, "\n")
 
-print(qini_combined_plot)
+cli::cli_h1("main 2L policy trees analysed ✔")
 
-cli::cli_h1("produced essential qini graphs ✔")
+# step 6: secondary focus – qualitative assessment of policy trees ----
+policy_1L <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = decision_tree_defaults,
+    policy_tree_args   = policy_tree_defaults,
+    model_names        = model_groups$either,
+    original_df        = original_df,
+    label_mapping      = label_mapping_all,
+    max_depth          = 1L,
+    output_objects     = "combined_plot"
+  )
+plots_1L <- purrr::map(policy_1L, ~ .x[[1]])
 
-
-# interpretation ----------------------------------------------------------
-# interpret qini curves
-interpretation_qini_curves_2L <- margot_interpret_qini(
-  models_batch_qini_2L,
-  model_names = rate_interpretation_all$qini_model_names,
-  label_mapping = label_mapping_all
-)
-interpretation_qini_curves_2L
-
-# view qini interpretation
-cat(interpretation_qini_curves_2L$qini_explanation)
-
-# view summary table
-interpretation_qini_curves_2L$summary_table |> kbl("markdown")
-
-
-
-# policy tree analysis depth 1 L------------------------------------------------
-# make policy trees
-# 1 l decision trees are generally very bad
-plots_policy_trees_1L <- margot_policy(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$either_model_names,
-  # defined above
-  original_df = original_df,
-  label_mapping = label_mapping_all,
-  max_depth = 1L,
-  output_objects = "combined_plot"
-)
-
-# get number of models
-n_models <- length(rate_interpretation_all$either_model_names)
-
-# # use purrr to map through and print each model
-# purrr::map(1:n_models, function(i) {
-#   # print model name as a header
-#   cat("# model", i, "\n")
-#   # print the corresponding model plot
-#   print(plots_policy_trees_1L[[i]][[3]])
-#   # add spacing between models
-#   cat("\n\n")
-# })
-
-model_outputs_1L <- purrr::map(1:n_models, ~plots_policy_trees_1L[[.x]][[1]])
-
-# name the list elements by model number
-names(model_outputs_1L) <- paste0("model_", 1:n_models)
-
-
-# check number of models == n_models
-model_outputs_1L$model_1 # convincing?
-model_outputs_1L$model_2 # convincing?
-#model_outputs_1L$model_3 # convincing? - no third model here
-
-
-
-# THIS IS THE PREFERRED ANALYSIS FOR YOUR PAPER ---------------------------
-
-
-# policy tree analysis depth 2L -------------------------------------------------
-# make policy trees
-# *** 2l is much more persuasive ***
-plots_policy_trees_2L <- margot_policy(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  model_names = rate_interpretation_all$either_model_names,
-  # defined above
-  original_df = original_df,
-  label_mapping = label_mapping_all,
-  max_depth = 2L,
-  output_objects = "combined_plot"
-)
-
-n_models <- length(rate_interpretation_all$either_model_names)
-
-model_outputs_2L <- purrr::map(1:n_models, ~plots_policy_trees_2L[[.x]][[1]])
-names(model_outputs_2L) <- paste0("model_", 1:n_models)
-
-
-# view plots (two in this example)
-model_outputs_2L$model_1
-model_outputs_2L$model_2
-#model_outputs_2L$model_3
-
-
-# convincing?
-interpret_plots_policy_trees_2L <- margot_interpret_policy_batch(
-  models_binary_flipped_all, model_names = rate_interpretation_all$either_model_names)
-
-
-# view interpretation
-cat(interpret_plots_policy_trees_2L)
-
-# +--------------------------+
-# |     END DO NOT ALTER     |
-# +--------------------------+
-
-
-
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
-# +--------------------------+
-# |    MODIFY THIS SECTION   |
-# +--------------------------+
-
-
-# IF YOU WANT TO *EXPLORE* POLICIES IRRESPECTIVE OF RATE/QINI RESU --------
-
-
-all_plots_policy_trees_1L <- margot_policy(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  # model_names = rate_interpretation_all$either_model_names, # use all
-  # defined above
-  original_df = original_df,
-  label_mapping = label_mapping_all,
-  max_depth = 1L,
-  output_objects = "combined_plot"
-)
-n_models_all <- length(models_binary_flipped_all$results)
-n_models_all
-
-model_outputs_1L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_1L[[.x]][[1]])
-names(model_outputs_1L_all) <- paste0("model_", 1:n_models_all)
+cli::cli_h1("secondary 1L policy trees reviewed ✔")
 
 # view
-# THIS SUGGESTS THERE IS NO GOOD POLICY WITH 1 QUESTION ONLY
-model_outputs_1L_all$model_1 # ← convincing? 
-model_outputs_1L_all$model_2 # ← convincing? 
-model_outputs_1L_all$model_3 # ← convincing? 
-model_outputs_1L_all$model_4 # ← convincing? 
-model_outputs_1L_all$model_5 # ← convincing? 
-model_outputs_1L_all$model_6 # ← convincing? 
-model_outputs_1L_all$model_7 # ← convincing? 
-model_outputs_1L_all$model_8 # ← convincing? 
-model_outputs_1L_all$model_9 # ← convincing?  
-model_outputs_1L_all$model_10 # ← convincing? 
-model_outputs_1L_all$model_11 # ← convincing? 
-model_outputs_1L_all$model_12 # ← convincing? 
+plots_1L$model_t2_log_hours_exercise_z
+plots_1L$model_t2_meaning_sense_z
 
-# interpretation
-interpret_plots_policy_trees_1L_all <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 1)
-
-
-# view interpretation
-cat(interpret_plots_policy_trees_1L_all)
-
-# ALL model 2L
-all_plots_policy_trees_2L <- margot_policy(
-  models_binary_flipped_all,
-  save_plots = FALSE,
-  output_dir = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args = policy_tree_defaults,
-  # model_names = rate_interpretation_all$either_model_names, # use all
-  # defined above
-  original_df = original_df,
-  label_mapping = label_mapping_all,
-  max_depth = 2L
-)
-n_models_all <- length(models_binary_flipped_all$results)
-n_models_all
-
-model_outputs_2L_all <- purrr::map(1:n_models_all, ~all_plots_policy_trees_2L[[.x]][[1]])
-names(model_outputs_2L_all) <- paste0("model_", 1:n_models_all)
+# step 7: secondary focus – 2-level policy trees -------------------------
+# policies fror all outcomes
+policy_all_2L <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = decision_tree_defaults,
+    policy_tree_args   = policy_tree_defaults,
+    # model_names        = model_groups$either,
+    original_df        = original_df,
+    label_mapping      = label_mapping_all,
+    max_depth          = 2L,
+    output_objects     = "combined_plot"
+  )
+# extract and display 2L policy tree plots
+plots_all_2L <- purrr::map(policy_all_2L, ~ .x[[1]])
+purrr::walk(plots_all_2L, print).
 
 # view
-model_outputs_2L_all$model_1 # ← convincing? 
-model_outputs_2L_all$model_2 # ← convincing? 
-model_outputs_2L_all$model_3 # ← convincing? 
-model_outputs_2L_all$model_4 # ← convincing? 
-model_outputs_2L_all$model_5 # ← convincing? 
-model_outputs_2L_all$model_6 # ← convincing? 
-model_outputs_2L_all$model_7 # ← convincing? 
-model_outputs_2L_all$model_8 # ← convincing? 
-model_outputs_2L_all$model_9 # ← convincing?  
-model_outputs_2L_all$model_10 # ← convincing? 
-model_outputs_2L_all$model_11 # ← convincing? 
-model_outputs_2L_all$model_12 # ← convincing? 
+plots_all_2L$model_t2_log_hours_exercise_z
+plots_all_2L$model_t2_meaning_sense_z
 
-# interpretation
-interpret_plots_policy_trees_2L_all <- margot_interpret_policy_batch(models_binary_flipped_all, max_depth = 2)
+# others -- not reliable, only exploratory
+plots_all_2L$model_t2_belong_z # etc
 
 
-# view interpretation
-cat(interpret_plots_policy_trees_2L_all)
+# interpret 2L policy trees
+interp_all_2L <-
+  margot_interpret_policy_batch(
+    models_binary_flipped_all,
+    model_names = model_groups$either
+  )
+cat(interp_all_2L, "\n")
 
-# +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
-# +--------------------------+
-# |   END MODIFY SECTION     |
-# +--------------------------+
+cli::cli_h1("main 2L policy trees analysed ✔")
+plots_all_2L$model_t2_belong_z
 
 
 
+# step 8 BONFERRONI CORRECTION TO WORKFLOW ---------------------------------------
+#–– 1·a  (already produced by margot_flip_forests) ––––––––––––––––––––––
+flipped <- models_binary_flipped_all          # <- our object
 
+#–– 1·b  outcome-level screening ––––––––––––––––––––––––––––––––––––––––
+#  ➜ keep outcomes whose ATE 95 % CI excludes 0   **OR**
+#    whose AUTOC RATE CI excludes 0  (choose your favourite rule)
+
+keep <- margot_screen_models(
+  flipped,
+  rule = "rate",        # <– implementation-specific
+  target = "either",            # <– or "QINI"
+  alpha = 0.05,
+  adjust =  "bonferroni"
+)
+
+
+# get models
+model_keep  <- paste0("model_", keep)
+
+# view
+model_keep
+
+# corrected policies
+policy_2L_corrected <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = decision_tree_defaults,
+    policy_tree_args   = policy_tree_defaults,
+    model_names        = model_keep,
+    original_df        = original_df,
+    label_mapping      = label_mapping_all,
+    max_depth          = 2L,
+    output_objects     = "combined_plot"
+  )
+# extract and display 2L policy tree plots
+plots_2L_corrected <- purrr::map(policy_2L_corrected, ~ .x[[1]])
+purrr::walk(plots_2L_corrected, print)
+
+# view
+plots_2L_corrected$model_t2_neighbourhood_community_z
+
+
+# others -- not reliable, only exploratory
+plots_all_2L$model_t2_belong_z # etc
+
+
+# interpret 2L policy trees
+interp_all_2L <-
+  margot_interpret_policy_batch(models_binary_flipped_all, model_names = model_groups$either)
+cat(interp_all_2L, "\n")
+
+cli::cli_h1("main 2L policy trees analysed ✔")
+plots_all_2L$model_t2_belong_z
+
+# view
+models_binary_flipped_all$results$model_t2_kessler_latent_anxiety_z$policy_tree_depth_2
+
+
+
+# IGNORE - DEVELOPING
+# #–– 2·b  loop over the *kept* outcomes only ––––––––––––––––––––––––––––
+# developing
+# flipped$results[paste0("model_", keep)] <-
+#   purrr::map(flipped$results[paste0("model_", keep)],
+#              add_policy_p,
+#              depth = 2,
+#              R     = 999,
+#              seed  = 2025)
+# 
+# 
+# # view
+# flipped$results$model_t2_belong_z$policy_value
+# 
+# 
+# #–– 3·a  assemble every metric + Bonferroni adjustment ––––––––––––––––––
+# res_tbl  <- margot_summarise_all(flipped, target = "both", adjust = "none")
+# dplyr::glimpse(res_tbl)
+# 
+# # focus on the screened models only
+# res_tbl <- dplyr::filter(res_tbl, outcome %in% keep) |>
+#   dplyr::mutate(
+#     pv_est = purrr::map_dbl(outcome,
+#                             ~ flipped$results[[paste0("model_", .x)]]$policy_value$estimate),
+#     pv_se  = purrr::map_dbl(outcome,
+#                             ~ flipped$results[[paste0("model_", .x)]]$policy_value$std.err)
+#   )
+# 
+# #–– 3·b  prettify & print –––––––––––––––––––––––––––––––––––––––––––––––
+# report <- res_tbl %>%
+#   transmute(
+#     Outcome        = tools::toTitleCase(gsub("_z$", "", sub("^t2_", "", outcome))),
+#     `ATE  (±SE)`   = sprintf("%.3f ± %.3f", ate_est,  ate_se),
+#     `RATE AUTOC`   = sprintf("%.3f [%.3f, %.3f]",
+#                              rate_autoc, rate_autoc_lo, rate_autoc_hi),
+#     `RATE QINI`    = sprintf("%.3f [%.3f, %.3f]",
+#                              rate_qini,  rate_qini_lo,  rate_qini_hi),
+#     `Policy Δ (±SE)` = sprintf("%.3f ± %.3f", pv_est, pv_se),
+#     `Policy p`     = sprintf("%.3f", policy_p),
+#     `p-adj`        = sprintf("%.3f", p_adj),
+#     `Sig FW(.05)`  = ifelse(pass, "✓", "✗")
+#   )
+# knitr::kable(report, caption = "Treatment-effect & policy results (Bonferroni corrected)")
+
+
+
+
+# PLANNED COMPARISONS -----------------------------------------------------
 
 
 
@@ -1215,7 +1145,7 @@ cat(interpret_plots_policy_trees_2L_all)
 # +--------------------------+
 
 
-#############################################################################
+
 # theoretical comparisons ---------------------------------------------------
 # individual theoretical comparisons (if relevant)
 # need to get values for wealth if wealth is compared
