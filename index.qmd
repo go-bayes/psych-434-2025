@@ -213,8 +213,8 @@ my_data %>%
 -  Write a draft Introduction to your final writing assessment.
 -  Write a draft Method section for your writing assessment. 
 -  Prepare an in-class presentation of 10 minutes summaring your study.
--  **You are encouraged to use AI.** 
--  **However, be warned: I will mark hallucinations and errors harshly, so you'll need to to internalise understanding!**
+-  **You are encouraged to use AI** for help with coding.
+-  **You are permitted to use AI** for help with writing, **however, be warned:** I will mark hallucinations and errors harshly. You'll need to internalise understanding.
 -  Although I encourage you to use AI, I also encourage you to you write in your own voice. Cultivating your self-expression will make you interesting, and employable. 
 -  (* Note that even the best AI models make mistakes and hallucinate, particularly in causal inference)
 
