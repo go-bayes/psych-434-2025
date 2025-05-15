@@ -64,6 +64,7 @@ pacman::p_load(
   crayon,
   glue,
   stringr, 
+  future,
   furrr
 )
 
@@ -534,12 +535,6 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # nz english so that psyc 434 students can follow what happens “under the hood”.
 # -------------------------------------------------------------------
 
-# libraries -----------------------------------------------------------
-library(margot)   # core hte + policy helpers
-library(dplyr)    # pipes, mutate, filter, etc.
-library(purrr)    # functional map tools
-library(here)     # reproducible file paths
-
 # if you plan to run steps that set `parallel = TRUE`, be sure that      
 # future and furrr are installed (they load automatically inside the     
 # helpers).                                                              
@@ -570,62 +565,16 @@ print(keep)
 
 # -------------------------------------------------------------------
 # 2. attach (or refresh) bootstrap policy tests ----------------------
-# -------------------------------------------------------------------
-# –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-# * function: `margot_add_policy_values_batch()`                        
-#   for every outcome in `keep` it calls `margot_compute_policy_value()`
-#   if the depth‑2 test is missing.  that helper:                      
-#     • predicts actions from the stored depth‑2 tree on the 30% test  
-#       fold,                                                           
-#     • bootstraps the doubly‑robust gain minus ate (999× by default),  
-#     • returns estimate, se, and two‑sided p‑value.                    
-#   setting `parallel = TRUE` spins up one worker per core (‑1) via     
-#   future::multisession; the extra warning you see is only because the 
-#   workers start fresh and need to load **margot** – we silence it     
-#   inside the helper with `packages = "margot"`.                     
-# –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-# ingore: 'package:margot' may not be available when loading' if you get
-models_screened <- margot_add_policy_values_batch(
-  models_binary_flipped_all,
-  outcomes = keep,   # only those flagged in step 1
-  depths   = 2L,     # two‑split policy tree
-  R        = 999L,   # bootstrap replicates
-  parallel = TRUE    # use furrr + future
-)
-
-# optional: cache the heavy object to skip re‑bootstrapping next time --
-here_save_qs(models_screened, "models_screened", push_mods)
-
-# later you can reload with:                                            
-# models_screened <- here_read_qs(models_screened, "models_screened", push_mods)
-
-# -------------------------------------------------------------------
-# 3. summarise, adjust, and decide what to plot -----------------------
-# -------------------------------------------------------------------
-# –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-# * function: `margot_policy_summary()`                                 
-#   • gathers the fresh bootstrap tests,                                
-#   • adjusts their p‑values (bh @ q = 0.10),                           
-#   • labels pass/fail,                                                 
-#   • attaches a sign column (benefit / harm / neutral).                
-# –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-pol_sum <- margot_policy_summary(
-  models_screened,
-  depths  = 2L,     # focus on depth‑2 trees
-  adjust  = "BH",  # keep the same fdr lens
-  alpha   = 0.10    # q again
-)
-
-print(pol_sum)
+-----------------------------------------------
 
 # pull the matching model keys (prefixed) for downstream plotting ------
-model_keep <- paste0("model_", pol_sum$outcome)
+model_keep <- paste0("model_", keep)
 
 # -------------------------------------------------------------------
 # 4. fit + plot depth‑2 policy trees for kept models ------------------
 # -------------------------------------------------------------------
 policy_2L_corrected <- margot_policy(
-  models_screened,
+  models_binary_flipped_all,
   save_plots         = FALSE,          # plots kept in memory
   output_dir         = here(push_mods),
   decision_tree_args = decision_tree_defaults, # layout tweaks
@@ -643,7 +592,7 @@ purrr::walk(plots_2L_corrected, print)   # print each to the plot pane
 
 # optional: inspect a single plot object directly ---------------------
 # e.g. plots_2L_corrected$model_t2_neighbourhood_community_z
-
+# plots_2L_corrected$model_t2_log_hours_exercise_z
 # -------------------------------------------------------------------
 # 5. interpretation ----------------------------------
 # -------------------------------------------------------------------
@@ -663,39 +612,16 @@ here_save(interp_all_2L, "interp_all_2L")
 # end‑of‑workflow -----------------------------
 cli::cli_h1("main 2l policy trees analysed ✔")
 
-
 # -------------------------------------------------------------------
 # example report – exploratory run ----------------------------------
 # -------------------------------------------------------------------
 # screening summary ---------------------------------------------------
 # 'Twelve wellbeing outcomes were tested for heterogeneity with RATE‑AUTOC
 #  and RATE‑Qini.  Using a raw p < 0.10 threshold (no adjustment at this
-#  stage) retained one outcome: *Neighbourhood Community*.”
-#
-# policy‑value table (depth = 2) --------------------------------------
-# | outcome               | Δ_policy | SE    | p_raw | p_BH | sign |
-# |-----------------------|----------|-------|-------|------|------|
-# | Neighbourhood Community |  0.022  | 0.022 | .336  | .336 |  +   |
+#  stage) retained two outcomes: *Neighbourhood Community*, log Hours Exercise”
 #
 # interpretation ------------------------------------------------------
-# 'The depth‑2 policy for *Neighbourhood Community* yields a modest
-#  0.022 SD improvement over treat‑all, but the effect is not
-#  reliable after Benjamini–Hochberg correction (adjusted p = .34).
-#  The finding should therefore be viewed as exploratory.”
-#
-# tree narrative -------------------------------------------------------
-# “The tree first splits on Political Conservatism (≤ 1.006).  Within the
-#  less‑conservative subgroup, log Hours of Exercise (≤ 1.976) identifies
-#  individuals predicted to benefit from treatment; more active members
-#  are left untreated.  In the more‑conservative branch the decision flips
-#  on log Hours Commute (≤ −0.144).”
-#
-# caveats --------------------------------------------------------------
-# • Two outcomes survived initial screening; multiplicity control at
-#   the policy stage reduced this to one (family size = 1).
-# • Bootstrap SEs come from 999 replicates and are wider in small leaves.
-# • Results are exploratory and await confirmation on an independent
-#   samples before informing policy.
+#  saved -- to be imported into manuscript
 # -------------------------------------------------------------------
 
 # PLANNED COMPARISONS -----------------------------------------------------
