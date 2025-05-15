@@ -85,7 +85,7 @@ Doing a causal analysis
 :::
 
 ::: {.callout-note-script-3}
-[Download full lab scripts 3](../laboratory/lab-10/03-models-L10.R)
+[Download full lab scripts 3](../laboratory/lab-10/03-models-L10-v3.R)
 :::
 
 
@@ -129,7 +129,7 @@ This script prepares your data. Run it once -- running it twice would be like tu
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/lab-10/03-models-L10.R
+#| file: ../laboratory/lab-10/03-models-L10-v3.R
 
 ```
 

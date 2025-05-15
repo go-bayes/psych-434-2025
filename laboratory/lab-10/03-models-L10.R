@@ -24,7 +24,7 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 # min version of markgot
-min_version <- "1.0.42"
+min_version <- "1.0.43"
 if (packageVersion("margot") < min_version) {
   stop("please install margot >= min_version for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
@@ -132,7 +132,6 @@ here_save(title, "title")
 # check outcome vars and make labels for graphs/tables
 outcome_vars
 
-
 label_mapping_all <- list(
   #"t2_alcohol_frequency_weekly_z" = "Alcohol Frequency",
   #"t2_alcohol_intensity_weekly_z" = "Alcohol Intensity",
@@ -169,12 +168,6 @@ label_mapping_all
 
 cli::cli_h1("created and saved label_mapping for use in graphs/tables ✔")
 
-
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
-# select options that make sense fo your study/results
-# might need to be tweaked after the analysis
 
 # make options -------------------------------------------------------------
 # titles
@@ -249,8 +242,6 @@ policy_tree_defaults <- list(
   list(split_label_nudge_factor = 0.007)
 )
 
-
-
 # +--------------------------+
 # |   END MODIFY SECTION     |
 # +--------------------------+
@@ -278,10 +269,8 @@ hist(weights) # quick check for extreme weights
 # select covariates and drop numeric attributes
 X <- margot::remove_numeric_attributes(df_grf[E])
 
-
 # set model defaults -----------------------------------------------------
 grf_defaults <- list(seed = 123, stabilize.splits = TRUE, num.trees = 2000)
-
 
 # example: fit causal forest on a toy subset ------------------------------
 # first, create a smaller test sample
@@ -293,13 +282,15 @@ X_toy        <- X[toy, ]
 W_toy        <- W[toy]
 weights_toy  <- weights[toy]
 
+
+# **** IF THIS FAILS CHECK THAT YOU ARE USING VARIABLES FROM YOUR OUTCOME VARS **
 # fit the model
 cf_out <- margot_causal_forest_parallel( #<- new function ***
   data         = toy_data,
   # +--------------------------+
   # |    MODIFY THIS           | 
   # +--------------------------+
-  outcome_vars = c("t2_kessler_latent_depression_z", "t2_kessler_latent_anxiety_z"), # select variable in your outcome_variable set
+  outcome_vars = c(t2_outcome_z[[1]]), # select variable in your outcome_variable set
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -310,11 +301,9 @@ cf_out <- margot_causal_forest_parallel( #<- new function ***
   save_models  = TRUE
 )
 
+
 # inspect propensities ------------------------------------------------------
 qini_tbl <- margot::margot_inspect_qini(cf_out, propensity_bounds = c(0.01, 0.97))
-
-# show
-print(qini_tbl)
 
 # plot policy-combo trees --------------------------------------------------
 combo1 <- margot_plot_policy_combo(
@@ -322,7 +311,7 @@ combo1 <- margot_plot_policy_combo(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_name       = "model_t2_kessler_latent_depression_z",
+  model_name       = paste0("model_", t2_outcome_z[[1]]),
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -342,7 +331,7 @@ combo2 <- margot_plot_policy_combo(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_name       = "model_t2_kessler_latent_depression_z",
+  model_name       = paste0("model_", t2_outcome_z[[1]]),
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -366,7 +355,7 @@ models_batch_1L <- margot_policy(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_names        = "model_t2_kessler_latent_depression_z",
+  model_names        = paste0("model_", t2_outcome_z[[1]]),
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -397,7 +386,7 @@ models_batch_2L <- margot_policy(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_names        = "model_t2_kessler_latent_depression_z",
+  model_names        = paste0("model_", t2_outcome_z[[1]]),
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -419,7 +408,7 @@ models_batch_2L[[1]][[4]]  # qini plot - not convincing
 # |    MODIFY THIS           |
 # +--------------------------+
 
-flip_outcomes_test = c("t2_kessler_latent_depression_z")
+flip_outcomes_test = paste0("model_", t2_outcome_z[[1]])
 
 # function to get the labels from the models (labels were defined above)
 flipped_names_test <- margot_get_labels(flip_outcomes_test, label_mapping_all)
@@ -452,8 +441,6 @@ margot::margot_inspect_qini(cf_out_f, propensity_bounds = c(0.01, 0.97))
 # cf_out_flipped_trimmed <- margot_rescue_qini(model_results      = cf_out_f,
 #                                              propensity_bounds  = c(0.05, 0.95)) 
 
-
-
 # flipped batch model
 models_batch_flipped_2L <- margot_policy(
   cf_out_f,
@@ -464,7 +451,7 @@ models_batch_flipped_2L <- margot_policy(
   # +--------------------------+
   # |    MODIFY THIS           |
   # +--------------------------+
-  model_names = c("model_t2_kessler_latent_depression_z"),
+  model_names = paste0("model_", t2_outcome_z[[1]]),
   # +--------------------------+
   # |   END MODIFY             |
   # +--------------------------+
@@ -479,7 +466,7 @@ models_batch_flipped_2L <- margot_policy(
 # +--------------------------+
 # flipped
 # interpretation: exposure minimising depression
-models_batch_flipped_2L$model_t2_kessler_latent_depression_z
+models_batch_flipped_2L[[1]]
 
 
 # *** NOTE DIFFERENCES IN INTERPRETATION
@@ -496,41 +483,13 @@ models_batch_2L[[1]][[3]]
 cli::cli_h1("created and saved label_mapping for use in graphs/tables ✔")
 
 
-# test interpretations ----------------------------------------------------
+# +--------------------------+
+# |          ALERT           |
+# +--------------------------+
+# select options that make sense fo your study/results
+# might need to be tweaked after the analysis
 
-
-# policy tree interpretation: search depth = 1
-interpret_model_policy_test_1L <- margot_interpret_policy_batch(cf_out_f, max_depth = 1)
-cat(interpret_model_policy_test_1L)
-
-
-# policy tree interpretation: search depth = 2
-interpret_model_policy_test_2L <- margot_interpret_policy_batch(cf_out_f, max_depth = 2)
-cat(interpret_model_policy_test_2L)
-
-
-
-# interpret rate ----------------------------------------------------------
-
-# create rate analysis table
-rate_table_all_test <- margot_rate(
-  models = cf_out_f,
-  policy = "treat_best",  # or "withold_best" but don't attempt fitting curves or policytrees
-  label_mapping = label_mapping_all
-)
-
-# view rate tables
-rate_table_all_test$rate_autoc |> kbl("markdown")
-rate_table_all_test$rate_qini |> kbl("markdown")
-
-
-# generate interpretation
-rate_interpretation_all <- margot_interpret_rate(
-  rate_table_all_test, 
-  flipped_outcomes = flipped_names_test
-)
-
-
+# make options -------------------------------------------------------------
 
 cli::cli_h1("testing on smaller dataset completed ✔")
 
@@ -596,20 +555,21 @@ models_binary <- margot::here_read_qs("models_binary", push_mods)
 cat("Number of original models:\n", length(models_binary$results), "\n")
 
 
+
+# test function -----------------------------------------------------------
+
+
+
 # make ate plots ----------------------------------------------------------
 
 # uncorrected results
 models_binary$combined_table
 
 #   ************* NEW - CORRECTION FOR FAMILY-WISE ERROR **********
-adj_tbl <- margot_correct_combined_table(models_binary$combined_table,
-                                         adjust = "bonferroni",
-                                         alpha  = 0.05,
-                                         scale  = "RD")
 
 # then pass to the results
 ate_results <- margot_plot(
-  adj_tbl, # <- now pass the corrected results.
+  models_binary$combined_table, # <- now pass the corrected results.
   options = outcomes_options_all,
   label_mapping = label_mapping_all,
   include_coefficients = FALSE,
@@ -618,8 +578,8 @@ ate_results <- margot_plot(
   original_df = original_df,
   e_val_bound_threshold = 1.1,
   rename_ate = TRUE,
-  adjust = "bonferroni",
-  alpha = 0.05
+  adjust = "bonferroni", #<- new 
+  alpha = 0.05 # <- new 
 )
 
 
@@ -909,7 +869,6 @@ cli::cli_h1("rate curves plotted ✔")
 
 # view 
 autoc_plots$model_t2_log_hours_exercise_z
-autoc_plots$model_t2_meaning_sense_z
 
 # step 4: Qini model curves --------------------------------------------
 qini_policy_results <-
@@ -925,9 +884,6 @@ qini_policy_results <-
     max_depth          = 2L,
     output_objects     = c("qini_plot", "diff_gain_summaries")
   )
-
-# extract and combine Qini plots\ nqini_plots <- purrr::map(qini_policy_results, ~ .x[[1]])
-combined_qini_curves <- combine_and_save(qini_plots, "qini_curves")
 
 # view qini plots
 qini_plots <- purrr::map(qini_policy_results, ~ .x$qini_plot)
@@ -1424,7 +1380,10 @@ print(plots_subgroup_cohort)
 
 
 # COMPARE GROUPS ----------------------------------------------------------
+devtools::load_all("/Users/joseph/GIT/margot/")
+
 planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table
+planned_subset_results$wellbeing$cohort$results$`Age > 62`$transformed_table
 
 group_comparison_age_young_old <- margot_compare_groups(
   planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table, # reference
@@ -1433,13 +1392,12 @@ group_comparison_age_young_old <- margot_compare_groups(
   label_mapping = NULL,
   decimal_places = 4
 )
-
-# results
-group_comparison_age_young_old$results
+group_comparison_age_young_old$results |> kbl("markdown", digits = 2)
 group_comparison_age_young_old$interpretation
 
 
 
+# results
 # compare another group ---------------------------------------------------
 
 planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table

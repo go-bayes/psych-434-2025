@@ -72,7 +72,7 @@ Download Quarto here:
 :::
 
 ::: {.callout-note-script-3}
-[Download full lab scripts 3](../laboratory/lab-10/03-models-L10.R)
+[Download full lab scripts 3](../laboratory/lab-10/03-models-L10-v3.R)
 :::
 
 

@@ -600,7 +600,7 @@ For information about the variables in the synthetic data, download the New Zeal
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../laboratory/lab-10/03-models-L10.R
+#| file: ../laboratory/lab-10/03-models-L10-v3.R
 
 ```
 

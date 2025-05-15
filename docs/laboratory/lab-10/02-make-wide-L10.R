@@ -19,8 +19,8 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 
-if (packageVersion("margot") < "1.0.39") {
-  stop("please install margot >= 1.0.39 for this workflow\n
+if (packageVersion("margot") < "1.0.43") {
+  stop("please install margot >= 1.0.43 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
