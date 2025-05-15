@@ -24,7 +24,7 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 # min version of markgot
-min_version <- "1.0.43"
+min_version <- "1.0.44"
 if (packageVersion("margot") < min_version) {
   stop("please install margot >= min_version for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
@@ -327,6 +327,7 @@ cat("Number of original models:\n", length(models_binary$results), "\n")
 
 # make ate plots ----------------------------------------------------------
 #   ************* NEW - CORRECTION FOR FAMILY-WISE ERROR **********
+devtools::load_all("/Users/joseph/GIT/margot/")
 
 # then pass to the results
 ate_results <- margot_plot(
