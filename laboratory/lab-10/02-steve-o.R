@@ -170,7 +170,7 @@ colnames(df_wide)
 
 # made data wide in correct format
 # ** ignore warning *** 
-devtools::load_all("/Users/joseph/GIT/margot/")
+# devtools::load_all("/Users/joseph/GIT/margot/")
 
 df_wide_encoded  <- margot_process_longitudinal_data_wider(
   df_wide,
@@ -431,7 +431,7 @@ str(df_grf)
 table(df_grf[[t1_name_exposure_binary]])
 
 # check
-hist(df_grf$t1_adjusted_weights)
+hist(df_grf$combo_weights)
 
 df_grf$combo_weights
 

@@ -1971,7 +1971,7 @@ Note
 <span id="cb3-438"><a href="#cb3-438"></a>t0_weight_summary <span class="ot">&lt;-</span> <span class="fu">summary</span>(df_wide_encoded)</span>
 <span id="cb3-439"><a href="#cb3-439"></a></span>
 <span id="cb3-440"><a href="#cb3-440"></a><span class="co"># check</span></span>
-<span id="cb3-441"><a href="#cb3-441"></a><span class="fu">glimpse</span>(df_grf<span class="sc">$</span>t1_adjusted_weights)</span>
+<span id="cb3-441"><a href="#cb3-441"></a><span class="fu">glimpse</span>(df_grf<span class="sc">$</span>combo_weights)</span>
 <span id="cb3-442"><a href="#cb3-442"></a></span>
 <span id="cb3-443"><a href="#cb3-443"></a><span class="co"># visualise weight distributions</span></span>
 <span id="cb3-444"><a href="#cb3-444"></a><span class="fu">hist</span>(df_grf<span class="sc">$</span>t1_adjusted_weights, <span class="at">main =</span> <span class="st">"t0_stabalised weights"</span>, <span class="at">xlab =</span> <span class="st">"Weight"</span>)</span>
@@ -2081,7 +2081,7 @@ Note
 <span id="cb4-24"><a href="#cb4-24"></a>}</span>
 <span id="cb4-25"><a href="#cb4-25"></a></span>
 <span id="cb4-26"><a href="#cb4-26"></a><span class="co"># min version of markgot</span></span>
-<span id="cb4-27"><a href="#cb4-27"></a>min_version <span class="ot">&lt;-</span> <span class="st">"1.0.41"</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a>min_version <span class="ot">&lt;-</span> <span class="st">"1.0.42"</span></span>
 <span id="cb4-28"><a href="#cb4-28"></a><span class="cf">if</span> (<span class="fu">packageVersion</span>(<span class="st">"margot"</span>) <span class="sc">&lt;</span> min_version) {</span>
 <span id="cb4-29"><a href="#cb4-29"></a>  <span class="fu">stop</span>(<span class="st">"please install margot &gt;= min_version for this workflow</span><span class="sc">\n</span></span>
 <span id="cb4-30"><a href="#cb4-30"></a><span class="st">       run: devtools::install_github(</span><span class="sc">\"</span><span class="st">go-bayes/margot</span><span class="sc">\"</span><span class="st">)</span></span>
@@ -2121,7 +2121,7 @@ Note
 <span id="cb4-64"><a href="#cb4-64"></a>  crayon,</span>
 <span id="cb4-65"><a href="#cb4-65"></a>  glue,</span>
 <span id="cb4-66"><a href="#cb4-66"></a>  stringr, </span>
-<span id="cb4-67"><a href="#cb4-67"></a>  furr</span>
+<span id="cb4-67"><a href="#cb4-67"></a>  furrr</span>
 <span id="cb4-68"><a href="#cb4-68"></a>)</span>
 <span id="cb4-69"><a href="#cb4-69"></a></span>
 <span id="cb4-70"><a href="#cb4-70"></a></span>
@@ -3598,7 +3598,7 @@ Note
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  - Bulbulia J (2024). _boilerplate_. doi:10.5281/zenodo.13370825 &lt;https://doi.org/10.5281/zenodo.13370825&gt;, R package version 1.0.43, &lt;https://go-bayes.github.io/biolerplate/&gt;.
-  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 1.0.41 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
+  - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 1.0.42 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
   - Chang W (2023). _extrafont: Tools for Using Fonts_. doi:10.32614/CRAN.package.extrafont &lt;https://doi.org/10.32614/CRAN.package.extrafont&gt;, R package version 0.19, &lt;https://CRAN.R-project.org/package=extrafont&gt;.
   - Grolemund G, Wickham H (2011). "Dates and Times Made Easy with lubridate." _Journal of Statistical Software_, *40*(3), 1-25. &lt;https://www.jstatsoft.org/v40/i03/&gt;.
   - Müller K (2020). _here: A Simpler Way to Find Your Files_. doi:10.32614/CRAN.package.here &lt;https://doi.org/10.32614/CRAN.package.here&gt;, R package version 1.0.1, &lt;https://CRAN.R-project.org/package=here&gt;.

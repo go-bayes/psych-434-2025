@@ -438,7 +438,7 @@ hist(df_grf$t1_adjusted_weights)
 t0_weight_summary <- summary(df_wide_encoded)
 
 # check
-glimpse(df_grf$t1_adjusted_weights)
+glimpse(df_grf$combo_weights)
 
 # visualise weight distributions
 hist(df_grf$t1_adjusted_weights, main = "t0_stabalised weights", xlab = "Weight")

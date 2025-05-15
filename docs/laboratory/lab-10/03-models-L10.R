@@ -24,7 +24,7 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 # min version of markgot
-min_version <- "1.0.41"
+min_version <- "1.0.42"
 if (packageVersion("margot") < min_version) {
   stop("please install margot >= min_version for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
@@ -64,7 +64,7 @@ pacman::p_load(
   crayon,
   glue,
   stringr, 
-  furr
+  furrr
 )
 
 
