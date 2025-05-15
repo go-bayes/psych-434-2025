@@ -524,7 +524,6 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # +--------------------------+
 # |       DO NOT ALTER       |
 # +--------------------------+
-
 # HTE analysis ------------------------------------------------------------
 # -------------------------------------------------------------------
 # heterogeneity‐driven policy analysis – annotated workflow (depth = 2)
@@ -532,27 +531,10 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # this script shows the **minimal** end‑to‑end path from a fitted set of
 # causal‑forest models to depth‑2 policy trees, *when our main aim is to
 # explore treatment heterogeneity* (not necessarily to beat the ate).
-# every step is wrapped in tidyverse‑style pipes and commented in lower‑case
-# nz english so that psyc 434 students can follow what happens “under the hood”.
 # -------------------------------------------------------------------
-
-# if you plan to run steps that set `parallel = TRUE`, be sure that      
-# future and furrr are installed (they load automatically inside the     
-# helpers).                                                              
-
 # -------------------------------------------------------------------
-# 1. screen outcomes for evidence of heterogeneity --------------------
-# -------------------------------------------------------------------
-# –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-# * function: `margot_screen_models()`                                  
-#   looks at RATE‑AUTOC and RATE‑Qini test statistics (or ATE if you   
-#   choose `rule = "ate"`).  here we keep outcomes whose **raw**       
-#   two‑sided p‑value is < 0.10 – *no multiplicity adjustment yet*.     
-#   ── why raw first? ────────────────────────────────────────────────
-#   • avoids “double FDR” – final policy tests will carry the single   
-#     Benjamini–Hochberg correction.                                   
-#   • still filters blatant nulls, so we don’t bootstrap every model.  
-# –––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
+# 1. screen outcomes for evidence of heterogeneity 
+# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
 keep <- margot_screen_models(
   models_binary_flipped_all,  # full margot object with $results
   rule   = "rate",           # heterogeneity evidence from rate tests
@@ -565,14 +547,14 @@ keep <- margot_screen_models(
 print(keep)
 
 # -------------------------------------------------------------------
-# 2. attach (or refresh) bootstrap policy tests ----------------------
------------------------------------------------
+# 2. get model names after correction
+# -------------------------------------------------------------------
 
 # pull the matching model keys (prefixed) for downstream plotting ------
 model_keep <- paste0("model_", keep)
 
 # -------------------------------------------------------------------
-# 4. fit + plot depth‑2 policy trees for kept models ------------------
+# 3. fit + plot depth‑2 policy trees for kept models ------------------
 # -------------------------------------------------------------------
 policy_2L_corrected <- margot_policy(
   models_binary_flipped_all,
@@ -587,15 +569,12 @@ policy_2L_corrected <- margot_policy(
   output_objects     = "combined_plot" # returns ggplot object
 )
 
-# quick display in the console ide ------------------------------------
+# quick display  ----------------------------------------------------
 plots_2L_corrected <- purrr::map(policy_2L_corrected, ~ .x[[1]])
-purrr::walk(plots_2L_corrected, print)   # print each to the plot pane
+purrr::walk(plots_2L_corrected, print)   # print each to the plot panel
 
-# optional: inspect a single plot object directly ---------------------
-# e.g. plots_2L_corrected$model_t2_neighbourhood_community_z
-# plots_2L_corrected$model_t2_log_hours_exercise_z
 # -------------------------------------------------------------------
-# 5. interpretation ----------------------------------
+# 4. interpretation ----------------------------------
 # -------------------------------------------------------------------
 # generates a short paragraph per outcome explaining the splits and     
 # their implied treatment rule.                                         
@@ -606,24 +585,13 @@ interp_all_2L <- margot_interpret_policy_batch(
 
 cat(interp_all_2L, "\n")
 
-# save for manuscript
+#  saved -- to be imported into manuscript
 here_save_qs(policy_2L_corrected, "policy_2L_corrected", push_mods)
 here_save(interp_all_2L, "interp_all_2L")
 
 # end‑of‑workflow -----------------------------
 cli::cli_h1("main 2l policy trees analysed ✔")
 
-# -------------------------------------------------------------------
-# example report – exploratory run ----------------------------------
-# -------------------------------------------------------------------
-# screening summary ---------------------------------------------------
-# 'Twelve wellbeing outcomes were tested for heterogeneity with RATE‑AUTOC
-#  and RATE‑Qini.  Using a raw p < 0.10 threshold (no adjustment at this
-#  stage) retained two outcomes: *Neighbourhood Community*, log Hours Exercise”
-#
-# interpretation ------------------------------------------------------
-#  saved -- to be imported into manuscript
-# -------------------------------------------------------------------
 
 # PLANNED COMPARISONS -----------------------------------------------------
 
@@ -891,20 +859,6 @@ plots_subgroup_gender <- wrap_plots(
   )
 print(plots_subgroup_gender)
 
-
-# 6. group‑vs‑group comparisons --------------------------------------
-#   * `margot_compare_groups()` takes two transformed tables (risk‑diff)
-#   * returns a *difference in differences* tibble + plain‑text interp.
-
-# example: young (<35) vs older (>62)
-group_comparison_age_young_old <- margot_compare_groups(
-  planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table, # reference
-  planned_subset_results$wellbeing$cohort$results$`Age > 62`$transformed_table, # comparison
-  type            = "RD",          # risk‑difference scale
-  decimal_places  = 4
-)
-print(group_comparison_age_young_old$results |> kbl("markdown", digits = 2))
-cat(group_comparison_age_young_old$interpretation)
 
 # 6. group‑vs‑group comparisons --------------------------------------
 #   • `margot_compare_groups()` takes two transformed tables (risk‑diff)
