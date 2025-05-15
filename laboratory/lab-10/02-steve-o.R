@@ -19,8 +19,8 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 
-if (packageVersion("margot") < "1.0.37") {
-  stop("please install margot >= 1.0.37 for this workflow\n
+if (packageVersion("margot") < "1.0.41") {
+  stop("please install margot >= 1.0.41 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -168,10 +168,11 @@ glimpse(df_wide)
 # check
 colnames(df_wide)
 
-
 # made data wide in correct format
 # ** ignore warning *** 
-df_wide_encoded  <- margot::margot_process_longitudinal_data_wider(
+devtools::load_all("/Users/joseph/GIT/margot/")
+
+df_wide_encoded  <- margot_process_longitudinal_data_wider(
   df_wide,
   ordinal_columns = ordinal_columns,
   continuous_columns_keep = continuous_columns_keep,

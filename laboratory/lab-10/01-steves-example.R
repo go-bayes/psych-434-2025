@@ -21,8 +21,8 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 
-if (packageVersion("margot") < "1.0.37") {
-  stop("please install margot >= 1.0.37 for this workflow\n
+if (packageVersion("margot") < "1.0.43") {
+  stop("please install margot >= 1.0.43 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -165,7 +165,6 @@ cli::cli_h1("set waves for three-wave study ✔")
 # +--------------------------+
 
 
-
 # define exposure variable ----------------------------------------------------
 # ** key decision 2: define your exposure variable **
 
@@ -176,12 +175,16 @@ cli::cli_h1("set waves for three-wave study ✔")
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
 
-name_exposure <- "neuroticism"
+# find variable names
+colnames(df_nz_long)
+
+# set exposure
+name_exposure <- "political_conservative"
 
 # exposure variable labels
 var_labels_exposure <- list(
-  "neuroticism" = "neuroticism",
-  "neuroticism_binary" = "Neuroticism (binary)"
+  "political_conservative" = "Political Conservativism",
+  "political_conservative_binary" = "political_conservativism_binary (binary)"
 )
 
 cli::cli_h1("set variable name for exposure ✔")
@@ -213,34 +216,10 @@ cli::cli_h1("set variable name for exposure ✔")
 
 # chose outcomes relevant to * your * study. might be all/some/none/exactly these:
 outcome_vars <- c(
-  # # health outcomes
-  # "alcohol_frequency_weekly", "alcohol_intensity",
-  # # "hlth_bmi", 
-  # "log_hours_exercise", 
-  # # "hlth_sleep_hours", 
-  # # "short_form_health",
-  # 
-  # # psychological outcomes
-  # # "hlth_fatigue", 
-  # "kessler_latent_anxiety", 
-  # "kessler_latent_depression", 
-  # "rumination",
-  # 
-  # # well-being outcomes
-  # # "bodysat", 
-  # #"forgiveness", "gratitude", 
-  # "lifesat", "meaning_purpose", "meaning_sense", 
-  # # "perfectionism", 
-  # "pwi", 
-  # #"self_control", 
-  # "self_esteem", 
-  # #"sexual_satisfaction",
-  
-  # social outcomes
-  "belong", "neighbourhood_community", "support",  # added comma here
-  
-  # social behaviours
-  "charity_donate", "log_hours_charity"
+   "lifesat", 
+   "meaning_purpose",
+   "meaning_sense",  
+   "pwi"
 )
 
 cli::cli_h1("set variable name for outcomes ✔")
@@ -284,7 +263,10 @@ baseline_vars <- c(
   
   # social and psychological
   "belong", "nz_dep2018", "nzsei_13_l",
-  "political_conservative", "religion_identification_level"
+  "political_conservative", 
+  "religion_identification_level",
+  "sdo",
+  "rwa"
 )
 
 
@@ -430,11 +412,11 @@ graph_cut <- margot::margot_plot_categorical(
   col_name         = name_exposure,
   sd_multipliers = c(-1, 1), # select to suit
   # either use n_divisions for equal-sized groups:
- # n_divisions      = 2,
-  # or use custom_breaks for specific values:
+  #n_divisions      = 2,
+ # or use custom_breaks for specific values:
   custom_breaks    = cut_points,  # ** adjust as needed **
   # could be "lower", no difference in this case, as no one == 4
-  cutpoint_inclusive = "lower",
+  cutpoint_inclusive = "upper",
   show_mean        = TRUE,
   show_median      = FALSE,
   show_sd          = TRUE
