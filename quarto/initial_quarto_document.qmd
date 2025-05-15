@@ -382,9 +382,8 @@ global_vars <- list(
   flipped_list               = flipped_list,
   appendix_explain_grf       = "D",
   appendix_assumptions_grf   = "F",
-  name_exposure_threshold =  upper_cut,
-  name_control_threshold  =  lower_cut,
-  name_exposure_threshold =  upper_cut,
+  name_exposure_threshold =  "1",
+  name_control_threshold  =  "0",
   appendix_measures = "A",
   value_control              = value_control,     # ← named
   value_exposure             = value_exposure,    # ← named
