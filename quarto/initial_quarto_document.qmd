@@ -105,6 +105,7 @@ push_mods             <- here::here("save_directory")
 final_boilerplate_data <- here::here("final_boilerplate_data")
 unified_db            <- boilerplate_import(data_path = final_boilerplate_data)
 
+# check paths
 # ---- inspect available boilerplate entries -------------------------------
 cat(unified_db$methods$confounding_control$vanderweele)
 cat(unified_db$methods$sample$nzavs)
@@ -134,7 +135,7 @@ percent_missing_baseline <- margot::here_read("percent_missing_baseline")
 markdown_table_baseline  <- margot::here_read("baseline_table")
 markdown_table_exposures <- margot::here_read("exposure_table")
 markdown_table_outcomes  <- margot::here_read("outcomes_table")
-
+margot_bind_tables_markdown <- margot::here_read("margot_bind_tables_markdown")
 # ---- sample size information --------------------------------------------
 n_total                  <- margot::here_read("n_total")
 n_participants           <- here_read("n_participants")
@@ -162,13 +163,21 @@ threshold               <- here_read("threshold")
 inverse_threshold       <- here_read("inverse_threshold")
 scale_range             <- margot::here_read("scale_range")
 
+# create and check variables
+value_exposure = glue::glue( threshold,"", upper_cut,", ", scale_range)
+value_control =   glue::glue(inverse_threshold, upper_cut,", ", scale_range)
+
+# regimes
 name_control_regime_lower <- glue::glue("low {name_exposure_lower}")
 value_exposure_regime     <- glue::glue("Set {name_exposure} {threshold} {upper_cut} {scale_range}")
 value_control_regime      <- glue::glue("Set {name_exposure} {inverse_threshold} {upper_cut} {scale_range}")
 
+
 contrast_template         <- "We used causal forests to estimate an average treatment effect as a contrast between *{name_control_regime_lower}* and *{name_exposure_lower}* on {name_outcomes_lower}."
 contrast_text             <- glue(contrast_template)
 
+#chedk
+contrast_text
 # ---- verify assumptions (positivity) -------------------------------------
 transition_tables        <- margot::here_read("transition_tables")
 transition_tables_binary <- here_read("transition_tables_binary")
@@ -260,43 +269,68 @@ policy_tree_defaults    <- list(
 )
 
 # ---- load and check model results ---------------------------------------
-models_binary           <- margot::here_read_qs("models_binary", push_mods)
-margot::margot_size(models_binary)
+ate_results           <- margot::here_read_qs("ate_results", push_mods)
+margot::margot_size(ate_results)
 
 # ---- create ate plots and interpretation --------------------------------
-binary_results          <- margot_plot(
-  models_binary$combined_table,
-  options            = outcomes_options_all,
-  label_mapping      = label_mapping_all,
-  include_coefficients = FALSE,
-  save_output       = FALSE,
-  order             = "evaluebound_asc",
-  original_df       = original_df,
-  e_val_bound_threshold = 1.2
-)
-binary_results$plot
-cat(binary_results$interpretation)
+ate_results$plot
+cat(ate_results$interpretation)
 
 # ---- heterogeneity analysis ---------------------------------------------
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
-result_ominbus_hetero     <- margot_omnibus_hetero_test(
-  models_binary_flipped_all,
-  label_mapping  = label_mapping_all,
-  alpha          = 0.05,
-  detail_level   = "standard",
-  format         = "markdown"
-)
-result_ominbus_hetero$summary_table |> kbl("markdown")
-cat(result_ominbus_hetero$brief_interpretation)
 
-# ---- rate test and autocorrelation plots -------------------------------
-rate_table_all            <- here_read("rate_table_all")
-rate_interpretation_all   <- here_read("rate_interpretation_all")
-batch_rate_autoc_plots    <- margot_plot_rate_batch(
-  models_binary_flipped_all,
-  save_plots     = FALSE,
-  model_names    = rate_interpretation_all$autoc_model_names
+# result_ominbus_hetero     <- margot_omnibus_hetero_test(
+#   models_binary_flipped_all,
+#   label_mapping  = label_mapping_all,
+#   alpha          = 0.05,
+#   detail_level   = "standard",
+#   format         = "markdown"
+# )
+# result_ominbus_hetero$summary_table |> kbl("markdown")
+# cat(result_ominbus_hetero$brief_interpretation)
+
+
+# read corrected rate analysis
+keep <- here_read("keep")
+keep_autoc<- here_read("keep_autoc")
+keep_qini<- here_read("keep_qini")
+
+# pull the matching model keys (prefixed) for downstream plotting ------
+model_keep <- paste0("model_", keep)
+model_keep_autoc <- paste0("model_", keep_autoc)
+model_keep_qini <- paste0("model_", keep_qini)
+model_keep
+model_keep_autoc
+# Rate
+rate_results <-
+  margot_rate(
+    models   = models_binary_flipped_all,
+    policy   = "treat_best",
+    label_mapping = label_mapping_all
+  )
+# show rate tables
+rate_results$rate_autoc %>% kbl("markdown")
+rate_results$rate_qini %>% kbl("markdown")
+
+# generate textual interpretations for rate metrics
+rate_interp <-
+  margot_interpret_rate(
+    rate_results,
+    flipped_outcomes = flipped_names
+    
+  )
+cat(rate_interp$autoc_results, "\n")
+cat(rate_interp$qini_results, "\n")
+cat(rate_interp$comparison, "\n")
+
+# organise model groups by heterogeneity evidence
+model_groups <- list(
+  autoc  = rate_interp$autoc_model_names,
+  qini   = rate_interp$qini_model_names,
+  either = rate_interp$either_model_names
 )
+cli::cli_h1("rate metrics and interpretations complete ✔")
+
 
 # ---- policy analysis with qini and trees -------------------------------
 models_batch_2L            <- margot_policy(
@@ -305,7 +339,7 @@ models_batch_2L            <- margot_policy(
   output_dir         = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args   = policy_tree_defaults,
-  model_names        = rate_interpretation_all$qini_model_names,
+  model_names        = model_keep_qini,
   max_depth          = 2L,
   original_df        = original_df,
   label_mapping      = label_mapping_all
@@ -314,61 +348,53 @@ models_batch_2L            <- margot_policy(
 qini_plots               <- lapply(seq_along(models_batch_2L), function(i) {
   models_batch_2L[[i]][[4]]
 })
-names(qini_plots)       <- rate_interpretation_all$qini_model_names
+
+names(qini_plots)       <- model_keep_qini
 interpretation_qini_curves_2L <- margot_interpret_qini(
   models_batch_2L,
-  model_names        = rate_interpretation_all$qini_model_names,
+  model_names        = model_keep_qini,
   label_mapping      = label_mapping_all
 )
 
-plots_policy_trees_1L     <- margot_policy(
-  models_binary_flipped_all,
-  save_plots         = FALSE,
-  output_dir         = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args   = policy_tree_defaults,
-  model_names        = rate_interpretation_all$either_model_names,
-  original_df        = original_df,
-  label_mapping      = label_mapping_all,
-  max_depth          = 1L
-)
-plots_policy_trees_2L     <- margot_policy(
-  models_binary_flipped_all,
-  save_plots         = FALSE,
-  output_dir         = here::here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  policy_tree_args   = policy_tree_defaults,
-  model_names        = rate_interpretation_all$either_model_names,
-  original_df        = original_df,
-  label_mapping      = label_mapping_all,
-  max_depth          = 2L
-)
-interpret_plots_policy_trees_2L <- margot_interpret_policy_batch(
-  models_binary_flipped_all,
-  model_names       = rate_interpretation_all$either_model_names
-)
+# obtain policy trees
+policy_2L_corrected <- here_read_qs("policy_2L_corrected", push_mods)
+interp_all_2L <- here_read("interp_all_2L")
+
+## Your models # change first number to get more
+policy_2L_corrected[[1]][[1]]
+policy_2L_corrected[[2]][[1]]
+interp_all_2L
 
 # ---- define global variables for text generation ------------------------
 global_vars <- list(
-  name_exposure_variable = nice_name_exposure_variable,
-  n_total                = n_total,
-  n_participants         = n_participants,
-  exposure_variable      = name_exposure,
-  name_exposure_lower    = name_exposure_lower,
-  name_control_regime_lower = name_control_regime_lower,
-  name_outcome_variables = "Multi-dimensional Wellbeing",
-  name_outcomes_lower    = name_outcomes_lower,
-  name_exposure_capfirst = nice_name_exposure_variable,
-  measures_exposure      = measures_exposure,
-  value_exposure_regime  = value_exposure_regime,
-  value_control_regime   = value_control_regime,
-  flipped_list           = flipped_list,
-  baseline_wave          = "NZAVS time 10, years 2018-2019",
-  exposure_waves         = "NZAVS time 11, year 2019-2020",
-  outcome_wave           = "NZAVS time 12, years 2020-2021",
-  protocol_url           = "https://osf.io/ce4t9/"
+  name_exposure_variable     = nice_name_exposure_variable,
+  n_total                    = n_total,
+  n_participants             = n_participants,
+  exposure_variable          = name_exposure,
+  name_exposure_lower        = name_exposure_lower,
+  name_control_regime_lower  = name_control_regime_lower,
+  name_outcome_variables     = "Multi-dimensional Wellbeing",
+  name_outcomes_lower        = name_outcomes_lower,
+  name_exposure_capfirst     = nice_name_exposure_variable,
+  measures_exposure          = measures_exposure,
+  value_exposure_regime      = value_exposure_regime,
+  value_control_regime       = value_control_regime,
+  flipped_list               = flipped_list,
+  appendix_explain_grf       = "D",
+  appendix_assumptions_grf   = "F",
+  name_exposure_threshold =  upper_cut,
+  name_control_threshold  =  lower_cut,
+  name_exposure_threshold =  upper_cut,
+  appendix_measures = "A",
+  value_control              = value_control,     # ← named
+  value_exposure             = value_exposure,    # ← named
+  appendix_positivity        = "E",
+  baseline_wave              = "NZAVS time 10, years 2018-2019",
+  exposure_waves             = "NZAVS time 11, year 2019-2020",
+  outcome_wave               = "NZAVS time 12, years 2020-2021",
+  protocol_url               = "https://osf.io/ce4t9/",
+  appendix_timeline = "A"
 )
-
 ```
 
 {{< pagebreak >}}
@@ -379,59 +405,26 @@ global_vars <- list(
 #| eval: true
 #| echo: false
 library(boilerplate)
-cat(boilerplate_generate_text(
-  category = "methods",
-  sections = c(
-    "sample.nzavs",
-    "target_population",
-    "eligibility.standard",
-    "causal_intervention.grf_simple_text",
-    "analytic_approach.general_approach_cate_short",
-    "exposure_indicator",
-    "causal_identification_criteria",
-    "confounding_control.vanderweele",
-    "statistical_models.grf_short_explanation",
-    "missing_data.missing_grf_simple",
-    "sensitivity_analysis.short_evalue"
-  ),
-  global_vars = global_vars,
-  # global_vars = list( # variables you might need
-  #   exposure_variable = extraversion,
-  #   n_total = n_total,
-  #   n_participants = n_participants,
-  #   appendix_timeline = "Appendix A",
-  #   appendix_measures = "Appendix B",
-  #   measures_exposure = measures_exposure,
-  #   appendix_analytic_approach = "Appendix C",
-  #   appendix_assumptions_grf = "Appendix D",
-  #   appendix_cate_validation_grf = "Appendix D",
-  #   appendices_sample = "Appendix A",
-  #   appendix_outcomes = "Appendix B",
-  #   appendix_positivity = "Appendix E",
-  #   value_exposure_regime = "Regular Religious Service Attendance",
-  #   value_treatment_regime = "No Religious Service Attendance",
-  #   value_exposure_regime = " At each wave, if attendance is below four times per month, we shift it to four; otherwise, we leave it unchanged.",
-  #   value_control_regime = "At each wave, if attendance is above zero, we shift it to zero; otherwise, we leave it unchanged.",
-  #   name_exposure_regime = "Regular Religious Service Attendance.",
-  #   name_control_regime = "No Religious Service Attendance.",
-  #   name_exposure_threshold = "Attends Religious Service",
-  #   name_control_threshold = "No Religious Service Attendance.",
-  #   value_exposure = "1",
-  #   value_control = "0",
-  #   name_target_population = "all adults in New Zealand from the years 2018-2021",
-  #   number_exposure_waves = "one",
-  #   time_varying_confounders = "(physical disability, employment status, partner status, and parenting status)",
-  #   flipped_list = c("Neuroticism"),
-  #   grf_appendix = "Appendix D",
-  #   baseline_wave = "NZAVS time 10, years 2018-2019",
-  #   exposure_waves = "NZAVS time 11, year 2019",
-  #   outcome_wave = "NZAVS time 12, years 2020-2021",
-  #   flipped_example = "Neuroticism",
-  #   appendix_analytic_approach = "Appendix E",
-  #   protocol_url = "https://osf.io/ce4t9/"
-  # ),
-  db = unified_db
-))
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "methods",      # ← choose the right top-level list
+    sections     = c(
+      "sample.nzavs",
+      "target_population",
+      "eligibility.standard",
+      "causal_intervention.grf_simple_text",
+      "analytic_approach.general_approach_cate_short",
+      "exposure_indicator",
+      "causal_identification_criteria",
+      "confounding_control.vanderweele",
+      "statistical_models.grf_short_explanation",
+      "missing_data.missing_grf_simple",
+      "sensitivity_analysis.short_evalue"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
 ```
 
 
@@ -450,7 +443,7 @@ cat(boilerplate_generate_text(
 #| echo: false
 #| fig-height: 14
 #| fig-width: 18
-binary_results$plot
+ate_results$plot
 ```
 
 {{< pagebreak >}}
@@ -461,14 +454,14 @@ binary_results$plot
 #| eval: true
 #| echo: false
 
-binary_results$transformed_table |> kbl("markdown")
-
+# ate_results$transformed_table|> kbl("markdown")
+margot_bind_tables_markdown
 ```
 
 
 
 ```{r, results = 'asis'}
-cat(binary_results$interpretation)
+cat(ate_results$interpretation)
 ```
 
 
@@ -476,82 +469,10 @@ cat(binary_results$interpretation)
 
 {{< pagebreak >}}
 
-### Heterogeneous Treatment Effects 
-
-
-```{r, results='asis'}
-#| eval: true
-#| echo: false
-cat(rate_interpretation_all$comparison)
-```
-
-Refer to [Appendix F](#appendix-cate-validation) for details.
-
-
-
-### RATE AUTOC Results
-
+### Heterogeneous Treatment Effects: Policy Trees
 
 ```{r, results = 'asis'}
-# only reliable results
-cat(rate_interpretation_all$autoc_results)
-```
-
-```{r}
-#| label: fig-rate
-#| fig-cap: "RATE AUTOC Graphs"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-batch_rate_autoc_plots$model_t2_log_hours_exercise_z
-
-```
-
-
-### QINI Curve Results
-
-```{r, results = 'asis'}
-# only reliable results
-cat(rate_interpretation_all$qini_results)
-```
-
-
-```{r}
-#| label: tbl-qini
-#| tbl-cap: "Qini Curve Results"
-#| eval: true
-#| echo: false
-
-interpretation_qini_curves_2L$summary_table |> 
-  mutate(across(where(is.numeric), ~ round(., 2))) %>%
-  kbl(format = "markdown")
-```
-
-
-```{r, results = 'asis'}
-# only reliable results
-cat(interpretation_qini_curves_2L$qini_explanation)
-```
-
-
-```{r}
-#| label: fig-qini
-#| fig-cap: "RATE AUTOC Graphs"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-qini_plots$model_t2_meaning_sense_z
-```
-
-
-{{< pagebreak >}}
-
-### Policy Trees
-
-```{r, results = 'asis'}
-cat(interpret_plots_policy_trees_2L)
+cat(interp_all_2L)
 ```
 
 
@@ -563,19 +484,19 @@ cat(interpret_plots_policy_trees_2L)
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
-plots_policy_trees_2L$model_t2_log_hours_exercise_z$combined_plot
+policy_2L_corrected[[1]][[1]]
 ```
 
 
 
 ```{r}
 #| label: fig-policy-2
-#| fig-cap: "Decision Tree: Meaning Sense"
+#| fig-cap: "Decision Tree: Neighbourhood Community"
 #| eval: true
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
-plots_policy_trees_2L$model_t2_meaning_sense_z$combined_plot
+policy_2L_corrected[[2]][[1]]
 ```
 
 
@@ -704,22 +625,6 @@ cat(transition_tables_binary$explanation)
 ## Appendix D: Evidence of Heterogeneity {#appendix-cate-validation}
 
 
-
-        
-```{r, results='asis'}
-#| label: tbl-omnibus
-#| eval: true
-#| echo: false
-result_ominbus_hetero$summary_table |> kbl("markdown")
-```
-
-```{r, results='asis'}
-#| eval: true
-#| echo: false
-cat(result_ominbus_hetero$interpretations)
-```
-
-
 ```{r, results='asis'}
 #| eval: true
 #| echo: false
@@ -743,53 +648,43 @@ cat(boilerplate::boilerplate_generate_text(
 #| eval: true
 #| echo: false
 # view rate tables
-rate_table_all$rate_autoc |> kbl("markdown")
-#rate_table_all$rate_qini |> kbl("markdown")
+cat(rate_interp$autoc_results)
 ```
 
 ```{r, results='asis'}
 #| eval: true
 #| echo: false
-cat(rate_interpretation_all$autoc_results)
-```
-
-```{r, results='asis'}
-#| label: tbl-rate-qini
-#| eval: true
-#| echo: false
-rate_table_all$rate_qini |> kbl("markdown")
+cat(rate_interp$qini_results)
 ```
 
 ```{r, results='asis'}
 #| eval: true
 #| echo: false
-cat(rate_interpretation_all$qini_results)
+cat(rate_interp$comparison)
 ```
 
+
+```{r}
+#| label: fig-qini
+#| fig-cap: "RATE AUTOC Graphs"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+qini_plots[[1]]
+```
+
+```{r, results = 'asis'}
+# only reliable results
+cat(interpretation_qini_curves_2L$qini_explanation)
+```
 
 {{< pagebreak >}}
 
-<!-- ```{r,  results='asis'} -->
-<!-- #| eval: true -->
-<!-- #| echo: false -->
-<!-- #| include: true -->
-<!-- text_explain_grf <- boilerplate_generate_text( -->
-<!--   category = "appendix", -->
-<!--   sections = c( -->
-<!--     "explain.grf" -->
-<!--   ), -->
-<!--   global_vars = list( -->
-<!--     traning_proportion = "70%", -->
-<!--     train_proportion_decision_tree = "70%", -->
-<!--     appendix_letter_explain_grf = "G" -->
-<!--   ), -->
-<!--   db = unified_db -->
-<!-- ) -->
-<!-- cat(knitr::knit_child(text = text_explain_grf, quiet = TRUE)) -->
-<!-- ``` -->
-
-
 
 ## References {.appendix-refs}
+
+
+
 
 

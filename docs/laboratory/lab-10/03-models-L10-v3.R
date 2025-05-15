@@ -327,8 +327,6 @@ cat("Number of original models:\n", length(models_binary$results), "\n")
 
 # make ate plots ----------------------------------------------------------
 #   ************* NEW - CORRECTION FOR FAMILY-WISE ERROR **********
-devtools::load_all("/Users/joseph/GIT/margot/")
-
 # then pass to the results
 ate_results <- margot_plot(
   models_binary$combined_table, # <- now pass the corrected results.
@@ -338,7 +336,7 @@ ate_results <- margot_plot(
   save_output = FALSE,
   order = "evaluebound_asc",
   original_df = original_df,
-  e_val_bound_threshold = 1.1,
+  e_val_bound_threshold = 1.2,
   rename_ate = TRUE,
   adjust = "bonferroni", #<- new 
   alpha = 0.05 # <- new 
@@ -355,7 +353,7 @@ ate_results$plot
 cat(ate_results$interpretation)
 
 # save
-here_save(ate_results, "ate_results")
+here_save_qs(ate_results, "ate_results", push_mods)
 
 
 # make markdown tables (to be imported into the manuscript)
@@ -363,7 +361,7 @@ margot_bind_tables_markdown <- margot_bind_tables(
   ate_results$transformed_table,
   #list(all_models$combined_table),
   sort_E_val_bound = "desc",
-  e_val_bound_threshold = 1.1,
+  e_val_bound_threshold = 1.2,
   # ← choose threshold
   highlight_color = NULL,
   bold = TRUE,
@@ -545,6 +543,37 @@ keep <- margot_screen_models(
 
 # view
 print(keep)
+
+# save
+here_save(keep, "keep")
+
+keep_autoc <- margot_screen_models(
+  models_binary_flipped_all,  # full margot object with $results
+  rule   = "rate",           # heterogeneity evidence from rate tests
+  target = "AUTOC",         # either RATE‑AUTOC or RATE‑Qini may pass
+  alpha  = 0.10,             # raw p < 0.10 is enough to keep
+  adjust = "BH"              # <‑‑correction
+)
+
+# view
+print(keep_autoc)
+
+# save for manuscript
+here_save(keep_autoc, "keep_autoc")
+
+keep_qini <- margot_screen_models(
+  models_binary_flipped_all,  # full margot object with $results
+  rule   = "rate",           # heterogeneity evidence from rate tests
+  target = "QINI",         # either RATE‑AUTOC or RATE‑Qini may pass
+  alpha  = 0.10,             # raw p < 0.10 is enough to keep
+  adjust = "BH"              # <‑‑correction
+)
+
+# view
+print(keep_qini)
+
+# save for manuscript
+here_save(keep_qini, "keep_qini")
 
 # -------------------------------------------------------------------
 # 2. get model names after correction
