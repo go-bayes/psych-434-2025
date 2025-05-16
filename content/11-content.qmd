@@ -125,7 +125,7 @@ library(performance)
 
 # select the columns of the kesser-6 need. 
 dt_only_k6 <- df_nz |> 
-  filter(wave == 2018) |> 
+  filter(wave == 2018) |>  
   select(
     kessler_depressed,
     kessler_effort,
