@@ -29,7 +29,8 @@ editor_options:
 #| echo: false
 # libraries
 if (!require(margot, quietly = TRUE)) {
-  devtools::install_github("go-bayes/margot") # ensure version is at least 1.0.21
+  devtools::install_github("go-bayes/margot") # ensure version is at least 1.0.45
+  library("margot")
 }
 
 if (!require(boilerplate, quietly = TRUE)) {
@@ -81,19 +82,13 @@ original_df <- margot::here_read("df_wide", push_mods)
 grf_defaults <- list(seed = 123,
                      # reproduce results
                      stabilize.splits = TRUE,
-                     # robustness
-                     # min.node.size = 5,  # default is five/ requires at least 5 observed in control and treated
-                     # set higher for greater smoothing
                      num.trees = 2000 )
                      
-                     # grf default = 2000 # set lower or higher depending on storage)
 
 # set defaults for graphs (see bottom of script for options)
 decision_tree_defaults <- list(span_ratio = .3,
                                text_size = 3.8,
-                               y_padding = 0.25)  # Use full parameter name
-                               # edge_label_offset = .002,
-                               # border_size = .05)
+                               y_padding = 0.25)  
 
 # set defaults for graphs (see bottom of script for options)
 # set policy tree defaults

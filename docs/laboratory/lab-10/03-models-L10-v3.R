@@ -533,54 +533,57 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # -------------------------------------------------------------------
 # 1. screen outcomes for evidence of heterogeneity 
 # ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-keep <- margot_screen_models(
-  models_binary_flipped_all,  # full margot object with $results
-  rule   = "rate",           # heterogeneity evidence from rate tests
-  target = "either",         # either RATE‑AUTOC or RATE‑Qini may pass
-  alpha  = 0.10,             # raw p < 0.10 is enough to keep
-  adjust = "BH"              # <‑‑correction
-)
+# calculate rate-autoc and rate-qini tables
+# note: RATE-AUTOC asks: 'If I only treat the top k\% by τ(x), do I maximise average gain?' 
+# it rewards extreme uplift but can be volatile.
+# RATE-Qini asks: 'if i treat more broadly, do I still improve aggregate outcome?' it trades intensity for coverage.
+rate_results <-
+  margot_rate(
+    models   = models_binary_flipped_all,
+    #  model_names        = model_keep,     # only models that survived bh
+    policy   = "treat_best",
+    alpha  = 0.10,             # raw p < 0.10 is enough to keep
+    adjust = "fdr",              # <‑‑correction
+    label_mapping = label_mapping_all
+  )
 
-# view
-print(keep)
+# show rate tables
+rate_results$rate_autoc %>% kbl("markdown")
+rate_results$rate_qini %>% kbl("markdown")
+
+# save rate results
+here_save(rate_results, "rate_results")
+
+# generate textual interpretations for rate metrics
+rate_interp <-
+  margot_interpret_rate(
+    rate_results,
+    flipped_outcomes = flipped_names
+  )
+cat(rate_interp$autoc_results, "\n")
+cat(rate_interp$qini_results, "\n")
+cat(rate_interp$comparison, "\n")
+here_save(rate_interp, "rate_interpretation")
+
+# organise model groups by heterogeneity evidence
+model_groups <- list(
+  autoc  = rate_interp$autoc_model_names,
+  qini   = rate_interp$qini_model_names,
+  either = rate_interp$either_model_names
+)
 
 # save
-here_save(keep, "keep")
+here_save(model_groups, "model_groups")
 
-keep_autoc <- margot_screen_models(
-  models_binary_flipped_all,  # full margot object with $results
-  rule   = "rate",           # heterogeneity evidence from rate tests
-  target = "AUTOC",         # either RATE‑AUTOC or RATE‑Qini may pass
-  alpha  = 0.10,             # raw p < 0.10 is enough to keep
-  adjust = "BH"              # <‑‑correction
-)
+cli::cli_h1("rate metrics and interpretations complete ✔")
 
-# view
-print(keep_autoc)
-
-# save for manuscript
-here_save(keep_autoc, "keep_autoc")
-
-keep_qini <- margot_screen_models(
-  models_binary_flipped_all,  # full margot object with $results
-  rule   = "rate",           # heterogeneity evidence from rate tests
-  target = "QINI",         # either RATE‑AUTOC or RATE‑Qini may pass
-  alpha  = 0.10,             # raw p < 0.10 is enough to keep
-  adjust = "BH"              # <‑‑correction
-)
-
-# view
-print(keep_qini)
-
-# save for manuscript
-here_save(keep_qini, "keep_qini")
 
 # -------------------------------------------------------------------
 # 2. get model names after correction
 # -------------------------------------------------------------------
-
-# pull the matching model keys (prefixed) for downstream plotting ------
-model_keep <- paste0("model_", keep)
+model_keep <- model_groups$either
+model_keep_autoc <-  model_groups$autoc
+model_keep_qini <- model_groups$qini
 
 # -------------------------------------------------------------------
 # 3. fit + plot depth‑2 policy trees for kept models ------------------
@@ -597,7 +600,6 @@ policy_2L_corrected <- margot_policy(
   max_depth          = 2L,
   output_objects     = "combined_plot" # returns ggplot object
 )
-
 # quick display  ----------------------------------------------------
 plots_2L_corrected <- purrr::map(policy_2L_corrected, ~ .x[[1]])
 purrr::walk(plots_2L_corrected, print)   # print each to the plot panel
@@ -614,17 +616,11 @@ interp_all_2L <- margot_interpret_policy_batch(
 
 cat(interp_all_2L, "\n")
 
-#  saved -- to be imported into manuscript
-here_save_qs(policy_2L_corrected, "policy_2L_corrected", push_mods)
-here_save(interp_all_2L, "interp_all_2L")
-
 # end‑of‑workflow -----------------------------
 cli::cli_h1("main 2l policy trees analysed ✔")
 
 
 # PLANNED COMPARISONS -----------------------------------------------------
-
-
 
 # +--------------------------+
 # |    MODIFY THIS SECTION   |
@@ -651,11 +647,11 @@ margot_back_transform_log_z(
   log_mean = log_mean_inc,
   log_sd   = log_sd_inc,
   z_scores = c(-1, 0, 1),
-  label    = "data_scale"   # prints nz$ values ≈ 41k, …
+  label    = "data_scale"   # prints nz$ values ≈ 41k,…
 )
 
 # 1. define strata via logical vectors -------------------------------
-# we treat ±1 sd as the default cut for “low / mid / high”.  students
+# we treat ±1sd as the default cut for “low / mid / high”.  students
 # can change the thresholds or supply any logical `subset_condition`.
 complex_condition_political <- between(X[,"t0_political_conservative_z"], -1, 1)
 complex_condition_wealth    <- between(X[,"t0_log_household_inc_z"],    -1, 1)
@@ -672,11 +668,11 @@ mean(original_df$t0_age) + c(-1, 1) * sd(original_df$t0_age)
 #   * label                  – used as facet name
 subsets_standard_wealth <- list(
   Poor   = list(var="t0_log_household_inc_z", value=-1, operator="<",
-                description="income < −1 sd (≈ NZ$41k)", label="Poor"),
+                description="income < −1sd (≈ NZ$41k)", label="Poor"),
   MiddleIncome = list(subset_condition = complex_condition_wealth,
-                      description = "income within ±1 sd (≈ NZ$41‑191k)"),
+                      description = "income within ±1sd (≈ NZ$41‑191k)"),
   Rich   = list(var="t0_log_household_inc_z", value= 1, operator=">",
-                description="income > +1 sd (≈ NZ$191k)", label="Rich")
+                description="income > +1sd (≈ NZ$191k)", label="Rich")
 )
 
 
@@ -911,10 +907,85 @@ cat(group_comparison_age_young_old$interpretation)
 
 
 
+# FOR APPENDIX IF DESIRED -------------------------------------------------
+
+
+# helper: combine and save ggplot objects ---------------------------------
+combine_and_save <- function(plots, prefix) {
+  if (length(plots) == 0) {
+    message("no ", prefix, " plots to combine")
+    return(invisible(NULL))
+  }
+  cols     <- ifelse(length(plots) > 3, 2, 1)
+  combined <- purrr::reduce(plots, `+`) +
+    patchwork::plot_layout(ncol = cols) &
+    patchwork::plot_annotation(
+      title    = toupper(prefix),
+      subtitle = glue::glue("{length(plots)} models"),
+      tag_levels = "A"
+    )
+  print(combined)
+  ggsave(
+    here::here(push_mods, paste0("combined_", prefix, ".pdf")),
+    combined,
+    width  = ifelse(cols == 1, 8, 12),
+    height = 6 * ceiling(length(plots) / cols)
+  )
+  combined
+}
+
+# step 3: plot rate curves -----------------------------------------------
+autoc_plots <-
+  margot_plot_rate_batch(
+    models      = models_binary_flipped_all,
+    save_plots  = FALSE,
+    label_mapping      = label_mapping_all,
+    model_names = model_groups$autoc
+  )
+autoc_plots$model_t2_log_hours_exercise_z
+
+combined_autoc <- combine_and_save(autoc_plots, "rate_autoc")
+
+qini_rate_plots <-
+  margot_plot_rate_batch(
+    models      = models_binary_flipped_all,
+    save_plots  = FALSE,
+    model_names = model_groups$qini,
+    label_mapping      = label_mapping_all
+  )
+
+qini_rate_plots$model_t2_meaning_sense_z
+
+combined_qini_rate <- combine_and_save(qini_rate_plots, "rate_qini")
+cli::cli_h1("rate curves plotted ✔")
+
+# view 
+autoc_plots$model_t2_log_hours_exercise_z
+
+# step 4: Qini model curves --------------------------------------------
+qini_policy_results <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = list(),
+    policy_tree_args   = list(),
+    model_names        = model_groups$qini,
+    original_df        = original_df,
+    label_mapping      = label_mapping_all,
+    max_depth          = 2L,
+    output_objects     = c("qini_plot", "diff_gain_summaries")
+  )
+
+# view qini plots
+qini_plots <- purrr::map(qini_policy_results, ~ .x$qini_plot)
+qini_plots
+
+cli::cli_h1("Qini model curves plotted ✔")
+
+
+# ILLLUSTRATIONS OF SETTINGS
 # OPTIONS FOR DECISION TREES ----------------------------------------------
-
-
-
 # plot options: showcased ---------------------------------------------
 # default
 margot_plot_decision_tree(models_binary, "model_t2_support_z", )

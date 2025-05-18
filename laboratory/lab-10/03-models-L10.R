@@ -786,6 +786,57 @@ omnibus_results <-
 omnibus_results$summary_table %>% kbl("markdown")
 cat(omnibus_results$brief_interpretation, "\n")
 
+# -------------------------------------------------------------------
+# 1. screen outcomes for evidence of heterogeneity 
+# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
+keep <- margot_screen_models(
+  models_binary_flipped_all,  # full margot object with $results
+  rule   = "rate",           # heterogeneity evidence from rate tests
+  target = "either",         # either RATE‑AUTOC or RATE‑Qini may pass
+  alpha  = 0.10,             # raw p < 0.10 is enough to keep
+  adjust = "BH"              # <‑‑correction
+)
+
+# view
+print(keep)
+
+# save
+here_save(keep, "keep")
+models_binary_flipped_all$results$model_t2_kessler_latent_anxiety_z$rate_qini
+
+keep_autoc <- margot_screen_models(
+  models_binary_flipped_all,  # full margot object with $results
+  rule   = "rate",           # heterogeneity evidence from rate tests
+  target = "either",         # either RATE‑AUTOC or RATE‑Qini may pass
+  alpha  = 0.10,             # raw p < 0.10 is enough to keep
+  adjust = "BH"              # <‑‑correction
+)
+
+# view
+print(keep_autoc)
+
+# save for manuscript
+here_save(keep_autoc, "keep_autoc")
+
+keep_qini <- margot_screen_models(
+  models_binary_flipped_all,  # full margot object with $results
+  rule   = "rate",           # heterogeneity evidence from rate tests
+  target = "QINI",         # either RATE‑AUTOC or RATE‑Qini may pass
+  alpha  = 0.10,             # raw p < 0.10 is enough to keep
+  adjust = "BH"              # <‑‑correction
+)
+
+# view
+print(keep_qini)
+
+
+# save for manuscript
+here_save(keep_qini, "keep_qini")
+
+model_keep <- paste0("model_", keep)
+
+devtools::load_all("/Users/joseph/GIT/margot/")
+
 # step 2: compute rate heterogeneity metrics ------------------------------
 # calculate rate-autoc and rate-qini tables
 # note: RATE-AUTOC asks: 'If I only treat the top k\% by τ(x), do I maximise average gain?' 
@@ -794,7 +845,10 @@ cat(omnibus_results$brief_interpretation, "\n")
 rate_results <-
   margot_rate(
     models   = models_binary_flipped_all,
+  #  model_names        = model_keep,     # only models that survived bh
     policy   = "treat_best",
+    alpha  = 0.20,             # raw p < 0.10 is enough to keep
+    adjust = "fdr",              # <‑‑correction
     label_mapping = label_mapping_all
   )
 
@@ -814,7 +868,8 @@ rate_interp <-
 cat(rate_interp$autoc_results, "\n")
 cat(rate_interp$qini_results, "\n")
 cat(rate_interp$comparison, "\n")
-here_save(rate_interp, "rate_interpretation")
+
+here_save(rate_interp, "rate_interp")
 
 # organise model groups by heterogeneity evidence
 model_groups <- list(
@@ -854,16 +909,23 @@ autoc_plots <-
   margot_plot_rate_batch(
     models      = models_binary_flipped_all,
     save_plots  = FALSE,
+    label_mapping      = label_mapping_all,
     model_names = model_groups$autoc
   )
+autoc_plots$model_t2_log_hours_exercise_z
+
 combined_autoc <- combine_and_save(autoc_plots, "rate_autoc")
 
 qini_rate_plots <-
   margot_plot_rate_batch(
     models      = models_binary_flipped_all,
     save_plots  = FALSE,
-    model_names = model_groups$qini
+    model_names = model_groups$qini,
+    label_mapping      = label_mapping_all
   )
+
+qini_rate_plots$model_t2_meaning_sense_z
+
 combined_qini_rate <- combine_and_save(qini_rate_plots, "rate_qini")
 cli::cli_h1("rate curves plotted ✔")
 

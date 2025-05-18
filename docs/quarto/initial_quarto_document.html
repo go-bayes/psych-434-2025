@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="YOUR NAME">
-<meta name="dcterms.date" content="2025-05-13">
+<meta name="dcterms.date" content="2025-05-18">
 <meta name="keywords" content="Causal Inference, Cross-validation, …">
 
 <title>Your Title – PSYC 434 Conducting Research Across Cultures: Trimester 1, 2025</title>
@@ -257,7 +257,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">May 13, 2025</p>
+        <p class="date">May 18, 2025</p>
       </div>
     </div>
     
@@ -267,11 +267,7 @@ window.Quarto = {
   <div>
     <div class="abstract">
       <div class="block-title">Abstract</div>
-      <p><strong>Background</strong>: (Brief few sentences)</p>
-      <p><strong>Objectives</strong>: 1. Estimate the causal effect of YOUR EXPOSURE on YOUR OUTCOMES measured one year later. 2. Evaluate whether these effects vary across the population. 3. Provide policy guidance on which individuals might benefit most.</p>
-      <p><strong>Method</strong>: We conducted a three-wave retrospective cohort study (waves XX-XXX, October XXXX–October XXXX) using data from the New Zealand Attitudes and Values Study, a nationally representative panel. Participants were eligible if they participated in the NZAVS in the baseline wave (XXXX, were under the age of 62, and were employed &gt; 20 hours per week. We defined the exposure as (XXXX &gt; NUMBER on a 1-7 Likert Scale (1 = yes, 0 = no)). To address attrition, we applied inverse probability of censoring weights; to improve external validity, we applied weighted to the population distribution of Age, Ethnicity, and Gender. We computed expected mean outcomes for the population in each exposure condition (high XXXX/low XXXXX). Under standard causal assumptions of unconfoundedness, the contrast provides an unbiased average treatment effect. We then used causal forests to detect heterogeneity in these effects and employed policy tree algorithms to identify individuals (“strong responders”) likely to experience the greatest benefits.</p>
-      <p><strong>Results</strong>: Increasing XXXXX leads to XXXXX. Heterogeneous responses to (e.g.&nbsp;<em>Forgiveness</em>, <em>Personal Well-Being</em>, and <em>Life-Satisfaction</em>…) reveal structural variability in subpopulations…</p>
-      <p><strong>Implications</strong>: (Brief few sentences) <strong>Keywords</strong>: <em>Causal Inference</em>; <em>Cross-validation</em>; <em>Distress</em>; <em>Employment</em>; <em>Longitudinal</em>; <em>Machine sLearning</em>; <em>Religion</em>; <em>Semi-parametric</em>; <em>Targeted Learning</em>.</p>
+      <p><strong>Background</strong>: (Brief few sentences) <strong>Objectives</strong>: 1. Estimate the causal effect of YOUR EXPOSURE on YOUR OUTCOMES measured one year later. 2. Evaluate whether these effects vary across the population. 3. Provide policy guidance on which individuals might benefit most. <strong>Method</strong>: We conducted a three-wave retrospective cohort study (waves XX-XXX, October XXXX–October XXXX) using data from the New Zealand Attitudes and Values Study, a nationally representative panel. Participants were eligible if they participated in the NZAVS in the baseline wave (XXXX, were under the age of 62, and were employed &gt; 20 hours per week. We defined the exposure as (XXXX &gt; NUMBER on a 1-7 Likert Scale (1 = yes, 0 = no)). To address attrition, we applied inverse probability of censoring weights; to improve external validity, we applied weighted to the population distribution of Age, Ethnicity, and Gender. We computed expected mean outcomes for the population in each exposure condition (high XXXX/low XXXXX). Under standard causal assumptions of unconfoundedness, the contrast provides an unbiased average treatment effect. We then used causal forests to detect heterogeneity in these effects and employed policy tree algorithms to identify individuals (“strong responders”) likely to experience the greatest benefits. <strong>Results</strong>: Increasing XXXXX leads to XXXXX. Heterogeneous responses to (e.g.&nbsp;<em>Forgiveness</em>, <em>Personal Well-Being</em>, and <em>Life-Satisfaction</em>…) reveal structural variability in subpopulations… <strong>Implications</strong>: (Brief few sentences) <strong>Keywords</strong>: <em>Causal Inference</em>; <em>Cross-validation</em>; <em>Distress</em>; <em>Employment</em>; <em>Longitudinal</em>; <em>Machine sLearning</em>; <em>Religion</em>; <em>Semi-parametric</em>; <em>Targeted Learning</em>.</p>
     </div>
   </div>
 
@@ -308,12 +304,9 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#average-treatement-effects" id="toc-average-treatement-effects" class="nav-link" data-scroll-target="#average-treatement-effects">Average Treatement Effects</a></li>
   <li><a href="#heterogeneous-treatment-effects" id="toc-heterogeneous-treatment-effects" class="nav-link" data-scroll-target="#heterogeneous-treatment-effects">Heterogeneous Treatment Effects</a></li>
-  <li><a href="#comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" id="toc-comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" class="nav-link" data-scroll-target="#comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini">Comparison of targeting operating characteristic (TOC) by rank average treatment effect (RATE): AUTOC vs Qini</a></li>
-  <li><a href="#rate-autoc-results" id="toc-rate-autoc-results" class="nav-link" data-scroll-target="#rate-autoc-results">RATE AUTOC Results</a></li>
+  <li><a href="#comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" id="toc-comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" class="nav-link" data-scroll-target="#comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini">Comparison of targeting operating characteristic (TOC) by rank average treatment effect (RATE): AUTOC vs QINI</a></li>
   <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</a></li>
-  <li><a href="#qini-curve-results" id="toc-qini-curve-results" class="nav-link" data-scroll-target="#qini-curve-results">QINI Curve Results</a></li>
-  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</a></li>
-  <li><a href="#policy-trees" id="toc-policy-trees" class="nav-link" data-scroll-target="#policy-trees">Policy Trees</a></li>
+  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini">Evidence for heterogeneous treatment effects (policy = treat best responders) using QINI</a></li>
   <li><a href="#policy-tree-interpretations-depth-2" id="toc-policy-tree-interpretations-depth-2" class="nav-link" data-scroll-target="#policy-tree-interpretations-depth-2">Policy Tree Interpretations (depth 2)</a></li>
   </ul></li>
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
@@ -330,24 +323,28 @@ window.Quarto = {
   <li><a href="#exposure-variable" id="toc-exposure-variable" class="nav-link" data-scroll-target="#exposure-variable">Exposure Variable</a></li>
   <li><a href="#outcome-variables" id="toc-outcome-variables" class="nav-link" data-scroll-target="#outcome-variables">Outcome Variables</a></li>
   </ul></li>
-  <li><a href="#appendix-sample" id="toc-appendix-sample" class="nav-link" data-scroll-target="#appendix-sample">Appendix B: Sample</a>
+  <li><a href="#appendix-sample" id="toc-appendix-sample" class="nav-link" data-scroll-target="#appendix-sample">Appendix B: Sample Characteristics</a>
   <ul class="collapse">
-  <li><a href="#appendix-exposure" id="toc-appendix-exposure" class="nav-link" data-scroll-target="#appendix-exposure">Exposure Variable</a></li>
-  <li><a href="#appendix-outcomes" id="toc-appendix-outcomes" class="nav-link" data-scroll-target="#appendix-outcomes">Outcome Variables</a></li>
-  <li><a href="#appendix-transition" id="toc-appendix-transition" class="nav-link" data-scroll-target="#appendix-transition">Appendix C: Transition Matrix to Check The Positivity Assumption</a></li>
+  <li><a href="#appendix-exposure" id="toc-appendix-exposure" class="nav-link" data-scroll-target="#appendix-exposure">Sample Statistics: Exposure Variable</a></li>
+  <li><a href="#appendix-outcomes" id="toc-appendix-outcomes" class="nav-link" data-scroll-target="#appendix-outcomes">Sample Statistics: Outcome Variables</a></li>
   </ul></li>
-  <li><a href="#appendix-cate-validation" id="toc-appendix-cate-validation" class="nav-link" data-scroll-target="#appendix-cate-validation">Appendix D: Evidence of Heterogeneity</a></li>
-  <li><a href="#omnibus-heterogeneity-test-results" id="toc-omnibus-heterogeneity-test-results" class="nav-link" data-scroll-target="#omnibus-heterogeneity-test-results">Omnibus Heterogeneity Test Results</a>
+  <li><a href="#appendix-transition" id="toc-appendix-transition" class="nav-link" data-scroll-target="#appendix-transition">Appendix C: Transition Matrix to Check The Positivity Assumption</a></li>
+  <li><a href="#appendix-cate-validation" id="toc-appendix-cate-validation" class="nav-link" data-scroll-target="#appendix-cate-validation">Appendix D: Approach to Heterogeneity</a></li>
+  <li><a href="#appendix-x.-estimating-and-interpreting-heterogeneous-treatment-effects-with-grf" id="toc-appendix-x.-estimating-and-interpreting-heterogeneous-treatment-effects-with-grf" class="nav-link" data-scroll-target="#appendix-x.-estimating-and-interpreting-heterogeneous-treatment-effects-with-grf">Appendix X. Estimating and Interpreting Heterogeneous Treatment Effects with <strong>grf</strong></a>
   <ul class="collapse">
-  <li><a href="#explanation" id="toc-explanation" class="nav-link" data-scroll-target="#explanation">Explanation</a></li>
-  <li><a href="#results-by-outcome" id="toc-results-by-outcome" class="nav-link" data-scroll-target="#results-by-outcome">Results by Outcome</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a>
-  <ul class="collapse">
-  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</a></li>
-  <li><a href="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1" id="toc-evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1" class="nav-link" data-scroll-target="#evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</a></li>
+  <li><a href="#average-treatment-effect-ate" id="toc-average-treatment-effect-ate" class="nav-link" data-scroll-target="#average-treatment-effect-ate">1 Average Treatment Effect (ATE)</a></li>
+  <li><a href="#do-effects-vary-formal-test-of-heterogeneity" id="toc-do-effects-vary-formal-test-of-heterogeneity" class="nav-link" data-scroll-target="#do-effects-vary-formal-test-of-heterogeneity">2 Do Effects Vary? Formal Test of Heterogeneity</a></li>
+  <li><a href="#causal-forests-for-individualised-estimates" id="toc-causal-forests-for-individualised-estimates" class="nav-link" data-scroll-target="#causal-forests-for-individualised-estimates">3 Causal Forests for Individualised Estimates</a></li>
+  <li><a href="#built-in-protection-against-over-fitting" id="toc-built-in-protection-against-over-fitting" class="nav-link" data-scroll-target="#built-in-protection-against-over-fitting">4 Built-in Protection Against Over-fitting</a></li>
+  <li><a href="#missing-data-handling" id="toc-missing-data-handling" class="nav-link" data-scroll-target="#missing-data-handling">5 Missing Data Handling</a></li>
+  <li><a href="#testing-for-actionable-heterogeneity-the-toc-rate-metrics" id="toc-testing-for-actionable-heterogeneity-the-toc-rate-metrics" class="nav-link" data-scroll-target="#testing-for-actionable-heterogeneity-the-toc-rate-metrics">6 Testing for <strong>Actionable</strong> Heterogeneity: the TOC &amp; RATE Metrics</a></li>
+  <li><a href="#visualising-policy-value-the-qini-curve" id="toc-visualising-policy-value-the-qini-curve" class="nav-link" data-scroll-target="#visualising-policy-value-the-qini-curve">7 Visualising Policy Value: the Qini Curve</a></li>
+  <li><a href="#valid-inference-for-rate-qini" id="toc-valid-inference-for-rate-qini" class="nav-link" data-scroll-target="#valid-inference-for-rate-qini">8 Valid Inference for RATE / Qini</a></li>
+  <li><a href="#from-black-box-to-simple-rules-policy-trees" id="toc-from-black-box-to-simple-rules-policy-trees" class="nav-link" data-scroll-target="#from-black-box-to-simple-rules-policy-trees">9 From Black Box to Simple Rules: Policy Trees</a></li>
+  <li><a href="#ethical-and-practical-considerations" id="toc-ethical-and-practical-considerations" class="nav-link" data-scroll-target="#ethical-and-practical-considerations">10 Ethical and Practical Considerations</a></li>
+  <li><a href="#summary-checklist" id="toc-summary-checklist" class="nav-link" data-scroll-target="#summary-checklist">Summary Checklist</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
-  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="initial_quarto_document.docx"><i class="bi bi-file-word"></i>MS Word</a></li><li><a href="initial_quarto_document.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
     </div>
@@ -363,49 +360,44 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="method">Method</h2>
 <section id="sample" class="level3">
 <h3 class="anchored" data-anchor-id="sample">Sample</h3>
-<p>Data were collected as part of the New Zealand Attitudes and Values Study (NZAVS), an annual longitudinal national probability panel assessing New Zealand residents’ social attitudes, personality, ideology, and health outcomes. The panel began in 2009 and has since expanded to include over fifty researchers, with responses from 40,000 participants to date. The study operates independently of political or corporate funding and is based at a university. It employs prize draws to incentivise participation. The NZAVS tends to slightly under-sample males and individuals of Asian descent and to over-sample females and Māori (the Indigenous people of New Zealand). To enhance the representativeness of our sample population estimates for the target population of New Zealand, we apply census-based survey weights that adjust for age, gender, and ethnicity (New Zealand European, Asian, Māori, Pacific) <span class="citation" data-cites="sibley2021">(<a href="#ref-sibley2021" role="doc-biblioref">Sibley, 2021</a>)</span>. For more information about the NZAVS, visit: <a href="https://doi.org/10.17605/OSF.IO/75SNB">OSF.IO/75SNB</a>. Refer to <a href="#appendix-timeline">Appendix {{appendix_timeline}}</a> for a histogram of daily responses for this cohort.</p>
+<p>Data were collected as part of the New Zealand Attitudes and Values Study (NZAVS), an annual longitudinal national probability panel assessing New Zealand residents’ social attitudes, personality, ideology, and health outcomes. The panel began in 2009 and has since expanded to include over fifty researchers, with responses from 40,000 participants to date. The study operates independently of political or corporate funding and is based at a university. It employs prize draws to incentivise participation. The NZAVS tends to slightly under-sample males and individuals of Asian descent and to over-sample females and Māori (the Indigenous people of New Zealand). To enhance the representativeness of our sample population estimates for the target population of New Zealand, we apply census-based survey weights that adjust for age, gender, and ethnicity (New Zealand European, Asian, Māori, Pacific) <span class="citation" data-cites="sibley2021">(<a href="#ref-sibley2021" role="doc-biblioref">Sibley, 2021</a>)</span>. For more information about the NZAVS, visit: <a href="https://doi.org/10.17605/OSF.IO/75SNB">OSF.IO/75SNB</a>.</p>
 </section>
 <section id="target-population" class="level3">
 <h3 class="anchored" data-anchor-id="target-population">Target Population</h3>
-<p>The target population for this study comprises New Zealand residents as represented in the NZAVS time 10, years 2018-2019 of the New Zealand Attitudes and Values Study (NZAVS) during the years NZAVS time 10, years 2018-2019 weighted by New Zealand Census weights for age, gender, and ethnicity (refer to <span class="citation" data-cites="sibley2021">Sibley (<a href="#ref-sibley2021" role="doc-biblioref">2021</a>)</span>). The NZAVS is a national probability study designed to reflect the broader New Zealand population accurately. Despite its comprehensive scope, the NZAVS has some limitations in its demographic representation. Notably, it tends to under-sample males and individuals of Asian descent while over-sampling females and Māori (the indigenous peoples of New Zealand). To address these disparities and enhance the accuracy of our findings, we apply New Zealand Census survey weights to the sample data.</p>
+<p>The target population for this study comprises New Zealand residents as represented in the 2018 of the New Zealand Attitudes and Values Study (NZAVS) during the years 2018 weighted by New Zealand Census weights for age, gender, and ethnicity (refer to <span class="citation" data-cites="sibley2021">Sibley (<a href="#ref-sibley2021" role="doc-biblioref">2021</a>)</span>). The NZAVS is a national probability study designed to reflect the broader New Zealand population accurately. Despite its comprehensive scope, the NZAVS has some limitations in its demographic representation. Notably, it tends to under-sample males and individuals of Asian descent while over-sampling females and Māori (the indigenous peoples of New Zealand). To address these disparities and enhance the accuracy of our findings, we apply New Zealand Census survey weights to the sample data.</p>
 </section>
 <section id="eligibility-criteria" class="level3">
 <h3 class="anchored" data-anchor-id="eligibility-criteria">Eligibility Criteria</h3>
-<p>To be included in the analysis of this study, participants needed to participate in the NZAVS time 10, years 2018-2019 of the study and respond to the baseline measure of Extraversion.</p>
-<p>Participants may have been lost to follow-up at the end of the study if they met eligibility criteria at NZAVS time 10, years 2018-2019. We adjusted for attrition and non-response using censoring weights, described below.</p>
+<p>To be included in the analysis of this study, participants needed to participate in the 2018 of the study and respond to the baseline measure of Extraversion.</p>
+<p>Participants may have been lost to follow-up at the end of the study if they met eligibility criteria at 2018. We adjusted for attrition and non-response using censoring weights, described below.</p>
 <p>A total of 39,635 individuals met these criteria and were included in the study.</p>
 </section>
 <section id="average-treatment-effect" class="level3">
 <h3 class="anchored" data-anchor-id="average-treatment-effect">Average Treatment Effect</h3>
-<p>Researchers often want to know what might happen if we could change (or “intervene on”) a particular variable for everyone in a study—much like testing a new treatment in a randomised trial. Because we cannot always run an actual trial, we imagine a <strong>target trial</strong> <span class="citation" data-cites="hernan2016">(<a href="#ref-hernan2016" role="doc-biblioref">Hernán et al., 2016</a>)</span>, a hypothetical experiment that clarifies exactly which cause-and-effect question we are trying to answer.</p>
+<p>Researchers often want to know what might happen if we could change (or ‘intervene on’) a particular variable for everyone in a study—much like testing a new treatment in a randomised trial. Because we cannot always run an actual trial, we imagine a <strong>target trial</strong> <span class="citation" data-cites="hernan2016">(<a href="#ref-hernan2016" role="doc-biblioref">Hernán et al., 2016</a>)</span>, a hypothetical experiment that clarifies exactly which cause-and-effect question we are trying to answer.</p>
 <p>Here, we ask:</p>
 <blockquote class="blockquote">
-<p>“How would the outcomes of interest change if, for everyone in the population, we set the exposure to <strong>{{value_exposure}}</strong>, compared with setting it to <strong>{{value_control}}</strong>, given each individual’s characteristics?”</p>
+<p>‘How would the outcomes of interest change if, for everyone in the population, we set the exposure to <strong>&gt;4, scale range 1-7</strong>, compared with setting it to <strong>&lt;=4, scale range 1-7</strong>, given each individual’s characteristics?’</p>
 </blockquote>
 <p>Thus we compare two scenarios:</p>
 <ol type="1">
-<li><strong>{{name_exposure_threshold}}</strong>: Everyone receives exposure level <code>{value_exposure}</code>.</li>
-<li><strong>{{name_control_threshold}}</strong>: Everyone receives exposure level <code>{value_control}</code>.</li>
+<li><strong>1</strong>: Everyone receives exposure level &gt;4, scale range 1-7.</li>
+<li><strong>0</strong>: Everyone receives exposure level &lt;=4, scale range 1-7.</li>
 </ol>
-<p>The difference between the averages of these two scenarios is call the ‘Average Treatment Effect’ (ATE). By combining time series data with a rich set of covariates measured at baseline, we may, under the assumptions of no-measured confounding and other assumptions described below, isolate the effect of the intervening on the exposure from other variables that might distort the true causal relationship if not properly accounted for. By measuring a broad set of characteristics (such as demographics, personality traits, or other background factors) at baseline, we try to ensure that, once we adjust for them in our analysis, assignment to each of the exposure conditions is ‘as good as random.’ (Refer to Appendix <a href="#appendix-assumptions_grf">{{appendix_assumptions_grf}}</a> for an explanation of assumptions for obtaining the ATE).</p>
+<p>The difference between these two population means is the <strong>Average Treatment Effect (ATE)</strong>. Because we evaluate several outcomes, ATE confidence intervals were corrected for multiplicity with bonferroni at <span class="math inline">\alpha</span> = 0.05.</p>
+<p>By combining time-series data with a rich baseline covariate set, we may, under the identifications assumptions described below, separate the causal effects of the exposure from spurious associations. Measuring demographics, personality traits, and other background factors at baseline helps ensure that, conditional on those covariates, assignment to the two exposure levels is ‘as good as random.’ (See Appendix <a href="#appendix-assumptions_grf">D</a> for a full statement of the required assumptions.)</p>
 </section>
 <section id="heterogeneous-treatment-effects-and-treatment-policies" class="level3">
 <h3 class="anchored" data-anchor-id="heterogeneous-treatment-effects-and-treatment-policies">Heterogeneous Treatment Effects and Treatment Policies</h3>
 <p>After estimating the overall average treatment effect (ATE) for the population, we turn to the question of whether different people respond differently. We investigate effect modifiers (or moderators)—factors that make the intervention more or less effective for certain subgroups—by estimating the Conditional Average Treatment Effect (CATE) using a causal forest approach. While the ATE reflects the overall impact, the CATE reveals how that impact can vary across individuals with different baseline characteristics. We denote the individual-level estimated treatment effect as <span class="math inline">\hat{\tau}(x)</span>, which represents the predicted benefit for an individual with covariates <span class="math inline">x</span>. A notable advantage of causal forests is that we do not have to specify potential moderators in advance; the algorithm uncovers them automatically. We can also apply search algorithms to derive priority treatment rules that target the intervention to those most likely to benefit.</p>
 <p>First, we standardised effect directions by inverting outcomes where lower scores were preferable so that positive values always indicated improvement. Specifically, we inverted Anxiety, Depression, Rumination.</p>
-<p>Next, to reduce overfitting and distinguish true heterogeneity from noise, we split the sample. We trained the causal forest on the first half and tested its predictions exclusively on the second half. In the held-out data, we checked calibration by comparing the mean of the predicted CATEs, <span class="math inline">\hat{\tau}(x)</span>, with the overall ATE. We also performed a differential prediction test <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span> to assess whether the predicted variation was genuine. As an additional check for heterogeneity, we computed the Rank-Weighted Average Treatment Effect (RATE), which quantifies the benefit of targeting individuals predicted to benefit most <span class="citation" data-cites="grf2024 wager2018">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>; <a href="#ref-wager2018" role="doc-biblioref">Wager &amp; Athey, 2018</a>)</span>.</p>
-<p>Having assessed preliminary evidence of heterogeneity using differential prediction and RATE estimation, we used Qini curves <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span> to illustrate how a targeted strategy might outperform a uniform one. Specifically, we compared:</p>
-<ol type="1">
-<li><strong>Uniform Allocation:</strong> treating (or not treating) everyone based on the ATE;</li>
-<li><strong>Targeted Allocation:</strong> treating those with the highest predicted CATEs (<span class="math inline">\hat{\tau}(x)</span>) first.</li>
-</ol>
-<p>A positive Qini value suggests that a targeted strategy can achieve better outcomes. Here, we considered whether budgets limited to 20% or 50% of the population could yield greater improvements under targeted allocation than under the uniform approach.</p>
-<p>Finally, when we found signs of genuine heterogeneity (via either RATE or Qini curves), we used policy trees <span class="citation" data-cites="policytree_package_2024 athey2021 athey_2021_policy_tree_econometrica">(<a href="#ref-athey2021" role="doc-biblioref">Athey &amp; Wager, 2021a</a>, <a href="#ref-athey_2021_policy_tree_econometrica" role="doc-biblioref">2021b</a>; <a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span> to generate simple, rule-based treatment recommendations (e.g., “Treat if baseline score &gt; X”). We implemented all heterogeneity analyses—calibration tests, RATE, Qini curves, and policy trees—in R using the grf <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>, policytree <span class="citation" data-cites="policytree_package_2024">(<a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span>, and margot <span class="citation" data-cites="margot2024">(<a href="#ref-margot2024" role="doc-biblioref">Bulbulia, 2024a</a>)</span> packages. This approach enabled us to identify individualised effects, confirm their robustness, estimate the potential value of targeting, and propose straightforward strategies for personalisation. (Refer to <a href="#appendix-explain-grf">Appendix {{appendix_explain_grf}}</a> for a detailed explanation of our approach.)</p>
+<p>Next, to reduce overfitting and separate real heterogeneity from noise, we split the data into training and validation folds (70/30). A causal forest trained on the first fold produced out-of-sample CATE predictions on the second. We then computed Rank-Weighted Average Treatment Effect (RATE) metrics—AUTOC and Qini—which quantify the gain from targeting the highest-ranked individuals <span class="citation" data-cites="grf2024 wager2018">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>; <a href="#ref-wager2018" role="doc-biblioref">Wager &amp; Athey, 2018</a>)</span>. Their <em>p</em>-values were corrected with Benjamini–Hochberg false-discovery-rate adjustment at q = 0.1 to control the exploratory false-discovery rate <span class="citation" data-cites="benjamini1995controlling">(<a href="#ref-benjamini1995controlling" role="doc-biblioref">Benjamini &amp; Hochberg, 1995</a>)</span>. Where heterogeneity remained reliable, we fitted depth-2 policy trees <span class="citation" data-cites="policytree_package_2024 athey2021 athey_2021_policy_tree_econometrica">(<a href="#ref-athey2021" role="doc-biblioref">Athey &amp; Wager, 2021a</a>, <a href="#ref-athey_2021_policy_tree_econometrica" role="doc-biblioref">2021b</a>; <a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span> to distil transparent ‘treat-if’ rules (e.g., <em>treat if baseline score &gt; X</em>).</p>
+<p>All heterogeneity steps—calibration tests, RATE, Qini curves, and policy-tree learning—were implemented in R with <strong>grf</strong> <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>, <strong>policytree</strong> <span class="citation" data-cites="policytree_package_2024">(<a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span>, using graphical and summary functions from <strong>margot</strong> <span class="citation" data-cites="margot2024">(<a href="#ref-margot2024" role="doc-biblioref">Bulbulia, 2024a</a>)</span>. This workflow identifies individualised effects, quantifies the policy value of targeting, and delivers practical decision rules. See <a href="#appendix-explain-grf">Appendix D</a> for full methodological details.</p>
 </section>
 <section id="exposure-indicator" class="level3">
 <h3 class="anchored" data-anchor-id="exposure-indicator">Exposure Indicator</h3>
 <p>The New Zealand Attitudes and Values Study assesses Extraversion using the following question:</p>
-<p>Mini-IPIP6 Extraversion dimension: (i) I am the life of the party. (ii) I don’t talk a lot. (r) (iii) I keep in the background. (r) (iv) I talk to a lot of different people at parties.(Refer to <a href="#appendix-measures">Appendix {{appendix_measures}}</a>).</p>
+<p>Mini-IPIP6 Extraversion dimension: (i) I am the life of the party. (ii) I don’t talk a lot. (r) (iii) I keep in the background. (r) (iv) I talk to a lot of different people at parties.(Refer to <a href="#appendix-measures">Appendix A</a>).</p>
 </section>
 <section id="causal-identification-assumptions" class="level3">
 <h3 class="anchored" data-anchor-id="causal-identification-assumptions">Causal Identification Assumptions</h3>
@@ -413,7 +405,7 @@ window.Quarto = {
 <ol type="1">
 <li><p><strong>Consistency</strong>: the observed outcome under the observed Extraversion is equal to the potential outcome under that exposure level. As part of consistency, we assume no interference: the potential outcomes for one individual are not affected by the Extraversion status of other individuals.</p></li>
 <li><p><strong>No unmeasured confounding</strong>: all variables that affect both Extraversion and the outcome have been measured and accounted for in the analysis.</p></li>
-<li><p><strong>Positivity</strong>: there is a non-zero probability of receiving each level of Extraversion for every combination of values of Extraversion and confounders in the population. Positivity is the only fundamental casual assumption that can be evaluated with data (refer to <a href="#appendix-positivity">Appendix {{appendix_positivity}}</a>).</p></li>
+<li><p><strong>Positivity</strong>: there is a non-zero probability of receiving each level of Extraversion for every combination of values of Extraversion and confounders in the population. Positivity is the only fundamental casual assumption that can be evaluated with data (refer to <a href="#appendix-positivity">Appendix E</a>).</p></li>
 </ol>
 </section>
 <section id="confounding-control" class="level3">
@@ -428,15 +420,15 @@ window.Quarto = {
 </section>
 <section id="statistical-estimation" class="level3">
 <h3 class="anchored" data-anchor-id="statistical-estimation">Statistical Estimation</h3>
-<p>We estimate heterogeneous treatment effects with Generalized Random Forests (GRF) <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>. GRF extends random forests for causal inference by focusing on conditional average treatment effects (CATE). It handles complex interactions and non-linearities without explicit model specification, and it provides ‘honest’ estimates by splitting data between model-fitting and inference. GRF is doubly robust because it remains consistent if either the outcome model or the propensity model is correct. We evaluate policies with the <code>policytree</code> package <span class="citation" data-cites="policytree_package_2024 athey_2021_policy_tree_econometrica">(<a href="#ref-athey_2021_policy_tree_econometrica" role="doc-biblioref">Athey &amp; Wager, 2021b</a>; <a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span> and visualise results with <code>margot</code> <span class="citation" data-cites="margot2024">(<a href="#ref-margot2024" role="doc-biblioref">Bulbulia, 2024a</a>)</span>. (Refer to <a href="#appendix-explain-grf">Appendix {{appendix_explain_grf}}</a> for a detailed explanation of our approach.)</p>
+<p>We estimate heterogeneous treatment effects with Generalized Random Forests (GRF) <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>. GRF extends random forests for causal inference by focusing on conditional average treatment effects (CATE). It handles complex interactions and non-linearities without explicit model specification, and it provides ‘honest’ estimates by splitting data between model-fitting and inference. GRF is doubly robust because it remains consistent if either the outcome model or the propensity model is correct. We evaluate policies with the <code>policytree</code> package <span class="citation" data-cites="policytree_package_2024 athey_2021_policy_tree_econometrica">(<a href="#ref-athey_2021_policy_tree_econometrica" role="doc-biblioref">Athey &amp; Wager, 2021b</a>; <a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span> and visualise results with <code>margot</code> <span class="citation" data-cites="margot2024">(<a href="#ref-margot2024" role="doc-biblioref">Bulbulia, 2024a</a>)</span>. (Refer to <a href="#appendix-explain-grf">Appendix D</a> for a detailed explanation of our approach.)</p>
 </section>
 <section id="missing-data" class="level3">
 <h3 class="anchored" data-anchor-id="missing-data">Missing Data</h3>
-<p>The GRF package accepts missing values at baseline. To obtain valid inference for missing responses we computed inverse probability of censoring weights for censoring of the exposure, given that systematic censoring following the baseline wave may lead to selection bias that limit generalistion to the baseline target population <span class="citation" data-cites="bulbulia2024wierd">(<a href="#ref-bulbulia2024wierd" role="doc-biblioref">Bulbulia, 2024b</a>)</span>. See <a href="#appendix-explain-grf">Appendix {{appendix_explain_grf}}</a>.</p>
+<p>The GRF package accepts missing values at baseline. To obtain valid inference for missing responses we computed inverse probability of censoring weights for censoring of the exposure, given that systematic censoring following the baseline wave may lead to selection bias that limit generalistion to the baseline target population <span class="citation" data-cites="bulbulia2024wierd">(<a href="#ref-bulbulia2024wierd" role="doc-biblioref">Bulbulia, 2024b</a>)</span>. See <a href="#appendix-explain-grf">Appendix D</a>.</p>
 </section>
 <section id="sensitivity-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="sensitivity-analysis">Sensitivity Analysis</h3>
-<p>We perform sensitivity analyses using the E-value metric <span class="citation" data-cites="vanderweele2017 linden2020EVALUE">(<a href="#ref-linden2020EVALUE" role="doc-biblioref">Linden et al., 2020</a>; <a href="#ref-vanderweele2017" role="doc-biblioref">VanderWeele &amp; Ding, 2017</a>)</span>. The E-value represents the minimum association strength (on the risk ratio scale) that an unmeasured confounder would need to have with both the exposure and outcome—after adjusting for measured covariates—to explain away the observed exposure-outcome association <span class="citation" data-cites="vanderweele2020 linden2020EVALUE">(<a href="#ref-linden2020EVALUE" role="doc-biblioref">Linden et al., 2020</a>; <a href="#ref-vanderweele2020" role="doc-biblioref">VanderWeele et al., 2020</a>)</span>.</p>
+<p>We perform sensitivity analyses using the E-value metric <span class="citation" data-cites="vanderweele2017 linden2020EVALUE">(<a href="#ref-linden2020EVALUE" role="doc-biblioref">Linden et al., 2020</a>; <a href="#ref-vanderweele2017" role="doc-biblioref">VanderWeele &amp; Ding, 2017</a>)</span>. The E-value represents the minimum association strength (on the risk-ratio scale) that an unmeasured confounder would need with both exposure and outcome—after adjusting for measured covariates—to explain away the observed association <span class="citation" data-cites="vanderweele2020 linden2020EVALUE">(<a href="#ref-linden2020EVALUE" role="doc-biblioref">Linden et al., 2020</a>; <a href="#ref-vanderweele2020" role="doc-biblioref">VanderWeele et al., 2020</a>)</span>. Confidence intervals for each E-value were derived from the multiplicity-adjusted confidence intervals of the corresponding coefficient estimates (bonferroni, α = 0.05), so the sensitivity analysis obeys the same error-control framework as the main results.</p>
 <div style="page-break-after: always;"></div>
 </section>
 </section>
@@ -470,118 +462,118 @@ Table&nbsp;1: Average Treatment Effects on Multi-dimensional Wellbeing
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <colgroup>
 <col style="width: 34%">
-<col style="width: 21%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 16%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">E[Y(1)]-E[Y(0)]</th>
-<th style="text-align: right;">2.5 %</th>
-<th style="text-align: right;">97.5 %</th>
-<th style="text-align: right;">E_Value</th>
-<th style="text-align: right;">E_Val_bound</th>
+<th style="text-align: left;">Outcome</th>
+<th style="text-align: left;">ATE</th>
+<th style="text-align: left;">2.5 %</th>
+<th style="text-align: left;">97.5 %</th>
+<th style="text-align: left;">E-Value</th>
+<th style="text-align: left;">E-Value bound</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Social Belonging</td>
-<td style="text-align: right;">0.128</td>
-<td style="text-align: right;">0.084</td>
-<td style="text-align: right;">0.171</td>
-<td style="text-align: right;">1.496</td>
-<td style="text-align: right;">1.375</td>
+<td style="text-align: left;"><strong>Social Belonging</strong></td>
+<td style="text-align: left;"><strong>0.125</strong></td>
+<td style="text-align: left;"><strong>0.083</strong></td>
+<td style="text-align: left;"><strong>0.167</strong></td>
+<td style="text-align: left;"><strong>1.488</strong></td>
+<td style="text-align: left;"><strong>1.372</strong></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Neighbourhood Community</td>
-<td style="text-align: right;">0.117</td>
-<td style="text-align: right;">0.071</td>
-<td style="text-align: right;">0.164</td>
-<td style="text-align: right;">1.466</td>
-<td style="text-align: right;">1.331</td>
+<td style="text-align: left;"><strong>Neighbourhood Community</strong></td>
+<td style="text-align: left;"><strong>0.119</strong></td>
+<td style="text-align: left;"><strong>0.073</strong></td>
+<td style="text-align: left;"><strong>0.165</strong></td>
+<td style="text-align: left;"><strong>1.471</strong></td>
+<td style="text-align: left;"><strong>1.343</strong></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Social Support</td>
-<td style="text-align: right;">0.101</td>
-<td style="text-align: right;">0.052</td>
-<td style="text-align: right;">0.150</td>
-<td style="text-align: right;">1.421</td>
-<td style="text-align: right;">1.274</td>
+<td style="text-align: left;"><strong>Social Support</strong></td>
+<td style="text-align: left;"><strong>0.096</strong></td>
+<td style="text-align: left;"><strong>0.052</strong></td>
+<td style="text-align: left;"><strong>0.14</strong></td>
+<td style="text-align: left;"><strong>1.407</strong></td>
+<td style="text-align: left;"><strong>1.277</strong></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Meaning: Purpose</td>
-<td style="text-align: right;">0.100</td>
-<td style="text-align: right;">0.049</td>
-<td style="text-align: right;">0.150</td>
-<td style="text-align: right;">1.418</td>
-<td style="text-align: right;">1.264</td>
+<td style="text-align: left;"><strong>Self Esteem</strong></td>
+<td style="text-align: left;"><strong>0.087</strong></td>
+<td style="text-align: left;"><strong>0.047</strong></td>
+<td style="text-align: left;"><strong>0.127</strong></td>
+<td style="text-align: left;"><strong>1.381</strong></td>
+<td style="text-align: left;"><strong>1.26</strong></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Self Esteem</td>
-<td style="text-align: right;">0.089</td>
-<td style="text-align: right;">0.049</td>
-<td style="text-align: right;">0.129</td>
-<td style="text-align: right;">1.387</td>
-<td style="text-align: right;">1.260</td>
+<td style="text-align: left;"><strong>Meaning: Purpose</strong></td>
+<td style="text-align: left;"><strong>0.095</strong></td>
+<td style="text-align: left;"><strong>0.043</strong></td>
+<td style="text-align: left;"><strong>0.147</strong></td>
+<td style="text-align: left;"><strong>1.404</strong></td>
+<td style="text-align: left;"><strong>1.241</strong></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Meaning: Sense</td>
-<td style="text-align: right;">0.089</td>
-<td style="text-align: right;">0.036</td>
-<td style="text-align: right;">0.141</td>
-<td style="text-align: right;">1.387</td>
-<td style="text-align: right;">1.219</td>
+<td style="text-align: left;"><strong>Meaning: Sense</strong></td>
+<td style="text-align: left;"><strong>0.086</strong></td>
+<td style="text-align: left;"><strong>0.033</strong></td>
+<td style="text-align: left;"><strong>0.138</strong></td>
+<td style="text-align: left;"><strong>1.378</strong></td>
+<td style="text-align: left;"><strong>1.208</strong></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Anxiety</td>
-<td style="text-align: right;">-0.070</td>
-<td style="text-align: right;">-0.118</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">1.331</td>
-<td style="text-align: right;">1.160</td>
+<td style="text-align: left;"><strong>Anxiety</strong></td>
+<td style="text-align: left;"><strong>-0.064</strong></td>
+<td style="text-align: left;"><strong>-0.107</strong></td>
+<td style="text-align: left;"><strong>-0.02</strong></td>
+<td style="text-align: left;"><strong>1.312</strong></td>
+<td style="text-align: left;"><strong>1.159</strong></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Personal Well-being Index</td>
-<td style="text-align: right;">0.052</td>
-<td style="text-align: right;">0.010</td>
-<td style="text-align: right;">0.094</td>
-<td style="text-align: right;">1.274</td>
-<td style="text-align: right;">1.110</td>
+<td style="text-align: left;"><strong>Depression</strong></td>
+<td style="text-align: left;"><strong>-0.057</strong></td>
+<td style="text-align: left;"><strong>-0.103</strong></td>
+<td style="text-align: left;"><strong>-0.011</strong></td>
+<td style="text-align: left;"><strong>1.29</strong></td>
+<td style="text-align: left;"><strong>1.116</strong></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Depression</td>
-<td style="text-align: right;">-0.058</td>
-<td style="text-align: right;">-0.108</td>
-<td style="text-align: right;">-0.007</td>
-<td style="text-align: right;">1.293</td>
-<td style="text-align: right;">1.088</td>
+<td style="text-align: left;"><strong>Personal Well-being Index</strong></td>
+<td style="text-align: left;"><strong>0.052</strong></td>
+<td style="text-align: left;"><strong>0.011</strong></td>
+<td style="text-align: left;"><strong>0.094</strong></td>
+<td style="text-align: left;"><strong>1.274</strong></td>
+<td style="text-align: left;"><strong>1.11</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rumination</td>
+<td style="text-align: left;">-0.04</td>
+<td style="text-align: left;">-0.091</td>
+<td style="text-align: left;">0.01</td>
+<td style="text-align: left;">1.233</td>
+<td style="text-align: left;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Hours of Exercise (log)</td>
+<td style="text-align: left;">-0.032</td>
+<td style="text-align: left;">-0.088</td>
+<td style="text-align: left;">0.024</td>
+<td style="text-align: left;">1.204</td>
+<td style="text-align: left;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Life Satisfaction</td>
-<td style="text-align: right;">0.045</td>
-<td style="text-align: right;">0.000</td>
-<td style="text-align: right;">0.089</td>
-<td style="text-align: right;">1.250</td>
-<td style="text-align: right;">1.003</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Rumination</td>
-<td style="text-align: right;">-0.047</td>
-<td style="text-align: right;">-0.101</td>
-<td style="text-align: right;">0.006</td>
-<td style="text-align: right;">1.257</td>
-<td style="text-align: right;">1.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Hours of Exercise (log)</td>
-<td style="text-align: right;">-0.029</td>
-<td style="text-align: right;">-0.085</td>
-<td style="text-align: right;">0.028</td>
-<td style="text-align: right;">1.192</td>
-<td style="text-align: right;">1.000</td>
+<td style="text-align: left;">0.044</td>
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">0.088</td>
+<td style="text-align: left;">1.247</td>
+<td style="text-align: left;">1</td>
 </tr>
 </tbody>
 </table>
@@ -590,57 +582,88 @@ Table&nbsp;1: Average Treatment Effects on Multi-dimensional Wellbeing
 </figure>
 </div>
 </div>
-<p>The following outcomes showed reliable causal evidence (E-Value lower bound &gt; 1.2): - Social Belonging: 0.128 (0.084, 0.171); On original scale, 0.14 (0.092, 0.187). E-Value bound = 1.375 - Neighbourhood Community: 0.117 (0.071, 0.164); On original scale, 0.184 (0.111, 0.257). E-Value bound = 1.331 - Social Support: 0.101 (0.052, 0.15); On original scale, 0.113 (0.058, 0.168). E-Value bound = 1.274 - Meaning: Purpose: 0.1 (0.049, 0.15); On original scale, 0.144 (0.071, 0.217). E-Value bound = 1.264 - Self Esteem: 0.089 (0.049, 0.129); On original scale, 0.113 (0.062, 0.164). E-Value bound = 1.26 - Meaning: Sense: 0.089 (0.036, 0.141); On original scale, 0.105 (0.043, 0.168). E-Value bound = 1.219</p>
+<p>Confidence intervals were adjusted for multiple comparisons using bonferroni correction (<span class="math inline">\alpha</span> = 0.05). E‑values were also adjusted using bonferroni correction (<span class="math inline">\alpha</span> = 0.05).</p>
+<p>The following outcomes showed reliable causal evidence (E‑value lower bound &gt; 1.2): - Social Belonging: 0.125(0.064,0.186); on the original scale, 0.136 (0.07,0.203). E‑value bound = 1.311 - Neighbourhood Community: 0.119(0.052,0.186); on the original scale, 0.187 (0.082,0.292). E‑value bound = 1.273 - Social Support: 0.096(0.032,0.16); on the original scale, 0.107 (0.036,0.179). E‑value bound = 1.203</p>
 <div style="page-break-after: always;"></div>
 </section>
 <section id="heterogeneous-treatment-effects" class="level3">
 <h3 class="anchored" data-anchor-id="heterogeneous-treatment-effects">Heterogeneous Treatment Effects</h3>
+<section id="rate-autoc-and-rate-qini" class="level4">
+<h4 class="anchored" data-anchor-id="rate-autoc-and-rate-qini">RATE AUTOC and RATE Qini</h4>
+</section>
+<section id="rate-test" class="level4">
+<h4 class="anchored" data-anchor-id="rate-test">Rate Test</h4>
+<p>The RATE metric shows how much extra gain (or avoided loss) we achieve by <strong>targeting</strong> instead of treating everyone identically.</p>
+<p><strong>Technical note</strong>: In code we always set <code>policy = "treat_best"</code>; for harmful exposures this is interpreted as <em>‘treat-those-most-sensitive’</em> (i.e., prioritise protection or withholding).</p>
+<ul>
+<li><strong>Beneficial exposure:</strong> we rank by positive CATEs and deliver the exposure to those predicted to <strong>benefit most</strong>.</li>
+<li><strong>Detrimental exposure:</strong> we rank by increasingly <strong>positive</strong> CATEs (more predicted harm) and identify those who should be protected or withheld from the exposure.</li>
+</ul>
+<p>Either way, a larger <strong>absolute</strong> RATE shows that a CATE-based targeting rule ‘outperforms’ a one-size-fits-all policy—by boosting outcomes for beneficial exposures or – in the case where we are explore sensitivity to harm – evaluating increasing harms for detrimental ones.</p>
+<p>Recall we flipped Anxiety, Depression, Rumination so <strong>‘higher’ always tracks the analysis goal: higher = more benefit for beneficial exposures, higher = more harm for detrimental exposures.</strong></p>
+<p>Because we test several outcomes, RATE <em>p</em>-values are adjusted with Benjamini–Hochberg false-discovery-rate adjustment (q = 0.1) before we decide whether heterogeneity is actionable.</p>
+</section>
 </section>
 <section id="comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini" class="level3">
-<h3 class="anchored" data-anchor-id="comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini">Comparison of targeting operating characteristic (TOC) by rank average treatment effect (RATE): AUTOC vs Qini</h3>
-<p>We applied two TOC by RATE methods to the same causal-forest <span class="math inline">\tau(x)</span> estimates:</p>
+<h3 class="anchored" data-anchor-id="comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini">Comparison of targeting operating characteristic (TOC) by rank average treatment effect (RATE): AUTOC vs QINI</h3>
+<p>We applied two TOC by RATE methods to the same causal-forest (x) estimates:</p>
 <ul>
 <li><p><strong>AUTOC</strong> intensifies focus on top responders via logarithmic weighting.</p></li>
-<li><p><strong>Qini</strong> balances effect size and prevalence via linear weighting.</p></li>
+<li><p><strong>QINI</strong> balances effect size and prevalence via linear weighting.</p></li>
 </ul>
-<p>When Qini and AUTOC disagree on positive RATE (only AUTOC yields a positive RATE for <strong>Hours of Exercise (log)</strong>; only Qini yields a positive RATE for Meaning: Sense), choose <strong>Qini</strong> to maximise overall benefit or <strong>AUTOC</strong> to focus on top responders.</p>
-<p>Refer to <a href="#appendix-cate-validation">Appendix F</a> for details.</p>
+<p>We treated the RATE analysis as exploratory. All 12 outcomes were prespecified. To flag promising signals we controlled the false discovery rate at q=0.20.</p>
+<p>When QINI and AUTOC disagree on positive RATE (only AUTOC yields a positive RATE for <strong>Hours of Exercise (log)</strong>; only QINI yields a positive RATE for Meaning: Sense), choose <strong>QINI</strong> to maximise overall benefit or <strong>AUTOC</strong> to focus on top responders.</p>
+<p>Refer to <a href="#appendix-cate-validation">Appendix E</a> for details.</p>
+<section id="rate-autoc-results" class="level5">
+<h5 class="anchored" data-anchor-id="rate-autoc-results">RATE AUTOC Results</h5>
 </section>
-<section id="rate-autoc-results" class="level3">
-<h3 class="anchored" data-anchor-id="rate-autoc-results">RATE AUTOC Results</h3>
 </section>
 <section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc" class="level3">
 <h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</h3>
-<p>AUTOC uses logarithmic weighting to focus treatment on top responders.</p>
+<p>AUTOC uses logarithmic weighting to focus treatment on top responders. We treated the RATE analysis as exploratory. All 12 outcomes were prespecified. To flag promising signals we controlled the false discovery rate at q=0.20.</p>
 <p>Positive RATE estimates for: <strong>Hours of Exercise (log)</strong>.</p>
-<p>Estimates (<strong>Hours of Exercise (log)</strong>: 0.065 (95% CI 0.016, 0.114)) show robust heterogeneity.</p>
-<p>For outcomes with 95%% CI crossing zero (Meaning: Sense, Rumination, Anxiety, Personal Well-being Index, Self Esteem, Social Belonging, Social Support, Life Satisfaction, Meaning: Purpose, Depression, Neighbourhood Community), evidence is inconclusive.</p>
+<p>Estimates (<strong>Hours of Exercise (log)</strong>: 0.065 (95% CI 0.018, 0.112)) show robust heterogeneity.</p>
+<p>For outcomes with adjusted p-values not meeting the FDR threshold of q = 0.20 (Meaning: Sense, Rumination, Anxiety, Personal Well-being Index, Self Esteem, Social Belonging, Social Support, Life Satisfaction, Meaning: Purpose, Depression, Neighbourhood Community), evidence is inconclusive.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-rate" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-rate-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-rate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="initial_quarto_document_files/figure-html/fig-rate-1.png" class="img-fluid figure-img" width="864">
+<div aria-describedby="fig-rate-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="initial_quarto_document_files/figure-html/fig-rate-1-1.png" class="img-fluid figure-img" width="864">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rate-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-rate-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;2: RATE AUTOC Graphs
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p><a href="#fig-rate-1" class="quarto-xref">Figure&nbsp;2</a> presents the RATE AUTOC curve for Hours of Exercise (log)</p>
+<section id="rate-qini-results" class="level5">
+<h5 class="anchored" data-anchor-id="rate-qini-results">RATE Qini Results</h5>
 </section>
-<section id="qini-curve-results" class="level3">
-<h3 class="anchored" data-anchor-id="qini-curve-results">QINI Curve Results</h3>
 </section>
 <section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini" class="level3">
-<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</h3>
-<p>Qini uses linear weighting to balance effect size and prevalence for aggregate gain.</p>
+<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini">Evidence for heterogeneous treatment effects (policy = treat best responders) using QINI</h3>
+<p>QINI uses linear weighting to balance effect size and prevalence. We treated the RATE analysis as exploratory. All 12 outcomes were prespecified. To flag promising signals we controlled the false discovery rate at q=0.20.</p>
 <p>Positive RATE estimates for: <strong>Meaning: Sense</strong>.</p>
-<p>Estimates (<strong>Meaning: Sense</strong>: 0.020 (95% CI 0.004, 0.036)) show robust heterogeneity.</p>
-<p>Negative RATE estimates for: <strong>Neighbourhood Community</strong>.</p>
-<p>Estimates (<strong>Neighbourhood Community</strong>: -0.026 (95% CI -0.040, -0.012)) caution against CATE prioritisation.</p>
-<p>For outcomes with 95%% CI crossing zero (Hours of Exercise (log), Personal Well-being Index, Anxiety, Self Esteem, Social Support, Life Satisfaction, Social Belonging, Rumination, Meaning: Purpose, Depression), evidence is inconclusive.</p>
+<p>Estimates (<strong>Meaning: Sense</strong>: 0.020 (95% CI 0.002, 0.038)) show robust heterogeneity.</p>
+<p>Negative RATE estimates for: Neighbourhood Community.</p>
+<p>Estimates (Neighbourhood Community: -0.026 (95% CI -0.042, -0.010)) caution against CATE prioritisation.</p>
+<p>For outcomes with adjusted p-values not meeting the FDR threshold of q = 0.20 (Hours of Exercise (log), Personal Well-being Index, Anxiety, Self Esteem, Social Support, Life Satisfaction, Social Belonging, Rumination, Meaning: Purpose, Depression), evidence is inconclusive.</p>
+<section id="qini-curve-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="qini-curve-analysis">QINI Curve Analysis</h4>
+</section>
+<section id="qini-curves" class="level4">
+<h4 class="anchored" data-anchor-id="qini-curves">Qini Curves</h4>
+<p>The Qini curve shows the cumulative <strong>gain</strong> as we expand a targeting rule down the CATE ranking.</p>
+<ul>
+<li><strong>Beneficial exposure:</strong> we add individuals from the top positive CATEs downward; the baseline is ‘expose everyone.’</li>
+<li><strong>Detrimental exposure:</strong> we first flip outcome direction (so higher values represent <strong>more harm</strong>; see Anxiety, Depression, Rumination), then <em>add</em> the exposure starting with individuals whose CATEs show the <strong>greated harm</strong>, gradually including those predicted to be more resistant to harm; the baseline is ‘expose everyone.’ The curve therefore quantifies the harm by when those most suceptible to harm are exposed.</li>
+</ul>
+<p>If the Qini curve stays above its baseline, a targeted policy increases the outcome more than a one-size-fits-all alternative. (Outcome directions were flipped where needed—Anxiety, Depression, Rumination—so the positively valenced exposures always have positively valanced outcomes and negative exposures always have negatively valenced outcomes.)</p>
+<p>We computed the cumulative benefits as we increase the treated fraction by prioritising conditional average treatment effects (CATE) at two different spend levels: 20% of a total budget and 50% of a total budget, where the contrast is no priority assignment. <strong>Meaning Sense</strong> At 20% spend: CATE prioritisation is beneficial (diff: 0.04 [95% CI: 0.01, 0.07]). At 50 % spend: No reliable benefits from CATE prioritisation.</p>
+<p><a href="#tbl-qini" class="quarto-xref">Table&nbsp;2</a> presents results for our Qini curve analysis at different spend rates.</p>
 <div class="cell">
 <div id="tbl-qini" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -659,7 +682,7 @@ Table&nbsp;2: Qini Curve Results
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Meaning: Sense</td>
+<td style="text-align: left;">Meaning Sense</td>
 <td style="text-align: left;"><strong>0.04 [0.01, 0.07]</strong></td>
 <td style="text-align: left;">-0.00 [-0.06, 0.05]</td>
 </tr>
@@ -670,16 +693,16 @@ Table&nbsp;2: Qini Curve Results
 </figure>
 </div>
 </div>
-<p>We computed the cumulative benefits as we increase the treated fraction by prioritising conditional average treatment effects (CATE) at two different spend levels: 20% of a total budget and 50% of a total budget, where the contrast is no priority assignment. <strong>Meaning: Sense</strong> At 20% spend: CATE prioritisation is beneficial (diff: 0.04 [95% CI: 0.01, 0.07]). At 50 % spend: No reliable benefits from CATE prioritisation.</p>
+<p><a href="#fig-qini-1" class="quarto-xref">Figure&nbsp;3</a> presents the Qini curve for Meaning: Sense</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-qini" class="quarto-float quarto-figure quarto-figure-center anchored">
+<div id="fig-qini-1" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="initial_quarto_document_files/figure-html/fig-qini-1.png" class="img-fluid figure-img" width="864">
+<div aria-describedby="fig-qini-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="initial_quarto_document_files/figure-html/fig-qini-1-1.png" class="img-fluid figure-img" width="864">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: RATE AUTOC Graphs
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qini-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Qini Graph
 </figcaption>
 </figure>
 </div>
@@ -687,18 +710,12 @@ Figure&nbsp;3: RATE AUTOC Graphs
 </div>
 <div style="page-break-after: always;"></div>
 </section>
-<section id="policy-trees" class="level3">
-<h3 class="anchored" data-anchor-id="policy-trees">Policy Trees</h3>
+<section id="decision-rules-who-is-most-sensitive-to-treatment" class="level4">
+<h4 class="anchored" data-anchor-id="decision-rules-who-is-most-sensitive-to-treatment">Decision Rules (Who is Most Sensitive to Treatment?)</h4>
 </section>
-<section id="policy-tree-interpretations-depth-2" class="level3">
-<h3 class="anchored" data-anchor-id="policy-tree-interpretations-depth-2">Policy Tree Interpretations (depth 2)</h3>
-<p>A shallow policy tree recommends actions based on two splits for depth=2, or one split for depth=1. We trained on 50% of the data and evaluated on the rest.</p>
-<p><strong>Findings for log Hours Exercise:</strong></p>
-<p>Split 1: Short Form Health ≤ -0.333. Within that subgroup, split 2a: Belong ≤ -0.441, → <strong>Control</strong>; Belong &gt; -0.441 → <strong>Treated</strong>.</p>
-<p>Split 2: Short Form Health &gt; -0.333. Within that subgroup, split 2b: Lifesat ≤ -0.268, → <strong>Control</strong>; Lifesat &gt; -0.268 → <strong>Treated</strong>.</p>
-<p><strong>Findings for Meaning Sense:</strong></p>
-<p>Split 1: Alcohol Intensity ≤ -0.313. Within that subgroup, split 2a: log Hours Commute ≤ -0.496, → <strong>Control</strong>; log Hours Commute &gt; -0.496 → <strong>Treated</strong>.</p>
-<p>Split 2: Alcohol Intensity &gt; -0.313. Within that subgroup, split 2b: Age ≤ 0.612, → <strong>Treated</strong>; Age &gt; 0.612 → <strong>Control</strong>.</p>
+<section id="policy-trees" class="level4">
+<h4 class="anchored" data-anchor-id="policy-trees">Policy Trees</h4>
+<p>We used policy trees <span class="citation" data-cites="policytree_package_2024 athey2021 athey_2021_policy_tree_econometrica">(<a href="#ref-athey2021" role="doc-biblioref">Athey &amp; Wager, 2021a</a>, <a href="#ref-athey_2021_policy_tree_econometrica" role="doc-biblioref">2021b</a>; <a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span> to find straightforward ‘if-then’ rules for who benefits most from treatment, based on participant characteristics. Because we flipped some measures, a higher predicted effect always means greater improvement. Policy trees can uncover small but important subgroups whose treatment responses stand out, even when the overall differences might be modest.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-policy-1" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -707,7 +724,7 @@ Figure&nbsp;3: RATE AUTOC Graphs
 <img src="initial_quarto_document_files/figure-html/fig-policy-1-1.png" class="img-fluid figure-img" width="864">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-policy-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4: Decision Tree: Exercise
+Figure&nbsp;4: Decision Tree: {glued_name_policy_1}
 </figcaption>
 </figure>
 </div>
@@ -721,12 +738,23 @@ Figure&nbsp;4: Decision Tree: Exercise
 <img src="initial_quarto_document_files/figure-html/fig-policy-2-1.png" class="img-fluid figure-img" width="864">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-policy-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;5: Decision Tree: Meaning Sense
+Figure&nbsp;5: Decision Tree: {glued_name_policy_2}
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="policy-tree-interpretations-depth-2" class="level3">
+<h3 class="anchored" data-anchor-id="policy-tree-interpretations-depth-2">Policy Tree Interpretations (depth 2)</h3>
+<p>A shallow policy tree recommends actions based on two splits for depth=2, or one split for depth=1. We trained on 50% of the data and evaluated on the rest.</p>
+<p><strong>Findings for log Hours Exercise:</strong></p>
+<p>Split 1: Short Form Health ≤ -0.333. Within that subgroup, split 2a: Belong ≤ -0.441, → <strong>Control</strong>; Belong &gt; -0.441 → <strong>Treated</strong>.</p>
+<p>Split 2: Short Form Health &gt; -0.333. Within that subgroup, split 2b: Lifesat ≤ -0.268, → <strong>Control</strong>; Lifesat &gt; -0.268 → <strong>Treated</strong>.</p>
+<p><strong>Findings for Meaning Sense:</strong></p>
+<p>Split 1: Alcohol Intensity ≤ -0.313. Within that subgroup, split 2a: log Hours Commute ≤ -0.496, → <strong>Control</strong>; log Hours Commute &gt; -0.496 → <strong>Treated</strong>.</p>
+<p>Split 2: Alcohol Intensity &gt; -0.313. Within that subgroup, split 2b: Age ≤ 0.612, → <strong>Treated</strong>; Age &gt; 0.612 → <strong>Control</strong>.</p>
 </section>
 </section>
 <section id="discussion" class="level2">
@@ -752,8 +780,8 @@ Figure&nbsp;5: Decision Tree: Meaning Sense
 <h2 class="anchored" data-anchor-id="appendix-measures">Appendix A: Measures</h2>
 <section id="measures" class="level3">
 <h3 class="anchored" data-anchor-id="measures">Measures</h3>
-<section id="covariate-measures" class="level4">
-<h4 class="anchored" data-anchor-id="covariate-measures">Covariate Measures</h4>
+<section id="baseline-covariate-measures" class="level4">
+<h4 class="anchored" data-anchor-id="baseline-covariate-measures">Baseline Covariate Measures</h4>
 </section>
 </section>
 <section id="baseline-covariates" class="level3">
@@ -983,16 +1011,19 @@ Figure&nbsp;5: Decision Tree: Meaning Sense
 <h4 class="anchored" data-anchor-id="social-support">Social Support</h4>
 <p><em>There are people I can depend on to help me if I really need it.</em> <em>There is no one I can turn to for guidance in times of stress (reversed).</em> <em>I know there are people I can turn to when I need help.</em></p>
 <p>Ordinal response: (1 = Strongly Disagree, 7 = Strongly Agree) <span class="citation" data-cites="cutrona1987">(<a href="#ref-cutrona1987" role="doc-biblioref">Cutrona &amp; Russell, 1987</a>)</span></p>
+<div style="page-break-after: always;"></div>
 </section>
 </section>
 </section>
 <section id="appendix-sample" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-sample">Appendix B: Sample</h2>
+<h2 class="anchored" data-anchor-id="appendix-sample">Appendix B: Sample Characteristics</h2>
+<section id="sample-statistics-baseline-covariates" class="level4">
+<h4 class="anchored" data-anchor-id="sample-statistics-baseline-covariates">Sample Statistics: Baseline Covariates</h4>
 <p><a href="#tbl-appendix-baseline" class="quarto-xref">Table&nbsp;3</a> presents sample demographic statistics.</p>
 <div id="tbl-appendix-baseline" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-appendix-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;3: Demographic statistics for New Zealand Attitudes and Values Cohort wave 2018.
+Table&nbsp;3: Demographic statistics for New Zealand Attitudes and Values Cohort: {baseline_wave_glued}.
 </figcaption>
 <div aria-describedby="tbl-appendix-baseline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1520,8 +1551,9 @@ Table&nbsp;3: Demographic statistics for New Zealand Attitudes and Values Cohort
 </div>
 </figure>
 </div>
+</section>
 <section id="appendix-exposure" class="level3">
-<h3 class="anchored" data-anchor-id="appendix-exposure">Exposure Variable</h3>
+<h3 class="anchored" data-anchor-id="appendix-exposure">Sample Statistics: Exposure Variable</h3>
 <!-- @tbl-sample-exposures presents sample statistics for the exposure variable, religious service attendance, during the baseline and exposure waves. This variable was not measured in part of NZAVS time 12 (years 2020-2021) and part of NZAVS time 13 (years 2021-2022). To address missingness, if a value was observed after NZAVS time 14, we carried the previous observation forward and created and NA indicator. If there was no future observation, the participant was treated as censored, and inverse probability of censoring weights were applied, following our standard method for handling missing observations (see mansucript **Method**/**Handling of Missing Data**). Here, our carry-forward imputation approach may result in conservative causal effect estimation because it introduces measurement error. However, this approach would not generally bias causal effect estimation away from the null because the measurement error is unsystematic and random and unrelated to the outcomes. -->
 <div id="tbl-appendix-exposures" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1591,11 +1623,11 @@ Table&nbsp;4: Demographic statistics for New Zealand Attitudes and Values Cohort
 <div style="page-break-after: always;"></div>
 </section>
 <section id="appendix-outcomes" class="level3">
-<h3 class="anchored" data-anchor-id="appendix-outcomes">Outcome Variables</h3>
+<h3 class="anchored" data-anchor-id="appendix-outcomes">Sample Statistics: Outcome Variables</h3>
 <div id="tbl-appendix-outcomes" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-appendix-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;5: Outcome variables measured at baseline (NZAVS time 10, years 2018-2019, and time 15, years 2023-2024).
+Table&nbsp;5: Outcome variables measured at
 </figcaption>
 <div aria-describedby="tbl-appendix-outcomes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
@@ -1915,8 +1947,9 @@ Table&nbsp;5: Outcome variables measured at baseline (NZAVS time 10, years 2018-
 </div>
 <div style="page-break-after: always;"></div>
 </section>
-<section id="appendix-transition" class="level3">
-<h3 class="anchored" data-anchor-id="appendix-transition">Appendix C: Transition Matrix to Check The Positivity Assumption</h3>
+</section>
+<section id="appendix-transition" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-transition">Appendix C: Transition Matrix to Check The Positivity Assumption</h2>
 <div id="tbl-transition" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-transition-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1953,525 +1986,137 @@ Table&nbsp;6: Transition Matrix Showing Change
 <p>These transition matrices capture shifts in states between consecutive waves. Each cell shows the count of individuals transitioning from one state to another. Rows are the initial state (From), columns the subsequent state (To). <strong>Diagonal entries</strong> (in <strong>bold</strong>) mark those who stayed in the same state.</p>
 <div style="page-break-after: always;"></div>
 </section>
-</section>
 <section id="appendix-cate-validation" class="level2">
-<h2 class="anchored" data-anchor-id="appendix-cate-validation">Appendix D: Evidence of Heterogeneity</h2>
-<div id="tbl-omnibus" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-omnibus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7
-</figcaption>
-<div aria-describedby="tbl-omnibus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table table-sm table-striped small">
+<h2 class="anchored" data-anchor-id="appendix-cate-validation">Appendix D: Approach to Heterogeneity</h2>
+</section>
+<section id="appendix-x.-estimating-and-interpreting-heterogeneous-treatment-effects-with-grf" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-x.-estimating-and-interpreting-heterogeneous-treatment-effects-with-grf">Appendix X. Estimating and Interpreting Heterogeneous Treatment Effects with <strong>grf</strong></h2>
+<p>Here we explain a heterogeneous‐treatment‐effect (HTE) analysis using causal forests <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>. In our workflow, we move from the average treatment effect (ATE) to individualised effects, quantify the practical value of targeting, and finish with interpretable decision rules.</p>
+<section id="average-treatment-effect-ate" class="level3">
+<h3 class="anchored" data-anchor-id="average-treatment-effect-ate">1 Average Treatment Effect (ATE)</h3>
+<p>The ATE answers: <em>‘What would happen, on average, if everyone received treatment versus no one?’</em></p>
+<p><span class="math display">
+    \text{ATE}=E[Y(1)-Y(0)].
+</span></p>
+<p>Using the <code>grf</code> package, we estimate the ATE doubly-robustly. Because we analyse several outcomes, we adjust ATE <em>p</em>-values with bonferroni (<span class="math inline">\alpha</span> = 0.05) to control the family-wise error rate.</p>
+</section>
+<section id="do-effects-vary-formal-test-of-heterogeneity" class="level3">
+<h3 class="anchored" data-anchor-id="do-effects-vary-formal-test-of-heterogeneity">2 Do Effects Vary? Formal Test of Heterogeneity</h3>
+<p>Define the conditional average treatment effect (CATE)</p>
+<p><span class="math display">
+  \tau(x)=E[Y(1)-Y(0)\mid X=x].
+</span></p>
+<p>If <span class="math inline">\tau(x)</span> is constant, effects are homogeneous; otherwise they vary. Classical interaction models impose strong forms; <strong>grf</strong> uses <em>causal forests</em> to discover complex, nonlinear heterogeneity <span class="citation" data-cites="wager2018">(<a href="#ref-wager2018" role="doc-biblioref">Wager &amp; Athey, 2018</a>)</span>. We assess heterogeneity with RATE <em>p</em>-values corrected via Benjamini–Hochberg false-discovery-rate adjustment (q = 0.1), controlling the false-discovery rate <span class="citation" data-cites="benjamini1995controlling">(<a href="#ref-benjamini1995controlling" role="doc-biblioref">Benjamini &amp; Hochberg, 1995</a>)</span>.</p>
+</section>
+<section id="causal-forests-for-individualised-estimates" class="level3">
+<h3 class="anchored" data-anchor-id="causal-forests-for-individualised-estimates">3 Causal Forests for Individualised Estimates</h3>
+<p>A causal forest is an ensemble of ‘honest’ causal trees that split on covariates to maximise treated–control contrasts. For each unit <span class="math inline">i</span> we obtain</p>
+<p><span class="math display">
+  \widehat{\tau}(x_i)
+</span></p>
+<p>Strengths are flexibility, orthogonalisation, and per-person estimates.</p>
+</section>
+<section id="built-in-protection-against-over-fitting" class="level3">
+<h3 class="anchored" data-anchor-id="built-in-protection-against-over-fitting">4 Built-in Protection Against Over-fitting</h3>
+<p>Honesty (split half/estimate half) plus out-of-bag (OOB) predictions yield unbiased <span class="math inline">\widehat{\tau}(x)</span> and standard errors without manual hyper-tuning.</p>
+</section>
+<section id="missing-data-handling" class="level3">
+<h3 class="anchored" data-anchor-id="missing-data-handling">5 Missing Data Handling</h3>
+<p><strong>grf</strong> deploys ‘Missing Incorporated in Attributes’ (MIA): missingness is a valid split, so cases stay in the analysis – no ad-hoc imputation required.</p>
+</section>
+<section id="testing-for-actionable-heterogeneity-the-toc-rate-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="testing-for-actionable-heterogeneity-the-toc-rate-metrics">6 Testing for <strong>Actionable</strong> Heterogeneity: the TOC &amp; RATE Metrics</h3>
+<p>Ranking units by <span class="math inline">\widehat{\tau}</span> defines a <strong>Targeting Operator Characteristic</strong> (TOC) curve: the cumulative gain from treating the top fraction <span class="math inline">q</span> of predicted responders. Two scalar summaries:</p>
+<ul>
+<li><strong>RATE AUTOC</strong> – area under the entire TOC; emphasises the very highest responders.</li>
+<li><strong>RATE Qini</strong> – weighted area with weight <span class="math inline">q</span>; rewards sustained gains across larger coverage <span class="citation" data-cites="yadlowsky2021evaluating">(<a href="#ref-yadlowsky2021evaluating" role="doc-biblioref">Yadlowsky et al., 2021</a>)</span>.</li>
+</ul>
+<p>Under <span class="math inline">H_0{:}\tau(x)</span> constant, both equal 0. <code>grf::rank_average_treatment_effect()</code> supplies point estimates, standard errors, and <span class="math inline">t</span>-tests.</p>
+<p><strong>Multiplicity control</strong>: We adjust AUTOC and Qini <em>p</em>-values with Benjamini–Hochberg false-discovery-rate adjustment (q = 0.1) before declaring actionable heterogeneity.</p>
+<p>Here is an <strong>interpretation tip</strong>:</p>
+<ul>
+<li>AUTOC answers <em>‘How sharply can we prioritise?’</em></li>
+<li>Qini answers <em>‘How valuable is targeting when budgets are modest but not tiny?’</em></li>
+</ul>
+</section>
+<section id="visualising-policy-value-the-qini-curve" class="level3">
+<h3 class="anchored" data-anchor-id="visualising-policy-value-the-qini-curve">7 Visualising Policy Value: the Qini Curve</h3>
+<p>Plotting the Qini curve (cumulative gain vs <span class="math inline">q</span>) reveals where returns plateau. Investigators (and policy audiences) can see at a glance whether benefits concentrate in, say, the top 20 % or persist up to 50 %.</p>
+</section>
+<section id="valid-inference-for-rate-qini" class="level3">
+<h3 class="anchored" data-anchor-id="valid-inference-for-rate-qini">8 Valid Inference for RATE / Qini</h3>
+<p>Although OOB predictions are out-of-sample per tree, they inherit forest-level dependence. We use an explicit <strong>sample split</strong>:</p>
+<ol type="1">
+<li><strong>Train set</strong>: fit the causal forest and compute <span class="math inline">\widehat{\tau}(x)</span>.</li>
+<li><strong>Test set</strong>: compute RATE AUTOC/Qini and run <span class="math inline">H_0</span> tests.</li>
+</ol>
+<p>This second split yields honest policy evaluation and guards against optimistic bias <span class="citation" data-cites="grf2024">(<a href="#ref-grf2024" role="doc-biblioref">Tibshirani et al., 2024</a>)</span>.</p>
+</section>
+<section id="from-black-box-to-simple-rules-policy-trees" class="level3">
+<h3 class="anchored" data-anchor-id="from-black-box-to-simple-rules-policy-trees">9 From Black Box to Simple Rules: Policy Trees</h3>
+<p>Stakeholders value transparent criteria. The <strong>policytree</strong> algorithm takes <span class="math inline">\widehat{\tau}(x)</span> or doubly-robust scores and learns a shallow decision tree that maximises expected welfare <span class="citation" data-cites="policytree_package_2024">(<a href="#ref-policytree_package_2024" role="doc-biblioref">Sverdrup et al., 2024</a>)</span>.</p>
+<p><em>Advantages</em>: interpretability, the possibility of fairness constraints, and easy communication (e.g., <em>‘treat if age &lt; 25 and baseline severity high’</em>).</p>
+<p>Training mirrors the split above: learn the tree on one fold, evaluate welfare on another.</p>
+<blockquote class="blockquote">
+<p><strong>Caveat</strong> Splits identify predictors of <em>effect variation</em>, not causal levers. Changing a covariate in the tree does <strong>not</strong> guarantee an effect on <span class="math inline">\tau(x)</span>.</p>
+</blockquote>
+</section>
+<section id="ethical-and-practical-considerations" class="level3">
+<h3 class="anchored" data-anchor-id="ethical-and-practical-considerations">10 Ethical and Practical Considerations</h3>
+<p>Statistical optimisation rarely aligns perfectly with equity or political feasibility. Decisions about who <em>should</em> receive treatment belong to democratic processes that weigh fairness, cost, and broader social values.</p>
+</section>
+<section id="summary-checklist" class="level3">
+<h3 class="anchored" data-anchor-id="summary-checklist">Summary Checklist</h3>
+<table class="caption-top table">
+<caption>This workflow delivers both rigorous inference and clear guidance for applied researchers: <em>How large is heterogeneity? When does targeting pay off? And can we express a good policy in a few, defensible rules?</em></caption>
 <colgroup>
-<col style="width: 22%">
-<col style="width: 12%">
-<col style="width: 11%">
-<col style="width: 12%">
-<col style="width: 13%">
-<col style="width: 12%">
-<col style="width: 14%">
+<col style="width: 18%">
+<col style="width: 16%">
+<col style="width: 32%">
+<col style="width: 32%">
 </colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Outcome</th>
-<th style="text-align: left;">Mean Est. (SE)</th>
-<th style="text-align: left;">Mean p-value</th>
-<th style="text-align: left;">Mean Status</th>
-<th style="text-align: left;">Diff. Est. (SE)</th>
-<th style="text-align: left;">Diff. p-value</th>
-<th style="text-align: left;">Heterogeneity</th>
+<th>Stage</th>
+<th>Tool</th>
+<th>Key Output</th>
+<th>Guard-rail</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Social Belonging</td>
-<td style="text-align: left;">0.98 (0.21)</td>
-<td style="text-align: left;">0.00e+00</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">-1.26 (0.59)</td>
-<td style="text-align: left;">0.984</td>
-<td style="text-align: left;">No heterogeneity</td>
+<td>1 ATE</td>
+<td><code>average_treatment_effect</code></td>
+<td><span class="math inline">\widehat{\text{ATE}}</span></td>
+<td>Doubly-robust</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Anxiety</td>
-<td style="text-align: left;">0.9 (0.47)</td>
-<td style="text-align: left;">0.027</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">-1.11 (0.55)</td>
-<td style="text-align: left;">0.978</td>
-<td style="text-align: left;">No heterogeneity</td>
+<td>2 – 3 CATE</td>
+<td><code>causal_forest</code></td>
+<td><span class="math inline">\widehat{\tau}(x)</span></td>
+<td>Honest trees</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Depression</td>
-<td style="text-align: left;">1.13 (0.96)</td>
-<td style="text-align: left;">0.118</td>
-<td style="text-align: left;">Not calibrated</td>
-<td style="text-align: left;">0.2 (0.63)</td>
-<td style="text-align: left;">0.374</td>
-<td style="text-align: left;">No heterogeneity</td>
+<td>6 Heterogeneity test</td>
+<td><code>rank_average_treatment_effect</code></td>
+<td>AUTOC, Qini + <span class="math inline">p</span></td>
+<td>Sample split</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Life Satisfaction</td>
-<td style="text-align: left;">0.97 (0.44)</td>
-<td style="text-align: left;">0.015</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">-0.63 (0.55)</td>
-<td style="text-align: left;">0.874</td>
-<td style="text-align: left;">No heterogeneity</td>
+<td>7 Visualise</td>
+<td>Qini curve</td>
+<td>Gain vs <span class="math inline">q</span></td>
+<td>Same test fold</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Hours of Exercise (log)</td>
-<td style="text-align: left;">0.59 (1.88)</td>
-<td style="text-align: left;">0.377</td>
-<td style="text-align: left;">Not calibrated</td>
-<td style="text-align: left;">0.56 (0.48)</td>
-<td style="text-align: left;">0.121</td>
-<td style="text-align: left;">No heterogeneity</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Meaning: Purpose</td>
-<td style="text-align: left;">0.92 (0.27)</td>
-<td style="text-align: left;">0.00e+00</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">-0.35 (0.58)</td>
-<td style="text-align: left;">0.727</td>
-<td style="text-align: left;">No heterogeneity</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Meaning: Sense</td>
-<td style="text-align: left;">0.95 (0.32)</td>
-<td style="text-align: left;">0.002</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">0.6 (0.42)</td>
-<td style="text-align: left;">0.080</td>
-<td style="text-align: left;">No heterogeneity</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Neighbourhood Community</td>
-<td style="text-align: left;">1 (0.2)</td>
-<td style="text-align: left;">0.00e+00</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">-1.69 (0.58)</td>
-<td style="text-align: left;">0.998</td>
-<td style="text-align: left;">No heterogeneity</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Personal Well-being Index</td>
-<td style="text-align: left;">0.92 (0.36)</td>
-<td style="text-align: left;">0.005</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">0.65 (0.45)</td>
-<td style="text-align: left;">0.076</td>
-<td style="text-align: left;">No heterogeneity</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Rumination</td>
-<td style="text-align: left;">0.9 (0.69)</td>
-<td style="text-align: left;">0.095</td>
-<td style="text-align: left;">Not calibrated</td>
-<td style="text-align: left;">-0.2 (0.53)</td>
-<td style="text-align: left;">0.647</td>
-<td style="text-align: left;">No heterogeneity</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Self Esteem</td>
-<td style="text-align: left;">1.01 (0.26)</td>
-<td style="text-align: left;">0.00e+00</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">0.05 (0.52)</td>
-<td style="text-align: left;">0.462</td>
-<td style="text-align: left;">No heterogeneity</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Social Support</td>
-<td style="text-align: left;">0.94 (0.29)</td>
-<td style="text-align: left;">0.001</td>
-<td style="text-align: left;">Calibrated</td>
-<td style="text-align: left;">-0.1 (0.48)</td>
-<td style="text-align: left;">0.581</td>
-<td style="text-align: left;">No heterogeneity</td>
+<td>9 Policy tree</td>
+<td><code>policy_tree</code></td>
+<td>Decision rule</td>
+<td>Cross-validation + test fold</td>
 </tr>
 </tbody>
 </table>
-</div>
-</figure>
-</div>
-</section>
-<section id="omnibus-heterogeneity-test-results" class="level1">
-<h1>Omnibus Heterogeneity Test Results</h1>
-<section id="explanation" class="level2">
-<h2 class="anchored" data-anchor-id="explanation">Explanation</h2>
-<p>Test calibration of the forest computes the best linear fit using: 1. Forest predictions on held-out data 2. The mean forest prediction as regressors</p>
-<p>Testing uses heteroskedasticity-robust (HC3) standard errors. A coefficient of 1 for: - Mean forest prediction: indicates the mean prediction is accurate for held-out data - Differential forest prediction: indicates heterogeneity estimates are well calibrated</p>
-<p>The p-value of the differential forest prediction coefficient acts as an omnibus test for heterogeneity.</p>
-</section>
-<section id="results-by-outcome" class="level2">
-<h2 class="anchored" data-anchor-id="results-by-outcome">Results by Outcome</h2>
-<p><strong>Social Belonging</strong>: - Mean prediction: 0.98 (SE=0.21), t=4.71, p=0.00e+00, calibrated. - Differential prediction: -1.26 (SE=0.59), t=-2.15, p=0.984, no heterogeneity.</p>
-<p><strong>Anxiety</strong>: - Mean prediction: 0.9 (SE=0.47), t=1.93, p=0.027, calibrated. - Differential prediction: -1.11 (SE=0.55), t=-2.02, p=0.978, no heterogeneity.</p>
-<p><strong>Depression</strong>: - Mean prediction: 1.13 (SE=0.96), t=1.18, p=0.118, not calibrated. - Differential prediction: 0.2 (SE=0.63), t=0.32, p=0.374, no heterogeneity.</p>
-<p><strong>Life Satisfaction</strong>: - Mean prediction: 0.97 (SE=0.44), t=2.17, p=0.015, calibrated. - Differential prediction: -0.63 (SE=0.55), t=-1.15, p=0.874, no heterogeneity.</p>
-<p><strong>Hours of Exercise (log)</strong>: - Mean prediction: 0.59 (SE=1.88), t=0.31, p=0.377, not calibrated. - Differential prediction: 0.56 (SE=0.48), t=1.17, p=0.121, no heterogeneity.</p>
-<p><strong>Meaning: Purpose</strong>: - Mean prediction: 0.92 (SE=0.27), t=3.43, p=0.00e+00, calibrated. - Differential prediction: -0.35 (SE=0.58), t=-0.6, p=0.727, no heterogeneity.</p>
-<p><strong>Meaning: Sense</strong>: - Mean prediction: 0.95 (SE=0.32), t=2.93, p=0.002, calibrated. - Differential prediction: 0.6 (SE=0.42), t=1.41, p=0.080, no heterogeneity.</p>
-<p><strong>Neighbourhood Community</strong>: - Mean prediction: 1 (SE=0.2), t=4.91, p=0.00e+00, calibrated. - Differential prediction: -1.69 (SE=0.58), t=-2.9, p=0.998, no heterogeneity.</p>
-<p><strong>Personal Well-being Index</strong>: - Mean prediction: 0.92 (SE=0.36), t=2.57, p=0.005, calibrated. - Differential prediction: 0.65 (SE=0.45), t=1.43, p=0.076, no heterogeneity.</p>
-<p><strong>Rumination</strong>: - Mean prediction: 0.9 (SE=0.69), t=1.31, p=0.095, not calibrated. - Differential prediction: -0.2 (SE=0.53), t=-0.38, p=0.647, no heterogeneity.</p>
-<p><strong>Self Esteem</strong>: - Mean prediction: 1.01 (SE=0.26), t=3.84, p=0.00e+00, calibrated. - Differential prediction: 0.05 (SE=0.52), t=0.1, p=0.462, no heterogeneity.</p>
-<p><strong>Social Support</strong>: - Mean prediction: 0.94 (SE=0.29), t=3.25, p=0.001, calibrated. - Differential prediction: -0.1 (SE=0.48), t=-0.2, p=0.581, no heterogeneity.</p>
-</section>
-<section id="summary" class="level2">
-<h2 class="anchored" data-anchor-id="summary">Summary</h2>
-<p>9 of 12 models have reliably calibrated mean predictions on held-out data. None of the models show evidence of heterogeneity on held-out data.</p>
-<section id="rate-test" class="level4">
-<h4 class="anchored" data-anchor-id="rate-test">Rate Test</h4>
-<p>The RATE tells us how much better we could do by offering treatment first to those who are predicted to benefit most, rather than treating everyone the same. A higher RATE suggests that targeting people according to their CATE indicators can lead to ‘better’ overall results (where ‘higher’ always means better, recall we flipped Anxiety, Depression, Rumination).</p>
-<div id="tbl-rate-autoc" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-rate-autoc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;8
-</figcaption>
-<div aria-describedby="tbl-rate-autoc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 23%">
-<col style="width: 9%">
-<col style="width: 5%">
-<col style="width: 11%">
-<col style="width: 8%">
-<col style="width: 5%">
-<col style="width: 4%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">model</th>
-<th style="text-align: left;">outcome</th>
-<th style="text-align: left;">policy</th>
-<th style="text-align: left;">target</th>
-<th style="text-align: right;">RATE Estimate</th>
-<th style="text-align: right;">Std Error</th>
-<th style="text-align: right;">2.5%</th>
-<th style="text-align: right;">97.5%</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">model_t2_log_hours_exercise_z</td>
-<td style="text-align: left;"><strong>Hours of Exercise (log)</strong></td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">0.065</td>
-<td style="text-align: right;">0.025</td>
-<td style="text-align: right;">0.016</td>
-<td style="text-align: right;">0.114</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_meaning_sense_z</td>
-<td style="text-align: left;">Meaning: Sense</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">0.061</td>
-<td style="text-align: right;">0.034</td>
-<td style="text-align: right;">-0.006</td>
-<td style="text-align: right;">0.128</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_rumination_z</td>
-<td style="text-align: left;">Rumination</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">0.025</td>
-<td style="text-align: right;">0.043</td>
-<td style="text-align: right;">-0.059</td>
-<td style="text-align: right;">0.109</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_kessler_latent_anxiety_z</td>
-<td style="text-align: left;">Anxiety</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">0.018</td>
-<td style="text-align: right;">0.025</td>
-<td style="text-align: right;">-0.031</td>
-<td style="text-align: right;">0.067</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_pwi_z</td>
-<td style="text-align: left;">Personal Well-being Index</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">0.018</td>
-<td style="text-align: right;">0.028</td>
-<td style="text-align: right;">-0.037</td>
-<td style="text-align: right;">0.073</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_self_esteem_z</td>
-<td style="text-align: left;">Self Esteem</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">0.016</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">-0.027</td>
-<td style="text-align: right;">0.059</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_belong_z</td>
-<td style="text-align: left;">Social Belonging</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">-0.001</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">-0.044</td>
-<td style="text-align: right;">0.042</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_support_z</td>
-<td style="text-align: left;">Social Support</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">-0.001</td>
-<td style="text-align: right;">0.034</td>
-<td style="text-align: right;">-0.068</td>
-<td style="text-align: right;">0.066</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_lifesat_z</td>
-<td style="text-align: left;">Life Satisfaction</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">-0.013</td>
-<td style="text-align: right;">0.024</td>
-<td style="text-align: right;">-0.060</td>
-<td style="text-align: right;">0.034</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_meaning_purpose_z</td>
-<td style="text-align: left;">Meaning: Purpose</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">-0.031</td>
-<td style="text-align: right;">0.040</td>
-<td style="text-align: right;">-0.109</td>
-<td style="text-align: right;">0.047</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_kessler_latent_depression_z</td>
-<td style="text-align: left;">Depression</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">-0.033</td>
-<td style="text-align: right;">0.031</td>
-<td style="text-align: right;">-0.094</td>
-<td style="text-align: right;">0.028</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_neighbourhood_community_z</td>
-<td style="text-align: left;">Neighbourhood Community</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">AUTOC</td>
-<td style="text-align: right;">-0.061</td>
-<td style="text-align: right;">0.038</td>
-<td style="text-align: right;">-0.135</td>
-<td style="text-align: right;">0.013</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-</section>
-<section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1" class="level3">
-<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-autoc-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using AUTOC</h3>
-<p>AUTOC uses logarithmic weighting to focus treatment on top responders.</p>
-<p>Positive RATE estimates for: <strong>Hours of Exercise (log)</strong>.</p>
-<p>Estimates (<strong>Hours of Exercise (log)</strong>: 0.065 (95% CI 0.016, 0.114)) show robust heterogeneity.</p>
-<p>For outcomes with 95%% CI crossing zero (Meaning: Sense, Rumination, Anxiety, Personal Well-being Index, Self Esteem, Social Belonging, Social Support, Life Satisfaction, Meaning: Purpose, Depression, Neighbourhood Community), evidence is inconclusive.</p>
-<div id="tbl-rate-qini" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl quarto-uncaptioned" id="tbl-rate-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;9
-</figcaption>
-<div aria-describedby="tbl-rate-qini-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 30%">
-<col style="width: 23%">
-<col style="width: 9%">
-<col style="width: 5%">
-<col style="width: 11%">
-<col style="width: 8%">
-<col style="width: 5%">
-<col style="width: 5%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">model</th>
-<th style="text-align: left;">outcome</th>
-<th style="text-align: left;">policy</th>
-<th style="text-align: left;">target</th>
-<th style="text-align: right;">RATE Estimate</th>
-<th style="text-align: right;">Std Error</th>
-<th style="text-align: right;">2.5%</th>
-<th style="text-align: right;">97.5%</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">model_t2_meaning_sense_z</td>
-<td style="text-align: left;"><strong>Meaning: Sense</strong></td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">0.008</td>
-<td style="text-align: right;">0.004</td>
-<td style="text-align: right;">0.036</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_log_hours_exercise_z</td>
-<td style="text-align: left;">Hours of Exercise (log)</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">0.014</td>
-<td style="text-align: right;">0.008</td>
-<td style="text-align: right;">-0.002</td>
-<td style="text-align: right;">0.030</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_pwi_z</td>
-<td style="text-align: left;">Personal Well-being Index</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">0.010</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">-0.004</td>
-<td style="text-align: right;">0.024</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_kessler_latent_anxiety_z</td>
-<td style="text-align: left;">Anxiety</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">0.009</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">-0.005</td>
-<td style="text-align: right;">0.023</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_self_esteem_z</td>
-<td style="text-align: left;">Self Esteem</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">0.006</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">-0.008</td>
-<td style="text-align: right;">0.020</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_support_z</td>
-<td style="text-align: left;">Social Support</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">0.006</td>
-<td style="text-align: right;">0.008</td>
-<td style="text-align: right;">-0.010</td>
-<td style="text-align: right;">0.022</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_lifesat_z</td>
-<td style="text-align: left;">Life Satisfaction</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">-0.002</td>
-<td style="text-align: right;">0.006</td>
-<td style="text-align: right;">-0.014</td>
-<td style="text-align: right;">0.010</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_belong_z</td>
-<td style="text-align: left;">Social Belonging</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">-0.003</td>
-<td style="text-align: right;">0.006</td>
-<td style="text-align: right;">-0.015</td>
-<td style="text-align: right;">0.009</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_rumination_z</td>
-<td style="text-align: left;">Rumination</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">-0.003</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">-0.017</td>
-<td style="text-align: right;">0.011</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_meaning_purpose_z</td>
-<td style="text-align: left;">Meaning: Purpose</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">-0.004</td>
-<td style="text-align: right;">0.009</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">0.014</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">model_t2_kessler_latent_depression_z</td>
-<td style="text-align: left;">Depression</td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">-0.008</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">-0.022</td>
-<td style="text-align: right;">0.006</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">model_t2_neighbourhood_community_z</td>
-<td style="text-align: left;"><strong>Neighbourhood Community</strong></td>
-<td style="text-align: left;">treat_best</td>
-<td style="text-align: left;">QINI</td>
-<td style="text-align: right;">-0.026</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">-0.040</td>
-<td style="text-align: right;">-0.012</td>
-</tr>
-</tbody>
-</table>
-</div>
-</figure>
-</div>
-</section>
-<section id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1" class="level3">
-<h3 class="anchored" data-anchor-id="evidence-for-heterogeneous-treatment-effects-policy-treat-best-responders-using-qini-1">Evidence for heterogeneous treatment effects (policy = treat best responders) using Qini</h3>
-<p>Qini uses linear weighting to balance effect size and prevalence for aggregate gain.</p>
-<p>Positive RATE estimates for: <strong>Meaning: Sense</strong>.</p>
-<p>Estimates (<strong>Meaning: Sense</strong>: 0.020 (95% CI 0.004, 0.036)) show robust heterogeneity.</p>
-<p>Negative RATE estimates for: <strong>Neighbourhood Community</strong>.</p>
-<p>Estimates (<strong>Neighbourhood Community</strong>: -0.026 (95% CI -0.040, -0.012)) caution against CATE prioritisation.</p>
-<p>For outcomes with 95%% CI crossing zero (Hours of Exercise (log), Personal Well-being Index, Anxiety, Self Esteem, Social Support, Life Satisfaction, Social Belonging, Rumination, Meaning: Purpose, Depression), evidence is inconclusive.</p>
 <div style="page-break-after: always;"></div>
-<!-- ```{r,  results='asis'} -->
-<!-- #| eval: true -->
-<!-- #| echo: false -->
-<!-- #| include: true -->
-<!-- text_explain_grf <- boilerplate_generate_text( -->
-<!--   category = "appendix", -->
-<!--   sections = c( -->
-<!--     "explain.grf" -->
-<!--   ), -->
-<!--   global_vars = list( -->
-<!--     traning_proportion = "70%", -->
-<!--     train_proportion_decision_tree = "70%", -->
-<!--     appendix_letter_explain_grf = "G" -->
-<!--   ), -->
-<!--   db = unified_db -->
-<!-- ) -->
-<!-- cat(knitr::knit_child(text = text_explain_grf, quiet = TRUE)) -->
-<!-- ``` -->
 </section>
 </section>
 <section id="references" class="level2 appendix-refs">
@@ -2479,7 +2124,6 @@ Table&nbsp;9
 
 
 
-</section>
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
@@ -2491,6 +2135,9 @@ Athey, S., &amp; Wager, S. (2021b). Policy learning with observational data. <em
 </div>
 <div id="ref-atkinson2019" class="csl-entry" role="listitem">
 Atkinson, J., Salmond, C., &amp; Crampton, P. (2019). <em>NZDep2018 index of deprivation, user<span>’</span>s manual.</em>
+</div>
+<div id="ref-benjamini1995controlling" class="csl-entry" role="listitem">
+Benjamini, Y., &amp; Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. <em>Journal of the Royal Statistical Society. Series B (Methodological)</em>, <em>57</em>(1), 289–300.
 </div>
 <div id="ref-margot2024" class="csl-entry" role="listitem">
 Bulbulia, J. A. (2024a). <em>Margot: MARGinal observational treatment-effects</em>. <a href="https://doi.org/10.5281/zenodo.10907724">https://doi.org/10.5281/zenodo.10907724</a>
@@ -2578,6 +2225,9 @@ Wager, S., &amp; Athey, S. (2018). Estimation and inference of heterogeneous tre
 </div>
 <div id="ref-whitehead2023unmasking" class="csl-entry" role="listitem">
 Whitehead, J., Davie, G., Graaf, B. de, Crengle, S., Lawrenson, R., Miller, R., &amp; Nixon, G. (2023). Unmasking hidden disparities: A comparative observational study examining the impact of different rurality classifications for health research in aotearoa new zealand. <em>BMJ Open</em>, <em>13</em>(4), e067927.
+</div>
+<div id="ref-yadlowsky2021evaluating" class="csl-entry" role="listitem">
+Yadlowsky, S., Fleming, S., Shah, N., Brunskill, E., &amp; Wager, S. (2021). Evaluating treatment prioritization rules via rank-weighted average treatment effects. <em>arXiv Preprint arXiv:2111.07966</em>. <a href="https://doi.org/10.48550/arXiv.2111.07966">https://doi.org/10.48550/arXiv.2111.07966</a>
 </div>
 </div></section><section class="quarto-appendix-contents" id="quarto-reuse"><h2 class="anchored quarto-appendix-heading">Reuse</h2><div class="quarto-appendix-contents"><div><a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a></div></div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -37,7 +37,7 @@ cli::cli_h2("quarto folder ready ✔")
 # import student boilerplate data ------------------------------------------
 load_student_boilerplate <- function() {
   base_url   <- "https://raw.githubusercontent.com/go-bayes/templates/main/student_boilerplate_data/"
-  categories <- c("measures", "methods", "results", "discussion", "appendix")
+  categories <- c("measures", "methods", "results", "discussion", "appendix", "template")
   cli::cli_text("loading student boilerplate data from GitHub...")
   
   student_db <- list()
@@ -57,8 +57,8 @@ load_student_boilerplate <- function() {
   student_db
 }
 
-student_unified_db <- load_student_boilerplate()
 
+student_unified_db <- load_student_boilerplate()
 # save imported data -------------------------------------------------------
 boilerplate_save(
   student_unified_db,
@@ -68,11 +68,11 @@ boilerplate_save(
 cli::cli_h1("data saved ✔")
 
 # set up bibliography and APA-7 template -----------------------------------
-fs::dir_create("template_partials")  # for title.tex
+fs::dir_create("quarto")  # for title.tex
 
 download.file(
   url      = "https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/quarto/title.tex",
-  destfile = "template_partials/title.tex",
+  destfile = "quarto/title.tex",
   mode     = "wb"
 )
 
@@ -81,16 +81,17 @@ fs::dir_create("csl")
 
 download.file(
   url      = "https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/bib/references.bib",
-  destfile = "bibliography/references.bib",
+  destfile = "quarto/references.bib",
   mode     = "wb"
 )
 
 download.file(
   url      = "https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/csl/apa-7.csl",
-  destfile = "csl/apa7.csl",
+  destfile = "quarto/apa7.csl",
   mode     = "wb"
 )
 
 cli::cli_h1("bibliography and CSL setup complete ✔")
 
 # end of script: do not rerun this file ------------------------------------
+

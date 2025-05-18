@@ -1,17 +1,14 @@
 ---
 title: "Your Title"
 abstract: |
+
   **Background**: (Brief few sentences)
-  
   **Objectives**: 
     1. Estimate the causal effect of YOUR EXPOSURE on YOUR OUTCOMES measured one year later.
     2. Evaluate whether these effects vary across the population.
     3. Provide policy guidance on which individuals might benefit most.
-  
   **Method**: We conducted a three-wave retrospective cohort study (waves XX-XXX, October XXXX--October XXXX) using data from the New Zealand Attitudes and Values Study, a nationally representative panel. Participants were eligible if they participated in the NZAVS in the baseline wave (XXXX, were under the age of 62, and were employed > 20 hours per week. We defined the exposure as (XXXX  > NUMBER on a 1-7 Likert Scale (1 = yes, 0 = no)). To address attrition, we applied inverse probability of censoring weights; to improve external validity, we applied weighted to the population distribution of Age, Ethnicity, and Gender. We computed expected mean outcomes for the population in each exposure condition (high XXXX/low XXXXX). Under standard causal assumptions of unconfoundedness, the contrast provides an unbiased average treatment effect. We then used causal forests to detect heterogeneity in these effects and employed policy tree algorithms to identify individuals ("strong responders") likely to experience the greatest benefits.
-  
   **Results**:   Increasing XXXXX leads to XXXXX. Heterogeneous responses to (e.g. *Forgiveness*, *Personal Well-Being*, and *Life-Satisfaction*...) reveal structural variability in subpopulations...
-  
   **Implications**: (Brief few sentences)
   **Keywords**: *Causal Inference*;  *Cross-validation*; *Distress*; *Employment*; *Longitudinal*; *Machine sLearning*; *Religion*; *Semi-parametric*; *Targeted Learning*.
 author: 
@@ -65,6 +62,8 @@ execute:
 #| include: false
 #| eval: true
 
+# save this file in the 'quarto' folder
+
 # ---- package setup -------------------------------------------------------
 library(here)
 pacman::p_load(
@@ -109,6 +108,8 @@ unified_db            <- boilerplate_import(data_path = final_boilerplate_data)
 # ---- inspect available boilerplate entries -------------------------------
 cat(unified_db$methods$confounding_control$vanderweele)
 cat(unified_db$methods$sample$nzavs)
+cat(unified_db$methods$causal_intervention$grf_simple_text)
+cat(unified_db$appendix$explain$grf_short)
 
 # ---- read variable definitions -------------------------------------------
 baseline_vars           <- margot::here_read("baseline_vars")
@@ -119,6 +120,9 @@ outcome_vars            <- margot::here_read("outcome_vars")
 baseline_wave           <- margot::here_read("baseline_wave")
 exposure_waves          <- margot::here_read("exposure_waves")
 outcome_wave            <- margot::here_read("outcome_wave")
+
+# 
+baseline_wave_glued <- glue::glue(baseline_wave)
 
 # ---- define study parameters ---------------------------------------------
 study_years             <- "2018-2021"
@@ -268,17 +272,19 @@ policy_tree_defaults    <- list(
   split_label_nudge_factor = 0.007
 )
 
+
 # ---- load and check model results ---------------------------------------
 ate_results           <- margot::here_read_qs("ate_results", push_mods)
 margot::margot_size(ate_results)
 
 # ---- create ate plots and interpretation --------------------------------
-ate_results$plot
-cat(ate_results$interpretation)
+# ate_results$plot
+# cat(ate_results$interpretation)
 
 # ---- heterogeneity analysis ---------------------------------------------
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
 
+# could be used in an appendix
 # result_ominbus_hetero     <- margot_omnibus_hetero_test(
 #   models_binary_flipped_all,
 #   label_mapping  = label_mapping_all,
@@ -289,86 +295,149 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # result_ominbus_hetero$summary_table |> kbl("markdown")
 # cat(result_ominbus_hetero$brief_interpretation)
 
+# pull rate results (rate)
+rate_results <- here_read("rate_results")
 
-# read corrected rate analysis
-keep <- here_read("keep")
-keep_autoc<- here_read("keep_autoc")
-keep_qini<- here_read("keep_qini")
+# pull the interpretations
+rate_interp <- here_read("rate_interp")
 
-# pull the matching model keys (prefixed) for downstream plotting ------
-model_keep <- paste0("model_", keep)
-model_keep_autoc <- paste0("model_", keep_autoc)
-model_keep_qini <- paste0("model_", keep_qini)
-model_keep
-model_keep_autoc
-# Rate
-rate_results <-
-  margot_rate(
-    models   = models_binary_flipped_all,
-    policy   = "treat_best",
-    label_mapping = label_mapping_all
-  )
-# show rate tables
-rate_results$rate_autoc %>% kbl("markdown")
-rate_results$rate_qini %>% kbl("markdown")
-
-# generate textual interpretations for rate metrics
-rate_interp <-
-  margot_interpret_rate(
-    rate_results,
-    flipped_outcomes = flipped_names
-    
-  )
-cat(rate_interp$autoc_results, "\n")
-cat(rate_interp$qini_results, "\n")
-cat(rate_interp$comparison, "\n")
-
-# organise model groups by heterogeneity evidence
+# get model groups
 model_groups <- list(
   autoc  = rate_interp$autoc_model_names,
   qini   = rate_interp$qini_model_names,
   either = rate_interp$either_model_names
 )
-cli::cli_h1("rate metrics and interpretations complete ✔")
 
+# make the matching model keys (prefixed) for downstream plotting ------
+model_keep_either <- model_groups$either
+model_keep_autoc <-  model_groups$autoc
+model_keep_qini <- model_groups$qini
+
+
+# check them
+cat(rate_interp$autoc_results, "\n")
+cat(rate_interp$qini_results, "\n")
+cat(rate_interp$comparison, "\n")
+
+
+# plot rate curves -----------------------------------------------
+autoc_plots <-
+  margot_plot_rate_batch(
+    models      = models_binary_flipped_all,
+    save_plots  = FALSE,
+    label_mapping      = label_mapping_all,
+    model_names = model_groups$autoc
+  )
+
+# Qini model curves --------------------------------------------
+qini_results <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = list(),
+    policy_tree_args   = list(),
+    model_names        = model_groups$qini,
+    original_df        = original_df,
+    label_mapping      = label_mapping_all,
+    max_depth          = 2L,
+    output_objects     = c("qini_plot", "diff_gain_summaries")
+  )
+
+# view qini plots
+qini_plots <- purrr::map(qini_results, ~ .x$qini_plot)
+
+# check if any * EXPAND IF MORE THAN 1, COMMENT OUT IF NONE
+# here only 1
+length(model_keep_qini)
+
+# only one
+qini_plots[[1]]
+
+# interpret qini
+qini_gain_interpretation <- margot_interpret_qini(qini_results)
+
+# table (only use if more than one qini gain interpretation)
+qini_gain_interpretation$summary_table |> 
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  kbl(format = "markdown")
+
+# the interpretation - used below
+cat(qini_gain_interpretation$qini_explanation)
+
+
+cli::cli_h1("Qini model curves plotted ✔")
 
 # ---- policy analysis with qini and trees -------------------------------
-models_batch_2L            <- margot_policy(
+# focus of study
+ policy_results_2L            <- margot_policy(
   models_binary_flipped_all,
   save_plots         = FALSE,
   output_dir         = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args   = policy_tree_defaults,
-  model_names        = model_keep_qini,
+  model_names        = model_keep_either,
   max_depth          = 2L,
   original_df        = original_df,
-  label_mapping      = label_mapping_all
+  label_mapping      = label_mapping_all,
+    output_objects = c("combined_plot")
 )
 
-qini_plots               <- lapply(seq_along(models_batch_2L), function(i) {
-  models_batch_2L[[i]][[4]]
-})
+policy_plots <- purrr::map(policy_results_2L, ~ .x[[1]])
 
-names(qini_plots)       <- model_keep_qini
-interpretation_qini_curves_2L <- margot_interpret_qini(
-  models_batch_2L,
-  model_names        = model_keep_qini,
-  label_mapping      = label_mapping_all
+# Check how many plots to make
+length(model_keep_either)
+
+# plot 1
+policy_plots[[1]]
+
+# plot 2
+policy_plots[[2]]
+
+# 4. interpretation ----------------------------------
+# -------------------------------------------------------------------
+# generates a short paragraph per outcome explaining the splits and     
+# their implied treatment rule.                                         
+policy_interpretation_2L <- margot::margot_interpret_policy_batch(
+  models_binary_flipped_all,  # use the *flipped* master object for labels
+  model_names = model_keep_either
 )
+# check
+cat(policy_interpretation_2L, "\n")
 
-# obtain policy trees
-policy_2L_corrected <- here_read_qs("policy_2L_corrected", push_mods)
-interp_all_2L <- here_read("interp_all_2L")
+# end‑of‑workflow -----------------------------
+cli::cli_h1("main 2l policy trees analysed ✔")
 
-## Your models # change first number to get more
-policy_2L_corrected[[1]][[1]]
-policy_2L_corrected[[2]][[1]]
-interp_all_2L
+
+
+
+
+# NAMES --------------------------------------------------------------
+
+# get names
+autoc_names <- margot_get_labels(model_groups$autoc, label_mapping_all)
+autoc_names
+
+qini_names <- margot_get_labels(model_groups$qini, label_mapping_all)
+qini_names
+
+either_names <- margot_get_labels(model_groups$either, label_mapping_all)
+glued_name_policy_1 <- glue::glue(either_names[[1]])
+glued_name_policy_2 <- glue::glue(either_names[[2]])
+# check
+glued_name_policy_1
+glued_name_policy_2
+
 
 # ---- define global variables for text generation ------------------------
 global_vars <- list(
   name_exposure_variable     = nice_name_exposure_variable,
   n_total                    = n_total,
+  ate_adjustment             = "bonferroni", 
+  ate_alpha                  = "0.05",
+  cate_adjustment            = "Benjamini–Hochberg false-discovery-rate adjustment",
+  cate_alpha                 =  "0.1",             
+  sample_ratio_policy        =  "70/30",
   n_participants             = n_participants,
   exposure_variable          = name_exposure,
   name_exposure_lower        = name_exposure_lower,
@@ -381,18 +450,18 @@ global_vars <- list(
   value_control_regime       = value_control_regime,
   flipped_list               = flipped_list,
   appendix_explain_grf       = "D",
-  appendix_assumptions_grf   = "F",
-  name_exposure_threshold =  "1",
-  name_control_threshold  =  "0",
-  appendix_measures = "A",
+  appendix_assumptions_grf   = "D",
+  name_exposure_threshold    =  "1",
+  name_control_threshold     =  "0",
+  appendix_measures          =  "A",
   value_control              = value_control,     # ← named
   value_exposure             = value_exposure,    # ← named
   appendix_positivity        = "E",
-  baseline_wave              = "NZAVS time 10, years 2018-2019",
-  exposure_waves             = "NZAVS time 11, year 2019-2020",
-  outcome_wave               = "NZAVS time 12, years 2020-2021",
-  protocol_url               = "https://osf.io/ce4t9/",
-  appendix_timeline = "A"
+  baseline_wave              = baseline_wave,
+  exposure_waves             = exposure_waves,
+  outcome_wave               = outcome_wave,
+  protocol_url               = "https://osf.io/ce4t9/", # if used
+  appendix_timeline          = "A" # if used
 )
 ```
 
@@ -468,41 +537,161 @@ cat(ate_results$interpretation)
 
 {{< pagebreak >}}
 
-### Heterogeneous Treatment Effects: Policy Trees
+### Heterogeneous Treatment Effects 
+
+#### RATE AUTOC and RATE Qini
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "results",      # ← choose the right top-level list
+    sections     = c(
+    "grf.interpretation_rate"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
+```
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(rate_interp$comparison)
+```
+
+Refer to [Appendix E](#appendix-cate-validation) for details.
+
+
+
+##### RATE AUTOC Results
 
 ```{r, results = 'asis'}
-cat(interp_all_2L)
+# only reliable results
+cat(rate_interp$autoc_results)
 ```
 
 
-        
 ```{r}
-#| label: fig-policy-1
-#| fig-cap: "Decision Tree: Exercise"
+#| label: fig-rate-1
+#| fig-cap: "RATE AUTOC Graphs"
 #| eval: true
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
-policy_2L_corrected[[1]][[1]]
+autoc_plots[[1]]
+```
+
+@fig-rate-1 presents the RATE AUTOC curve for `r autoc_names[[1]]`
+
+##### RATE Qini Results
+
+```{r, results = 'asis'}
+# only reliable results
+cat(rate_interp$qini_results)
+```
+
+
+#### QINI Curve Analysis
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "results",      # ← choose the right top-level list
+    sections     = c(
+    "grf.interpretation_qini"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
+```
+
+```{r, results = 'asis'}
+# only reliable results
+cat(qini_gain_interpretation$qini_explanation)
+```
+
+@tbl-qini presents results for our Qini curve analysis at different spend rates.
+
+```{r}
+#| label: tbl-qini
+#| tbl-cap: "Qini Curve Results"
+#| eval: true
+#| echo: false
+# table (only use if more than one qini gain interpretation)
+qini_gain_interpretation$summary_table |> 
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  kbl(format = "markdown")
+```
+
+@fig-qini-1 presents the Qini curve for `r qini_names[[1]]`
+
+
+```{r}
+#| label: fig-qini-1
+#| fig-cap: "Qini Graph"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+qini_plots[[1]]
+```
+
+
+{{< pagebreak >}}
+
+#### Decision Rules (Who is Most Sensitive to Treatment?)
+
+```{r, results='asis'}
+#| eval: true
+#| echo: false
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "results",      # ← choose the right top-level list
+    sections     = c(
+    "grf.interpretation_policy_tree"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
+```
+
+        
+```{r}
+#| label: fig-policy-1
+#| fig-cap: "Decision Tree: {glued_name_policy_1}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+# plot 1
+policy_plots[[1]]
 ```
 
 
 
 ```{r}
 #| label: fig-policy-2
-#| fig-cap: "Decision Tree: Neighbourhood Community"
+#| fig-cap: "Decision Tree: {glued_name_policy_2}"
 #| eval: true
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
-policy_2L_corrected[[2]][[1]]
+policy_plots[[2]]
 ```
 
 
+```{r, results = 'asis'}
+cat(policy_interpretation_2L, "\n")
+```
 
 ## Discussion
-
-
 
 ```{r,  results='asis'}
 #| eval: true
@@ -526,12 +715,14 @@ cat(boilerplate_generate_text(
 
 {{< pagebreak >}}
 
+
 ## Appendix A: Measures {#appendix-measures}
 
 
 ### Measures 
 
-####  Covariate Measures 
+####  Baseline Covariate Measures 
+
 ```{r, results='asis'}
 cat(baseline_measures_text)
 ```
@@ -548,7 +739,13 @@ cat(exposure_measures_text)
 cat(outcome_measures_text)
 ```
 
-## Appendix B: Sample {#appendix-sample}
+
+{{< pagebreak >}}
+
+## Appendix B: Sample Characteristics {#appendix-sample}
+
+####  Sample Statistics: Baseline Covariates
+
 
 @tbl-appendix-baseline presents sample demographic statistics.
 
@@ -559,11 +756,11 @@ cat(outcome_measures_text)
 #| echo: false
 markdown_table_baseline
 ```
-Demographic statistics for New Zealand Attitudes and Values Cohort wave 2018.
+Demographic statistics for New Zealand Attitudes and Values Cohort: {baseline_wave_glued}.
 :::
 
 
-### Exposure Variable {#appendix-exposure} 
+### Sample Statistics: Exposure Variable {#appendix-exposure} 
 
 <!-- @tbl-sample-exposures presents sample statistics for the exposure variable, religious service attendance, during the baseline and exposure waves. This variable was not measured in part of NZAVS time 12 (years 2020-2021) and part of NZAVS time 13 (years 2021-2022). To address missingness, if a value was observed after NZAVS time 14, we carried the previous observation forward and created and NA indicator. If there was no future observation, the participant was treated as censored, and inverse probability of censoring weights were applied, following our standard method for handling missing observations (see mansucript **Method**/**Handling of Missing Data**). Here, our carry-forward imputation approach may result in conservative causal effect estimation because it introduces measurement error. However, this approach would not generally bias causal effect estimation away from the null because the measurement error is unsystematic and random and unrelated to the outcomes. -->
 
@@ -582,7 +779,7 @@ Demographic statistics for New Zealand Attitudes and Values Cohort waves 2018.
 
 {{< pagebreak >}}
 
-### Outcome Variables {#appendix-outcomes} 
+### Sample Statistics: Outcome Variables {#appendix-outcomes} 
 
 ::: {#tbl-appendix-outcomes}
 ```{r, results = 'asis'}
@@ -593,14 +790,13 @@ Demographic statistics for New Zealand Attitudes and Values Cohort waves 2018.
 markdown_table_outcomes
 
 ```
-Outcome variables measured at baseline (NZAVS time 10, years 2018-2019, and time 15, years 2023-2024).
+Outcome variables measured at {baseline_wave_glued} and {outcome_wave}
 :::
 
 
 {{< pagebreak >}}
 
-
-### Appendix C: Transition Matrix to Check The Positivity Assumption {#appendix-transition}
+## Appendix C: Transition Matrix to Check The Positivity Assumption {#appendix-transition}
 
 
 ```{r, results = 'asis'}
@@ -620,66 +816,26 @@ cat(transition_tables_binary$explanation)
 
 {{< pagebreak >}}
 
-
-## Appendix D: Evidence of Heterogeneity {#appendix-cate-validation}
-
-
-```{r, results='asis'}
-#| eval: true
-#| echo: false
-cat(boilerplate::boilerplate_generate_text(
-  category = "results",
-  sections = c(
-    "grf.interpretation_rate"
-  ),
-  global_vars = list(
-    appendix_omnibus = "Appendix F",
-    flipped_list = flipped_list
-  ),
-  db = unified_db
-))
-```
-
+## Appendix D: Approach to Heterogeneity {#appendix-cate-validation}
 
 
 ```{r, results='asis'}
-#| label: tbl-rate-autoc
 #| eval: true
 #| echo: false
-# view rate tables
-cat(rate_interp$autoc_results)
-```
-
-```{r, results='asis'}
-#| eval: true
-#| echo: false
-cat(rate_interp$qini_results)
-```
-
-```{r, results='asis'}
-#| eval: true
-#| echo: false
-cat(rate_interp$comparison)
-```
-
-
-```{r}
-#| label: fig-qini
-#| fig-cap: "RATE AUTOC Graphs"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-qini_plots[[1]]
-```
-
-```{r, results = 'asis'}
-# only reliable results
-cat(interpretation_qini_curves_2L$qini_explanation)
+library(boilerplate)
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "appendix",      # ← choose the right top-level list
+    sections     = c(
+      "explain.grf_short"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
 ```
 
 {{< pagebreak >}}
-
 
 ## References {.appendix-refs}
 
