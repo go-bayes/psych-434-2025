@@ -19,8 +19,8 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 
-if (packageVersion("margot") < "1.0.44") {
-  stop("please install margot >= 1.0.44 for this workflow\n
+if (packageVersion("margot") < "1.0.47") {
+  stop("please install margot >= 1.0.47 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -75,14 +75,19 @@ outcome_wave <- margot::here_read("outcome_wave")
 # define continuous columns to keep
 continuous_columns_keep <- c("t0_sample_weights")
 
-# define ordinal columns that we will expand into binary variables
-ordinal_columns <- c("t0_education_level_coarsen",
-                     "t0_eth_cat",
-                     "t0_rural_gch_2018_l")
-
 # check is this the exposure variable that you want? 
 name_exposure_binary
 name_exposure_continuous
+
+# ordinal use
+ordinal_columns <- c(
+  "t0_education_level_coarsen",
+  "t0_eth_cat",
+  "t0_rural_gch_2018_l",
+  "t0_gen_cohort",
+  "t0_religion_bigger_denominations" # <- added for demonstration (optional)
+)
+
 
 # define wide variable names
 t0_name_exposure_binary <- paste0("t0_", name_exposure_binary)
@@ -113,13 +118,6 @@ str(dat_long_final)
 naniar::gg_miss_var(dat_long_final)
 
 # impute data --------------------------------------------------------------
-# ordinal use
-ordinal_columns <- c(
-  "t0_education_level_coarsen",
-  "t0_eth_cat",
-  "t0_rural_gch_2018_l",
-  "t0_gen_cohort"
-)
 
 # define cols we will not standardise
 continuous_columns_keep <- c("t0_sample_weights")
@@ -173,7 +171,7 @@ colnames(df_wide)
 # ** ignore warning *** 
 df_wide_encoded  <- margot::margot_process_longitudinal_data_wider(
   df_wide,
-  ordinal_columns = ordinal_columns,
+  ordinal_columns = ordinal_columns, #<- make sure all ordinal columns have been identified
   continuous_columns_keep = continuous_columns_keep,
   not_lost_in_following_wave = "not_lost_following_wave",
   lost_in_following_wave = "lost_following_wave",
@@ -182,7 +180,6 @@ df_wide_encoded  <- margot::margot_process_longitudinal_data_wider(
   scale_continuous = TRUE
 )
 
-margot_process_longitudinal_data_wider()
 
 # check
 colnames(df_wide_encoded)
@@ -267,11 +264,20 @@ baseline_covars <- df %>%
   select(starts_with("t0_"), -ends_with("_lost"), -ends_with("lost_following_wave"), -ends_with("_weights")) %>%
   colnames() %>% sort()
 
-X0 <- as.matrix(df[, baseline_covars])
+# select your baseline vars and coerce to numeric
+num_dat <- df %>%
+  select(all_of(baseline_covars)) %>%
+  mutate(across(everything(), as.numeric))
+
+# build a true numeric matrix
+X0 <- as.matrix(num_dat)
+
+# make factor
 D0 <- factor(df$t0_lost_following_wave, levels = c(0, 1))   # 0 = stayed, 1 = lost
 
 cli::cli_h1("stage 0: probability forest for baseline dropout …")
 
+# then fit
 pf0 <- probability_forest(X0, D0)
 P0  <- predict(pf0, X0)$pred[, 2]               # P(dropout by t1)
 w0  <- ifelse(D0 == 1, 0, 1 / (1 - P0))         # IPCW for stage 0
@@ -283,22 +289,29 @@ df$w0 <- w0
 
 exposure_var <- t1_name_exposure_binary       # ← binary exposure variable name
 
+# filter out those lost (already weighted for censoring)
 df1 <- df %>% filter(t0_lost_following_wave == 0)
 
-# remove rows with missing exposure for stage‑1 model
-cen1_data <- df1 %>% filter(!is.na(.data[[exposure_var]]))
+# filter to those at risk in stage-1
+cen1_data <- df %>%
+  filter(t0_lost_following_wave == 0,
+         !is.na(.data[[exposure_var]]))
 
-X1 <- as.matrix(cbind(
-  cen1_data[, baseline_covars],
-  cen1_data[[exposure_var]]
-))
+# coerce baseline covars + exposure all at once
+X1_num <- cen1_data %>%
+  # convert every t0_… and the exposure to numeric
+  mutate(across(all_of(c(baseline_covars, exposure_var)), as.numeric)) %>%
+  # now select in the order you want
+  select(all_of(baseline_covars), all_of(exposure_var))
+
+# build numeric matrix
+X1 <- as.matrix(X1_num)
 colnames(X1)[ncol(X1)] <- exposure_var
 
 D1 <- factor(cen1_data$t1_lost_following_wave, levels = c(0, 1))
 
-cli::cli_h1("stage 1: probability forest for second‑wave dropout …")
-
-pf1 <- probability_forest(X1, D1)               # 1 = lost before t2
+cli::cli_h1("stage 1: probability forest for second-wave dropout …")
+pf1 <- probability_forest(X1, D1)
 P1  <- predict(pf1, X1)$pred[, 2]
 w1  <- ifelse(D1 == 1, 0, 1 / (1 - P1))
 
@@ -432,7 +445,7 @@ str(df_grf)
 table(df_grf[[t1_name_exposure_binary]])
 
 # check
-hist(df_grf$t1_adjusted_weights)
+hist(df_grf$combo_weights)
 
 # calculate summary statistics
 t0_weight_summary <- summary(df_wide_encoded)
@@ -441,7 +454,7 @@ t0_weight_summary <- summary(df_wide_encoded)
 glimpse(df_grf$combo_weights)
 
 # visualise weight distributions
-hist(df_grf$t1_adjusted_weights, main = "t0_stabalised weights", xlab = "Weight")
+hist(df_grf$combo_weights, main = "t0_stabalised weights", xlab = "Weight")
 
 # check n
 n_observed_grf <- nrow(df_grf)

@@ -23,10 +23,9 @@ if (!require(margot, quietly = TRUE)) {
   library(margot)
 }
 
-# min version of markgot
-min_version <- "1.0.44"
-if (packageVersion("margot") < min_version) {
-  stop("please install margot >= min_version for this workflow\n
+# min version of margot
+if (packageVersion("margot") < "1.0.47") {
+  stop("please install margot >= 1.0.47 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
@@ -745,7 +744,7 @@ subsets_standard_political <- list(
 )
 
 
-# political subsets
+# age subsets
 subsets_standard_age <- list(
   Younger = list(
     var = "t0_age_z",

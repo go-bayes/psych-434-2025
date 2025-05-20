@@ -70,7 +70,7 @@ pacman::p_load(
   boilerplate, margot, tinytex, extrafont,
   tidyverse, kableExtra, glue, patchwork,
   stringr, ggplot2, ggeffects, parameters,
-  table1, here, knitr
+  table1, here, knitr, dplyr
 )
 
 # ---- copy resources to quarto -------------------------------------------
@@ -94,8 +94,9 @@ if (!requireNamespace("margot", quietly = TRUE)) {
 }
 
 # ---- check package versions ---------------------------------------------
-utils::packageVersion("margot")      # should be > 1.0.45
+utils::packageVersion("margot")      # should be > 1.0.47
 utils::packageVersion("boilerplate") # should be > 1.0.43
+
 
 # ---- ensure reproducibility and load fonts --------------------------------
 set.seed(123)
@@ -157,6 +158,13 @@ flipped_list             <- paste(flipped_names, collapse = ", ")
 
 # ---- import data for visualisation --------------------------------------
 original_df              <- margot::here_read('df_wide', push_mods)
+df_grf <- margot::here_read('df_grf', push_mods)
+
+# co-variates
+E <- margot::here_read('E', push_mods)
+# select covariates and drop numeric attributes
+X <- margot::remove_numeric_attributes(df_grf[E])
+
 
 # ---- define nice names and regimes ---------------------------------------
 nice_name_exposure_variable <- stringr::str_to_sentence(name_exposure)
@@ -316,11 +324,6 @@ ate_results$plot
 cat(ate_results$interpretation)
 
 
-# interpretation
-cat(ate_results$interpretation)
-
-
-
 
 # ---- heterogeneity analysis ---------------------------------------------
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
@@ -370,6 +373,10 @@ autoc_plots <-
     model_names = model_groups$autoc
   )
 
+# check length
+length(autoc_plots)
+autoc_plots[[1]]
+
 # Qini model curves --------------------------------------------
 qini_results <-
   margot_policy(
@@ -394,7 +401,7 @@ length(model_keep_qini)
 
 # only one
 qini_plots[[1]]
-# qini_plots[[2]]
+#qini_plots[[2]]
 
 # interpret qini
 qini_gain_interpretation <- margot_interpret_qini(qini_results)
@@ -469,6 +476,108 @@ glued_name_policy_2 <- glue::glue(either_names[[2]])
 glued_name_policy_1
 glued_name_policy_2
 
+# GROUP COMPARISON EXAMPLE ------------------------------------------------
+# play around with these values
+x_offset_comp <- 1.0
+x_lim_lo_comp <- -1.0
+x_lim_hi_comp <- 1.0 
+
+base_defaults_comparisons <- list(
+  type = "RD",
+  title = ate_title,
+  e_val_bound_threshold = 1.2,
+  label_mapping = "label_mapping_all",
+  adjust = "bonferroni", #<- new
+  alpha = 0.05, # <- new
+  colors = c(
+    "positive" = "#E69F00",
+    "not reliable" = "grey50",
+    "negative" = "#56B4E9"
+  ),
+  x_offset = x_offset_comp,
+  # will be set based on type
+  x_lim_lo = x_lim_lo_comp,
+  # will be set based on type
+  x_lim_hi = x_lim_hi_comp,
+  text_size = 8,
+  linewidth = 0.75,
+  estimate_scale = 1,
+  base_size = 18,
+  point_size = 2.5,
+  title_size = 19,
+  subtitle_size = 16,
+  legend_text_size = 10,
+  legend_title_size = 10,
+  include_coefficients = FALSE
+)
+
+complex_condition_age  <- between(X[,"t0_age_z"], -1, 1)
+
+# sanity‑check age bounds on the raw scale
+mean(original_df$t0_age) + c(-1, 1) * sd(original_df$t0_age)
+
+# age subsets
+subsets_standard_age <- list(
+  Younger = list(
+    var = "t0_age_z",
+    value = -1,
+    operator = "<",
+    label = "Age < 35"
+  ),
+  Middle = list(
+    var = "t0_age_z",
+    # operator = "<",
+    subset_condition = complex_condition_age,
+    label = "Age 35-62"
+  ),
+  Older = list(
+    var = "t0_age_z",
+    value = 1,
+    operator = ">",
+    label = "Age > 62"
+  )
+)
+
+# 3. batch subgroup analysis -----------------------------------------
+planned_subset_results <- margot_planned_subgroups_batch(
+  domain_models  = list(models_binary),
+  X              = X,
+  base_defaults  = base_defaults_comparisons,
+  subset_types   = list(cohort = subsets_standard_age),
+  original_df    = original_df,
+  label_mapping  = label_mapping_all,          # ← supply it here
+  domain_names   = "wellbeing",
+  subtitles      = "",
+  adjust         = "bonferroni",  # ← here
+  alpha          = 0.05           # ← and here
+)
+
+# make comparison plot
+plots_subgroup_age_young_old<- wrap_plots(
+  list(
+    planned_subset_results$wellbeing$cohort$results$`Age < 35`$plot,
+    planned_subset_results$wellbeing$cohort$results$`Age > 62`$plot
+  ), ncol = 1) +
+  plot_annotation(
+    title = "Younger vs Older",
+    theme = theme(plot.title = element_text(size = 18, face = "bold"))
+  )
+
+
+
+# are groups different from each other? 
+# example: young (<35) vs older (>62)
+group_comparison_age_young_old <- margot_compare_groups(
+  group1_name = "People Under 35 Years Old",
+  group2_name = "People Over 62 Years Old", 
+  planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table, # reference
+  planned_subset_results$wellbeing$cohort$results$`Age > 62`$transformed_table, # comparison
+  type            = "RD",          # risk‑difference scale
+  decimal_places  = 3
+)
+print(group_comparison_age_young_old$results |> kbl("markdown", digits = 3))
+cat(group_comparison_age_young_old$interpretation)
+
 
 # ---- define global variables for text generation ------------------------
 global_vars <- list(
@@ -510,25 +619,12 @@ global_vars <- list(
 
 ## Introduction
 
-The fundamental question in social psychology is whether political identification leads to conspiracies about political out-groups [@allen2000values; @nytimes_scotus_venezuelans_2025].
-
-Previous research falls into two categories, experimental and observational.
-
-Experimetaea
-
-
-Three challenges remains: 
-First, to identify causality
-Second, to characterise responses in a national population, not a student sample. 
-Third, to evaluate a "phenotype" of response across multiple measuers of conspiracy....
-
-To address these challenges we apply modern causal inference methods to a (simulated) national dataset that repeatedly measures the same individuals over time.  ... 
-
+FILL OUT
 
 ## Method
 
 ```{r, results='asis'}
-#| eval: false
+#| eval: true # |eval: false # <- set to false as needed/desired for your own material
 #| echo: false
 library(boilerplate)
 cat(
@@ -553,88 +649,6 @@ cat(
 )
 ```
 
-### Sample
-
-Data were collected as part of the New Zealand Attitudes and Values Study (NZAVS), an annual longitudinal national probability panel assessing New Zealand residents’ social attitudes, personality, ideology, and health outcomes. The panel began in 2009 and has since expanded to include over fifty researchers, with responses from 40,000 participants to date. The study operates independently of political or corporate funding and is based at a university. It employs prize draws to incentivise participation. The NZAVS tends to slightly under-sample males and individuals of Asian descent and to over-sample females and Māori (the Indigenous people of New Zealand). To enhance the representativeness of our sample population estimates for the target population of New Zealand, we apply census-based survey weights that adjust for age, gender, and ethnicity (New Zealand European, Asian, Māori, Pacific) [@sibley2021]. For more information about the NZAVS, visit: [OSF.IO/75SNB](https://doi.org/10.17605/OSF.IO/75SNB). Note, the data used in this study were simulated from the NZAVS for the purposes of a student assessment and therefore are not valid for the general population of New Zealand. They are for illustrative purposes only.
-
-### Target Population
-
-The target population for this study comprises New Zealand residents as represented in the 2018 of the New Zealand Attitudes and Values Study (NZAVS) during the years 2018 weighted by New Zealand Census weights for age, gender, and ethnicity (refer to @sibley2021). The NZAVS is a national probability study designed to reflect the broader New Zealand population accurately. Despite its comprehensive scope, the NZAVS has some limitations in its demographic representation. Notably, it tends to under-sample males and individuals of Asian descent while over-sampling females and Māori (the indigenous peoples of New Zealand). To address these disparities and enhance the accuracy of our findings, we apply New Zealand Census survey weights to the sample data (again, caveates about simulation noted.)
-
-### Eligibility Criteria
-
-To be included in the analysis of this study, participants needed to participate in the 2018 of the study and respond to the baseline measure of Extraversion.
-
-Participants may have been lost to follow-up at the end of the study if they met eligibility criteria at 2018. We adjusted for attrition and non-response using censoring weights, described below.
-
-A total of 39,635 individuals met these criteria and were included in the study.
-
-### Average Treatment Effect
-
-Researchers often want to know what might happen if we could change (or 'intervene on') a particular variable for everyone in a study—much like testing a new treatment in a randomised trial. Because we cannot always run an actual trial, we imagine a **target trial** [@hernan2016], a hypothetical experiment that clarifies exactly which cause-and-effect question we are trying to answer.
-
-Here, we ask:
-
-  > 'How would the outcomes of interest change if, for everyone in the population, we set the exposure to **>4, scale range 1-7**, compared with setting it to **<=4, scale range 1-7**, given each individual’s characteristics?'
-
-Thus we compare two scenarios:
-
-1. **1**: Everyone receives exposure level >4, scale range 1-7.
-2. **0**: Everyone receives exposure level <=4, scale range 1-7.
-
-The difference between these two population means is the **Average Treatment Effect (ATE)**.  Because we evaluate several outcomes, ATE confidence intervals were corrected for multiplicity with bonferroni at $\alpha$ = 0.05.
-
-By combining time-series data with a rich baseline covariate set, we may, under the identifications assumptions described below, separate the causal effects of the exposure from spurious associations. Measuring demographics, personality traits, and other background factors at baseline helps ensure that, conditional on those covariates, assignment to the two exposure levels is 'as good as random.'  (See Appendix [D](#appendix-assumptions_grf) for a full statement of the required assumptions.)
-
-
-### Heterogeneous Treatment Effects and Treatment Policies
-
-After estimating the overall average treatment effect (ATE) for the population, we turn to the question of whether different people respond differently. We investigate effect modifiers (or moderators)—factors that make the intervention more or less effective for certain subgroups—by estimating the Conditional Average Treatment Effect (CATE) using a causal forest approach. While the ATE reflects the overall impact, the CATE reveals how that impact can vary across individuals with different baseline characteristics. We denote the individual-level estimated treatment effect as $\hat{\tau}(x)$, which represents the predicted benefit for an individual with covariates $x$. A notable advantage of causal forests is that we do not have to specify potential moderators in advance; the algorithm uncovers them automatically. We can also apply search algorithms to derive priority treatment rules that target the intervention to those most likely to benefit.
-
-First, we standardised effect directions by inverting outcomes where lower scores were preferable so that positive values always indicated improvement. Specifically, we inverted Anxiety, Depression, Rumination.
-
-Next, to reduce overfitting and separate real heterogeneity from noise, we split the data into training and validation folds (70/30).  A causal forest trained on the first fold produced out-of-sample CATE predictions on the second.  We then computed Rank-Weighted Average Treatment Effect (RATE) metrics—AUTOC and Qini—which quantify the gain from targeting the highest-ranked individuals [@grf2024; @wager2018].  Their *p*-values were corrected with Benjamini–Hochberg false-discovery-rate adjustment at q = 0.1 to control the exploratory false-discovery rate [@benjamini1995controlling].  Where heterogeneity remained reliable, we fitted depth-2 policy trees [@policytree_package_2024; @athey2021; @athey_2021_policy_tree_econometrica] to distil transparent 'treat-if' rules (e.g., *treat if baseline score > X*).
-
-All heterogeneity steps—calibration tests, RATE, Qini curves, and policy-tree learning—were implemented in R with **grf** [@grf2024], **policytree** [@policytree_package_2024], using graphical and summary functions from **margot** [@margot2024].  This workflow identifies individualised effects, quantifies the policy value of targeting, and delivers practical decision rules.  See [Appendix D](#appendix-explain-grf) for full methodological details.
-
-### Exposure Indicator
-
-
-The New Zealand Attitudes and Values Study assesses Extraversion using the following question:
-
-
-Mini-IPIP6 Extraversion dimension: (i) I am the life of the party. (ii) I don't talk a lot. (r) (iii) I keep in the background. (r) (iv) I talk to a lot of different people at parties.(Refer to [Appendix A](#appendix-measures)).
-
-### Causal Identification Assumptions
-
-This study relies on the following identification assumptions for estimating the causal effect of Extraversion:
-
-1. **Consistency**: the observed outcome under the observed Extraversion is equal to the potential outcome under that exposure level. As part of consistency, we assume no interference: the potential outcomes for one individual are not affected by the Extraversion status of other individuals.
-
-2. **No unmeasured confounding**: all variables that affect both Extraversion and the outcome have been measured and accounted for in the analysis.
-
-3. **Positivity**: there is a non-zero probability of receiving each level of Extraversion for every combination of values of Extraversion and confounders in the population. Positivity is the only fundamental casual assumption that can be evaluated with data (refer to [Appendix E](#appendix-positivity)).
-
-### Confounding Control
-
-To manage confounding in our analysis, we implement @vanderweele2019's *modified disjunctive cause criterion* by following these steps:
-
-1. **Identified all common causes** of both the treatment and outcomes.
-2. **Excluded instrumental variables** that affect the exposure but not the outcome. Instrumental variables do not contribute to controlling confounding and can reduce the efficiency of the estimates.
-3. **Included proxies for unmeasured confounders** affecting both exposure and outcome. According to the principles of d-separation @pearl2009a, using proxies allows us to control for their associated unmeasured confounders indirectly.
-4. **Controlled for baseline exposure** and **baseline outcome**. Both are used as proxies for unmeasured common causes, enhancing the robustness of our causal estimates, refer to @vanderweele2020.
-
-### Statistical Estimation
-
-We estimate heterogeneous treatment effects with Generalized Random Forests (GRF) [@grf2024]. GRF extends random forests for causal inference by focusing on conditional average treatment effects (CATE). It handles complex interactions and non-linearities without explicit model specification, and it provides 'honest' estimates by splitting data between model-fitting and inference. GRF is doubly robust because it remains consistent if either the outcome model or the propensity model is correct. We evaluate policies with the `policytree` package [@policytree_package_2024; @athey_2021_policy_tree_econometrica] and visualise results with `margot` [@margot2024]. (Refer to [Appendix D](#appendix-explain-grf) for a detailed explanation of our approach.)
-
-### Missing Data
-
-The GRF package accepts missing values at baseline. To obtain valid inference for missing responses we computed inverse probability of censoring weights for censoring of the exposure, given that systematic censoring following the baseline wave may lead to selection bias that limit generalistion to the baseline target population [@bulbulia2024wierd]. See [Appendix D](#appendix-explain-grf).
-
-### Sensitivity Analysis
-
-We perform sensitivity analyses using the E-value metric [@vanderweele2017; @linden2020EVALUE]. The E-value represents the minimum association strength (on the risk-ratio scale) that an unmeasured confounder would need with both exposure and outcome—after adjusting for measured covariates—to explain away the observed association [@vanderweele2020; @linden2020EVALUE]. Confidence intervals for each E-value were derived from the multiplicity-adjusted confidence intervals of the corresponding coefficient estimates (bonferroni, α = 0.05), so the sensitivity analysis obeys the same error-control framework as the main results.
 
 
 {{< pagebreak >}}
@@ -648,7 +662,7 @@ We perform sensitivity analyses using the E-value metric [@vanderweele2017; @lin
 ```{r}
 #| label: fig-ate
 #| fig-cap: "Average Treatment Effects on Multi-dimensional Wellbeing"
-#| eval: true
+#| eval: true # |eval: false # <- set to false as needed/desired for your own material
 #| echo: false
 #| fig-height: 14
 #| fig-width: 18
@@ -660,7 +674,7 @@ ate_results$plot
 ```{r}
 #| label: tbl-outcomes
 #| tbl-cap: "Average Treatment Effects on Multi-dimensional Wellbeing"
-#| eval: true
+#| eval: true # |eval: false # <- set to false as needed/desired for your own material
 #| echo: false
 
 # ate_results$transformed_table|> kbl("markdown")
@@ -670,7 +684,8 @@ margot_bind_tables_markdown
 
 
 ```{r, results = 'asis'}
-#| eval: true
+#| eval: true # |eval: false # <- set to false as needed/desired for your own material
+
 cat(ate_results$interpretation)
 ```
 
@@ -688,7 +703,7 @@ Confidence intervals were adjusted for multiple comparisons using bonferroni cor
 #### RATE AUTOC and RATE Qini
 
 ```{r, results='asis'}
-#| eval: true
+#| eval: true # <- set to false as needed/desired
 #| echo: false
 cat(
   boilerplate::boilerplate_generate_text(
@@ -703,7 +718,7 @@ cat(
 ```
 
 ```{r, results='asis'}
-#| eval: true
+#| eval: true # <- set to false as needed/desired
 #| echo: false
 cat(rate_interp$comparison)
 ```
@@ -723,7 +738,7 @@ cat(rate_interp$autoc_results)
 ```{r}
 #| label: fig-rate-1
 #| fig-cap: "RATE AUTOC Graphs"
-#| eval: true
+#| eval: true  # <- set to false as needed/desired
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
@@ -744,7 +759,7 @@ cat(rate_interp$qini_results)
 #### QINI Curve Analysis
 
 ```{r, results='asis'}
-#| eval: true
+#| eval: true  # <- set to false: copy and paste your own text using this material
 #| echo: false
 cat(
   boilerplate::boilerplate_generate_text(
@@ -768,7 +783,7 @@ cat(qini_gain_interpretation$qini_explanation)
 ```{r}
 #| label: tbl-qini
 #| tbl-cap: "Qini Curve Results"
-#| eval: true
+#| eval: true  # <- set to false: copy and paste your own text using this material
 #| echo: false
 # table (only use if more than one qini gain interpretation)
 qini_gain_interpretation$summary_table |> 
@@ -782,7 +797,7 @@ qini_gain_interpretation$summary_table |>
 ```{r}
 #| label: fig-qini-1
 #| fig-cap: "Qini Graph"
-#| eval: true
+#| eval: true # <- set to false as needed/desired
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
@@ -795,7 +810,7 @@ qini_plots[[1]]
 #### Decision Rules (Who is Most Sensitive to Treatment?)
 
 ```{r, results='asis'}
-#| eval: true
+#| eval: true  # <- set to false: copy and paste your own text using this material
 #| echo: false
 cat(
   boilerplate::boilerplate_generate_text(
@@ -835,13 +850,51 @@ policy_plots[[2]]
 
 
 ```{r, results = 'asis'}
+#| eval: true # <- set to false if you want to copy and paste your own text
 cat(policy_interpretation_2L, "\n")
-``
+```
+
+
+{{< pagebreak >}}
+## Planned Subgroup Comparisons (Optional)
+
+Based on theoretical findings we expected that the effects of {name_exposure} would vary by age...@fig-planned-comparison and @tbl-planned-comparison
+
+```{r}
+#| label: fig-planned-comparison
+#| fig-cap: "Planned Comparison Plot"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+plots_subgroup_age_young_old
+```
+
+
+```{r}
+#| label: tbl-planned-comparison
+#| tbl-cap: "Planned Comparison Table"
+#| eval: true  # <- set to false: copy and paste your own text using this material
+#| echo: false
+# table (only use if more than one qini gain interpretation)
+group_comparison_age_young_old$results |> 
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  kbl(format = "markdown")
+
+```
+
+
+```{r, results = 'asis'}
+#| eval: true # <- set to false if you want to copy and paste your own text
+cat(group_comparison_age_young_old$interpretation)
+```
+
+{{< pagebreak >}}
 
 ## Discussion
 
 ```{r,  results='asis'}
-#| eval: false
+#| eval: false  # <- set to false: copy and paste your own text using this material
 #| echo: false
 cat(boilerplate_generate_text(
   category = "discussion",
@@ -858,21 +911,8 @@ cat(boilerplate_generate_text(
 ))
 ```
 
-### Ethics
 
-The University of Auckland Human Participants Ethics Committee reviews the NZAVS every three years. Our most recent ethics approval statement is as follows: The New Zealand Attitudes and Values Study was approved by the University of Auckland Human Participants Ethics Committee on 26/05/2021 for six years until 26/05/2027, Reference Number UAHPEC22576. The data in this study were simulated from the NZAVS and are not reflective of the New Zealand population. 
 
-### Author Statement
-
-Methods and Results sections were prepared by the Epic Lab using the `margot()` package. The author set up the study, and discussion...
-
-### Acknowledgements
-
-The New Zealand Attitudes and Values Study is supported by a grant from the Templeton Religious Trust (TRT0196; TRT0418). JB received support from the Max Plank Institute for the Science of Human History. The funders had no role in preparing the manuscript or deciding to publish it.
-
-### Data Availability
-
-Contact Prof Joseph Bulbulia ...
 
 {{< pagebreak >}}
 

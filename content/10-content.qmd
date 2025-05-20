@@ -106,6 +106,8 @@ Download Quarto here:
 
 ## Script 3: Setting Up Your Manuscript Document
 
+Note -- save this as a '.qmd' file
+
 ```{r}
 #| include: true
 #| eval: false

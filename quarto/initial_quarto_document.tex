@@ -252,24 +252,7 @@ Learning}.
 
 \subsection{Introduction}\label{introduction}
 
-The fundamental question in social psychology is whether political
-identification leads to conspiracies about political out-groups
-(\citeproc{ref-allen2000values}{Allen et al., 2000};
-\citeproc{ref-nytimes_scotus_venezuelans_2025}{Editorial, 2025}).
-
-Previous research falls into two categories, experimental and
-observational.
-
-Experimetaea
-
-Three challenges remains: First, to identify causality Second, to
-characterise responses in a national population, not a student sample.
-Third, to evaluate a ``phenotype'' of response across multiple measuers
-of conspiracy\ldots.
-
-To address these challenges we apply modern causal inference methods to
-a (simulated) national dataset that repeatedly measures the same
-individuals over time. \ldots{}
+FILL OUT
 
 \subsection{Method}\label{method}
 
@@ -290,10 +273,7 @@ population of New Zealand, we apply census-based survey weights that
 adjust for age, gender, and ethnicity (New Zealand European, Asian,
 Māori, Pacific) (\citeproc{ref-sibley2021}{Sibley, 2021}). For more
 information about the NZAVS, visit:
-\href{https://doi.org/10.17605/OSF.IO/75SNB}{OSF.IO/75SNB}. Note, the
-data used in this study were simulated from the NZAVS for the purposes
-of a student assessment and therefore are not valid for the general
-population of New Zealand. They are for illustrative purposes only.
+\href{https://doi.org/10.17605/OSF.IO/75SNB}{OSF.IO/75SNB}.
 
 \subsubsection{Target Population}\label{target-population}
 
@@ -308,7 +288,7 @@ demographic representation. Notably, it tends to under-sample males and
 individuals of Asian descent while over-sampling females and Māori (the
 indigenous peoples of New Zealand). To address these disparities and
 enhance the accuracy of our findings, we apply New Zealand Census survey
-weights to the sample data (again, caveates about simulation noted.)
+weights to the sample data.
 
 \subsubsection{Eligibility Criteria}\label{eligibility-criteria}
 
@@ -551,12 +531,12 @@ Wellbeing}
 \newpage{}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3448}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1264}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1264}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1264}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1149}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1609}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.3415}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1220}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1220}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1220}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1220}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1707}}@{}}
 
 \caption{\label{tbl-outcomes}Average Treatment Effects on
 Multi-dimensional Wellbeing}
@@ -581,27 +561,24 @@ E-Value bound
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-\textbf{Social Belonging} & \textbf{0.125} & \textbf{0.083} &
-\textbf{0.167} & \textbf{1.488} & \textbf{1.372} \\
-\textbf{Neighbourhood Community} & \textbf{0.119} & \textbf{0.073} &
-\textbf{0.165} & \textbf{1.471} & \textbf{1.343} \\
-\textbf{Social Support} & \textbf{0.096} & \textbf{0.052} &
-\textbf{0.14} & \textbf{1.407} & \textbf{1.277} \\
-\textbf{Self Esteem} & \textbf{0.087} & \textbf{0.047} & \textbf{0.127}
-& \textbf{1.381} & \textbf{1.26} \\
-\textbf{Meaning: Purpose} & \textbf{0.095} & \textbf{0.043} &
-\textbf{0.147} & \textbf{1.404} & \textbf{1.241} \\
-\textbf{Meaning: Sense} & \textbf{0.086} & \textbf{0.033} &
-\textbf{0.138} & \textbf{1.378} & \textbf{1.208} \\
-\textbf{Anxiety} & \textbf{-0.064} & \textbf{-0.107} & \textbf{-0.02} &
-\textbf{1.312} & \textbf{1.159} \\
-\textbf{Depression} & \textbf{-0.057} & \textbf{-0.103} &
-\textbf{-0.011} & \textbf{1.29} & \textbf{1.116} \\
-\textbf{Personal Well-being Index} & \textbf{0.052} & \textbf{0.011} &
-\textbf{0.094} & \textbf{1.274} & \textbf{1.11} \\
-Rumination & -0.04 & -0.091 & 0.01 & 1.233 & 1 \\
-Hours of Exercise (log) & -0.032 & -0.088 & 0.024 & 1.204 & 1 \\
-Life Satisfaction & 0.044 & 0 & 0.088 & 1.247 & 1 \\
+\textbf{Social Belonging} & \textbf{0.133} & \textbf{0.09} &
+\textbf{0.177} & \textbf{1.51} & \textbf{1.39} \\
+\textbf{Neighbourhood Community} & \textbf{0.114} & \textbf{0.07} &
+\textbf{0.159} & \textbf{1.458} & \textbf{1.328} \\
+\textbf{Self Esteem} & \textbf{0.099} & \textbf{0.06} & \textbf{0.139} &
+\textbf{1.415} & \textbf{1.299} \\
+\textbf{Social Support} & \textbf{0.098} & \textbf{0.055} &
+\textbf{0.141} & \textbf{1.413} & \textbf{1.284} \\
+\textbf{Meaning: Purpose} & \textbf{0.104} & \textbf{0.053} &
+\textbf{0.154} & \textbf{1.43} & \textbf{1.278} \\
+\textbf{Meaning: Sense} & \textbf{0.094} & \textbf{0.043} &
+\textbf{0.145} & \textbf{1.401} & \textbf{1.244} \\
+Depression & -0.065 & -0.112 & -0.017 & 1.315 & 1.146 \\
+Anxiety & -0.06 & -0.104 & -0.016 & 1.3 & 1.141 \\
+Life Satisfaction & 0.056 & 0.012 & 0.1 & 1.287 & 1.121 \\
+Personal Well-being Index & 0.055 & 0.013 & 0.098 & 1.284 & 1.116 \\
+Rumination & -0.051 & -0.102 & -0.001 & 1.271 & 1.012 \\
+Hours of Exercise (log) & -0.02 & -0.074 & 0.034 & 1.155 & 1 \\
 
 \end{longtable}
 
@@ -610,12 +587,24 @@ bonferroni correction (\(\alpha\) = 0.05). E‑values were also adjusted
 using bonferroni correction (\(\alpha\) = 0.05).
 
 The following outcomes showed reliable causal evidence (E‑value lower
-bound \textgreater{} 1.2): - Social Belonging: 0.125(0.064,0.186); on
-the original scale, 0.136 (0.07,0.203). E‑value bound = 1.311 -
-Neighbourhood Community: 0.119(0.052,0.186); on the original scale,
-0.187 (0.082,0.292). E‑value bound = 1.273 - Social Support:
+bound \textgreater{} 1.2): - Social Belonging: 0.133(0.069,0.197); on
+the original scale, 0.145 (0.075,0.215). E‑value bound = 1.329 -
+Neighbourhood Community: 0.114(0.049,0.179); on the original scale,
+0.179 (0.077,0.281). E‑value bound = 1.264 - Self Esteem:
+0.099(0.041,0.157); on the original scale, 0.126 (0.052,0.2). E‑value
+bound = 1.238 - Social Support: 0.098(0.035,0.161); on the original
+scale, 0.11 (0.039,0.18). E‑value bound = 1.216
+
+Confidence intervals were adjusted for multiple comparisons using
+bonferroni correction (\(\alpha\) = 0.05). E‑values were also adjusted
+using bonferroni correction (\(\alpha\) = 0.05). The following outcomes
+showed reliable causal evidence (E‑value lower bound \textgreater{}
+1.2): - \textbf{Social Belonging}: 0.125(0.064,0.186); on the original
+scale, 0.136 (0.07,0.203). E‑value bound = 1.311 - \textbf{Neighbourhood
+Community}: 0.119(0.052,0.186); on the original scale, 0.187
+(0.082,0.292). E‑value bound = 1.273 - Social Support:
 0.096(0.032,0.16); on the original scale, 0.107 (0.036,0.179). E‑value
-bound = 1.203
+bound = 1.203.
 
 \newpage{}
 
@@ -781,9 +770,9 @@ We computed the cumulative benefits as we increase the treated fraction
 by prioritising conditional average treatment effects (CATE) at two
 different spend levels: 20\% of a total budget and 50\% of a total
 budget, where the contrast is no priority assignment. \textbf{Meaning
-Sense} At 20\% spend: CATE prioritisation is beneficial (diff: 0.04
-{[}95\% CI: 0.01, 0.07{]}). At 50 \% spend: No reliable benefits from
-CATE prioritisation.
+Sense} At 20\% spend: CATE prioritisation is beneficial (diff: 0.08
+{[}95\% CI: 0.04, 0.12{]}). At 50\% spend: CATE prioritisation is
+beneficial (diff: 0.07 {[}95\% CI: 0.02, 0.12{]}).
 
 Table~\ref{tbl-qini} presents results for our Qini curve analysis at
 different spend rates.
@@ -800,8 +789,8 @@ Model & Spend 20\% & Spend 50\% \\
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Meaning Sense & \textbf{0.04 {[}0.01, 0.07{]}} & -0.00 {[}-0.06,
-0.05{]} \\
+Meaning Sense & \textbf{0.08 {[}0.04, 0.12{]}} & \textbf{0.07 {[}0.02,
+0.12{]}} \\
 
 \end{longtable}
 
@@ -868,54 +857,83 @@ evaluated on the rest.
 
 \textbf{Findings for log Hours Exercise:}
 
-Split 1: Short Form Health ≤ -0.333. Within that subgroup, split 2a:
-Belong ≤ -0.441, → \textbf{Control}; Belong \textgreater{} -0.441 →
-\textbf{Treated}.
+Split 1: Meaning Sense ≤ 0.201 (original: 5.953). Within that subgroup,
+split 2a: log Hours Commute ≤ 0.346 (original: 4.983), →
+\textbf{Control}; log Hours Commute \textgreater{} 0.346 (original:
+4.983) → \textbf{Treated}.
 
-Split 2: Short Form Health \textgreater{} -0.333. Within that subgroup,
-split 2b: Lifesat ≤ -0.268, → \textbf{Control}; Lifesat \textgreater{}
--0.268 → \textbf{Treated}.
+Split 2: Meaning Sense \textgreater{} 0.201 (original: 5.953). Within
+that subgroup, split 2b: log Hours Commute ≤ 0.543 (original: 6.044), →
+\textbf{Treated}; log Hours Commute \textgreater{} 0.543 (original:
+6.044) → \textbf{Control}.
 
 \textbf{Findings for Meaning Sense:}
 
-Split 1: Alcohol Intensity ≤ -0.313. Within that subgroup, split 2a: log
-Hours Commute ≤ -0.496, → \textbf{Control}; log Hours Commute
-\textgreater{} -0.496 → \textbf{Treated}.
+Split 1: log Household Inc ≤ 0.15 (original: 100000.015). Within that
+subgroup, split 2a: Age ≤ 0.612 (original: 57), → \textbf{Treated}; Age
+\textgreater{} 0.612 (original: 57) → \textbf{Control}.
 
-Split 2: Alcohol Intensity \textgreater{} -0.313. Within that subgroup,
-split 2b: Age ≤ 0.612, → \textbf{Treated}; Age \textgreater{} 0.612 →
-\textbf{Control}.
+Split 2: log Household Inc \textgreater{} 0.15 (original: 100000.015).
+Within that subgroup, split 2b: log Hours Exercise ≤ -0.543 (original:
+1.965), → \textbf{Control}; log Hours Exercise \textgreater{} -0.543
+(original: 1.965) → \textbf{Treated}.
+
+\newpage{} \#\# Planned Subgroup Comparisons (Optional)
+
+Based on theoretical findings we expected that the effects of
+\{name\_exposure\} would vary by
+age\ldots{}Figure~\ref{fig-planned-comparison} and
+Table~\ref{tbl-planned-comparison}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-planned-comparison-1.pdf}}
+
+}
+
+\caption{\label{fig-planned-comparison}Planned Comparison Plot}
+
+\end{figure}%
+
+\begin{longtable}[]{@{}ll@{}}
+
+\caption{\label{tbl-planned-comparison}Planned Comparison Table}
+
+\tabularnewline
+
+\toprule\noalign{}
+Outcomes & Group Differences \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Social Support & \textbf{-0.144 {[}-0.269, -0.019{]}} \\
+Social Belonging & -0.069 {[}-0.194, 0.056{]} \\
+Self Esteem & -0.051 {[}-0.179, 0.077{]} \\
+Rumination & 0.108 {[}-0.043, 0.259{]} \\
+Personal Well-being Index & \textbf{-0.145 {[}-0.277, -0.013{]}} \\
+Neighbourhood Community & -0.011 {[}-0.146, 0.124{]} \\
+Meaning: Sense & -0.161 {[}-0.330, 0.008{]} \\
+Meaning: Purpose & -0.047 {[}-0.218, 0.124{]} \\
+Life Satisfaction & -0.081 {[}-0.225, 0.063{]} \\
+Hours of Exercise (log) & -0.017 {[}-0.188, 0.154{]} \\
+Depression & 0.014 {[}-0.125, 0.153{]} \\
+Anxiety & 0.051 {[}-0.070, 0.172{]} \\
+
+\end{longtable}
+
+We found reliable treatment-effect differences comparing People Over 62
+Years Old to People Under 35 Years Old for Social Support (People Over
+62 Years Old vs People Under 35 Years Old): \(\delta\) = -0.144
+{[}-0.269, -0.019{]} and Personal Well-being Index (People Over 62 Years
+Old vs People Under 35 Years Old): \(\delta\) = -0.145 {[}-0.277,
+-0.013{]}. We did not find reliable differences for all other outcomes.
+
+\newpage{}
 
 \subsection{Discussion}\label{discussion}
-
-\subsubsection{Ethics}\label{ethics}
-
-The University of Auckland Human Participants Ethics Committee reviews
-the NZAVS every three years. Our most recent ethics approval statement
-is as follows: The New Zealand Attitudes and Values Study was approved
-by the University of Auckland Human Participants Ethics Committee on
-26/05/2021 for six years until 26/05/2027, Reference Number UAHPEC22576.
-
-\subsubsection{Author Statement}\label{author-statement}
-
-\subsubsection{Acknowledgements}\label{acknowledgements}
-
-The New Zealand Attitudes and Values Study is supported by a grant from
-the Templeton Religious Trust (TRT0196; TRT0418). JB received support
-from the Max Plank Institute for the Science of Human History. The
-funders had no role in preparing the manuscript or deciding to publish
-it.
-
-\subsubsection{Data Availability}\label{data-availability}
-
-The data described in the paper are part of the New Zealand Attitudes
-and Values Study. Members of the NZAVS management team and research
-group hold full copies of the NZAVS data. A de-identified dataset
-containing only the variables analysed in this manuscript is available
-upon request from the corresponding author or any member of the NZAVS
-advisory board for replication or checking of any published study using
-NZAVS data. The code for the analysis can be found at
-\href{https://osf.io/ab7cx/}{OSF link}.
 
 \newpage{}
 
@@ -1155,6 +1173,19 @@ yourself as being.}
 
 Ordinal response: (1 = Extremely Liberal, 7 = Extremely Conservative)
 (\citeproc{ref-jost_end_2006-1}{Jost, 2006})
+
+\paragraph{Major Religions}\label{major-religions}
+
+\emph{Do you identify with a religion and/or spiritual group?
+--\textgreater{} (If yes\ldots)--\textgreater{} What religion or
+spiritual group?}
+
+Open-ended (string). Coded from New Zealand Census Categories. Levels
+are: ``Not Religious'',``Anglican'',``Buddhist'', ``Catholic'',
+``Christian (Non-Denominational)'', ``Christian (Other
+Denominations)'',``Hindu'', ``Jewish'', ``Muslim'',``Presbyterian,
+Congregational, Reformed'', ``Other Religions''.
+(\citeproc{ref-coded}{\textbf{coded?}} for the NZAVS.)
 
 \paragraph{Religious Identification}\label{religious-identification}
 
@@ -1457,6 +1488,19 @@ Missing & 1244 (3.1\%) \\
 Mean (SD) & 3.59 (1.38) \\
 Median {[}Min, Max{]} & 3.97 {[}1.00, 7.00{]} \\
 Missing & 2682 (6.8\%) \\
+\textbf{Major Religions} & \\
+not\_rel & 24886 (62.8\%) \\
+anglican & 2087 (5.3\%) \\
+buddist & 332 (0.8\%) \\
+catholic & 3123 (7.9\%) \\
+christian\_nfd & 4534 (11.4\%) \\
+christian\_others & 1738 (4.4\%) \\
+hindu & 206 (0.5\%) \\
+jewish & 80 (0.2\%) \\
+muslim & 90 (0.2\%) \\
+presby\_cong\_reform & 875 (2.2\%) \\
+the\_others & 1068 (2.7\%) \\
+Missing & 616 (1.6\%) \\
 \textbf{Religious Identification} & \\
 Mean (SD) & 2.36 (2.18) \\
 Median {[}Min, Max{]} & 1.00 {[}1.00, 7.00{]} \\
@@ -1514,10 +1558,10 @@ Missing & 0 (0\%) & 11117 (28.0\%) \\
 Variables}\label{appendix-outcomes}
 
 \begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3415}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2195}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2195}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2195}}@{}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.3571}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2143}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2143}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2143}}@{}}
 \caption{Outcome variables measured
 at}\label{tbl-appendix-outcomes}\tabularnewline
 \toprule\noalign{}
@@ -1585,7 +1629,7 @@ Mean (SD) & 4.19 (1.66) & 4.38 (1.57) & 4.27 (1.63) \\
 Median {[}Min, Max{]} & 4.03 {[}1.00, 7.00{]} & 4.95 {[}1.00, 7.00{]} &
 4.04 {[}1.00, 7.00{]} \\
 Missing & 212 (0.5\%) & 13202 (33.3\%) & 13414 (16.9\%) \\
-\textbf{Pwi} & & & \\
+\textbf{Personal Well-being Index} & & & \\
 Mean (SD) & 7.09 (1.66) & 7.18 (1.63) & 7.12 (1.65) \\
 Median {[}Min, Max{]} & 7.29 {[}0, 10.0{]} & 7.47 {[}0, 10.0{]} & 7.46
 {[}0, 10.0{]} \\
@@ -1857,11 +1901,6 @@ AUTOC, Qini + \(p\) & Sample split \\
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\bibitem[\citeproctext]{ref-allen2000values}
-Allen, M. W., Wilson, M., Ng, S. H., \& Dunne, M. (2000). Values and
-beliefs of vegetarians and omnivores. \emph{The Journal of Social
-Psychology}, \emph{140}(4), 405--422.
-
 \bibitem[\citeproctext]{ref-athey2021}
 Athey, S., \& Wager, S. (2021a). Policy Learning With Observational
 Data. \emph{Econometrica}, \emph{89}(1), 133--161.
@@ -1906,11 +1945,6 @@ Relationships}, \emph{1}, 37--67.
 Diener, E., Emmons, R. A., Larsen, R. J., \& Griffin, S. (1985). The
 Satisfaction With Life Scale. \emph{Journal of Personality Assessment},
 \emph{49}(1), 71--75.
-
-\bibitem[\citeproctext]{ref-nytimes_scotus_venezuelans_2025}
-Editorial, N. (2025). Supreme court protected status venezuelans.
-\emph{The New York Times}.
-\url{https://www.nytimes.com/2025/05/19/us/politics/supreme-court-protected-status-venezuelans.html}
 
 \bibitem[\citeproctext]{ref-fahy2017}
 Fahy, K. M., Lee, A., \& Milne, B. J. (2017). \emph{{N}ew {Z}ealand
