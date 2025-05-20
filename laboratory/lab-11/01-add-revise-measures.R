@@ -63,6 +63,27 @@ unified_db$measures[[measure_name]] <- list(
   items       = list("how satisfied are you with your current job?")
 )
 
+unified_db$measures[[measure_name]] <- list(
+  name        = "Cyberbulling",
+  description = "Cyberbulling was measured with a single item.",
+  reference   = "wang2019cyberbullying",
+  waves       = "6-11",
+  keywords    = c("mental health"),
+  items       = list("Has someone ever used the internet, a mobile phone, or digital camera to hurt, intimidate or embarrass you?")
+)
+
+
+# saving a new measure
+unified_db$measures[["pwi"]] <- list(
+  name        = "Personal Well-Being Index",
+  description = "The Personal Well-Being Index consists of three items, asking 'How satisfied are you with...' ",
+  reference   = "cummins2003development",
+  waves       = "1-present",
+  keywords    = c("employment", "mental health"),
+  items       = list("'Your standard of living.'", "'Your health.'", "'Your future security.'", "'Your personal relationships.'")
+)
+
+
 # save with backup ---------------------------------------------------------
 boilerplate_save(
   unified_db,

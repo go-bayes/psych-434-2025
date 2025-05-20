@@ -31,9 +31,6 @@ path_quarto <- here::here("quarto")
 fs::dir_create(path_data)    # create data folder if needed
 cli::cli_h2("data folder ready ✔")
 
-fs::dir_create(path_quarto)  # create quarto folder if needed
-cli::cli_h2("quarto folder ready ✔")
-
 # import student boilerplate data ------------------------------------------
 load_student_boilerplate <- function() {
   base_url   <- "https://raw.githubusercontent.com/go-bayes/templates/main/student_boilerplate_data/"

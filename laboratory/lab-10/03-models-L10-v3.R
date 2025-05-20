@@ -180,9 +180,9 @@ here_save(ate_title, "ate_title")
 here_save(filename_prefix, "filename_prefix")
 
 # settings
-x_offset = -.5
-x_lim_lo = -.5
-x_lim_hi = .5
+x_offset = -.25
+x_lim_lo = -.25
+x_lim_hi = .25
 
 
 # defaults for ate plots
@@ -200,11 +200,11 @@ base_defaults_binary <- list(
   x_lim_lo = x_lim_lo,
   # will be set based on type
   x_lim_hi = x_lim_hi,
-  text_size = 4,
-  linewidth = 0.5,
+  text_size = 8,
+  linewidth = 0.75,
   estimate_scale = 1,
   base_size = 18,
-  point_size = 2,
+  point_size = 4,
   title_size = 19,
   subtitle_size = 16,
   legend_text_size = 10,
@@ -250,10 +250,11 @@ policy_tree_defaults <- list(
 # +----------------------------------------------+
 # |       DO NOT ALTER  (except where noted)     |
 # +----------------------------------------------+
-
+str(df_grf)
 # load GRF data and prepare inputs ----------------------------------------
 df_grf <- margot::here_read('df_grf', push_mods)
 E      <- margot::here_read('E',      push_mods)
+
 # check exposure binary
 stopifnot(all(df_grf[[t1_name_exposure_binary]][!is.na(df_grf[[t1_name_exposure_binary]])] %in% 0:1))
 # set exposure and weights
@@ -279,7 +280,16 @@ grf_defaults <- list(seed = 123, stabilize.splits = TRUE, num.trees = 2000)
 # +--------------------------+
 # |          ALERT           |
 # +--------------------------+
+
+
+
+
+
+
 # !!!! THIS WILL TAKE TIME  !!!!!
+# **----- COMMENT OUT AFTER YOU RUN TO AVOID RUNNING MORE THAN ONCE -----** 
+
+
 models_binary <- margot_causal_forest_parallel(
   data = df_grf,
   outcome_vars = t2_outcome_z,
@@ -292,6 +302,7 @@ models_binary <- margot_causal_forest_parallel(
   save_data = TRUE,
   train_proportion = 0.7
 )
+
 
 # +--------------------------+
 # |          ALERT           |
@@ -494,17 +505,9 @@ models_binary_flipped_all <- margot_flip_forests_parallel(models_binary,
                                                  max_size_GB = 32)
 
 cli::cli_h1("flipped forest models completed ✔")
-
-# +--------------------------+
-# |          ALERT           |
-# +--------------------------+
 # !!!! THIS WILL TAKE TIME  !!!!!
 # save
 here_save_qs(models_binary_flipped_all, "models_binary_flipped_all", push_mods)
-
-# +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
 
 
 # +--------------------------+
@@ -542,7 +545,7 @@ rate_results <-
     models   = models_binary_flipped_all,
     #  model_names        = model_keep,     # only models that survived bh
     policy   = "treat_best",
-    alpha  = 0.10,             # raw p < 0.10 is enough to keep
+    alpha  = 0.20,             # raw p < 0.20 is enough to keep
     adjust = "fdr",              # <‑‑correction
     label_mapping = label_mapping_all
   )
@@ -611,7 +614,8 @@ purrr::walk(plots_2L_corrected, print)   # print each to the plot panel
 # their implied treatment rule.                                         
 interp_all_2L <- margot_interpret_policy_batch(
   models_binary_flipped_all,  # use the *flipped* master object for labels
-  model_names = model_keep
+  model_names = model_keep,
+  original_df = original_df # include original data for better interpretation
 )
 
 cat(interp_all_2L, "\n")
@@ -704,7 +708,8 @@ subsets_standard_wealth <- list(
     description = "Effects among those HShold income < -1 SD (NZD ~41k)",
     label = "Poor"  # label remains as is, but could be changed if desired
   ),
-  MiddleIncome = list(subset_condition = complex_condition_wealth, description = "Effects among those HS_hold income within +/-1SD (> NZD 41k < NZD 191k)"),
+  MiddleIncome = list(subset_condition = complex_condition_wealth, description = "Effects among those HS_hold income within +/-1SD (> NZD 41k < NZD 191k)", 
+                      label = "Middle Income"),
   Rich = list(
     var = "t0_log_household_inc_z",
     value = 1,
@@ -746,21 +751,18 @@ subsets_standard_age <- list(
     var = "t0_age_z",
     value = -1,
     operator = "<",
-    description = "Effects among those < under 35 years old",
     label = "Age < 35"
   ),
   Middle = list(
     var = "t0_age_z",
     # operator = "<",
     subset_condition = complex_condition_age,
-    description = "Effects among those 35-62",
     label = "Age 35-62"
   ),
   Older = list(
     var = "t0_age_z",
     value = 1,
     operator = ">",
-    description = "Effects among those > 62",
     label = "Age > 62"
   )
 )
@@ -785,49 +787,113 @@ subsets_standard_ethnicity <- list(
   Asian = list(
     var = "t0_eth_cat_asian_binary",
     value = 1,
+    label = "Asians",
     description = "Asians"
+    
   ),
   Euro = list(
     var = "t0_eth_cat_euro_binary",
     value = 1,
-    description = "Europeans (Pakeha)"
+    label = "NZ Europeans ",
+    description = "NZ Europeans"
+    
   ),
   Pacific = list(
     var = "t0_eth_cat_pacific_binary",
     value = 1,
-    description = "Pacific Peoples"
+    label = "Pacific Peoples",
+    description =  "Pacific Peoples"
   ),
   Maori = list(
     var = "t0_eth_cat_maori_binary",
     value = 1,
-    description = "Māori"
+    label = "Māori",
+    description = 'Māori'
   )
 )
 
+# religious denominations
+subsets_standard_secular_vs_religious <- list(
+  Not_Religious = list(
+    var = "t0_religion_bigger_denominations_not_rel_binary",
+    value = 1,
+    label = "Not Religious"
+  ),
+  Religious = list(
+    var = "t0_religion_bigger_denominations_not_rel_binary",
+    value = 0,
+    label = "Religious"
+  )
+)
 
 # batch planned subgroup analysis -----------------------------------------
 # set up domain names
+detach("package:margot", unload = TRUE)
+devtools::load_all("/Users/joseph/GIT/margot/")
+
 domain_names <- c("wellbeing")
 
 # set up subtitles
 subtitles <- ""
 
+# new base defaults that work for your comparisons
+# defaults for ate plots
+
+# play around with these values
+x_offset_comp <- 1.0
+x_lim_lo_comp <- -1.0
+x_lim_hi_comp <- 1.0 
+
+label_mapping_all
+base_defaults_comparisons <- list(
+  type = "RD",
+  title = ate_title,
+  e_val_bound_threshold = 1.2,
+  label_mapping = "label_mapping_all",
+  adjust = "bonferroni", #<- new
+  alpha = 0.05, # <- new
+  colors = c(
+    "positive" = "#E69F00",
+    "not reliable" = "grey50",
+    "negative" = "#56B4E9"
+  ),
+  x_offset = x_offset_comp,
+  # will be set based on type
+  x_lim_lo = x_lim_lo_comp,
+  # will be set based on type
+  x_lim_hi = x_lim_hi_comp,
+  text_size = 8,
+  linewidth = 0.75,
+  estimate_scale = 1,
+  base_size = 18,
+  point_size = 2.5,
+  title_size = 19,
+  subtitle_size = 16,
+  legend_text_size = 10,
+  legend_title_size = 10,
+  include_coefficients = FALSE
+)
+
 # 3. batch subgroup analysis -----------------------------------------
 planned_subset_results <- margot_planned_subgroups_batch(
-  domain_models = list(models_binary),  # use *original* (unflipped) forests
-  X             = X,                    # covariate matrix
-  base_defaults = base_defaults_binary, # labeller + theme options
-  subset_types  = list(
-    wealth     = subsets_standard_wealth,
-    ethnicity  = subsets_standard_ethnicity,
-    political  = subsets_standard_political,
-    gender     = subsets_standard_gender,
-    cohort     = subsets_standard_age
-  ),
-  original_df   = original_df,          # raw data for back‑transforms
-  domain_names  = "wellbeing",
-  subtitles     = ""                   # optional ggplot subtitle
+  domain_models  = list(models_binary),
+  X              = X,
+  base_defaults  = base_defaults_comparisons,
+  subset_types   = list(religions = subsets_standard_religion,
+                        religions_secular = subsets_standard_secular_vs_religious, # only compare one group with others
+                        ethnicity = subsets_standard_ethnicity,
+                        wealth = subsets_standard_wealth, 
+                        gender = subsets_standard_gender, 
+                        cohort = subsets_standard_age),
+  original_df    = original_df,
+  label_mapping  = label_mapping_all,          # ← supply it here
+  domain_names   = "wellbeing",
+  subtitles      = "",
+  adjust         = "bonferroni",  # ← here
+  alpha          = 0.05           # ← and here
 )
+
+
 
 # the function:                                                        
 #   1. filters the test fold to each stratum,                           
@@ -836,7 +902,11 @@ planned_subset_results <- margot_planned_subgroups_batch(
 
 # 4. text summaries ---------------------------------------------------
 cat(planned_subset_results$wellbeing$wealth$explanation)
+cat(planned_subset_results$wellbeing$religions$explanation)
 cat(planned_subset_results$wellbeing$ethnicity$explanation)
+cat(planned_subset_results$wellbeing$religions_secular$explanation)
+
+
 # (political, gender, cohort idem)
 
 # 5. assemble quick facet plots --------------------------------------
@@ -847,7 +917,7 @@ cat(planned_subset_results$wellbeing$ethnicity$explanation)
 plots_subgroup_wealth <- wrap_plots(
   list(
     planned_subset_results$wellbeing$wealth$results$Poor$plot,
-    planned_subset_results$wellbeing$wealth$results$MiddleIncome$plot,
+    planned_subset_results$wellbeing$wealth$results$`Middle Income`$plot,
     planned_subset_results$wellbeing$wealth$results$Rich$plot
   ), ncol = 1) +
   plot_annotation(
@@ -860,17 +930,17 @@ print(plots_subgroup_wealth)
 # example 2 – 2×2 grid for ethnicity (space-saving) ------------------
 plots_subgroup_ethnicity <- wrap_plots(
   list(
-    planned_subset_results$wellbeing$ethnicity$results$Asian$plot,
-    planned_subset_results$wellbeing$ethnicity$results$Euro$plot,
-    planned_subset_results$wellbeing$ethnicity$results$Pacific$plot,
-    planned_subset_results$wellbeing$ethnicity$results$Maori$plot
+    planned_subset_results$wellbeing$ethnicity$results$Asians$plot,
+    planned_subset_results$wellbeing$ethnicity$result$`NZ Europeans `$plot,
+    planned_subset_results$wellbeing$ethnicity$results$`Pacific Peoples`$plot,
+    planned_subset_results$wellbeing$ethnicity$results$Māori$plot
   ), ncol = 2) +
   plot_annotation(
     title = "Ethnicity",
     theme = theme(plot.title = element_text(size = 18, face = "bold"))
   )
 print(plots_subgroup_ethnicity)
-
+planned_subset_results$wellbeing$ethnicity$results$Asians$plot
 # -------------------------------------------------------------------
 # example 3 – horizontal strip for gender ----------------------------
 plots_subgroup_gender <- wrap_plots(
@@ -885,12 +955,28 @@ plots_subgroup_gender <- wrap_plots(
 print(plots_subgroup_gender)
 
 
+# example 4 – Religious vs Secular -------------------
+plots_subgroup_secular <- wrap_plots(
+  list(
+    planned_subset_results$wellbeing$religions_secular$results$`Not Religious`$plot,
+    planned_subset_results$wellbeing$religions_secular$results$`Religious`$plot
+  ), ncol = 1) +
+  plot_annotation(
+    title = "Secular vs Religious",
+    theme = theme(plot.title = element_text(size = 18, face = "bold"))
+  )
+print(plots_subgroup_secular)
+
+
+
 # 6. group‑vs‑group comparisons --------------------------------------
 #   • `margot_compare_groups()` takes two transformed tables (risk‑diff)
 #   • returns a *difference in differences* tibble + plain‑text interp.
 
 # example: young (<35) vs older (>62)
 group_comparison_age_young_old <- margot_compare_groups(
+  group1_name = "People Under 35 Years Old",
+  group2_name = "People Over 62 Years Old", 
   planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table, # reference
   planned_subset_results$wellbeing$cohort$results$`Age > 62`$transformed_table, # comparison
   type            = "RD",          # risk‑difference scale
@@ -898,6 +984,25 @@ group_comparison_age_young_old <- margot_compare_groups(
 )
 print(group_comparison_age_young_old$results |> kbl("markdown", digits = 2))
 cat(group_comparison_age_young_old$interpretation)
+
+
+# 7. group‑vs‑group comparisons --------------------------------------
+#   • `margot_compare_groups()` takes two transformed tables (risk‑diff)
+#   • returns a *difference in differences* tibble + plain‑text interp.
+
+# example: young (<35) vs older (>62)
+group_comparison_secular_religious <- margot_compare_groups(
+  group1_name = "Secular People",
+  group2_name = "People Who Identify With Religion", 
+  planned_subset_results$wellbeing$religions_secular$results$`Not Religious`$transformed_table, # reference
+  planned_subset_results$wellbeing$religions_secular$results$Religious$transformed_table, # reference
+  type            = "RD",          # risk‑difference scale
+  decimal_places  = 3
+)
+print(group_comparison_secular_religious$results |> kbl("markdown", digits = 2))
+cat(group_comparison_secular_religious$interpretation)
+
+
 
 # note comparisons should be specified a priori, and you can save results as you
 # for your manuscript

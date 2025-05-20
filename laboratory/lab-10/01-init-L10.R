@@ -278,7 +278,10 @@ baseline_vars <- c(
   
   # social and psychological
   "belong", "nz_dep2018", "nzsei_13_l",
-  "political_conservative", "religion_identification_level"
+  "political_conservative", "religion_identification_level",
+  
+  # religious denominations
+  "religion_bigger_denominations" # <- added for interest *OPTIONAL
 )
 
 
@@ -651,7 +654,11 @@ var_labels_baseline <- list(
   "log_hours_children" = "Log Hours with Children",
   "log_hours_commute" = "Log Hours Commuting",
   "log_hours_exercise" = "Log Hours Exercising",
-  "log_hours_housework" = "Log Hours on Housework"
+  "log_hours_housework" = "Log Hours on Housework",
+  
+
+  # Added (Optional)
+  "religion_bigger_denominations" = "Major Religions"
 )
 here_save(var_labels_baseline, "var_labels_baseline")
 
@@ -659,7 +666,7 @@ here_save(var_labels_baseline, "var_labels_baseline")
 # reivew your outcomes make sure they appear on the list below
 # comment out what you do not need
 outcome_vars
-
+df_nz_long$religion_bigger_denominations
 # get names
 var_labels_outcomes <- list(
   # "alcohol_frequency_weekly" = "Alcohol Frequency (weekly)",

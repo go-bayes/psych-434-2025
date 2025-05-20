@@ -213,7 +213,7 @@
 
 \title{Your Title}
 \author{YOUR NAME}
-\date{2025-05-18}
+\date{2025-05-20}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -250,6 +250,27 @@ Learning}.
 
 \newpage{}
 
+\subsection{Introduction}\label{introduction}
+
+The fundamental question in social psychology is whether political
+identification leads to conspiracies about political out-groups
+(\citeproc{ref-allen2000values}{Allen et al., 2000};
+\citeproc{ref-nytimes_scotus_venezuelans_2025}{Editorial, 2025}).
+
+Previous research falls into two categories, experimental and
+observational.
+
+Experimetaea
+
+Three challenges remains: First, to identify causality Second, to
+characterise responses in a national population, not a student sample.
+Third, to evaluate a ``phenotype'' of response across multiple measuers
+of conspiracy\ldots.
+
+To address these challenges we apply modern causal inference methods to
+a (simulated) national dataset that repeatedly measures the same
+individuals over time. \ldots{}
+
 \subsection{Method}\label{method}
 
 \subsubsection{Sample}\label{sample}
@@ -269,7 +290,10 @@ population of New Zealand, we apply census-based survey weights that
 adjust for age, gender, and ethnicity (New Zealand European, Asian,
 Māori, Pacific) (\citeproc{ref-sibley2021}{Sibley, 2021}). For more
 information about the NZAVS, visit:
-\href{https://doi.org/10.17605/OSF.IO/75SNB}{OSF.IO/75SNB}.
+\href{https://doi.org/10.17605/OSF.IO/75SNB}{OSF.IO/75SNB}. Note, the
+data used in this study were simulated from the NZAVS for the purposes
+of a student assessment and therefore are not valid for the general
+population of New Zealand. They are for illustrative purposes only.
 
 \subsubsection{Target Population}\label{target-population}
 
@@ -284,7 +308,7 @@ demographic representation. Notably, it tends to under-sample males and
 individuals of Asian descent while over-sampling females and Māori (the
 indigenous peoples of New Zealand). To address these disparities and
 enhance the accuracy of our findings, we apply New Zealand Census survey
-weights to the sample data.
+weights to the sample data (again, caveates about simulation noted.)
 
 \subsubsection{Eligibility Criteria}\label{eligibility-criteria}
 
@@ -1267,7 +1291,12 @@ Ordinal response (1 = Strongly Disagree to 7 = Strongly Agree).
 
 \paragraph{Personal Well Being Index}\label{personal-well-being-index}
 
-no information available for this variable.
+\emph{`Your standard of living.'} \emph{`Your health.'} \emph{`Your
+future security.'} \emph{`Your personal relationships.'}
+
+The Personal Well-Being Index consists of three items, asking `How
+satisfied are you with\ldots{}'
+(\citeproc{ref-cummins2003development}{Cummins et al., 2003})
 
 \paragraph{Rumination}\label{rumination}
 
@@ -1828,6 +1857,11 @@ AUTOC, Qini + \(p\) & Sample split \\
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-allen2000values}
+Allen, M. W., Wilson, M., Ng, S. H., \& Dunne, M. (2000). Values and
+beliefs of vegetarians and omnivores. \emph{The Journal of Social
+Psychology}, \emph{140}(4), 405--422.
+
 \bibitem[\citeproctext]{ref-athey2021}
 Athey, S., \& Wager, S. (2021a). Policy Learning With Observational
 Data. \emph{Econometrica}, \emph{89}(1), 133--161.
@@ -1857,6 +1891,12 @@ Bulbulia, J. A. (2024b). Methods in causal inference part 3: Measurement
 error and external validity threats. \emph{Evolutionary Human Sciences},
 \emph{6}, e42. \url{https://doi.org/10.1017/ehs.2024.33}
 
+\bibitem[\citeproctext]{ref-cummins2003development}
+Cummins, R. A., Eckersley, R., Pallant, J., Vugt, J. van, \& Misajon, R.
+(2003). Development of a national index of subjective wellbeing: {The}
+{Australian} {Unity} {Wellbeing} {Index}. \emph{Social Indicators
+Research}, \emph{64}, 159--190.
+
 \bibitem[\citeproctext]{ref-cutrona1987}
 Cutrona, C. E., \& Russell, D. W. (1987). The provisions of social
 relationships and adaptation to stress. \emph{Advances in Personal
@@ -1866,6 +1906,11 @@ Relationships}, \emph{1}, 37--67.
 Diener, E., Emmons, R. A., Larsen, R. J., \& Griffin, S. (1985). The
 Satisfaction With Life Scale. \emph{Journal of Personality Assessment},
 \emph{49}(1), 71--75.
+
+\bibitem[\citeproctext]{ref-nytimes_scotus_venezuelans_2025}
+Editorial, N. (2025). Supreme court protected status venezuelans.
+\emph{The New York Times}.
+\url{https://www.nytimes.com/2025/05/19/us/politics/supreme-court-protected-status-venezuelans.html}
 
 \bibitem[\citeproctext]{ref-fahy2017}
 Fahy, K. M., Lee, A., \& Milne, B. J. (2017). \emph{{N}ew {Z}ealand
