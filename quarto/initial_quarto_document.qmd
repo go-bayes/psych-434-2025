@@ -24,8 +24,8 @@ fontfamily: libertinus
 bibliography: references.bib
 csl: apa7.csl
 format:
-  # docx: 
-  #   default: false
+  docx:
+    default: false
   pdf:
     pdf-engine: lualatex
     sanitise: true
@@ -775,7 +775,7 @@ cat(
 
 ```{r, results = 'asis'}
 # only reliable results
-cat(qini_gain_interpretation$qini_explanation)
+cat(qini_gain_interpretation$qini_explanation) 
 ```
 
 @tbl-qini presents results for our Qini curve analysis at different spend rates.
@@ -788,10 +788,10 @@ cat(qini_gain_interpretation$qini_explanation)
 # table (only use if more than one qini gain interpretation)
 qini_gain_interpretation$summary_table |> 
   mutate(across(where(is.numeric), ~ round(., 2))) %>%
-  kbl(format = "markdown")
+  kbl(format = "markdown") #<-- only if you have this, otherwise delete this code
 ```
 
-@fig-qini-1 presents the Qini curve for `r qini_names[[1]]`
+@fig-qini-1 presents the Qini curve for....
 
 
 ```{r}
@@ -801,7 +801,7 @@ qini_gain_interpretation$summary_table |>
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
-qini_plots[[1]]
+qini_plots[[1]] #<-- only if you have this, otherwise delete this code
 ```
 
 
