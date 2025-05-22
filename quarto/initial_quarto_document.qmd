@@ -91,6 +91,19 @@ if (!requireNamespace("pacman", quietly = TRUE)) {
   install.packages("pacman")
 }
 
+
+# min version of margot
+if (packageVersion("margot") < "1.0.51") {
+  stop(
+    "please install margot >= 1.0.51 for this workflow\n
+       run: devtools::install_github('go-bayes/margot')
+"
+  )
+}
+
+# call library
+library("margot")
+
 # load (and install if needed) all required packages
 pacman::p_load(
   boilerplate, margot, shiny, tidyverse,
