@@ -104,6 +104,9 @@ if (packageVersion("margot") < "1.0.51") {
 # call library
 library("margot")
 
+# check package version
+packageVersion(pkg = "margot")
+
 # load (and install if needed) all required packages
 pacman::p_load(
   boilerplate, margot, shiny, tidyverse,
