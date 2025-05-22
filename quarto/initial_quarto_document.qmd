@@ -23,9 +23,9 @@ fontfamily: libertinus
 bibliography: references.bib
 csl: apa7.csl
 format:
-  # docx: # comment this out if you want pdf
-  #   default: false  # comment this out if you want pdf
-  #   output-dir: "quarto"  # or wherever you want to save it  # comment this out if you want pdf
+  docx: # comment this out if you want pdf
+    default: false  # comment this out if you want pdf
+    output-dir: "quarto"  # or wherever you want to save it  # comment this out if you want pdf
   pdf:
     pdf-engine: lualatex
     sanitise: true
@@ -416,26 +416,34 @@ autoc_plots <-
 length(autoc_plots)
 autoc_plots[[1]]
 
+
 # Qini model curves --------------------------------------------
+devtools::load_all("/Users/joseph/GIT/margot/")
+
 qini_results <-
   margot_policy(
     models_binary_flipped_all,
     save_plots         = FALSE,
     output_dir         = here::here(push_mods),
-    decision_tree_args = list(),
-    policy_tree_args   = list(),
-    # model_names        = model_groups$qini, # <- removed, investigate all models
+    decision_tree_args = decision_tree_args,
+    policy_tree_args   = policy_tree_args,
+    model_names        = names(models_binary_flipped_all$results), 
     original_df        = original_df,
     label_mapping      = label_mapping_all_flipped,
     max_depth          = 2L,
     output_objects     = c("qini_plot", "diff_gain_summaries")
   )
 
+label_mapping_all_flipped
+names(models_binary_flipped_all$results)
+
 # view qini plots
 qini_plots <- purrr::map(qini_results, ~ .x$qini_plot)
-
+names(qini_results)
+str(qini_results, max.level = 3)
 # interpret qini
-qini_gain_interpretation <- margot_interpret_qini(qini_results)
+qini_gain_interpretation <- margot_interpret_qini(qini_results, 
+                                                  label_mapping = label_mapping_all_flipped)
 
 # table (only use if more than one qini gain interpretation)
 qini_gain_interpretation$summary_table |> 
@@ -445,8 +453,11 @@ qini_gain_interpretation$summary_table |>
 # the interpretation - used below
 cat(qini_gain_interpretation$qini_explanation)
 
+qini_gain_interpretation$reliable_model_ids
 
 cli::cli_h1("Qini model curves plotted ✔")
+
+
 
 # ---- policy analysis with qini and trees -------------------------------
 # focus of study
@@ -696,15 +707,11 @@ cat(
 )
 ```
 
-
-
 {{< pagebreak >}}
 
 ## Results
 
 ### Average Treatement Effects
-
-
 
 ```{r}
 #| label: fig-ate
@@ -728,26 +735,21 @@ ate_results$plot
 margot_bind_tables_markdown
 ```
 
-
-
 ```{r, results = 'asis'}
 #| eval: true # |eval: false # <- set to false as needed/desired for your own material
 
 cat(ate_results$interpretation)
 ```
 
+Confidence intervals were adjusted for multiple comparisons using bonferroni correction ($\alpha$ = 0.05). E‑values were also adjusted using bonferroni correction ($\alpha$ = 0.05). The following outcomes showed reliable causal evidence (E‑value lower bound \> 1.2):
 
-Confidence intervals were adjusted for multiple comparisons using bonferroni correction ($\alpha$ = 0.05). E‑values were also adjusted using bonferroni correction ($\alpha$ = 0.05). The following outcomes showed reliable causal evidence (E‑value lower bound > 1.2):
-
-- **Social Belonging**: 0.125(0.064,0.186); on the original scale, 0.136 (0.07,0.203).  E‑value bound = 1.311
-- **Neighbourhood Community**: 0.119(0.052,0.186); on the original scale, 0.187 (0.082,0.292).  E‑value bound = 1.273
-- Social Support: 0.096(0.032,0.16); on the original scale, 0.107 (0.036,0.179).  E‑value bound = 1.203.
-
+-   **Social Belonging**: 0.125(0.064,0.186); on the original scale, 0.136 (0.07,0.203). E‑value bound = 1.311
+-   **Neighbourhood Community**: 0.119(0.052,0.186); on the original scale, 0.187 (0.082,0.292). E‑value bound = 1.273
+-   Social Support: 0.096(0.032,0.16); on the original scale, 0.107 (0.036,0.179). E‑value bound = 1.203.
 
 {{< pagebreak >}}
 
-### Heterogeneous Treatment Effects 
-
+### Heterogeneous Treatment Effects
 
 #### Decision Rules (Who is Most Sensitive to Treatment?)
 
@@ -768,7 +770,6 @@ cat(
 
 {{< pagebreak >}}
 
-        
 ```{r}
 #| label: fig-policy-1
 #| fig-cap: "Decision Tree: {glued_policy_names_1}"
@@ -803,6 +804,7 @@ policy_plots[[2]]
 #| fig-width: 9
 policy_plots[[3]]
 ```
+
 {{< pagebreak >}}
 
 ```{r}
@@ -829,7 +831,6 @@ policy_plots[[5]]
 
 {{< pagebreak >}}
 
-
 ```{r}
 #| label: fig-policy-6
 #| fig-cap: "Decision Tree: {glued_policy_names_6}"
@@ -853,7 +854,6 @@ policy_plots[[7]]
 ```
 
 {{< pagebreak >}}
-
 
 ```{r}
 #| label: fig-policy-8
@@ -890,7 +890,6 @@ policy_plots[[9]]
 policy_plots[[10]]
 ```
 
-
 {{< pagebreak >}}
 
 ```{r}
@@ -904,7 +903,6 @@ policy_plots[[11]]
 ```
 
 {{< pagebreak >}}
-
 
 ```{r}
 #| label: fig-policy-12
@@ -923,11 +921,9 @@ policy_plots[[12]]
 cat(policy_interpretation_2L, "\n")
 ```
 
+{{< pagebreak >}} \## Planned Subgroup Comparisons (Optional)
 
-{{< pagebreak >}}
-## Planned Subgroup Comparisons (Optional)
-
-Based on theoretical findings we expected that the effects of {name_exposure} would vary by age...@fig-planned-comparison and @tbl-planned-comparison
+Based on theoretical findings we expected that the effects of {name_exposure} would vary by age...\@fig-planned-comparison and @tbl-planned-comparison
 
 ```{r}
 #| label: fig-planned-comparison
@@ -938,7 +934,6 @@ Based on theoretical findings we expected that the effects of {name_exposure} wo
 #| fig-width: 9
 plots_subgroup_age_young_old
 ```
-
 
 ```{r}
 #| label: tbl-planned-comparison
@@ -951,7 +946,6 @@ group_comparison_age_young_old$results |>
   kbl(format = "markdown")
 
 ```
-
 
 ```{r, results = 'asis'}
 #| eval: true # <- set to false if you want to copy and paste your own text
@@ -980,18 +974,13 @@ cat(boilerplate_generate_text(
 ))
 ```
 
-
-
-
 {{< pagebreak >}}
-
 
 ## Appendix A: Measures {#appendix-measures}
 
+### Measures
 
-### Measures 
-
-####  Baseline Covariate Measures 
+#### Baseline Covariate Measures
 
 ```{r, results='asis'}
 cat(baseline_measures_text)
@@ -1009,13 +998,11 @@ cat(exposure_measures_text)
 cat(outcome_measures_text)
 ```
 
-
 {{< pagebreak >}}
 
 ## Appendix B: Sample Characteristics {#appendix-sample}
 
-####  Sample Statistics: Baseline Covariates
-
+#### Sample Statistics: Baseline Covariates
 
 @tbl-appendix-baseline presents sample demographic statistics.
 
@@ -1027,15 +1014,12 @@ cat(outcome_measures_text)
 markdown_table_baseline
 ```
 
-
 Demographic statistics for New Zealand Attitudes and Values Cohort: {baseline_wave_glued}.
 :::
 
-
-### Sample Statistics: Exposure Variable {#appendix-exposure} 
+### Sample Statistics: Exposure Variable {#appendix-exposure}
 
 <!-- @tbl-sample-exposures presents sample statistics for the exposure variable, religious service attendance, during the baseline and exposure waves. This variable was not measured in part of NZAVS time 12 (years 2020-2021) and part of NZAVS time 13 (years 2021-2022). To address missingness, if a value was observed after NZAVS time 14, we carried the previous observation forward and created and NA indicator. If there was no future observation, the participant was treated as censored, and inverse probability of censoring weights were applied, following our standard method for handling missing observations (see mansucript **Method**/**Handling of Missing Data**). Here, our carry-forward imputation approach may result in conservative causal effect estimation because it introduces measurement error. However, this approach would not generally bias causal effect estimation away from the null because the measurement error is unsystematic and random and unrelated to the outcomes. -->
-
 
 ::: {#tbl-appendix-exposures}
 ```{r, results = 'asis'}
@@ -1046,12 +1030,13 @@ Demographic statistics for New Zealand Attitudes and Values Cohort: {baseline_wa
 markdown_table_exposures
 
 ```
+
 Demographic statistics for New Zealand Attitudes and Values Cohort waves 2018.
 :::
 
 {{< pagebreak >}}
 
-### Sample Statistics: Outcome Variables {#appendix-outcomes} 
+### Sample Statistics: Outcome Variables {#appendix-outcomes}
 
 ::: {#tbl-appendix-outcomes}
 ```{r, results = 'asis'}
@@ -1062,14 +1047,13 @@ Demographic statistics for New Zealand Attitudes and Values Cohort waves 2018.
 markdown_table_outcomes
 
 ```
+
 Outcome variables measured at {baseline_wave_glued} and {outcome_wave}
 :::
-
 
 {{< pagebreak >}}
 
 ## Appendix C: Transition Matrix to Check The Positivity Assumption {#appendix-transition}
-
 
 ```{r, results = 'asis'}
 #| label: tbl-transition
@@ -1085,11 +1069,9 @@ transition_tables_binary$tables[[1]]
 cat(transition_tables_binary$explanation)
 ```
 
-
 {{< pagebreak >}}
 
 ## Appendix D: Approach to Heterogeneous Treatment Effects {#appendix-cate-validation}
-
 
 ```{r, results='asis'}
 #| eval: true
@@ -1109,13 +1091,9 @@ cat(
 
 {{< pagebreak >}}
 
-
-
-
 {{< pagebreak >}}
 
-
-## Appendix E: RATE AUTOC and RATE Qini  {#appendix-rate}
+## Appendix E: RATE AUTOC and RATE Qini {#appendix-rate}
 
 ```{r, results='asis'}
 #| eval: true # <- set to false as needed/desired
@@ -1140,15 +1118,12 @@ cat(rate_interp$comparison)
 
 Refer to [Appendix E](#appendix-cate-validation) for details.
 
-
-
 ##### RATE AUTOC Results
 
 ```{r, results = 'asis'}
 # only reliable results
 cat(rate_interp$autoc_results)
 ```
-
 
 ```{r}
 #| label: fig-rate-1
@@ -1162,9 +1137,7 @@ autoc_plots[[1]]
 
 @fig-rate-1 presents the RATE AUTOC curve for `r autoc_names[[1]]`
 
-
 {{< pagebreak >}}
-
 
 ## Appendix F QINI Curve Analysis {#appendix-qini-curve}
 
@@ -1202,7 +1175,6 @@ qini_gain_interpretation$summary_table |>
 ```
 
 @fig-qini-1 presents results for reliable Qini results
-
 
 ```{r}
 #| label: fig-qini-1
@@ -1245,11 +1217,6 @@ print(combined_qini)
 
 ```
 
-
 {{< pagebreak >}}
 
-
 ## References {.appendix-refs}
-
-
-

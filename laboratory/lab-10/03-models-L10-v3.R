@@ -617,6 +617,11 @@ model_keep_autoc <-  model_groups$autoc
 model_keep_qini <- model_groups$qini
 model_exploratory <- model_groups$exploratory
 
+
+
+# compute policy value ----------------------------------------------------
+
+
 # -------------------------------------------------------------------
 # 3a. fit + plot depth‑2 policy trees for kept models ------------------
 # -------------------------------------------------------------------
@@ -638,6 +643,9 @@ policy_2L_corrected <- margot_policy(
   output_objects     = "combined_plot" # returns ggplot object
 )
 
+
+
+# optional ----------------------------------------------------------------
 
 # quick display  ----------------------------------------------------
 plots_2L_corrected <- purrr::map(policy_2L_corrected, ~ .x[[1]])
