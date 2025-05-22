@@ -449,7 +449,7 @@ print(overlap)
 
 # read and preprocess data ------------------------------------------------
 df_nz_long$hours_community
-
+yola
 # prepare initial dataframe -----------------------------------------------
 dat_prep <- df_nz_long |>
   arrange(id, wave) |>

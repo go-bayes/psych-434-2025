@@ -53,8 +53,6 @@ load_student_boilerplate <- function() {
   cli::cli_text("successfully loaded {length(categories)} categories")
   student_db
 }
-
-
 student_unified_db <- load_student_boilerplate()
 # save imported data -------------------------------------------------------
 boilerplate_save(
@@ -91,4 +89,6 @@ download.file(
 cli::cli_h1("bibliography and CSL setup complete ✔")
 
 # end of script: do not rerun this file ------------------------------------
+
+cat(student_unified_db$methods$analytic_approach$general_approach_cate_long)
 

@@ -1,7 +1,6 @@
 ---
 title: "Your Title"
 abstract: |
-
   **Background**: (Brief few sentences)
   **Objectives**: 
     1. Estimate the causal effect of YOUR EXPOSURE on YOUR OUTCOMES measured one year later.
@@ -24,8 +23,9 @@ fontfamily: libertinus
 bibliography: references.bib
 csl: apa7.csl
 format:
-  docx:
-    default: false
+  # docx: # comment this out if you want pdf
+  #   default: false  # comment this out if you want pdf
+  #   output-dir: "quarto"  # or wherever you want to save it  # comment this out if you want pdf
   pdf:
     pdf-engine: lualatex
     sanitise: true
@@ -57,50 +57,73 @@ execute:
 ---
 
 ```{r}
-#| label: load-libraries
+#| label: setup
 #| echo: false
 #| include: false
 #| eval: true
 
-# save this file in the 'quarto' folder
+# save this file in your project root (e.g. 'quarto/1_setup.R')
 
-# ---- package setup -------------------------------------------------------
+# load here to manage paths
+dep <- requireNamespace("here", quietly = TRUE)
+if (!dep) install.packages("here")
 library(here)
+
+# create required folders
+dirs <- c(
+  here("quarto"),
+  here("bibliography"),
+  here("save_directory"),
+  here("csl")
+)
+for (d in dirs) {
+  if (!dir.exists(d)) dir.create(d, recursive = TRUE)
+}
+
+# ensure tinytex for PDF rendering
+if (!requireNamespace("tinytex", quietly = TRUE)) {
+  install.packages("tinytex")
+  tinytex::install_tinytex()
+}
+
+# ensure pacman for package management
+if (!requireNamespace("pacman", quietly = TRUE)) {
+  install.packages("pacman")
+}
+
+# load (and install if needed) all required packages
 pacman::p_load(
-  boilerplate, margot, tinytex, extrafont,
-  tidyverse, kableExtra, glue, patchwork,
-  stringr, ggplot2, ggeffects, parameters,
-  table1, here, knitr, dplyr
+  boilerplate, margot, shiny, tidyverse,
+  kableExtra, glue, patchwork, stringr,
+  ggplot2, ggeffects, parameters,
+  table1, knitr, extrafont
 )
 
-# ---- copy resources to quarto -------------------------------------------
-if (!file.exists(here::here("quarto", "apa7.csl"))) {
-  file.copy("csl/apa7.csl", here::here("quarto", "apa7.csl"))
-}
-if (!file.exists(here::here("quarto", "references.bib"))) {
-  file.copy("bibliography/references.bib", here::here("quarto", "references.bib"))
-}
-
-# ---- install GitHub packages if missing ----------------------------------
-if (!requireNamespace("boilerplate", quietly = TRUE)) {
-  install.packages("devtools")
-  devtools::install_github("go-bayes/boilerplate")
-    library("boilerplate")
-}
-if (!requireNamespace("margot", quietly = TRUE)) {
-  install.packages("devtools")
-  devtools::install_github("go-bayes/margot")
-  library("margot")
+# load fonts (requires prior extrafont::font_import())
+if (requireNamespace("extrafont", quietly = TRUE)) {
+  extrafont::loadfonts(device = "all")
+} else {
+  message("'extrafont' not installed; skipping font loading")
 }
 
-# ---- check package versions ---------------------------------------------
-utils::packageVersion("margot")      # should be > 1.0.47
-utils::packageVersion("boilerplate") # should be > 1.0.43
-
-
-# ---- ensure reproducibility and load fonts --------------------------------
+# reproducibility
 set.seed(123)
-loadfonts(device = "all")
+
+# copy CSL and BibTeX into quarto folder
+src_files <- list(
+  c(here("csl", "apa7.csl"),     here("quarto", "apa7.csl")),
+  c(here("bibliography", "references.bib"), here("quarto", "references.bib"))
+)
+for (f in src_files) {
+  if (!file.exists(f[2]) && file.exists(f[1])) {
+    file.copy(f[1], f[2])
+  }
+}
+
+# now you're ready to import data and proceed with analysis
+# e.g.
+# unified_db <- boilerplate_import(data_path = here("final_boilerplate_data"))
+# df_grf     <- margot::here_read('df_grf',   here("save_directory"))
 
 # ---- define paths and import data ----------------------------------------
 push_mods             <- here::here("save_directory")
@@ -154,6 +177,7 @@ label_mapping_all        <- here_read("label_mapping_all")
 # ---- plot titles and analysis settings -----------------------------------
 ate_title                <- here_read("ate_title")
 flipped_names            <- here_read("flipped_names")
+
 flipped_list             <- paste(flipped_names, collapse = ", ")
 
 # ---- import data for visualisation --------------------------------------
@@ -315,10 +339,8 @@ ate_results <- margot_plot(
   alpha = 0.05 # <- new 
 )
 
-
 # check
 ate_results$plot
-
 
 # view
 cat(ate_results$interpretation)
@@ -328,48 +350,65 @@ cat(ate_results$interpretation)
 # ---- heterogeneity analysis ---------------------------------------------
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
 
+# this is a new function requires margot 1.0.48 or higher
+# only useful if you flip labels outcomes -- if so replace "label_mapping_all" 
+# with "label_mapping_all_flipped" 
+label_mapping_all_flipped <- margot_reversed_labels(label_mapping_all, 
+                                                    flipped_names)
+
 # could be used in an appendix
-# result_ominbus_hetero     <- margot_omnibus_hetero_test(
-#   models_binary_flipped_all,
-#   label_mapping  = label_mapping_all,
-#   alpha          = 0.05,
-#   detail_level   = "standard",
-#   format         = "markdown"
-# )
-# result_ominbus_hetero$summary_table |> kbl("markdown")
-# cat(result_ominbus_hetero$brief_interpretation)
-
-# pull rate results (rate)
-rate_results <- here_read("rate_results")
-
-# pull the interpretations
-rate_interp <- here_read("rate_interp")
-
-# get model groups
-model_groups <- list(
-  autoc  = rate_interp$autoc_model_names,
-  qini   = rate_interp$qini_model_names,
-  either = rate_interp$either_model_names
+result_ominbus_hetero     <- margot_omnibus_hetero_test(
+  models_binary_flipped_all,
+  label_mapping  = label_mapping_all_flipped,
+  alpha          = 0.05,
+  detail_level   = "standard",
+  format         = "markdown"
 )
-
-# make the matching model keys (prefixed) for downstream plotting ------
-model_keep_either <- model_groups$either
-model_keep_autoc <-  model_groups$autoc
-model_keep_qini <- model_groups$qini
+result_ominbus_hetero$summary_table |> kbl("markdown")
+cat(result_ominbus_hetero$brief_interpretation)
 
 
-# check them
+rate_results <-
+  margot_rate(
+    models   = models_binary_flipped_all,
+    policy   = "treat_best",
+    alpha  = 0.20,# raw p < 0.20 is enough to keep
+    adjust = "fdr", # <‑‑correction
+    label_mapping = label_mapping_all_flipped
+  )
+
+# show rate tables
+rate_results$rate_autoc %>% kbl("markdown")
+rate_results$rate_qini %>% kbl("markdown")
+
+
+# generate textual interpretations for rate metrics
+# 2. then run the interpreter, passing through adjust_positives_only = TRUE
+rate_interp <- margot::margot_interpret_rate(rate_results,
+                                             flipped_outcomes       = flipped_names,
+                                             adjust_positives_only  = TRUE) # <- new requires margot 1.0.50 or higher
+
+# review
+cat(rate_interp$comparison)
 cat(rate_interp$autoc_results, "\n")
 cat(rate_interp$qini_results, "\n")
 cat(rate_interp$comparison, "\n")
+cat(rate_interp$not_excluded_either, "\n")
 
+# organise model groups by heterogeneity evidence
+model_groups <- list(
+  autoc  = rate_interp$autoc_model_names,
+  qini   = rate_interp$qini_model_names,
+  either = rate_interp$either_model_names,
+  exploratory = rate_interp$not_excluded_either # not excluded, for exploratory research
+)
 
 # plot rate curves -----------------------------------------------
 autoc_plots <-
   margot_plot_rate_batch(
-    models      = models_binary_flipped_all,
+    models      = models_binary_flipped_all, # <- changed to "models_binary" if you did not flip outcomes # optional use "label_mapping_all_flipped" 
     save_plots  = FALSE,
-    label_mapping      = label_mapping_all,
+    label_mapping      = label_mapping_all_flipped,
     model_names = model_groups$autoc
   )
 
@@ -385,23 +424,15 @@ qini_results <-
     output_dir         = here::here(push_mods),
     decision_tree_args = list(),
     policy_tree_args   = list(),
-    model_names        = model_groups$qini,
+    # model_names        = model_groups$qini, # <- removed, investigate all models
     original_df        = original_df,
-    label_mapping      = label_mapping_all,
+    label_mapping      = label_mapping_all_flipped,
     max_depth          = 2L,
     output_objects     = c("qini_plot", "diff_gain_summaries")
   )
 
 # view qini plots
 qini_plots <- purrr::map(qini_results, ~ .x$qini_plot)
-
-# check if any * EXPAND IF MORE THAN 1, COMMENT OUT IF NONE
-# here only 1
-length(model_keep_qini)
-
-# only one
-qini_plots[[1]]
-#qini_plots[[2]]
 
 # interpret qini
 qini_gain_interpretation <- margot_interpret_qini(qini_results)
@@ -425,36 +456,38 @@ cli::cli_h1("Qini model curves plotted ✔")
   output_dir         = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args   = policy_tree_defaults,
-  model_names        = model_keep_either,
+  # model_names        = model_keep_either, #<- test all
   max_depth          = 2L,
   original_df        = original_df,
-  label_mapping      = label_mapping_all,
+  label_mapping      = label_mapping_all_flipped,
     output_objects = c("combined_plot")
 )
 
 policy_plots <- purrr::map(policy_results_2L, ~ .x[[1]])
 
-# Check how many plots to make
-length(model_keep_either)
 
 # plot 1
-policy_plots[[1]]
+# policy_plots[[1]]
+# 
+# # plot 2
+# policy_plots[[2]]
+# 
+# # and so on...
 
-# plot 2
-policy_plots[[2]]
 
 # 4. interpretation ----------------------------------
 # -------------------------------------------------------------------
 # generates a short paragraph per outcome explaining the splits and     
 # their implied treatment rule.                                         
 policy_interpretation_2L <- margot::margot_interpret_policy_batch(
-  models_binary_flipped_all,  # use the *flipped* master object for labels
-  model_names = model_keep_either, 
-  original_df = original_df # include original data for better interpretation
-)
+  models = models_binary_flipped_all,
+  original_df        = original_df,
+  label_mapping      = label_mapping_all_flipped,
+  max_depth          = 2L)
 
 # check
 cat(policy_interpretation_2L, "\n")
+
 
 # end‑of‑workflow -----------------------------
 cli::cli_h1("main 2l policy trees analysed ✔")
@@ -469,13 +502,23 @@ autoc_names
 qini_names <- margot_get_labels(model_groups$qini, label_mapping_all)
 qini_names
 
-either_names <- margot_get_labels(model_groups$either, label_mapping_all)
-glued_name_policy_1 <- glue::glue(either_names[[1]])
-glued_name_policy_2 <- glue::glue(either_names[[2]])
-# check
-glued_name_policy_1
-glued_name_policy_2
 
+policy_names <- margot_get_labels(names(models_binary_flipped_all$results), label_mapping_all_flipped)
+glued_policy_names <- glue::glue("{policy_names}")
+glued_policy_names_1 <- glued_policy_names[[1]]
+glued_policy_names_2 <- glued_policy_names[[2]]
+glued_policy_names_3 <- glued_policy_names[[3]]
+glued_policy_names_4 <- glued_policy_names[[4]]
+glued_policy_names_5 <- glued_policy_names[[5]]
+glued_policy_names_6 <- glued_policy_names[[6]]
+glued_policy_names_7 <- glued_policy_names[[7]]
+glued_policy_names_8 <- glued_policy_names[[8]]
+glued_policy_names_9 <- glued_policy_names[[9]]
+glued_policy_names_10 <- glued_policy_names[[10]]
+glued_policy_names_11 <- glued_policy_names[[11]]
+glued_policy_names_12 <- glued_policy_names[[12]]
+
+policy_names
 # GROUP COMPARISON EXAMPLE ------------------------------------------------
 # play around with these values
 x_offset_comp <- 1.0
@@ -606,7 +649,11 @@ global_vars <- list(
   appendix_measures          =  "A",
   value_control              = value_control,     # ← named
   value_exposure             = value_exposure,    # ← named
-  appendix_positivity        = "E",
+  appendix_positivity        = "G",
+  appendix_rate              = "E",
+  appendix_qini_curve        = "F",
+  train_proportion_decision_tree = ".7",
+  traning_proportion         = ".7",
   baseline_wave              = baseline_wave,
   exposure_waves             = exposure_waves,
   outcome_wave               = outcome_wave,
@@ -635,7 +682,7 @@ cat(
       "target_population",
       "eligibility.standard",
       "causal_intervention.grf_simple_text",
-      "analytic_approach.general_approach_cate_short",
+      "analytic_approach.general_approach_cate_long", # <- new
       "exposure_indicator",
       "causal_identification_criteria",
       "confounding_control.vanderweele",
@@ -691,6 +738,7 @@ cat(ate_results$interpretation)
 
 
 Confidence intervals were adjusted for multiple comparisons using bonferroni correction ($\alpha$ = 0.05). E‑values were also adjusted using bonferroni correction ($\alpha$ = 0.05). The following outcomes showed reliable causal evidence (E‑value lower bound > 1.2):
+
 - **Social Belonging**: 0.125(0.064,0.186); on the original scale, 0.136 (0.07,0.203).  E‑value bound = 1.311
 - **Neighbourhood Community**: 0.119(0.052,0.186); on the original scale, 0.187 (0.082,0.292).  E‑value bound = 1.273
 - Social Support: 0.096(0.032,0.16); on the original scale, 0.107 (0.036,0.179).  E‑value bound = 1.203.
@@ -700,112 +748,6 @@ Confidence intervals were adjusted for multiple comparisons using bonferroni cor
 
 ### Heterogeneous Treatment Effects 
 
-#### RATE AUTOC and RATE Qini
-
-```{r, results='asis'}
-#| eval: true # <- set to false as needed/desired
-#| echo: false
-cat(
-  boilerplate::boilerplate_generate_text(
-    category     = "results",      # ← choose the right top-level list
-    sections     = c(
-    "grf.interpretation_rate"
-    ),
-    global_vars  = global_vars,
-    db           = unified_db
-  )
-)
-```
-
-```{r, results='asis'}
-#| eval: true # <- set to false as needed/desired
-#| echo: false
-cat(rate_interp$comparison)
-```
-
-Refer to [Appendix E](#appendix-cate-validation) for details.
-
-
-
-##### RATE AUTOC Results
-
-```{r, results = 'asis'}
-# only reliable results
-cat(rate_interp$autoc_results)
-```
-
-
-```{r}
-#| label: fig-rate-1
-#| fig-cap: "RATE AUTOC Graphs"
-#| eval: true  # <- set to false as needed/desired
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-autoc_plots[[1]]
-```
-
-@fig-rate-1 presents the RATE AUTOC curve for `r autoc_names[[1]]`
-
-
-##### RATE Qini Results
-
-```{r, results = 'asis'}
-# only reliable results
-cat(rate_interp$qini_results)
-```
-
-
-#### QINI Curve Analysis
-
-```{r, results='asis'}
-#| eval: true  # <- set to false: copy and paste your own text using this material
-#| echo: false
-cat(
-  boilerplate::boilerplate_generate_text(
-    category     = "results",      # ← choose the right top-level list
-    sections     = c(
-    "grf.interpretation_qini"
-    ),
-    global_vars  = global_vars,
-    db           = unified_db
-  )
-)
-```
-
-```{r, results = 'asis'}
-# only reliable results
-cat(qini_gain_interpretation$qini_explanation) 
-```
-
-@tbl-qini presents results for our Qini curve analysis at different spend rates.
-
-```{r}
-#| label: tbl-qini
-#| tbl-cap: "Qini Curve Results"
-#| eval: true  # <- set to false: copy and paste your own text using this material
-#| echo: false
-# table (only use if more than one qini gain interpretation)
-qini_gain_interpretation$summary_table |> 
-  mutate(across(where(is.numeric), ~ round(., 2))) %>%
-  kbl(format = "markdown") #<-- only if you have this, otherwise delete this code
-```
-
-@fig-qini-1 presents the Qini curve for....
-
-
-```{r}
-#| label: fig-qini-1
-#| fig-cap: "Qini Graph"
-#| eval: true # <- set to false as needed/desired
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-qini_plots[[1]] #<-- only if you have this, otherwise delete this code
-```
-
-
-{{< pagebreak >}}
 
 #### Decision Rules (Who is Most Sensitive to Treatment?)
 
@@ -824,10 +766,12 @@ cat(
 )
 ```
 
+{{< pagebreak >}}
+
         
 ```{r}
 #| label: fig-policy-1
-#| fig-cap: "Decision Tree: {glued_name_policy_1}"
+#| fig-cap: "Decision Tree: {glued_policy_names_1}"
 #| eval: true
 #| echo: false
 #| fig-height: 16
@@ -836,11 +780,11 @@ cat(
 policy_plots[[1]]
 ```
 
-
+{{< pagebreak >}}
 
 ```{r}
 #| label: fig-policy-2
-#| fig-cap: "Decision Tree: {glued_name_policy_2}"
+#| fig-cap: "Decision Tree: {glued_policy_names_2}"
 #| eval: true
 #| echo: false
 #| fig-height: 16
@@ -848,6 +792,131 @@ policy_plots[[1]]
 policy_plots[[2]]
 ```
 
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-policy-3
+#| fig-cap: "Decision Tree: {glued_policy_names_3}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[3]]
+```
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-policy-4
+#| fig-cap: "Decision Tree: {glued_policy_names_4}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[4]]
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-policy-5
+#| fig-cap: "Decision Tree: {glued_policy_names_5}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[5]]
+```
+
+{{< pagebreak >}}
+
+
+```{r}
+#| label: fig-policy-6
+#| fig-cap: "Decision Tree: {glued_policy_names_6}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[6]]
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-policy-7
+#| fig-cap: "Decision Tree: {glued_policy_names_7}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[7]]
+```
+
+{{< pagebreak >}}
+
+
+```{r}
+#| label: fig-policy-8
+#| fig-cap: "Decision Tree: {glued_policy_names_8}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+
+policy_plots[[8]]
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-policy-9
+#| fig-cap: "Decision Tree: {glued_policy_names_9}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[9]]
+```
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-policy-10
+#| fig-cap: "Decision Tree: {glued_policy_names_10}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[10]]
+```
+
+
+{{< pagebreak >}}
+
+```{r}
+#| label: fig-policy-11
+#| fig-cap: "Decision Tree: {glued_policy_names_11}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[11]]
+```
+
+{{< pagebreak >}}
+
+
+```{r}
+#| label: fig-policy-12
+#| fig-cap: "Decision Tree: {glued_policy_names_12}"
+#| eval: true
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+policy_plots[[12]]
+```
+
+{{< pagebreak >}}
 
 ```{r, results = 'asis'}
 #| eval: true # <- set to false if you want to copy and paste your own text
@@ -1019,7 +1088,7 @@ cat(transition_tables_binary$explanation)
 
 {{< pagebreak >}}
 
-## Appendix D: Approach to Heterogeneity {#appendix-cate-validation}
+## Appendix D: Approach to Heterogeneous Treatment Effects {#appendix-cate-validation}
 
 
 ```{r, results='asis'}
@@ -1040,9 +1109,147 @@ cat(
 
 {{< pagebreak >}}
 
+
+
+
+{{< pagebreak >}}
+
+
+## Appendix E: RATE AUTOC and RATE Qini  {#appendix-rate}
+
+```{r, results='asis'}
+#| eval: true # <- set to false as needed/desired
+#| echo: false
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "results",      # ← choose the right top-level list
+    sections     = c(
+    "grf.interpretation_rate"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
+```
+
+```{r, results='asis'}
+#| eval: true # <- set to false as needed/desired
+#| echo: false
+cat(rate_interp$comparison)
+```
+
+Refer to [Appendix E](#appendix-cate-validation) for details.
+
+
+
+##### RATE AUTOC Results
+
+```{r, results = 'asis'}
+# only reliable results
+cat(rate_interp$autoc_results)
+```
+
+
+```{r}
+#| label: fig-rate-1
+#| fig-cap: "RATE AUTOC Graphs"
+#| eval: true  # <- set to false as needed/desired
+#| echo: false
+#| fig-height: 16
+#| fig-width: 9
+autoc_plots[[1]]
+```
+
+@fig-rate-1 presents the RATE AUTOC curve for `r autoc_names[[1]]`
+
+
+{{< pagebreak >}}
+
+
+## Appendix F QINI Curve Analysis {#appendix-qini-curve}
+
+```{r, results='asis'}
+#| eval: true  # <- set to false: copy and paste your own text using this material
+#| echo: false
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "results",      # ← choose the right top-level list
+    sections     = c(
+    "grf.interpretation_qini"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
+```
+
+```{r, results = 'asis'}
+# only reliable results
+cat(qini_gain_interpretation$qini_explanation) 
+```
+
+@tbl-qini presents results for our Qini curve analysis at different spend rates.
+
+```{r}
+#| label: tbl-qini
+#| tbl-cap: "Qini Curve Results"
+#| eval: true  # <- set to false: copy and paste your own text using this material
+#| echo: false
+# table (only use if more than one qini gain interpretation)
+qini_gain_interpretation$summary_table |> 
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  kbl(format = "markdown") #<-- only if you have this, otherwise delete this code
+```
+
+@fig-qini-1 presents results for reliable Qini results
+
+
+```{r}
+#| label: fig-qini-1
+#| fig-cap: "Qini Graphs"
+#| eval: true # <- set to false as needed/desired
+#| echo: false
+#| fig-height: 18
+#| fig-width: 12
+
+library(patchwork)
+# combine first column of plots (4,6,7,8) and second column (9,11,12)
+# these showed reliable qini results
+combined_qini <- (
+  qini_plots[[4]]  /
+  qini_plots[[6]]  /
+  qini_plots[[7]]  /
+  qini_plots[[8]]
+) | (
+  # remove this block if you don't have plots 9,11,12
+  qini_plots[[9]]  /
+  qini_plots[[11]] /
+  qini_plots[[12]]
+) +
+  # collect all legends into one shared guide
+  plot_layout(guides = "collect") +
+  # add title (and optionally subtitle)
+  plot_annotation(
+    title    = "Combined Qini Plots",
+    subtitle = "Panels arranged with shared legend"
+  ) &
+  # apply theme modifications to all subplots
+  theme(
+    legend.position   = "bottom",           # place legend below
+    plot.title        = element_text(hjust = 0.5),  # centre title
+    plot.subtitle     = element_text(hjust = 0.5)   # centre subtitle
+  )
+
+# draw it
+print(combined_qini)
+
+```
+
+
+{{< pagebreak >}}
+
+
 ## References {.appendix-refs}
-
-
 
 
 

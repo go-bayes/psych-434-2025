@@ -39,7 +39,7 @@ boilerplate_save(
   output_file = "unified_db"
 )
 
-cli::cli_h2("database imported and saved ✔")
+ycli::cli_h2("database imported and saved ✔")
 
 # inspect structure and existing measures ----------------------------------
 str(unified_db, max.level = 2)     # glance at top-level structure
