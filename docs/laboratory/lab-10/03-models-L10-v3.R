@@ -24,9 +24,9 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 # min version of margot
-if (packageVersion("margot") < "1.0.50") {
+if (packageVersion("margot") < "1.0.52") {
   stop(
-    "please install margot >= 1.0.50 for this workflow\n
+    "please install margot >= 1.0.52 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 "
   )
@@ -471,6 +471,9 @@ flip_outcomes_standard = c(
 # our example has the exposure as positive
 flip_outcomes <- flip_outcomes_standard
 
+# save
+here_save(flip_outcomes, "flip_outcomes")
+
 # check
 flip_outcomes
 label_mapping_all
@@ -555,7 +558,7 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # RATE-Qini asks: 'if i treat more broadly, do I still improve aggregate outcome?' it trades intensity for coverage.
 
 # this is a new function requires margot 1.0.48 or higher
-label_mapping_all_flipped <- margot_reversed_labels(label_mapping_all, flipped_names)
+label_mapping_all_flipped <- margot_reversed_labels(label_mapping_all, flip_outcomes)
 
 # view
 label_mapping_all_flipped
@@ -569,7 +572,7 @@ rate_results <-
     policy   = "treat_best",
     alpha  = 0.20,# raw p < 0.20 is enough to keep
     adjust = "fdr", # <‑‑correction
-    label_mapping = label_mapping_all
+    label_mapping = label_mapping_all_flipped
   )
 
 # show rate tables
@@ -617,6 +620,11 @@ model_keep_autoc <-  model_groups$autoc
 model_keep_qini <- model_groups$qini
 model_exploratory <- model_groups$exploratory
 
+
+
+# compute policy value ----------------------------------------------------
+
+
 # -------------------------------------------------------------------
 # 3a. fit + plot depth‑2 policy trees for kept models ------------------
 # -------------------------------------------------------------------
@@ -638,6 +646,9 @@ policy_2L_corrected <- margot_policy(
   output_objects     = "combined_plot" # returns ggplot object
 )
 
+
+
+# optional ----------------------------------------------------------------
 
 # quick display  ----------------------------------------------------
 plots_2L_corrected <- purrr::map(policy_2L_corrected, ~ .x[[1]])

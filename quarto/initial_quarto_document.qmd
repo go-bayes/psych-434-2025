@@ -93,10 +93,11 @@ if (!requireNamespace("pacman", quietly = TRUE)) {
 
 
 # min version of margot
-if (packageVersion("margot") < "1.0.51") {
+if (packageVersion("margot") < "1.0.52") {
   stop(
-    "please install margot >= 1.0.51 for this workflow\n
-       run: devtools::install_github('go-bayes/margot')
+    "please install margot >= 1.0.52 for this workflow\n
+       run: 
+       devtools::install_github('go-bayes/margot')
 "
   )
 }
@@ -109,10 +110,10 @@ packageVersion(pkg = "margot")
 
 # load (and install if needed) all required packages
 pacman::p_load(
-  boilerplate, margot, shiny, tidyverse,
+  boilerplate, shiny, tidyverse,
   kableExtra, glue, patchwork, stringr,
   ggplot2, ggeffects, parameters,
-  table1, knitr, extrafont
+  table1, knitr, extrafont, here
 )
 
 # load fonts (requires prior extrafont::font_import())
@@ -193,7 +194,7 @@ label_mapping_all        <- here_read("label_mapping_all")
 # ---- plot titles and analysis settings -----------------------------------
 ate_title                <- here_read("ate_title")
 flipped_names            <- here_read("flipped_names")
-
+flip_outcomes            <- here_read("flip_outcomes")
 flipped_list             <- paste(flipped_names, collapse = ", ")
 
 # ---- import data for visualisation --------------------------------------
@@ -219,7 +220,7 @@ scale_range             <- margot::here_read("scale_range")
 
 # create and check variables
 value_exposure = glue::glue( threshold,"", upper_cut,", ", scale_range)
-value_control =   glue::glue(inverse_threshold, upper_cut,", ", scale_range)
+value_control = glue::glue(inverse_threshold, upper_cut,", ", scale_range)
 
 # regimes
 name_control_regime_lower <- glue::glue("low {name_exposure_lower}")
@@ -370,18 +371,19 @@ models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods
 # only useful if you flip labels outcomes -- if so replace "label_mapping_all" 
 # with "label_mapping_all_flipped" 
 label_mapping_all_flipped <- margot_reversed_labels(label_mapping_all, 
-                                                    flipped_names)
+                                                    flip_outcomes)
+label_mapping_all_flipped
 
 # could be used in an appendix
-result_ominbus_hetero     <- margot_omnibus_hetero_test(
-  models_binary_flipped_all,
-  label_mapping  = label_mapping_all_flipped,
-  alpha          = 0.05,
-  detail_level   = "standard",
-  format         = "markdown"
-)
-result_ominbus_hetero$summary_table |> kbl("markdown")
-cat(result_ominbus_hetero$brief_interpretation)
+# result_ominbus_hetero     <- margot_omnibus_hetero_test(
+#   models_binary_flipped_all,
+#   label_mapping  = label_mapping_all_flipped,
+#   alpha          = 0.05,
+#   detail_level   = "standard",
+#   format         = "markdown"
+# )
+# result_ominbus_hetero$summary_table |> kbl("markdown")
+# cat(result_ominbus_hetero$brief_interpretation)
 
 
 rate_results <-
@@ -401,7 +403,7 @@ rate_results$rate_qini %>% kbl("markdown")
 # generate textual interpretations for rate metrics
 # 2. then run the interpreter, passing through adjust_positives_only = TRUE
 rate_interp <- margot::margot_interpret_rate(rate_results,
-                                             flipped_outcomes       = flipped_names,
+                                             flipped_outcomes  = flipped_names,
                                              adjust_positives_only  = TRUE) # <- new requires margot 1.0.50 or higher
 
 # review
@@ -422,9 +424,9 @@ model_groups <- list(
 # plot rate curves -----------------------------------------------
 autoc_plots <-
   margot_plot_rate_batch(
-    models      = models_binary_flipped_all, # <- changed to "models_binary" if you did not flip outcomes # optional use "label_mapping_all_flipped" 
+    models      = models_binary_flipped_all, # <- changed to "models_binary" if you did not flip outcomes 
     save_plots  = FALSE,
-    label_mapping      = label_mapping_all_flipped,
+    label_mapping = label_mapping_all_flipped,
     model_names = model_groups$autoc
   )
 
@@ -433,9 +435,10 @@ length(autoc_plots)
 autoc_plots[[1]]
 
 
-# Qini model curves --------------------------------------------
-devtools::load_all("/Users/joseph/GIT/margot/")
+autoc_names <- margot_get_labels(model_groups$autoc, label_mapping_all)
+autoc_names[[1]]
 
+# Qini model curves --------------------------------------------
 qini_results <-
   margot_policy(
     models_binary_flipped_all,
@@ -450,17 +453,9 @@ qini_results <-
     output_objects     = c("qini_plot", "diff_gain_summaries")
   )
 
-label_mapping_all_flipped
-names(models_binary_flipped_all$results)
 
-# view qini plots
-qini_plots <- purrr::map(qini_results, ~ .x$qini_plot)
-names(qini_results)
-str(qini_results, max.level = 3)
-# interpret qini
 qini_gain_interpretation <- margot_interpret_qini(qini_results, 
                                                   label_mapping = label_mapping_all_flipped)
-
 # table (only use if more than one qini gain interpretation)
 qini_gain_interpretation$summary_table |> 
   mutate(across(where(is.numeric), ~ round(., 2))) %>%
@@ -469,7 +464,51 @@ qini_gain_interpretation$summary_table |>
 # the interpretation - used below
 cat(qini_gain_interpretation$qini_explanation)
 
+
+# reliable results 
 qini_gain_interpretation$reliable_model_ids
+
+
+# make qini plots only for valid models
+qini_results_valid <-
+  margot_policy(
+    models_binary_flipped_all,
+    save_plots         = FALSE,
+    output_dir         = here::here(push_mods),
+    decision_tree_args = decision_tree_args,
+    policy_tree_args   = policy_tree_args,
+    model_names        = qini_gain_interpretation$reliable_model_ids, 
+    original_df        = original_df,
+    label_mapping      = label_mapping_all_flipped,
+    max_depth          = 2L,
+    output_objects     = c("qini_plot", "diff_gain_summaries")
+  )
+
+# plots for graphs
+qini_plots <- purrr::map(qini_results_valid, ~ .x[[1]])
+
+
+# get reliable qini names from the qini curvs
+qini_names <- margot_get_labels(qini_gain_interpretation$reliable_model_ids
+, label_mapping_all_flipped)
+
+# number of graphs
+length(qini_names)
+
+# names of valid models
+glued_policy_names_1 <- qini_names[[1]]
+glued_policy_names_2 <- qini_names[[2]]
+glued_policy_names_3 <- qini_names[[3]]
+glued_policy_names_4 <- qini_names[[4]]
+glued_policy_names_5 <- qini_names[[5]]
+glued_policy_names_6 <- qini_names[[6]]
+glued_policy_names_7 <- qini_names[[7]]
+
+# glued_policy_names_8 <- glued_policy_names[[8]]
+# glued_policy_names_9 <- glued_policy_names[[9]]
+# glued_policy_names_10 <- glued_policy_names[[10]]
+# glued_policy_names_11 <- glued_policy_names[[11]]
+# glued_policy_names_12 <- glued_policy_names[[12]]
 
 cli::cli_h1("Qini model curves plotted ✔")
 
@@ -483,7 +522,7 @@ cli::cli_h1("Qini model curves plotted ✔")
   output_dir         = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args   = policy_tree_defaults,
-  # model_names        = model_keep_either, #<- test all
+  model_names        = qini_gain_interpretation$reliable_model_ids, #<- test those that pass qini
   max_depth          = 2L,
   original_df        = original_df,
   label_mapping      = label_mapping_all_flipped,
@@ -492,6 +531,7 @@ cli::cli_h1("Qini model curves plotted ✔")
 
 policy_plots <- purrr::map(policy_results_2L, ~ .x[[1]])
 
+length(policy_plots)
 
 # plot 1
 # policy_plots[[1]]
@@ -509,6 +549,7 @@ policy_plots <- purrr::map(policy_results_2L, ~ .x[[1]])
 policy_interpretation_2L <- margot::margot_interpret_policy_batch(
   models = models_binary_flipped_all,
   original_df        = original_df,
+  model_names        = qini_gain_interpretation$reliable_model_ids, 
   label_mapping      = label_mapping_all_flipped,
   max_depth          = 2L)
 
@@ -520,32 +561,6 @@ cat(policy_interpretation_2L, "\n")
 cli::cli_h1("main 2l policy trees analysed ✔")
 
 
-# NAMES --------------------------------------------------------------
-
-# get names
-autoc_names <- margot_get_labels(model_groups$autoc, label_mapping_all)
-autoc_names
-
-qini_names <- margot_get_labels(model_groups$qini, label_mapping_all)
-qini_names
-
-
-policy_names <- margot_get_labels(names(models_binary_flipped_all$results), label_mapping_all_flipped)
-glued_policy_names <- glue::glue("{policy_names}")
-glued_policy_names_1 <- glued_policy_names[[1]]
-glued_policy_names_2 <- glued_policy_names[[2]]
-glued_policy_names_3 <- glued_policy_names[[3]]
-glued_policy_names_4 <- glued_policy_names[[4]]
-glued_policy_names_5 <- glued_policy_names[[5]]
-glued_policy_names_6 <- glued_policy_names[[6]]
-glued_policy_names_7 <- glued_policy_names[[7]]
-glued_policy_names_8 <- glued_policy_names[[8]]
-glued_policy_names_9 <- glued_policy_names[[9]]
-glued_policy_names_10 <- glued_policy_names[[10]]
-glued_policy_names_11 <- glued_policy_names[[11]]
-glued_policy_names_12 <- glued_policy_names[[12]]
-
-policy_names
 # GROUP COMPARISON EXAMPLE ------------------------------------------------
 # play around with these values
 x_offset_comp <- 1.0
@@ -693,7 +708,7 @@ global_vars <- list(
 
 ## Introduction
 
-FILL OUT
+**Your place to shine here**
 
 ## Method
 
@@ -767,6 +782,85 @@ Confidence intervals were adjusted for multiple comparisons using bonferroni cor
 
 ### Heterogeneous Treatment Effects
 
+#### Qini Curves: (How Much Do We Gain By Treating Using $\tau{x}$ At Different Budgets?) {#results-qini-curve}
+
+```{r, results='asis'}
+#| eval: true  # <- set to false: copy and paste your own text using this material
+#| echo: false
+cat(
+  boilerplate::boilerplate_generate_text(
+    category     = "results",      # ← choose the right top-level list
+    sections     = c(
+    "grf.interpretation_qini"
+    ),
+    global_vars  = global_vars,
+    db           = unified_db
+  )
+)
+```
+
+```{r, results = 'asis'}
+# only reliable results
+cat(qini_gain_interpretation$qini_explanation) 
+```
+
+@tbl-qini presents results for our Qini curve analysis at different spend rates.
+
+```{r}
+#| label: tbl-qini
+#| tbl-cap: "Qini Curve Results"
+#| eval: true  # <- set to false: copy and paste your own text using this material
+#| echo: false
+# table (only use if more than one qini gain interpretation)
+qini_gain_interpretation$summary_table |> 
+  mutate(across(where(is.numeric), ~ round(., 2))) %>%
+  kbl(format = "markdown") #<-- only if you have this, otherwise delete this code
+```
+
+@fig-qini-1 presents results for reliable Qini results
+
+```{r}
+#| label: fig-qini-1
+#| fig-cap: "Qini Graphs"
+#| eval: true # <- set to false as needed/desired
+#| echo: false
+#| fig-height: 18
+#| fig-width: 12
+
+library(patchwork)
+# combine first column of plots (4,6,7,8) and second column (9,11,12)
+# these showed reliable qini results
+combined_qini <- (
+  qini_results_valid[[1]][[1]] /
+  qini_results_valid[[2]][[1]]  /
+  qini_results_valid[[2]][[1]]  /
+  qini_results_valid[[4]][[1]]
+) | (
+  # remove this block if you don't have plots 9,11,12
+  qini_results_valid[[5]][[1]]  /
+  qini_results_valid[[6]][[1]] /
+  qini_results_valid[[7]][[1]]
+) +
+  # collect all legends into one shared guide
+  plot_layout(guides = "collect") +
+  # add title (and optionally subtitle)
+  plot_annotation(
+    title    = "Combined Qini Plots",
+    subtitle = "Panels arranged with shared legend"
+  ) &
+  # apply theme modifications to all subplots
+  theme(
+    legend.position   = "bottom",           # place legend below
+    plot.title        = element_text(hjust = 0.5),  # centre title
+    plot.subtitle     = element_text(hjust = 0.5)   # centre subtitle
+  )
+
+# draw it
+print(combined_qini)
+
+```
+
+
 #### Decision Rules (Who is Most Sensitive to Treatment?)
 
 ```{r, results='asis'}
@@ -806,6 +900,7 @@ policy_plots[[1]]
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
+
 policy_plots[[2]]
 ```
 
@@ -818,6 +913,7 @@ policy_plots[[2]]
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
+
 policy_plots[[3]]
 ```
 
@@ -830,6 +926,7 @@ policy_plots[[3]]
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
+
 policy_plots[[4]]
 ```
 
@@ -842,6 +939,7 @@ policy_plots[[4]]
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
+
 policy_plots[[5]]
 ```
 
@@ -854,7 +952,9 @@ policy_plots[[5]]
 #| echo: false
 #| fig-height: 16
 #| fig-width: 9
+
 policy_plots[[6]]
+
 ```
 
 {{< pagebreak >}}
@@ -871,73 +971,14 @@ policy_plots[[7]]
 
 {{< pagebreak >}}
 
-```{r}
-#| label: fig-policy-8
-#| fig-cap: "Decision Tree: {glued_policy_names_8}"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-
-policy_plots[[8]]
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: fig-policy-9
-#| fig-cap: "Decision Tree: {glued_policy_names_9}"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-policy_plots[[9]]
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: fig-policy-10
-#| fig-cap: "Decision Tree: {glued_policy_names_10}"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-policy_plots[[10]]
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: fig-policy-11
-#| fig-cap: "Decision Tree: {glued_policy_names_11}"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-policy_plots[[11]]
-```
-
-{{< pagebreak >}}
-
-```{r}
-#| label: fig-policy-12
-#| fig-cap: "Decision Tree: {glued_policy_names_12}"
-#| eval: true
-#| echo: false
-#| fig-height: 16
-#| fig-width: 9
-policy_plots[[12]]
-```
-
-{{< pagebreak >}}
-
 ```{r, results = 'asis'}
 #| eval: true # <- set to false if you want to copy and paste your own text
 cat(policy_interpretation_2L, "\n")
 ```
 
-{{< pagebreak >}} \## Planned Subgroup Comparisons (Optional)
+{{< pagebreak >}} 
+
+## Planned Subgroup Comparisons (Optional)
 
 Based on theoretical findings we expected that the effects of {name_exposure} would vary by age...\@fig-planned-comparison and @tbl-planned-comparison
 
@@ -978,16 +1019,15 @@ cat(group_comparison_age_young_old$interpretation)
 cat(boilerplate_generate_text(
   category = "discussion",
   sections = c(
-    "ethics.nzavs_2021_2027",
-    "authors_statment_empty",
-    "acknowlegements.nzavs_acknowledgements_2025",
-    "nzavs_data_availabily"
-  ),
+    "student_ethics",
+    "student_data",
+    "student_authors_statement"  ),
   global_vars = list(
     exposure_variable = name_exposure
   ),
   db = unified_db
 ))
+unified_db$discussion$student_authors_statement
 ```
 
 {{< pagebreak >}}
@@ -1155,84 +1195,13 @@ autoc_plots[[1]]
 
 {{< pagebreak >}}
 
-## Appendix F QINI Curve Analysis {#appendix-qini-curve}
-
-```{r, results='asis'}
-#| eval: true  # <- set to false: copy and paste your own text using this material
-#| echo: false
-cat(
-  boilerplate::boilerplate_generate_text(
-    category     = "results",      # ← choose the right top-level list
-    sections     = c(
-    "grf.interpretation_qini"
-    ),
-    global_vars  = global_vars,
-    db           = unified_db
-  )
-)
-```
-
-```{r, results = 'asis'}
-# only reliable results
-cat(qini_gain_interpretation$qini_explanation) 
-```
-
-@tbl-qini presents results for our Qini curve analysis at different spend rates.
-
-```{r}
-#| label: tbl-qini
-#| tbl-cap: "Qini Curve Results"
-#| eval: true  # <- set to false: copy and paste your own text using this material
-#| echo: false
-# table (only use if more than one qini gain interpretation)
-qini_gain_interpretation$summary_table |> 
-  mutate(across(where(is.numeric), ~ round(., 2))) %>%
-  kbl(format = "markdown") #<-- only if you have this, otherwise delete this code
-```
-
-@fig-qini-1 presents results for reliable Qini results
-
-```{r}
-#| label: fig-qini-1
-#| fig-cap: "Qini Graphs"
-#| eval: true # <- set to false as needed/desired
-#| echo: false
-#| fig-height: 18
-#| fig-width: 12
-
-library(patchwork)
-# combine first column of plots (4,6,7,8) and second column (9,11,12)
-# these showed reliable qini results
-combined_qini <- (
-  qini_plots[[4]]  /
-  qini_plots[[6]]  /
-  qini_plots[[7]]  /
-  qini_plots[[8]]
-) | (
-  # remove this block if you don't have plots 9,11,12
-  qini_plots[[9]]  /
-  qini_plots[[11]] /
-  qini_plots[[12]]
-) +
-  # collect all legends into one shared guide
-  plot_layout(guides = "collect") +
-  # add title (and optionally subtitle)
-  plot_annotation(
-    title    = "Combined Qini Plots",
-    subtitle = "Panels arranged with shared legend"
-  ) &
-  # apply theme modifications to all subplots
-  theme(
-    legend.position   = "bottom",           # place legend below
-    plot.title        = element_text(hjust = 0.5),  # centre title
-    plot.subtitle     = element_text(hjust = 0.5)   # centre subtitle
-  )
-
-# draw it
-print(combined_qini)
-
-```
-
 {{< pagebreak >}}
 
 ## References {.appendix-refs}
+
+
+
+
+
+
+
