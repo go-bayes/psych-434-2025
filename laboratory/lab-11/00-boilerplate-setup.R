@@ -60,6 +60,7 @@ boilerplate_save(
   data_path     = path_data,
   create_backup = FALSE
 )
+cat(student_unified_db$discussion$strengths$strengths_grf_long)
 cli::cli_h1("data saved ✔")
 
 # set up bibliography and APA-7 template -----------------------------------

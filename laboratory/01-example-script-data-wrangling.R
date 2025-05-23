@@ -57,7 +57,7 @@ pull_mods <- here::here("data")
 rm(df_nz_long)
 
 # read data from saved file
-df_nz_long <- margot::here_read_qs("df_nz_long", push_mods)
+df_nz_long <- margot::here_read_qs("df_nz_long", pull_mods)
 
 # define study variables --------------------------------------------------------
 

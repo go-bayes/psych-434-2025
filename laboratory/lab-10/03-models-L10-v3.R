@@ -533,29 +533,6 @@ here_save_qs(models_binary_flipped_all,
 # read back if needed
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
 
-# +--------------------------+
-# |        END ALERT         |
-# +--------------------------+
-
-
-# +--------------------------+
-# |       DO NOT ALTER       |
-# +--------------------------+
-# HTE analysis ------------------------------------------------------------
-# -------------------------------------------------------------------
-# heterogeneity‐driven policy analysis – annotated workflow (depth = 2)
-# -------------------------------------------------------------------
-# this script shows the **minimal** end‑to‑end path from a fitted set of
-# causal‑forest models to depth‑2 policy trees, *when our main aim is to
-# explore treatment heterogeneity* (not necessarily to beat the ate).
-# -------------------------------------------------------------------
-# -------------------------------------------------------------------
-# 1. screen outcomes for evidence of heterogeneity
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––-
-# calculate rate-autoc and rate-qini tables
-# note: RATE-AUTOC asks: 'If I only treat the top k\% by τ(x), do I maximise average gain?'
-# it rewards extreme uplift but can be volatile.
-# RATE-Qini asks: 'if i treat more broadly, do I still improve aggregate outcome?' it trades intensity for coverage.
 
 # this is a new function requires margot 1.0.48 or higher
 label_mapping_all_flipped <- margot_reversed_labels(label_mapping_all, flip_outcomes)
@@ -566,138 +543,207 @@ label_mapping_all_flipped
 # save flipped labels
 here_save(label_mapping_all_flipped, "label_mapping_all_flipped")
 
-rate_results <-
-  margot_rate(
-    models   = models_binary_flipped_all,
-    policy   = "treat_best",
-    alpha  = 0.20,# raw p < 0.20 is enough to keep
-    adjust = "fdr", # <‑‑correction
-    label_mapping = label_mapping_all_flipped
-  )
-
-# show rate tables
-rate_results$rate_autoc %>% kbl("markdown")
-rate_results$rate_qini %>% kbl("markdown")
+# +--------------------------+
+# |        END ALERT         |
+# +--------------------------+
 
 
-# save rate results
-here_save(rate_results, "rate_results")
-
-# generate textual interpretations for rate metrics
-# 2. then run the interpreter, passing through adjust_positives_only = TRUE
-rate_interp <- margot::margot_interpret_rate(rate_results,
-                                     flipped_outcomes       = flipped_names,
-                                     adjust_positives_only  = TRUE)
-
-cat(rate_interp$comparison)
+# +--------------------------+
+# |       DO NOT ALTER       |
+# +--------------------------+
 
 
-cat(rate_interp$autoc_results, "\n")
-cat(rate_interp$qini_results, "\n")
-cat(rate_interp$comparison, "\n")
-cat(rate_interp$not_excluded_either, "\n")
-here_save(rate_interp, "rate_interpretation")
+# ──────────────────────────────────────────────────────────────────────────────
+# SCRIPT:  HETEROGENEITY WORKFLOW
+# PURPOSE: screen outcomes for heterogeneity, plot RATE & Qini curves,
+#          fit shallow policy trees, and produce plain-language summaries.
+# REQUIREMENTS:
+#   • margot ≥ 1.0.52
+#   • models_binary_flipped_all        – list returned by margot_causal_forest()
+#   • original_df                      – raw data frame used in the forest
+#   • label_mapping_all_flipped        – named vector of pretty labels
+#   • flipped_names                    – vector of outcomes that were flipped
+#   • decision_tree_defaults           – list of control parameters
+#   • policy_tree_defaults             – list of control parameters
+#   • push_mods                        – sub-folder for caches/outputs
+#   • use 'models_binary', `label_mapping_all`, and set `flipped_names = ""` if no outcome flipped
+# ──────────────────────────────────────────────────────────────────────────────
 
-# organise model groups by heterogeneity evidence
-model_groups <- list(
-  autoc  = rate_interp$autoc_model_names,
-  qini   = rate_interp$qini_model_names,
-  either = rate_interp$either_model_names,
-  exploratory = rate_interp$not_excluded_either # not excluded, for exploratory research
+# check package version early
+stopifnot(utils::packageVersion("margot") >= "1.0.52")
+
+# helper: quick kable printer --------------------------------------------------
+print_rate <- function(tbl) {
+  tbl |>
+    mutate(across(where(is.numeric), \(x) round(x, 2))) |>
+    kbl(format = "markdown")
+}
+
+# 1  SCREEN FOR HETEROGENEITY (RATE AUTOC + RATE Qini)  ----------------------
+
+rate_results <- margot_rate(
+  models        = models_binary_flipped_all,
+  policy        = "treat_best",
+  alpha         = 0.20,        # keep raw p < .20
+  adjust        = "fdr",       # false-discovery-rate correction
+  label_mapping = label_mapping_all_flipped
 )
 
-# save
-here_save(model_groups, "model_groups")
+print_rate(rate_results$rate_autoc)
+print_rate(rate_results$rate_qini)
+# convert RATE numbers into plain-language text
+rate_interp <- margot_interpret_rate(
+  rate_results,
+  flipped_outcomes      = flipped_names,
+  adjust_positives_only = TRUE
+)
 
-cli::cli_h1("rate metrics and interpretations complete ✔")
+cat(rate_interp$comparison, "\n")
+cli_h2("Analysis ready for Appendix ✔")
 
+# organise model names by evidence strength
+model_groups <- list(
+  autoc       = rate_interp$autoc_model_names,
+  qini        = rate_interp$qini_model_names,
+  either      = rate_interp$either_model_names,
+  exploratory = rate_interp$not_excluded_either
+)
 
-# -------------------------------------------------------------------
-# 2. get model names after correction
-# -------------------------------------------------------------------
-model_keep <- model_groups$either
-model_keep_autoc <-  model_groups$autoc
-model_keep_qini <- model_groups$qini
-model_exploratory <- model_groups$exploratory
+# 2  PLOT RATE AUTOC CURVES ---------------------------------------------------
 
+autoc_plots <- margot_plot_rate_batch(
+  models        = models_binary_flipped_all,
+  save_plots    = FALSE,  # set TRUE to store .png files
+  label_mapping = label_mapping_all_flipped,
+  model_names   = model_groups$autoc
+)
 
+# inspect the first curve - note there may be more/none.
+# if none, comment out
+autoc_plots[[1]]
+autoc_name_1 <- rate_results$rate_autoc$outcome[[1]]
 
-# compute policy value ----------------------------------------------------
-
-
-# -------------------------------------------------------------------
-# 3a. fit + plot depth‑2 policy trees for kept models ------------------
-# -------------------------------------------------------------------
-policy_2L_corrected <- margot_policy(
+# 3  QINI CURVES + GAIN INTERPRETATION ---------------------------------------
+qini_results <- margot_policy(
   models_binary_flipped_all,
   save_plots         = FALSE,
-  # plots kept in memory
-  output_dir         = here(push_mods),
-  decision_tree_args = decision_tree_defaults,
-  # layout tweaks
-  policy_tree_args   = policy_tree_defaults,
-  # tuning for policytree
-  # model_names        = model_exploratory, # use all!
-  # if you just want to explore, otherwise, pic "models_keep" for theoretically motivated work.
+  output_dir         = here::here(push_mods),
+  decision_tree_args = decision_tree_args,
+  policy_tree_args   = policy_tree_args,
+  model_names        = names(models_binary_flipped_all$results),
   original_df        = original_df,
-  # raw test‑fold data for labels
   label_mapping      = label_mapping_all_flipped,
   max_depth          = 2L,
-  output_objects     = "combined_plot" # returns ggplot object
+  output_objects     = c("qini_plot", "diff_gain_summaries")
 )
 
+qini_gain <- margot_interpret_qini(
+  qini_results,
+  label_mapping = label_mapping_all_flipped
+)
 
+print_rate(qini_gain$summary_table)
+cat(qini_gain$qini_explanation, "\n")
 
-# optional ----------------------------------------------------------------
+reliable_ids <- qini_gain$reliable_model_ids
 
-# quick display  ----------------------------------------------------
-plots_2L_corrected <- purrr::map(policy_2L_corrected, ~ .x[[1]])
-purrr::walk(plots_2L_corrected, print)   # print each to the plot panel
-
-length(plots_2L_corrected)
-plots_2L_corrected[[1]] 
-plots_2L_corrected[[2]]
-plots_2L_corrected[[3]] 
-plots_2L_corrected[[4]]
-plots_2L_corrected[[5]]
-plots_2L_corrected[[6]]
-plots_2L_corrected[[7]]
-plots_2L_corrected[[8]]
-plots_2L_corrected[[9]]
-plots_2L_corrected[[10]]
-plots_2L_corrected[[11]]
-plots_2L_corrected[[12]]
-
-
-interpret_policy_trees <- margot_interpret_policy_batch(
+# (re-)compute plots only for models that passed Qini reliability
+qini_results_valid <- margot_policy(
   models_binary_flipped_all,
+  save_plots         = FALSE,
+  output_dir         = here::here(push_mods),
+  decision_tree_args = decision_tree_args,
+  policy_tree_args   = policy_tree_args,
+  model_names        = reliable_ids,
   original_df        = original_df,
-  # raw test‑fold data for labels
   label_mapping      = label_mapping_all_flipped,
-  max_depth          = 2L)
-
-
-
-
-
-# -------------------------------------------------------------------
-# 4. interpretation ----------------------------------
-# -------------------------------------------------------------------
-# generates a short paragraph per outcome explaining the splits and
-# their implied treatment rule.
-interp_all_2L <- margot_interpret_policy_batch(
-  models_binary_flipped_all,
-  # use the *flipped* master object for labels
-  # model_names =  model_groups$exploratory, # use all
-  label_mapping      = label_mapping_all_flipped,
-  original_df = original_df # include original data for better interpretation
+  max_depth          = 2L,
+  output_objects     = c("qini_plot", "diff_gain_summaries")
 )
 
-cat(interp_all_2L, "\n")
+qini_plots <- map(qini_results_valid, ~ .x$qini_plot)
 
-# end‑of‑workflow -----------------------------
-cli::cli_h1("main 2l policy trees analysed ✔")
+# grab pretty outcome names
+qini_names <- margot_get_labels(reliable_ids, label_mapping_all_flipped)
 
+cli_h1("Qini curves generated ✔")
+
+# 4  POLICY TREES (max depth = 2) -------------------------------------------
+
+policy_results_2L <- margot_policy(
+  models_binary_flipped_all,
+  save_plots         = FALSE,
+  output_dir         = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args   = policy_tree_defaults,
+  model_names        = reliable_ids,      # only those passing Qini
+  max_depth          = 2L,
+  original_df        = original_df,
+  label_mapping      = label_mapping_all_flipped,
+  output_objects     = c("combined_plot")
+)
+
+policy_plots <- map(policy_results_2L, ~ .x$combined_plot)
+
+# ️5  PLAIN-LANGUAGE INTERPRETATION OF TREES ----------------------------------
+
+policy_text <- margot_interpret_policy_batch(
+  models            = models_binary_flipped_all,
+  original_df       = original_df,
+  model_names       = reliable_ids,
+  label_mapping     = label_mapping_all_flipped,
+  max_depth         = 2L
+)
+
+cat(policy_text, "\n")
+
+cli::cli_h1("Finished: depth-2 policy trees analysed ✔")
+
+# ───────────────────────────── EOF ────────────────────────────────────────────
+
+# names of valid models
+glued_policy_names_1 <- qini_names[[1]]
+glued_policy_names_2 <- qini_names[[2]]
+glued_policy_names_3 <- qini_names[[3]]
+glued_policy_names_4 <- qini_names[[4]]
+glued_policy_names_5 <- qini_names[[5]]
+glued_policy_names_6 <- qini_names[[6]]
+glued_policy_names_7 <- qini_names[[7]]
+
+
+# view qini plots --------------------------------------------------------------
+
+library(patchwork)
+# combine first column of plots (4,6,7,8) and second column (9,11,12)
+# these showed reliable qini results
+
+combined_qini <- (
+  qini_plots[[1]] /
+    qini_plots[[2]] /
+    qini_plots[[3]] /
+    qini_plots[[4]]
+) | (
+  # remove this block if you don't have plots 9,11,12
+  qini_plots[[5]] /
+    qini_plots[[6]] /
+    qini_plots[[7]]
+) +
+  # collect all legends into one shared guide
+  plot_layout(guides = "collect") +
+  # add title (and optionally subtitle)
+  plot_annotation(
+    title    = "Combined Qini Plots",
+    subtitle = "Panels arranged with shared legend"
+  ) &
+  # apply theme modifications to all subplots
+  theme(
+    legend.position   = "bottom",           # place legend below
+    plot.title        = element_text(hjust = 0.5),  # centre title
+    plot.subtitle     = element_text(hjust = 0.5)   # centre subtitle
+  )
+
+# draw it
+print(combined_qini)
 
 # PLANNED COMPARISONS -----------------------------------------------------
 
@@ -705,16 +751,29 @@ cli::cli_h1("main 2l policy trees analysed ✔")
 # |    MODIFY THIS SECTION   |
 # +--------------------------+
 
-# -------------------------------------------------------------------
-# planned subgroup analysis + theoretical comparisons ---------------
-# -------------------------------------------------------------------
-# this block asks: “do the causal‑forest estimates differ meaningfully
-# across researcher‑defined demographic strata such as wealth, age,
-# gender, ethnicity, and political orientation?”  the analysis is
-# descriptive: we are *exploring* effect heterogeneity, not optimising a
-# policy rule.
-# -------------------------------------------------------------------
 
+
+# compact example ---------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# purpose: explores effect heterogeneity across researcher-defined strata (appendix only)
+# ------------------------------------------------------------------------------
+# workflow philosophy -----------------------------------------------------------
+# • descriptive, not prescriptive. we *report* how τ̂ varies over groups – we do
+#   NOT optimise a policy rule.
+# • strata = ±1 sd splits by default; change to suit theory.
+# • code chunks are short and labelled so students can run/debug in order.
+# ------------------------------------------------------------------------------
+
+library(margot)      # ≥ 1.0.52
+library(tidyverse)   # pipes + helpers
+library(knitr)       # kable tables
+library(patchwork)   # plot stacks
+
+# check package version early ---------------------------------------------------
+stopifnot(utils::packageVersion("margot") >= "1.0.52")
+
+# ------------------------- 1. define strata -----------------------------------
 # 0. back‑transform helper -------------------------------------------
 # margot stores income as z‑scored log dollars.  to write interpretable
 # subtitles we convert ±1 sd back to the raw scale.  the helper simply
@@ -739,12 +798,7 @@ complex_condition_age       <- between(X[, "t0_age_z"], -1, 1)
 # sanity‑check age bounds on the raw scale
 mean(original_df$t0_age) + c(-1, 1) * sd(original_df$t0_age)
 
-# 2. wrap strata in named lists --------------------------------------
-# each entry is consumed by `margot_planned_subgroups_batch()`.  fields:
-#   *  var / value / operator – simple threshold OR
-#   * subset_condition       – pre‑computed logical
-#   * description            – shown in plots
-#   * label                  – used as facet name
+# wealth -----------------------------------------------------------------------
 subsets_standard_wealth <- list(
   Poor   = list(
     var = "t0_log_household_inc_z",
@@ -762,51 +816,7 @@ subsets_standard_wealth <- list(
     label = "Rich"
   )
 )
-
-
-# define complex political orientation
-complex_condition_political <- X[, "t0_political_conservative_z"] > -1 &
-  X[, "t0_political_conservative_z"] < 1
-
-complex_condition_wealth <- X[, "t0_log_household_inc_z"] > -1 &
-  X[, "t0_log_household_inc_z"] < 1
-
-complex_condition_age <- X[, "t0_age_z"] > -1 &
-  X[, "t0_age_z"] < 1
-
-# # if we have specific groups to compare
-# complex_condition_age_under_neg_1_sd  <- X[, "t0_age_z"] < -1
-# complex_condition_age_gr_eq_neg_1_sd  <- X[, "t0_age_z"] > -1
-
-# check ages to get number
-mean(original_df$t0_age) - sd(original_df$t0_age)
-mean(original_df$t0_age) + sd(original_df$t0_age)
-
-
-# wealth subsets
-subsets_standard_wealth <- list(
-  Poor = list(
-    var = "t0_log_household_inc_z",
-    value = -1,
-    operator = "<",
-    description = "Effects among those HShold income < -1 SD (NZD ~41k)",
-    label = "Poor"  # label remains as is, but could be changed if desired
-  ),
-  MiddleIncome = list(
-    subset_condition = complex_condition_wealth,
-    description = "Effects among those HS_hold income within +/-1SD (> NZD 41k < NZD 191k)",
-    label = "Middle Income"
-  ),
-  Rich = list(
-    var = "t0_log_household_inc_z",
-    value = 1,
-    operator = ">",
-    description = "Effects among those HS_hold income > +1 SD (NZD 191k)",
-    label = "Rich"
-  )
-)
-
-# political subsets
+# political orientation --------------------------------------------------------
 subsets_standard_political <- list(
   Liberal = list(
     var = "t0_political_conservative_z",
@@ -831,8 +841,7 @@ subsets_standard_political <- list(
   )
 )
 
-
-# age subsets
+# age --------------------------------------------------------------------------
 subsets_standard_age <- list(
   Younger = list(
     var = "t0_age_z",
@@ -854,8 +863,7 @@ subsets_standard_age <- list(
   )
 )
 
-
-# gender subsets
+# gender (binary) --------------------------------------------------------------
 subsets_standard_gender <- list(
   Female = list(
     var = "t0_male_binary",
@@ -869,7 +877,7 @@ subsets_standard_gender <- list(
   )
 )
 
-# ethnicity subsets
+# ethnicity (binary dummies) --------------------------------------------------
 subsets_standard_ethnicity <- list(
   Asian = list(
     var = "t0_eth_cat_asian_binary",
@@ -898,34 +906,29 @@ subsets_standard_ethnicity <- list(
     description = 'Māori'
   )
 )
-
-# religious denominations
+# religion ---------------------------------------------------------------------
 subsets_standard_secular_vs_religious <- list(
   Not_Religious = list(var = "t0_religion_bigger_denominations_not_rel_binary", value = 1, label = "Not Religious"),
   Religious = list(var = "t0_religion_bigger_denominations_not_rel_binary", value = 0, label = "Religious")
 )
 
-# batch planned subgroup analysis -----------------------------------------
+# ------------------------- 2. defaults for ATE plots --------------------------
 # set up domain names
 domain_names <- c("wellbeing")
 
 # set up subtitles
 subtitles <- ""
 
-# new base defaults that work for your comparisons
-# defaults for ate plots
-
 # play around with these values
 x_offset_comp <- 1.0
 x_lim_lo_comp <- -1.0
 x_lim_hi_comp <- 1.0
 
-label_mapping_all
 base_defaults_comparisons <- list(
   type = "RD",
   title = ate_title,
   e_val_bound_threshold = 1.2,
-  label_mapping = "label_mapping_all",
+  label_mapping = label_mapping_all,
   adjust = "bonferroni",
   #<- new
   alpha = 0.05,
@@ -952,51 +955,35 @@ base_defaults_comparisons <- list(
   include_coefficients = FALSE
 )
 
-# 3. batch subgroup analysis -----------------------------------------
+# ------------------------- 3. batch subgroup analysis -------------------------
 planned_subset_results <- margot_planned_subgroups_batch(
-  domain_models  = list(models_binary),
-  X              = X,
-  base_defaults  = base_defaults_comparisons,
-  subset_types   = list(
-    religions_secular = subsets_standard_secular_vs_religious,
-    # only compare one group with others
-    ethnicity = subsets_standard_ethnicity,
-    wealth = subsets_standard_wealth,
-    gender = subsets_standard_gender,
-    cohort = subsets_standard_age
+  domain_models = list(models_binary),
+  X             = X,
+  base_defaults = base_defaults,
+  subset_types  = list(
+    wealth              = subsets_wealth,
+    political_orientation = subsets_political,
+    age                 = subsets_age,
+    gender              = subsets_gender,
+    ethnicity           = subsets_ethnicity,
+    religion            = subsets_religion
   ),
-  original_df    = original_df,
-  label_mapping  = label_mapping_all,
-  # ← supply it here
-  domain_names   = "wellbeing",
-  subtitles      = "",
-  adjust         = "bonferroni",
-  # ← here
-  alpha          = 0.05           # ← and here
+  original_df   = original_df,
+  label_mapping = label_mapping_all,
+  domain_names  = "wellbeing",
+  adjust        = "bonferroni",
+  alpha         = 0.05,
+  subtitles  = subtitles 
 )
 
-
-
-# the function:
-#   1. filters the test fold to each stratum,
-#   2. re‑computes the doubly‑robust ate for every outcome,
-#   3. wraps results in a tidy list → $domain → $subset → $plot/table.
-
-# 4. text summaries ---------------------------------------------------
+# ------------------------- 4. quick summaries ---------------------------------
 cat(planned_subset_results$wellbeing$wealth$explanation)
-cat(planned_subset_results$wellbeing$religions$explanation)
-cat(planned_subset_results$wellbeing$ethnicity$explanation)
-cat(planned_subset_results$wellbeing$religions_secular$explanation)
+cat(planned_subset_results$wellbeing$political_orientation$explanation)
+cat(planned_subset_results$wellbeing$age$explanation)
 
-
-# (political, gender, cohort idem)
-
-# 5. assemble quick facet plots --------------------------------------
-# patchwork stacks the ggplots vertically (ncol = 1) or in a grid.  the
-# helper `wrap_plots()` is from patchwork.  here we show wealth strata.
-# -------------------------------------------------------------------
-# example 1 – stack three wealth strata vertically -------------------
-plots_subgroup_wealth <- wrap_plots(
+# ------------------------- 5. example plots -----------------------------------
+# wealth – vertical stack
+wrap_plots(
   list(
     planned_subset_results$wellbeing$wealth$results$Poor$plot,
     planned_subset_results$wellbeing$wealth$results$`Middle Income`$plot,
@@ -1004,84 +991,48 @@ plots_subgroup_wealth <- wrap_plots(
   ),
   ncol = 1
 ) +
-  plot_annotation(title = "Wealth",
-                  theme = theme(plot.title = element_text(size = 18, face = "bold")))
-print(plots_subgroup_wealth)
+  plot_annotation(
+    title = "Wealth",
+    theme = theme(plot.title = element_text(size = 18, face = "bold"))
+  )
 
-# -------------------------------------------------------------------
-# example 2 – 2×2 grid for ethnicity (space-saving) ------------------
-plots_subgroup_ethnicity <- wrap_plots(
+# ethnicity – 2×2 grid
+wrap_plots(
   list(
-    planned_subset_results$wellbeing$ethnicity$results$Asians$plot,
-    planned_subset_results$wellbeing$ethnicity$result$`NZ Europeans `$plot,
-    planned_subset_results$wellbeing$ethnicity$results$`Pacific Peoples`$plot,
+    planned_subset_results$wellbeing$ethnicity$results$Asian$plot,
+    planned_subset_results$wellbeing$ethnicity$results$`NZ European`$plot,
+    planned_subset_results$wellbeing$ethnicity$results$Pacific$plot,
     planned_subset_results$wellbeing$ethnicity$results$Māori$plot
   ),
   ncol = 2
 ) +
-  plot_annotation(title = "Ethnicity",
-                  theme = theme(plot.title = element_text(size = 18, face = "bold")))
-print(plots_subgroup_ethnicity)
-planned_subset_results$wellbeing$ethnicity$results$Asians$plot
-# -------------------------------------------------------------------
-# example 3 – horizontal strip for gender ----------------------------
-plots_subgroup_gender <- wrap_plots(
-  list(
-    planned_subset_results$wellbeing$gender$results$Female$plot,
-    planned_subset_results$wellbeing$gender$results$Male$plot
-  ),
-  ncol = 2
-) +
-  plot_annotation(title = "Gender",
-                  theme = theme(plot.title = element_text(size = 18, face = "bold")))
-print(plots_subgroup_gender)
+  plot_annotation(
+    title = "Ethnicity",
+    theme = theme(plot.title = element_text(size = 18, face = "bold"))
+  )
 
-
-# example 4 – Religious vs Secular -------------------
-plots_subgroup_secular <- wrap_plots(
-  list(
-    planned_subset_results$wellbeing$religions_secular$results$`Not Religious`$plot,
-    planned_subset_results$wellbeing$religions_secular$results$`Religious`$plot
-  ),
-  ncol = 1
-) +
-  plot_annotation(title = "Secular vs Religious",
-                  theme = theme(plot.title = element_text(size = 18, face = "bold")))
-print(plots_subgroup_secular)
-
-
-
-# 6. group‑vs‑group comparisons --------------------------------------
-#   • `margot_compare_groups()` takes two transformed tables (risk‑diff)
-#   • returns a *difference in differences* tibble + plain‑text interp.
-
-# example: young (<35) vs older (>62)
-group_comparison_age_young_old <- margot_compare_groups(
-  group1_name = "People Under 35 Years Old",
-  group2_name = "People Over 62 Years Old",
-  planned_subset_results$wellbeing$cohort$results$`Age < 35`$transformed_table,
-  # reference
-  planned_subset_results$wellbeing$cohort$results$`Age > 62`$transformed_table,
-  # comparison
-  type            = "RD",
-  # risk‑difference scale
-  decimal_places  = 4
+# ------------------------- 6. group-vs-group example --------------------------
+comp_age <- margot_compare_groups(
+  group1_name    = "Under 35",
+  group2_name    = "Over 62",
+  planned_subset_results$wellbeing$age$results$`Age < 35`$transformed_table,
+  planned_subset_results$wellbeing$age$results$`Age > 62`$transformed_table,
+  type           = "RD",
+  decimal_places = 3
 )
-print(group_comparison_age_young_old$results |> kbl("markdown", digits = 2))
-cat(group_comparison_age_young_old$interpretation)
+print(comp_age$results |> kbl("markdown", digits = 2))
+cat(comp_age$interpretation)
+
+cli::cli_h1("subgroup analysis complete ✔")
 
 
-# 7. group‑vs‑group comparisons --------------------------------------
-#   • `margot_compare_groups()` takes two transformed tables (risk‑diff)
-#   • returns a *difference in differences* tibble + plain‑text interp.
-
-# example: young (<35) vs older (>62)
+# example: secular vs religious
 group_comparison_secular_religious <- margot_compare_groups(
   group1_name = "Secular People",
   group2_name = "People Who Identify With Religion",
-  planned_subset_results$wellbeing$religions_secular$results$`Not Religious`$transformed_table,
+  planned_subset_results$wellbeing$religion$results$`Not Religious`$transformed_table,
   # reference
-  planned_subset_results$wellbeing$religions_secular$results$Religious$transformed_table,
+  planned_subset_results$wellbeing$religion$results$Religious$transformed_table,
   # reference
   type            = "RD",
   # risk‑difference scale
@@ -1092,17 +1043,15 @@ cat(group_comparison_secular_religious$interpretation)
 
 
 
-# note comparisons should be specified a priori, and you can save results as you
-# for your manuscript
+# End of Script -----------------------------------------------------------
 
 
-# end of theoretical comparisons block ---------------------------------
+
+# EXTRA MATERIAL ----------------------------------------------------------
 
 
 
 # FOR APPENDIX IF DESIRED -------------------------------------------------
-
-
 # helper: combine and save ggplot objects ---------------------------------
 combine_and_save <- function(plots, prefix) {
   if (length(plots) == 0) {
@@ -1132,75 +1081,13 @@ autoc_plots <-
   margot_plot_rate_batch(
     models      = models_binary_flipped_all,
     save_plots  = FALSE,
-    label_mapping      = label_mapping_all,
+    label_mapping = label_mapping_all,
     model_names = model_groups$autoc
   )
 autoc_plots[[1]]
 
 combined_autoc <- combine_and_save(autoc_plots, "rate_autoc")
 model_groups$exploratory
-# step 4: Qini model curves --------------------------------------------
-qini_policy_results <-
-  margot_policy(
-    models_binary_flipped_all,
-    save_plots         = FALSE,
-    output_dir         = here::here(push_mods),
-    decision_tree_args = list(),
-    policy_tree_args   = list(),
-    # model_names        = "model_t2_neighbourhood_community_z",
-    original_df        = original_df,
-    label_mapping      = label_mapping_all,
-    max_depth          = 2L,
-    output_objects     = c("qini_plot", "diff_gain_summaries")
-  )
-qini_policy_results$model_t2_neighbourhood_community_z$diff_gain_summaries
-# view qini plots
-qini_plots <- purrr::map(qini_policy_results, ~ .x$qini_plot)
-
-
-qini_policy_results <-
-  margot_interpret_policy_batch(
-    models_binary_flipped_all,
-    save_plots         = FALSE,
-    output_dir         = here::here(push_mods),
-    decision_tree_args = list(),
-    policy_tree_args   = list(),
-    # model_names        = "model_t2_neighbourhood_community_z",
-    original_df        = original_df,
-    label_mapping      = label_mapping_all,
-    max_depth          = 2L,
-    output_objects     = c("qini_plot", "diff_gain_summaries")
-  )
-# how many?
-length(qini_plots)
-# explore
-qini_plots[[1]] 
-qini_plots[[2]] #* 
-qini_plots[[3]] #
-qini_plots[[4]] #
-qini_plots[[5]] #
-qini_plots[[6]] #
-qini_plots[[7]] #
-qini_plots[[8]] #
-qini_plots[[9]] # bad
-qini_plots[[10]] # bad
-qini_plots[[11]] #
-qini_plots[[12]] #
-
-# suggests qini result 
-qini_policy_results[[2]]$diff_gain_summaries
-qini_policy_results[[5]]$diff_gain_summaries
-qini_policy_results[[6]]$diff_gain_summaries
-qini_policy_results[[7]]$diff_gain_summaries
-qini_policy_results[[8]]$diff_gain_summaries
-qini_policy_results[[9]]$diff_gain_summaries # bad
-qini_policy_results[[10]]$diff_gain_summaries
-qini_policy_results[[11]]$diff_gain_summaries
-
-qini_policy_results
-
-
-cli::cli_h1("Qini model curves plotted ✔")
 
 
 # ILLLUSTRATIONS OF SETTINGS

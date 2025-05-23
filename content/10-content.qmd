@@ -87,6 +87,7 @@ Download Quarto here:
 
 ## Script 0: Set up your library/
 
+Note -- rerun this script if you are missing updated templates, as they have been updated 23 May 2025
 
 ```{r}
 #| include: true
@@ -94,7 +95,63 @@ Download Quarto here:
 #| file: ../laboratory/lab-11/00-boilerplate-setup.R
 ```
 
+::: {.callout-note}
+Type `y` when R asks whether to overwrite the boilerplate files; this replaces them with the latest versions.
+Press `n` (or just hit Enter) to keep what you already have.
+
+Your own edits—such as custom rows in the measures table -- are stored elsewhere, so they will not be overwritten. One tap, no tears.
+
+Take-away: `y` refreshes the templates; `n` preserves the status quo.
+:::
+
+This is how the the printout in your R console should look (depending on how recently you've run your script):
+
+```r
+> # save imported data -------------------------------------------------------
+> boilerplate_save(
++   student_unified_db,
++   data_path     = path_data,
++   create_backup = FALSE
++ )
+ℹ preparing to save 6 databases
+ℹ processing measures database (1/6)
+ℹ no changes detected in measures database
+ℹ saving measures database to /Users/your_machine_path-/example_boilerplate_data/measures_db.rds
+✔ saved measures database
+ℹ processing methods database (2/6)
+ℹ 1 new entries will be added:
+ℹ   + student_target_population
+! 2 entries will be removed:
+!   - target_population
+!   - sample
+Save methods database with these changes? [y/n]: y
+ℹ saving methods database to /Users/joseph/GIT/psych-434-2025/example_boilerplate_data/methods_db.rds
+✔ saved methods database
+ℹ processing results database (3/6)
+ℹ no changes detected in results database
+ℹ saving results database to /Users/joseph/GIT/psych-434-2025/example_boilerplate_data/results_db.rds
+✔ saved results database
+ℹ processing discussion database (4/6)
+ℹ 2 existing entries will be modified:
+ℹ   ~ student_authors_statement
+ℹ   ~ student_ethics
+Save discussion database with these changes? [y/n]: y
+ℹ saving discussion database to /Users/joseph/GIT/psych-434-2025/example_boilerplate_data/discussion_db.rds
+✔ saved discussion database
+ℹ processing appendix database (5/6)
+ℹ no changes detected in appendix database
+ℹ saving appendix database to /Users/joseph/GIT/psych-434-2025/example_boilerplate_data/appendix_db.rds
+✔ saved appendix database
+ℹ processing template database (6/6)
+ℹ no changes detected in template database
+ℹ saving template database to /Users/joseph/GIT/psych-434-2025/example_boilerplate_data/template_db.rds
+✔ saved template database
+✔ successfully saved all 6 databases
+```
+
 ## Script 1: Adding/Revising Measures
+
+Note -- rerun this script if you are missing updated templates, as they have been updated 23 May 2025
 
 ```{r}
 #| include: true
@@ -103,10 +160,71 @@ Download Quarto here:
 
 ```
 
+::: {.callout-note}
+- remember to type 'y' to save changes
+:::
+
+
+When re-running your scripts, the printout should allow you to save to your working database folder. 
+When saving tick 'y'
+
+```r
+> # save a copy to avoid overwriting original --------------------------------
+> boilerplate_save(
++   unified_db,
++   data_path   = path_final,
++   output_file = "unified_db"
++ )
+ℹ preparing to save 6 databases
+ℹ processing measures database (1/6)
+ℹ no changes detected in measures database
+ℹ saving measures database to /Users/joseph/GIT/psych-434-2025/final_boilerplate_data/measures_db.rds
+✔ saved measures database
+ℹ processing methods database (2/6)
+ℹ 1 new entries will be added:
+ℹ   + student_target_population
+! 2 entries will be removed:
+!   - target_population
+!   - sample
+Save methods database with these changes? [y/n]: y
+ℹ created backup at: /Users/your_path/final_boilerplate_data/methods_db.rds.20250523_131930.bak
+ℹ saving methods database to  /Users/your_path/final_boilerplate_data/methods_db.rds
+✔ saved methods database
+ℹ processing results database (3/6)
+ℹ no changes detected in results database
+ℹ saving results database to  /Users/your_path/final_boilerplate_data/results_db.rds
+✔ saved results database
+ℹ processing discussion database (4/6)
+ℹ 2 existing entries will be modified:
+ℹ   ~ student_authors_statement
+ℹ   ~ student_ethics
+Save discussion database with these changes? [y/n]: y
+ℹ created backup at: /Users/joseph/GIT/psych-434-2025/final_boilerplate_data/discussion_db.rds.20250523_131933.bak
+ℹ saving discussion database to /Users/joseph/GIT/psych-434-2025/final_boilerplate_data/discussion_db.rds
+✔ saved discussion database
+ℹ processing appendix database (5/6)
+ℹ no changes detected in appendix database
+ℹ saving appendix database to /Users/joseph/GIT/psych-434-2025/final_boilerplate_data/appendix_db.rds
+✔ saved appendix database
+ℹ processing template database (6/6)
+ℹ no changes detected in template database
+ℹ saving template database to /Users/joseph/GIT/psych-434-2025/final_boilerplate_data/template_db.rds
+✔ saved template database
+✔ successfully saved all 6 databases
+```
+
+
 
 ## Script 3: Setting Up Your Manuscript Document
 
-Note -- save this as a '.qmd' file
+::: {.callout-note}
+- save this document as a `.qmd` file in a directory called 'quarto' (in your rstudio project)
+- - to render a document click 'Render'
+:::
+
+
+
+
 
 ```{r}
 #| include: true
@@ -115,9 +233,27 @@ Note -- save this as a '.qmd' file
 
 ```
 
+#### Pro Tip
+
+You can adjust figure by changing:
+
+`#| fig-height: 16` and `#| fig-width: 9`
 
 
-## What You Will Learn
+```r
+#| label: fig-policy-6
+#| fig-cap: "Decision Tree: {glued_policy_names_6}"
+#| eval: true
+#| fig-height: 16 # <- change here
+#| fig-width: 9 # <- change here
+
+policy_plots[[6]]
+
+```
+
+
+
+## What You Have Learned 
 
 - **How to create a publication quality manuscript** 
 
@@ -131,9 +267,139 @@ Note -- save this as a '.qmd' file
 
 - **How to interpret your results**
 
+## Frequently Asked Questions
 
-### Packages
+### Do I need to use `quarto` for making my report?
 
+No. The suggested workflow should make your life *easier*. If, after a fair trial -- *and* after asking us for help -- `quarto` still feels like extra friction, switch to whatever you like (`rmarkdown`, plain `R` scripts, or even Word). The science matters more than the wrapper. 
+
+👉 Quick-start: <https://quarto.org/docs/get-started/>
+
+---
+
+### I cannot save or retrieve files from folders
+
+When hunting path errors, ask yourself:
+
+- **Packages** – have I updated everything, especially **`margot`** and **`here`**?  
+- **Clean slate** – did I restart R (⌘⇧F10) *and* rerun the data-prep scripts from the top?  
+- **Project root** – am I inside the correct **RStudio Project**? Check with `here::here()`.  
+- **Search** – have I used *Edit → Find in Files* (⌘⇧F / Ctrl⇧F) to locate the object or path?  
+- **Data really there?** – do the objects exist in my data frame?
+
+```r
+# waves where `variable_name` was measured
+with(df_nz_long, table(variable_name, wave))
+```
+
+- **Permissions / cloud sync** – is the save folder writable *and* local? Dropbox/OneDrive may off-load files; right-click and choose *Make available offline*.
+
+---
+
+### I cannot run `margot_causal_forest_parallel()`
+
+- **Fallback** – does `margot_causal_forest()` work? It is slower but prints progress.  
+- **Formula richness** – causal forests need many covariates [@grf2024]. Include the full demographic block.  
+- **Resources** – parallel forests spawn one worker per core. Keep some RAM free.  
+- **Reduce load** – try fewer trees or a smaller variable pool:
+
+```r
+grf_defaults <- list(
+  seed             = 123,
+  stabilize.splits = TRUE,
+  num.trees        = 1000,  # fewer trees
+  top_n_vars       = 10     # smaller policy-tree search space
+)
+```
+
+---
+
+### I cannot run `margot_flip_forests_parallel()`
+
+First test the serial version `margot_flip_forests()`. All parallel caveats above apply.
+
+---
+
+### My R code is not working
+
+- Update packages (`pak::pak()` is handy).  
+- Re-download the example code and run from the top.  
+- Read the full error and traceback (`rlang::last_trace()`).  
+- Compare with the example: what is different in *your* data or model?
+
+---
+
+### I do not know how `margot` functions work
+
+See the indexed reference: <https://go-bayes.github.io/margot/reference/index.html>
+
+---
+
+### What is the recommended workflow for investigating heterogeneity?
+
+1. **State your causal question.** Statistics cannot rescue an ill-posed question.  
+2. Estimate the **ATE** for the target population.  
+3. Compute **CATEs** and evaluate gain at 20 % and 50 % budget constraints with the **Qini** metric.  
+4. For outcomes with convincing heterogeneity, fit shallow **policy trees** (depth = 2) to obtain transparent rules.  
+5. Optionally, compare pre-specified subgroups directly.  
+6. Report **RATE–AUTOC** and **RATE–Qini** tables in an online supplement.  
+
+*Take-away:* start from a clean, updated project, read errors carefully, and ensure each step answers *your* research question.
+
+---
+
+### I cannot create a `quarto` document
+
+- Save the file with a `.qmd` suffix **inside** the `quarto` folder.  
+- Ensure the boiler-plate directory structure exists (run Script 0 and Script 1).  
+- Run the initial code block line-by-line before hitting **Render**.  
+- Define all `global_vars` required by the boiler-plate.  
+- If you are *not* flipping outcomes, stub the flip variables:
+
+```r
+flipped_names <- ""
+flip_outcomes <- ""
+flipped_list  <- ""
+```
+
+::: {.callout-note}
+If you are not flipping forests, comment out or edit any boiler-plate code that assumes flips.
+:::
+
+---
+
+### I cannot render the `quarto` document as PDF
+
+Install **TinyTeX** once:
+
+```r
+install.packages("tinytex")
+tinytex::install_tinytex()
+```
+
+Then, in your YAML front-matter, comment out unwanted formats. For PDF-only output:
+
+```yaml
+format:
+  # docx:
+  #   default: false
+  pdf:
+    pdf-engine: lualatex
+```
+
+---
+
+### Is it plagiarism to use the boiler-plate outputs verbatim?
+
+No—provided you cite the source. The templates come from the NZAVS and EPIC (Bulbulia) Lab. Tailor the text to match your study and give credit. To edit, set `eval: false`, render, and copy-paste the plain text blocks.
+
+---
+
+### I do not have a boiler-plate template used in the example script
+
+Run **Script 0** and **Script 1** from the start; they refresh every template.
+  
+  
 ```{r}
 report::cite_packages()
 ```

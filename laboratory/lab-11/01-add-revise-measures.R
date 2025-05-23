@@ -39,7 +39,7 @@ boilerplate_save(
   output_file = "unified_db"
 )
 
-ycli::cli_h2("database imported and saved ✔")
+cli::cli_h2("database imported and saved ✔")
 
 # inspect structure and existing measures ----------------------------------
 str(unified_db, max.level = 2)     # glance at top-level structure
@@ -63,7 +63,9 @@ unified_db$measures[[measure_name]] <- list(
   items       = list("how satisfied are you with your current job?")
 )
 
-unified_db$measures[[measure_name]] <- list(
+unified_db$measures[[cyberbulling]] <- list( # use the measure name in `colnames(df_nz_long)`
+  # note that cyberbulling is not actually in our simulated dataset 
+  # this is just an llustration
   name        = "Cyberbulling",
   description = "Cyberbulling was measured with a single item.",
   reference   = "wang2019cyberbullying",
