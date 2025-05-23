@@ -269,7 +269,7 @@ policy_plots[[6]]
 
 ## Frequently Asked Questions
 
-### Do I need to use `quarto` for making my report?
+### Do I need to use 'quarto' for making my report?
 
 No. The suggested workflow should make your life *easier*. If, after a fair trial -- *and* after asking us for help -- `quarto` still feels like extra friction, switch to whatever you like (`rmarkdown`, plain `R` scripts, or even Word). The science matters more than the wrapper. 
 
@@ -296,7 +296,7 @@ with(df_nz_long, table(variable_name, wave))
 
 ---
 
-### I cannot run `margot_causal_forest_parallel()`
+### I cannot run 'margot_causal_forest_parallel()'
 
 - **Fallback** – does `margot_causal_forest()` work? It is slower but prints progress.  
 - **Formula richness** – causal forests need many covariates [@grf2024]. Include the full demographic block.  
@@ -314,7 +314,7 @@ grf_defaults <- list(
 
 ---
 
-### I cannot run `margot_flip_forests_parallel()`
+### I cannot run 'margot_flip_forests_parallel()'
 
 First test the serial version `margot_flip_forests()`. All parallel caveats above apply.
 
@@ -329,7 +329,7 @@ First test the serial version `margot_flip_forests()`. All parallel caveats abov
 
 ---
 
-### I do not know how `margot` functions work
+### I do not know how 'margot' package functions work
 
 See the indexed reference: <https://go-bayes.github.io/margot/reference/index.html>
 
@@ -348,7 +348,7 @@ See the indexed reference: <https://go-bayes.github.io/margot/reference/index.ht
 
 ---
 
-### I cannot create a `quarto` document
+### I cannot create a 'quarto' document
 
 - Save the file with a `.qmd` suffix **inside** the `quarto` folder.  
 - Ensure the boiler-plate directory structure exists (run Script 0 and Script 1).  
@@ -368,7 +368,7 @@ If you are not flipping forests, comment out or edit any boiler-plate code that 
 
 ---
 
-### I cannot render the `quarto` document as PDF
+### I cannot render the 'quarto' document as PDF
 
 Install **TinyTeX** once:
 
@@ -391,7 +391,7 @@ format:
 
 ### Is it plagiarism to use the boiler-plate outputs verbatim?
 
-No—provided you cite the source. The templates come from the NZAVS and EPIC (Bulbulia) Lab. Tailor the text to match your study and give credit. To edit, set `eval: false`, render, and copy-paste the plain text blocks.
+No—provided you clearly cite the source. The templates come from the  EPIC (Bulbulia) Lab and New Zealand Attitudes and Values Study. Tailor your text to match your study and give credit. To edit, set `eval: false`, render, and copy-paste the plain text blocks.
 
 ---
 
