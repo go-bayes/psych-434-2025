@@ -342,16 +342,20 @@ See the indexed reference: <https://go-bayes.github.io/margot/reference/index.ht
 3. Compute **CATEs** and evaluate gain at 20 % and 50 % budget constraints with the **Qini** metric.  
 4. For outcomes with convincing heterogeneity, fit shallow **policy trees** (depth = 2) to obtain transparent rules.  
 5. Optionally, compare pre-specified subgroups directly.  
-6. Report **RATE–AUTOC** and **RATE–Qini** tables in an online supplement.  
+6. Report **RATE–AUTOC** and **RATE–Qini** tables in an appendix.  
 
-*Take-away:* start from a clean, updated project, read errors carefully, and ensure each step answers *your* research question.
+*Take-away:* 
+- start from a clean, updated project, 
+- use recent scripts
+- read errors carefully, and 
+- ensure each step answers *your* research question.
 
 ---
 
 ### I cannot create a 'quarto' document
 
-- Save the file with a `.qmd` suffix **inside** the `quarto` folder.  
-- Ensure the boiler-plate directory structure exists (run Script 0 and Script 1).  
+- save the file with a `.qmd` suffix **inside** the `quarto` folder.  
+- Ensure the boilerplate directory structure exists (run Script 0 and Script 1).
 - Run the initial code block line-by-line before hitting **Render**.  
 - Define all `global_vars` required by the boiler-plate.  
 - If you are *not* flipping outcomes, stub the flip variables:
@@ -363,7 +367,7 @@ flipped_list  <- ""
 ```
 
 ::: {.callout-note}
-If you are not flipping forests, comment out or edit any boiler-plate code that assumes flips.
+If you are not flipping forests, stub, comment-out or edit any boiler-plate code that assumes flips.
 :::
 
 ---
@@ -391,7 +395,7 @@ format:
 
 ### Is it plagiarism to use the boiler-plate outputs verbatim?
 
-No—provided you clearly cite the source. The templates come from the  EPIC (Bulbulia) Lab and New Zealand Attitudes and Values Study. Tailor your text to match your study and give credit. To edit, set `eval: false`, render, and copy-paste the plain text blocks.
+No—provided you clearly cite the source. The templates come from the  EPIC (Bulbulia) Lab and the data are simulated from New Zealand Attitudes and Values Study. Tailor your text to match your study and give credit. To edit, set `eval: false`, render, and copy-paste the plain text blocks.
 
 ---
 
