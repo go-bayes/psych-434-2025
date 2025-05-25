@@ -57,13 +57,13 @@ if (is.null(unified_db$measures[[measure_name]])) {
 unified_db$measures[[measure_name]] <- list(
   name        = "Job Satisfaction",
   description = "job satisfaction was measured with a single item.",
-  reference   = "[@eisenbarth2022aspects]",
+  reference   = "eisenbarth2022aspects",
   waves       = "1-present",
   keywords    = c("employment", "mental health"),
   items       = list("how satisfied are you with your current job?")
 )
 
-unified_db$measures[[cyberbulling]] <- list( # use the measure name in `colnames(df_nz_long)`
+unified_db$measures[["cyberbulling"]] <- list( # use the measure name in `colnames(df_nz_long)`
   # note that cyberbulling is not actually in our simulated dataset 
   # this is just an llustration
   name        = "Cyberbulling",
@@ -123,5 +123,4 @@ cli::cli_h2("measure revised and saved ✔")
 
 # to reload updated database, uncomment the following line --------------
 # unified_db <- boilerplate_import(data_path = path_final)
-
 

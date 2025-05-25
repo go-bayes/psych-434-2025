@@ -1114,4 +1114,131 @@ report::cite_packages()
 ```
 
 
+
+
+#### OTHER MATERIAL: 
+
+Selection bias is commonplace.
+
+## Collider bias within experiments
+
+We noted that conditioning on a post-treatment variable can induce bias by blocking the path between the experimental manipulation and the outcome. However, such conditioning can open a path even when there is no experimental effect.
+
+```{r  code_folding = TRUE}
+dag_ex2 <- dagify(
+  C1 ~ C0 + U,
+  Ch ~ U + R,
+  labels = c(
+    "R" = "Ritual",
+    "C1" = "Charity-post",
+    "C0" = "Charity-pre",
+    "Ch" = "Cohesion",
+    "U" = "Religiousness (Unmeasured)"
+  ),
+  exposure = "R",
+  outcome = "C1",
+  latent = "U"
+) |>
+  control_for(c("Ch","C0"))  
+
+dag_ex2 |>
+  ggdag( text = FALSE,
+    use_labels = "label")
+```
+
+How do we avoid collider-bias here?
+
+Note what happens if we condition on cohesion?
+
+```{r}
+dag_ex2 |>
+  ggdag_collider(
+    text = FALSE,
+    use_labels = "label"
+  )  +
+  ggtitle("Cohesion is a collider that opens a path from ritual to charity")
+```
+
+Don't condition on a post-treatment variable!
+
+```{r}
+dag_ex3 <- dagify(
+  C1 ~ C0,
+  C1 ~ U,
+  Ch ~ U + R,
+  labels = c(
+    "R" = "Ritual",
+    "C1" = "Charity-post",
+    "C0" = "Charity-pre",
+    "Ch" = "Cohesion",
+    "U" = "Religiousness (Unmeasured)"
+  ),
+  exposure = "R",
+  outcome = "C1",
+  latent = "U"
+)
+ggdag_adjustment_set(dag_ex3)
+```
+
+## Taxonomy of confounding
+
+There is good news. Remember, ultimately are only four basic types of confounding:
+
+### The Fork (omitted variable bias)
+
+```{r}
+confounder_triangle(x = "Coffee",
+                    y = "Lung Cancer",
+                    z = "Smoking") |>
+  ggdag_dconnected(text = FALSE,
+                   use_labels = "label")
+```
+
+### The Pipe (fully mediated effects)
+
+```{r}
+mediation_triangle(
+  x = NULL,
+  y = NULL,
+  m = NULL,
+  x_y_associated = FALSE
+) |>
+  tidy_dagitty(layout = "nicely") |>
+  ggdag()
+```
+
+### The Collider
+
+### Confounding by proxy
+
+If we "control for" a descendant of a collider, we will introduce collider bias.
+
+```{r}
+dag_sd <- dagify(
+  Z ~ X,
+  Z ~ Y,
+  D ~ Z,
+  labels = c(
+    "Z" = "Collider",
+    "D" = "Descendant",
+    "X" = "X",
+    "Y" = "Y"
+  ),
+  exposure = "X",
+  outcome = "Y"
+) |>
+  control_for("D") 
+
+dag_sd |>
+  ggdag_dseparated(
+    from = "X",
+    to = "Y",
+    controlling_for = "D",
+    text = FALSE,
+    use_labels = "label"
+  )  +
+  ggtitle("X --> Y, controlling for D",
+          subtitle = "D induces collider bias")
+```
+
   
