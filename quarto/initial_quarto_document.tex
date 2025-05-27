@@ -213,7 +213,7 @@
 
 \title{Your Title}
 \author{YOUR NAME}
-\date{2025-05-23}
+\date{2025-05-27}
 \begin{document}
 \maketitle
 \begin{abstract}
@@ -254,260 +254,6 @@ Learning}.
 \textbf{Your place to shine here}
 
 \subsection{Method}\label{method}
-
-\subsubsection{Target Population}\label{target-population}
-
-The data are simulated from the New Zealand Attitudes and Values Study.
-For the purposes of this assessment, the target population for this
-study comprises New Zealand residents as represented in the 2018 of the
-New Zealand Attitudes and Values Study (NZAVS) during the years 2018
-weighted by New Zealand Census weights for age, gender, and ethnicity
-(refer to Sibley (\citeproc{ref-sibley2021}{2021})). The NZAVS is a
-national probability study designed to reflect the broader New Zealand
-population accurately. Despite its comprehensive scope, the NZAVS has
-some limitations in its demographic representation. Notably, it tends to
-under-sample males and individuals of Asian descent while over-sampling
-females and Māori (the indigenous peoples of New Zealand). To address
-these disparities and enhance the accuracy of our findings, we apply New
-Zealand Census survey weights to the sample data.
-
-\subsubsection{Eligibility Criteria}\label{eligibility-criteria}
-
-To be included in the analysis of this study, participants needed to
-participate in the 2018 of the study and respond to the baseline measure
-of Extraversion.
-
-Participants may have been lost to follow-up at the end of the study if
-they met eligibility criteria at 2018. We adjusted for attrition and
-non-response using censoring weights, described below.
-
-A total of 39,635 individuals met these criteria and were included in
-the study.
-
-\subsubsection{Average treatment effect}\label{average-treatment-effect}
-
-To learn how the outcome would shift if everyone received a different
-exposure, we emulate a \textbf{target trial}
-(\citeproc{ref-hernan2016c}{Hernán \& Robins, 2016}). Making the
-hypothetical experiment explicit fixes the estimand, the data
-requirements, and the assumptions.
-
-Our guiding question is:
-
-\begin{quote}
-\emph{How would the outcomes change if, for every individual, we set the
-exposure to \textbf{\textgreater4, scale range 1-7} rather than
-\textbf{\textless=4, scale range 1-7}, conditional on their baseline
-characteristics?}
-\end{quote}
-
-We compare two interventions:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \textbf{1} --- every participant is set to \textgreater4, scale range
-  1-7.
-\item
-  \textbf{0} --- every participant is set to \textless=4, scale range
-  1-7.
-\end{enumerate}
-
-The difference in population means defines the \textbf{average treatment
-effect (ATE)}. Figure Figure~\ref{fig-exposure} plots the exposure
-distribution and its dichotomisation; the centre dashed line marks the
-mean, flanked by one standard deviation.
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-exposure-1.pdf}}
-
-}
-
-\caption{\label{fig-exposure}Histogram of exposure with binary groupin}
-
-\end{figure}%
-
-Because we test several outcomes, we adjust the ATE confidence intervals
-for multiplicity with bonferroni at \(\alpha = 0.05\).
-
-The longitudinal design and rich baseline covariates allow us -- under
-the standard identification assumptions of consistency, positivity, and
-no unmeasured confounding -- to attribute the differences between the
-two exposure means as a causal effect. Conditioning on demographics,
-personality traits, and other pretreatment factors renders exposure
-assignment ignorable (\citeproc{ref-rosenbaum1983central}{Rosenbaum \&
-Rubin, 1983}).
-
-\subsubsection{Moderators and treatment
-policies}\label{moderators-and-treatment-policies}
-
-We pursued two complementary objectives: (i) to test whether
-personalised targeting, based on individual conditional average
-treatment effects \(\hat\tau(x)\), yields welfare gains, and (ii) to
-convert any such gains into transparent, practitioner‐ready decision
-rules.
-
-\paragraph{Pre-processing and honest model
-training}\label{pre-processing-and-honest-model-training}
-
-Our protocol is as follows: in settings where the exposure is positive,
-outcomes for which lower is better are sign‐flipped so that larger
-values always index improvement. Similarly, where the exposure is
-negative, outcomes for which `higher is better' are sign flipped.Here,
-we flipped: Anxiety, Depression, Rumination.
-
-Each model estimate used an honest 70/30 split: the training fold built
-the causal forest with grf (\citeproc{ref-grf2024}{Tibshirani et al.,
-2024}), while the held-out fold powered all diagnostic checks and
-provided data for fitting policy trees. This separation curbs
-over-fitting yet keeps the workflow simple.
-
-\paragraph{Budget-based screening with Qini
-curves.}\label{budget-based-screening-with-qini-curves.}
-
-Before constructing rules we asked a budget question: If resources allow
-treatment of only the top 20\% or 50\% of individuals ranked by
-\(\hat\tau(x)\), what uplift is purchased relative to treating everyone?
-Qini curves quantified the incremental gain; outcomes whose 95\%
-confidence intervals excluded zero at either spend level were labelled
-actionable, signalling meaningful heterogeneity in benefit.
-
-\paragraph{Deriving transparent decision
-rules.}\label{deriving-transparent-decision-rules.}
-
-For each actionable outcome we trained depth-2 policy trees with
-policytree (\citeproc{ref-athey_2021_policy_tree_econometrica}{Athey \&
-Wager, 2021a}; \citeproc{ref-policytree_package_2024}{Sverdrup et al.,
-2024}) on the validation data. The resulting if--then statements
-maximise expected welfare under the same budget cap and remain auditable
-by domain experts.
-
-\paragraph{Global heterogeneity tests
-(supplementary).}\label{global-heterogeneity-tests-supplementary.}
-
-Appendix D reports RATE-AUTOC and RATE-Qini statistics, asking whether
-any covariate information can beat a uniform policy. These tests,
-controlled for false discovery at q=0.1 via Benjamini--Hochberg
-false-discovery-rate adjustment, are informative but not required for
-the budget-first pipeline.
-
-Overall, combining Qini curves to screen and shallow policy trees to act
-isolates budget-relevant treatment heterogeneity and distils it into
-actionable rules, avoiding the chase for spurious complexity. Full
-technical details appear in Appendix E.
-
-\subsubsection{Exposure Indicator}\label{exposure-indicator}
-
-The New Zealand Attitudes and Values Study assesses Extraversion using
-the following question:
-
-Mini-IPIP6 Extraversion dimension: (i) I am the life of the party. (ii)
-I don't talk a lot. (r) (iii) I keep in the background. (r) (iv) I talk
-to a lot of different people at parties.(Refer to
-\hyperref[appendix-measures]{Appendix A}).
-
-\subsubsection{Causal Identification
-Assumptions}\label{causal-identification-assumptions}
-
-This study relies on the following identification assumptions for
-estimating the causal effect of Extraversion:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\item
-  \textbf{Consistency}: the observed outcome under the observed
-  Extraversion is equal to the potential outcome under that exposure
-  level. As part of consistency, we assume no interference: the
-  potential outcomes for one individual are not affected by the
-  Extraversion status of other individuals.
-\item
-  \textbf{No unmeasured confounding}: all variables that affect both
-  Extraversion and the outcome have been measured and accounted for in
-  the analysis.
-\item
-  \textbf{Positivity}: there is a non-zero probability of receiving each
-  level of Extraversion for every combination of values of Extraversion
-  and confounders in the population. Positivity is the only fundamental
-  casual assumption that can be evaluated with data (refer to
-  \hyperref[appendix-positivity]{Appendix C}).
-\end{enumerate}
-
-\subsubsection{Confounding Control}\label{confounding-control}
-
-To manage confounding in our analysis, we implement VanderWeele
-(\citeproc{ref-vanderweele2019}{2019})'s \emph{modified disjunctive
-cause criterion} by following these steps:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \textbf{Identified all common causes} of both the treatment and
-  outcomes.
-\item
-  \textbf{Excluded instrumental variables} that affect the exposure but
-  not the outcome. Instrumental variables do not contribute to
-  controlling confounding and can reduce the efficiency of the
-  estimates.
-\item
-  \textbf{Included proxies for unmeasured confounders} affecting both
-  exposure and outcome. According to the principles of d-separation
-  Pearl (\citeproc{ref-pearl2009a}{2009}), using proxies allows us to
-  control for their associated unmeasured confounders indirectly.
-\item
-  \textbf{Controlled for baseline exposure} and \textbf{baseline
-  outcome}. Both are used as proxies for unmeasured common causes,
-  enhancing the robustness of our causal estimates, refer to VanderWeele
-  et al. (\citeproc{ref-vanderweele2020}{2020}).
-\end{enumerate}
-
-\subsubsection{Statistical Estimation}\label{statistical-estimation}
-
-We estimate heterogeneous treatment effects with Generalized Random
-Forests (GRF) (\citeproc{ref-grf2024}{Tibshirani et al., 2024}). GRF
-extends random forests for causal inference by focusing on conditional
-average treatment effects (CATE). It handles complex interactions and
-non-linearities without explicit model specification, and it provides
-`honest' estimates by splitting data between model-fitting and
-inference. GRF is doubly robust because it remains consistent if either
-the outcome model or the propensity model is correct. We evaluate
-policies with the \texttt{policytree} package
-(\citeproc{ref-athey_2021_policy_tree_econometrica}{Athey \& Wager,
-2021a}; \citeproc{ref-policytree_package_2024}{Sverdrup et al., 2024})
-and visualise results with \texttt{margot}
-(\citeproc{ref-margot2024}{Bulbulia, 2024a}). (Refer to
-\hyperref[appendix-explain-grf]{Appendix E} for a detailed explanation
-of our approach.)
-
-\subsubsection{Missing Data}\label{missing-data}
-
-The GRF package accepts missing values at baseline. To obtain valid
-inference for missing responses we computed inverse probability of
-censoring weights for censoring of the exposure, given that systematic
-censoring following the baseline wave may lead to selection bias that
-limit generalistion to the baseline target population
-(\citeproc{ref-bulbulia2024wierd}{Bulbulia, 2024b}). See
-\hyperref[appendix-explain-grf]{Appendix E}.
-
-\subsubsection{Sensitivity Analysis}\label{sensitivity-analysis}
-
-We perform sensitivity analyses using the E-value metric
-(\citeproc{ref-linden2020EVALUE}{Linden et al., 2020};
-\citeproc{ref-vanderweele2017}{VanderWeele \& Ding, 2017}). The E-value
-represents the minimum association strength (on the risk-ratio scale)
-that an unmeasured confounder would need with both exposure and
-outcome---after adjusting for measured covariates---to explain away the
-observed association (\citeproc{ref-linden2020EVALUE}{Linden et al.,
-2020}; \citeproc{ref-vanderweele2020}{VanderWeele et al., 2020}).
-Confidence intervals for each E-value were derived from the
-multiplicity-adjusted confidence intervals of the corresponding
-coefficient estimates (bonferroni, \(\alpha\) = 0.05), so the
-sensitivity analysis obeys the same error-control framework as the main
-results.
 
 \newpage{}
 
@@ -583,417 +329,36 @@ Hours of Exercise (log) & -0.02 & -0.074 & 0.034 & 1.155 & 1 \\
 
 \end{longtable}
 
-Confidence intervals were adjusted for multiple comparisons using
-bonferroni correction (\(\alpha\) = 0.05). E‑values were also adjusted
-using bonferroni correction (\(\alpha\) = 0.05).
-
-The following outcomes showed reliable causal evidence (E‑value lower
-bound \textgreater{} 1.2): - Social Belonging: 0.133(0.069,0.197); on
-the original scale, 0.145 (0.075,0.215). E‑value bound = 1.329 -
-Neighbourhood Community: 0.114(0.049,0.179); on the original scale,
-0.179 (0.077,0.281). E‑value bound = 1.264 - Self Esteem:
-0.099(0.041,0.157); on the original scale, 0.126 (0.052,0.2). E‑value
-bound = 1.238 - Social Support: 0.098(0.035,0.161); on the original
-scale, 0.11 (0.039,0.18). E‑value bound = 1.216
-
 \newpage{}
-
-\subsubsection{Planned Subgroup Comparisons
-(Optional)}\label{planned-subgroup-comparisons-optional}
-
-Based on theoretical findings we expected that the effects of
-\{name\_exposure\} would vary by age\ldots@fig-planned-comparison and
-Table~\ref{tbl-planned-comparison}
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-planned-comparison-1.pdf}}
-
-}
-
-\caption{\label{fig-planned-comparison}Planned Comparison Plot}
-
-\end{figure}%
-
-\begin{longtable}[]{@{}ll@{}}
-
-\caption{\label{tbl-planned-comparison}Planned Comparison Table}
-
-\tabularnewline
-
-\toprule\noalign{}
-Outcomes & Group Differences \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Social Support & \textbf{-0.144 {[}-0.269, -0.019{]}} \\
-Social Belonging & -0.069 {[}-0.194, 0.056{]} \\
-Self Esteem & -0.051 {[}-0.179, 0.077{]} \\
-Rumination & 0.108 {[}-0.043, 0.259{]} \\
-Personal Well-being Index & \textbf{-0.145 {[}-0.277, -0.013{]}} \\
-Neighbourhood Community & -0.011 {[}-0.146, 0.124{]} \\
-Meaning: Sense & -0.161 {[}-0.330, 0.008{]} \\
-Meaning: Purpose & -0.047 {[}-0.218, 0.124{]} \\
-Life Satisfaction & -0.081 {[}-0.225, 0.063{]} \\
-Hours of Exercise (log) & -0.017 {[}-0.188, 0.154{]} \\
-Depression & 0.014 {[}-0.125, 0.153{]} \\
-Anxiety & 0.051 {[}-0.070, 0.172{]} \\
-
-\end{longtable}
-
-We found reliable treatment-effect differences comparing People Over 62
-Years Old to People Under 35 Years Old for Social Support (People Over
-62 Years Old vs People Under 35 Years Old): \(\delta\) = -0.144
-{[}-0.269, -0.019{]} and Personal Well-being Index (People Over 62 Years
-Old vs People Under 35 Years Old): \(\delta\) = -0.145 {[}-0.277,
--0.013{]}. We did not find reliable differences for all other outcomes.
 
 \newpage{}
 
 \subsubsection{Heterogeneous Treatment
 Effects}\label{results-qini-curve}
 
-\paragraph{Qini Curves}\label{qini-curves}
-
-The Qini curve shows the cumulative \textbf{gain} as we expand a
-targeting rule down the CATE ranking.
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Beneficial exposure:} we add individuals from the top positive
-  CATEs downward; the baseline is `expose everyone.'
-\item
-  \textbf{Detrimental exposure:} we first flip outcome direction (so
-  higher values represent \textbf{more harm}; see Anxiety, Depression,
-  Rumination), then \emph{add} the exposure starting with individuals
-  whose CATEs show the \textbf{greated harm}, gradually including those
-  predicted to be more resistant to harm; the baseline is `expose
-  everyone.' The curve therefore quantifies the harm by when those most
-  suceptible to harm are exposed.
-\end{itemize}
-
-If the Qini curve stays above its baseline, a targeted policy increases
-the outcome more than a one-size-fits-all alternative. (Outcome
-directions were flipped where needed---Anxiety, Depression,
-Rumination---so the positively valenced exposures always have positively
-valanced outcomes and negative exposures always have negatively valenced
-outcomes.)
-
-We computed cumulative gains from prioritising individuals by CATE at
-20\% and 50\% spend levels, comparing against a no-prioritisation
-baseline.
-
-\textbf{Social Belonging} No benefits for priority investments as
-measured by the Qini curve at the twenty or fifty percent spend levels.
-
-\textbf{Anxiety (reversed)} No benefits for priority investments as
-measured by the Qini curve at the twenty or fifty percent spend levels.
-
-\textbf{Depression (reversed)} No benefits for priority investments as
-measured by the Qini curve at the twenty or fifty percent spend levels.
-
-\textbf{Life Satisfaction} At 20\% spend: CATE prioritisation is
-beneficial (diff: 0.09 {[}95\% CI 0.05, 0.13{]}). At 50\% spend: CATE
-prioritisation is beneficial (diff: 0.09 {[}95\% CI 0.03, 0.14{]}).
-
-\textbf{Hours of Exercise (log)} No benefits for priority investments as
-measured by the Qini curve at the twenty or fifty percent spend levels.
-
-\textbf{Meaning: Purpose} At 20\% spend: CATE prioritisation is
-beneficial (diff: 0.08 {[}95\% CI 0.05, 0.12{]}). At 50\% spend: CATE
-prioritisation is beneficial (diff: 0.08 {[}95\% CI 0.03, 0.13{]}).
-
-\textbf{Meaning: Sense} At 20\% spend: CATE prioritisation is beneficial
-(diff: 0.08 {[}95\% CI 0.04, 0.12{]}). At 50\% spend: CATE
-prioritisation is beneficial (diff: 0.07 {[}95\% CI 0.02, 0.12{]}).
-
-\textbf{Neighbourhood Community} At 20\% spend: CATE prioritisation is
-beneficial (diff: 0.09 {[}95\% CI 0.05, 0.12{]}). At 50\% spend: No
-reliable benefits from CATE prioritisation.
-
-\textbf{Personal Well-being Index} At 20\% spend: CATE prioritisation is
-beneficial (diff: 0.10 {[}95\% CI 0.06, 0.13{]}). At 50\% spend: CATE
-prioritisation is beneficial (diff: 0.09 {[}95\% CI 0.03, 0.14{]}).
-
-\textbf{Rumination (reversed)} At 20\% spend: No reliable benefits from
-CATE prioritisation. At 50\% spend: CATE prioritisation worsens outcomes
-compared to ATE.
-
-\textbf{Self Esteem} At 20\% spend: CATE prioritisation is beneficial
-(diff: 0.06 {[}95\% CI 0.03, 0.10{]}). At 50\% spend: CATE
-prioritisation is beneficial (diff: 0.07 {[}95\% CI 0.02, 0.11{]}).
-
-\textbf{Social Support} At 20\% spend: CATE prioritisation is beneficial
-(diff: 0.10 {[}95\% CI 0.06, 0.13{]}). At 50\% spend: CATE
-prioritisation is beneficial (diff: 0.07 {[}95\% CI 0.02, 0.13{]}).
-
 Table~\ref{tbl-qini} presents results for our Qini curve analysis at
 different spend rates.
 
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3662}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3099}}
-  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3239}}@{}}
-
-\caption{\label{tbl-qini}Qini Curve Results}
-
-\tabularnewline
-
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-Model
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Spend 20\%
-\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
-Spend 50\%
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-Social Belonging & 0.03 {[}-0.00, 0.07{]} & 0.00 {[}-0.05, 0.05{]} \\
-Anxiety (reversed) & -0.00 {[}-0.01, 0.01{]} & -0.00 {[}-0.01,
-0.01{]} \\
-Depression (reversed) & -0.00 {[}-0.01, 0.01{]} & -0.00 {[}-0.01,
-0.01{]} \\
-Life Satisfaction & \textbf{0.09 {[}0.05, 0.13{]}} & \textbf{0.09
-{[}0.03, 0.14{]}} \\
-Hours of Exercise (log) & 0.01 {[}-0.02, 0.04{]} & -0.02 {[}-0.07,
-0.03{]} \\
-Meaning: Purpose & \textbf{0.08 {[}0.05, 0.12{]}} & \textbf{0.08
-{[}0.03, 0.13{]}} \\
-Meaning: Sense & \textbf{0.08 {[}0.04, 0.12{]}} & \textbf{0.07 {[}0.02,
-0.12{]}} \\
-Neighbourhood Community & \textbf{0.09 {[}0.05, 0.12{]}} & 0.03
-{[}-0.02, 0.08{]} \\
-Personal Well-being Index & \textbf{0.10 {[}0.06, 0.13{]}} &
-\textbf{0.09 {[}0.03, 0.14{]}} \\
-Rumination (reversed) & -0.01 {[}-0.03, 0.01{]} & \emph{-0.04 {[}-0.06,
--0.01{]}} \\
-Self Esteem & \textbf{0.06 {[}0.03, 0.10{]}} & \textbf{0.07 {[}0.02,
-0.11{]}} \\
-Social Support & \textbf{0.10 {[}0.06, 0.13{]}} & \textbf{0.07 {[}0.02,
-0.13{]}} \\
-
-\end{longtable}
-
-Figure~\ref{fig-qini-1} presents results for reliable Qini results
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-qini-1-1.pdf}}
-
-}
-
-\caption{\label{fig-qini-1}Qini Graphs}
-
-\end{figure}%
+\textbf{?@fig-qini-1} presents results for reliable Qini results
 
 \newpage{}
 
 \subsubsection{Decision Rules (Who is Most Sensitive to
 Treatment?)}\label{decision-rules-who-is-most-sensitive-to-treatment}
 
-\paragraph{Policy Trees}\label{policy-trees}
-
-We used policy trees (\citeproc{ref-athey2021}{Athey \& Wager, 2021b},
-\citeproc{ref-athey_2021_policy_tree_econometrica}{2021a};
-\citeproc{ref-policytree_package_2024}{Sverdrup et al., 2024}) to find
-straightforward `if-then' rules for who benefits most from treatment,
-based on participant characteristics. Because we flipped some measures,
-a higher predicted effect always means greater improvement. Policy trees
-can uncover small but important subgroups whose treatment responses
-stand out, even when the overall differences might be modest.
+\newpage{}
 
 \newpage{}
 
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-policy-1-1.pdf}}
-
-}
-
-\caption{\label{fig-policy-1}Decision Tree: \{glued\_policy\_names\_1\}}
-
-\end{figure}%
-
-\textbf{Findings for Life Satisfaction:}
-
-Split 1: NZsei 13 l ≤ -0.121 (original: 52.05). Within that subgroup,
-split 2a: NZ Dep2018 ≤ 0.466 (original: 6.043), → \textbf{Control}; NZ
-Dep2018 \textgreater{} 0.466 (original: 6.043) → \textbf{Treated}.
-
-Split 2: NZsei 13 l \textgreater{} -0.121 (original: 52.05). Within that
-subgroup, split 2b: Conscientiousness ≤ 1.528 (original: 6.719), →
-\textbf{Treated}; Conscientiousness \textgreater{} 1.528 (original:
-6.719) → \textbf{Control}.
+\newpage{}
 
 \newpage{}
 
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-policy-2-1.pdf}}
-
-}
-
-\caption{\label{fig-policy-2}Decision Tree: \{glued\_policy\_names\_2\}}
-
-\end{figure}%
-
-\textbf{Findings for Meaning: Purpose:}
-
-Split 1: Meaning: Sense ≤ -0.586 (original: 4.996). Within that
-subgroup, split 2a: Meaning: Sense ≤ -0.617 (original: 4.959), →
-\textbf{Treated}; Meaning: Sense \textgreater{} -0.617 (original: 4.959)
-→ \textbf{Control}.
-
-Split 2: Meaning: Sense \textgreater{} -0.586 (original: 4.996). Within
-that subgroup, split 2b: NZ Dep2018 ≤ 1.552 (original: 9.007), →
-\textbf{Treated}; NZ Dep2018 \textgreater{} 1.552 (original: 9.007) →
-\textbf{Control}.
+\newpage{}
 
 \newpage{}
 
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-policy-3-1.pdf}}
-
-}
-
-\caption{\label{fig-policy-3}Decision Tree: \{glued\_policy\_names\_3\}}
-
-\end{figure}%
-
-\textbf{Findings for Meaning: Sense:}
-
-Split 1: log Household Inc ≤ 0.15 (original: 100000.015). Within that
-subgroup, split 2a: Age ≤ 0.612 (original: 57), → \textbf{Treated}; Age
-\textgreater{} 0.612 (original: 57) → \textbf{Control}.
-
-Split 2: log Household Inc \textgreater{} 0.15 (original: 100000.015).
-Within that subgroup, split 2b: Hours of Exercise (log) ≤ -0.543
-(original: 1.965), → \textbf{Control}; Hours of Exercise (log)
-\textgreater{} -0.543 (original: 1.965) → \textbf{Treated}.
-
 \newpage{}
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-policy-4-1.pdf}}
-
-}
-
-\caption{\label{fig-policy-4}Decision Tree: \{glued\_policy\_names\_4\}}
-
-\end{figure}%
-
-\textbf{Findings for Neighbourhood Community:}
-
-Split 1: log Hours Housework ≤ -0.083 (original: 6.96). Within that
-subgroup, split 2a: Life Satisfaction ≤ -1.515 (original: 3.481), →
-\textbf{Control}; Life Satisfaction \textgreater{} -1.515 (original:
-3.481) → \textbf{Treated}.
-
-Split 2: log Hours Housework \textgreater{} -0.083 (original: 6.96).
-Within that subgroup, split 2b: Neuroticism ≤ -1.328 (original: 1.963),
-→ \textbf{Control}; Neuroticism \textgreater{} -1.328 (original: 1.963)
-→ \textbf{Treated}.
-
-\newpage{}
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-policy-5-1.pdf}}
-
-}
-
-\caption{\label{fig-policy-5}Decision Tree: \{glued\_policy\_names\_5\}}
-
-\end{figure}%
-
-\textbf{Findings for Personal Well-being Index:}
-
-Split 1: Social Support ≤ 0.035 (original: 5.987). Within that subgroup,
-split 2a: Meaning: Sense ≤ -3.021 (original: 2.032), → \textbf{Control};
-Meaning: Sense \textgreater{} -3.021 (original: 2.032) →
-\textbf{Treated}.
-
-Split 2: Social Support \textgreater{} 0.035 (original: 5.987). Within
-that subgroup, split 2b: Age ≤ -0.108 (original: 47), →
-\textbf{Treated}; Age \textgreater{} -0.108 (original: 47) →
-\textbf{Control}.
-
-\newpage{}
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-policy-6-1.pdf}}
-
-}
-
-\caption{\label{fig-policy-6}Decision Tree: \{glued\_policy\_names\_6\}}
-
-\end{figure}%
-
-\textbf{Findings for Self Esteem:}
-
-Split 1: Neighbourhood Community ≤ -0.114 (original: 4.002). Within that
-subgroup, split 2a: Hours of Exercise (log) ≤ 1.011 (original: 10.038),
-→ \textbf{Treated}; Hours of Exercise (log) \textgreater{} 1.011
-(original: 10.038) → \textbf{Control}.
-
-Split 2: Neighbourhood Community \textgreater{} -0.114 (original:
-4.002). Within that subgroup, split 2b: log Hours Housework ≤ -0.953
-(original: 3.035), → \textbf{Control}; log Hours Housework
-\textgreater{} -0.953 (original: 3.035) → \textbf{Treated}.
-
-\newpage{}
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-policy-7-1.pdf}}
-
-}
-
-\caption{\label{fig-policy-7}Decision Tree: \{glued\_policy\_names\_7\}}
-
-\end{figure}%
-
-\textbf{Findings for Social Support:}
-
-Split 1: Neighbourhood Community ≤ -0.134 (original: 3.968). Within that
-subgroup, split 2a: Hours of Exercise (log) ≤ 1.652 (original: 17.983),
-→ \textbf{Treated}; Hours of Exercise (log) \textgreater{} 1.652
-(original: 17.983) → \textbf{Control}.
-
-Split 2: Neighbourhood Community \textgreater{} -0.134 (original:
-3.968). Within that subgroup, split 2b: Age ≤ 0.468 (original: 55), →
-\textbf{Treated}; Age \textgreater{} 0.468 (original: 55) →
-\textbf{Control}.
-
-A shallow policy tree recommends actions based on two splits for
-depth=2, or one split for depth=1. We trained on 50\% of the data and
-evaluated on the rest.
 
 \newpage{}
 
@@ -1733,67 +1098,6 @@ those who stayed in the same state.
 
 \subsection{Appendix D: RATE AUTOC and RATE Qini}\label{appendix-rate}
 
-\paragraph{Rate Test}\label{rate-test}
-
-The RATE metric shows how much extra gain (or avoided loss) we achieve
-by \textbf{targeting} instead of treating everyone identically.
-
-\textbf{Technical note}: In code we always set
-\texttt{policy\ =\ "treat\_best"}; for harmful exposures this is
-interpreted as \emph{`treat-those-most-sensitive'} (i.e., prioritise
-protection or withholding).
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{Beneficial exposure:} we rank by positive CATEs and deliver
-  the exposure to those predicted to \textbf{benefit most}.
-\item
-  \textbf{Detrimental exposure:} we rank by increasingly
-  \textbf{positive} CATEs (more predicted harm) and identify those who
-  should be protected or withheld from the exposure.
-\end{itemize}
-
-Either way, a larger \textbf{absolute} RATE shows that a CATE-based
-targeting rule `outperforms' a one-size-fits-all policy---by boosting
-outcomes for beneficial exposures or -- in the case where we are explore
-sensitivity to harm -- evaluating increasing harms for detrimental ones.
-
-Recall we flipped Anxiety, Depression, Rumination so \textbf{`higher'
-always tracks the analysis goal: higher = more benefit for beneficial
-exposures, higher = more harm for detrimental exposures.}
-
-Because we test several outcomes, RATE \emph{p}-values are adjusted with
-Benjamini--Hochberg false-discovery-rate adjustment (q = 0.1) before we
-decide whether heterogeneity is actionable.
-
-\subsubsection{Comparison of targeting operating characteristic (TOC) by
-rank average treatment effect (RATE): AUTOC vs
-QINI}\label{comparison-of-targeting-operating-characteristic-toc-by-rank-average-treatment-effect-rate-autoc-vs-qini}
-
-We applied two TOC by RATE methods to the same causal-forest \(\tau(x)\)
-estimates:
-
-\begin{itemize}
-\item
-  \textbf{AUTOC} intensifies focus on top responders via logarithmic
-  weighting.
-\item
-  \textbf{QINI} balances effect size and prevalence via linear
-  weighting.
-\end{itemize}
-
-Exploratory RATE analysis; controlled FDR at q=0.20 over 12 outcomes.
-
-Both methods yield positive RATE estimates for: \textbf{Hours of
-Exercise (log)}.
-
-This concordance indicates robust heterogeneity evidence.
-
-When methods disagree (only QINI yields positive RATE for Anxiety
-(reversed)), choose \textbf{QINI} for overall benefit or \textbf{AUTOC}
-to focus top responders.
-
 Refer to \hyperref[appendix-cate-validation]{Appendix D} for details.
 
 \subparagraph{RATE AUTOC RESULTS}\label{rate-autoc-results}
@@ -1824,20 +1128,8 @@ Esteem, Social Support, Life Satisfaction, Meaning: Purpose, Depression
 (reversed), Social Belonging, Personal Well-being Index), evidence is
 inconclusive.
 
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{initial_quarto_document_files/figure-pdf/fig-rate-1-1.pdf}}
-
-}
-
-\caption{\label{fig-rate-1}RATE AUTOC Graphs}
-
-\end{figure}%
-
-Figure~\ref{fig-rate-1} presents the RATE AUTOC curve for \textbf{Hours
-of Exercise (log)}
+\textbf{?@fig-rate-1} presents the RATE AUTOC curve for \textbf{Hours of
+Exercise (log)}
 
 \newpage{}
 
@@ -1849,206 +1141,6 @@ Treatment Effects with GRF}\label{appendix-explain-grf}
 \subsection{Appendix F: Strengths and Limitations of Causal
 Forests}\label{appendix-rate}
 
-\subsubsection{Strengths and Limitations of Our
-Approach}\label{strengths-and-limitations-of-our-approach}
-
-We used causal forests (\citeproc{ref-grf2024}{Tibshirani et al., 2024})
-to estimate how treatment effects may differ for individuals with
-different characteristics. This method is powerful, however it also
-depends on measuring all major variables influencing both treatment
-selection and outcomes. If such variables are missed or mismeasured,
-results can be biased. Additionally, interpreting subgroup effects can
-be tricky when many characteristics are involved and statistically
-significant differences may not always translate into meaningful
-real-world gains.
-
-Despite these concerns, causal forests offer notable advantages. They
-allow for flexible, non-parametric modelling
-(\citeproc{ref-grf2024}{Tibshirani et al., 2024}), avoiding strict
-assumptions that might miss complex interactions. We used a robust
-evaluation method---training our model on half the data and testing it
-on the remaining half---to avoid overfitting. We then checked whether
-the predicted differences were genuine and estimated how much benefit we
-might gain by targeting treatment to those likely to benefit most
-(\citeproc{ref-grf2024}{Tibshirani et al., 2024};
-\citeproc{ref-wager2018}{Wager \& Athey, 2018}). Qini curves
-(\citeproc{ref-grf2024}{Tibshirani et al., 2024}) let us see the overall
-improvement from treating the top-ranked individuals first, and policy
-trees (\citeproc{ref-athey2021}{Athey \& Wager, 2021b},
-\citeproc{ref-athey_2021_policy_tree_econometrica}{2021a};
-\citeproc{ref-policytree_package_2024}{Sverdrup et al., 2024}) turn
-these findings into simple `if-then' rules. Together, this approach
-provides a practical means of identifying and acting on genuine
-treatment effect differences.
-
-Here we explain a heterogeneous‐treatment‐effect (HTE) analysis using
-causal forests (\citeproc{ref-grf2024}{Tibshirani et al., 2024}). In our
-workflow, we move from the average treatment effect (ATE) to
-individualised effects, quantify the practical value of targeting, and
-finish with interpretable decision rules.
-
-\subsubsection{1 Average Treatment Effect
-(ATE)}\label{average-treatment-effect-ate}
-
-The ATE answers: \emph{`What would happen, on average, if everyone
-received treatment versus no one?'}
-
-\[
-    \text{ATE}=E[Y(1)-Y(0)].
-\]
-
-Using the \texttt{grf} package, we estimate the ATE doubly-robustly.
-Because we analyse several outcomes, we adjust ATE \emph{p}-values with
-bonferroni (\(\alpha\) = 0.05) to control the family-wise error rate.
-
-\subsubsection{2 Do Effects Vary? Formal Test of
-Heterogeneity}\label{do-effects-vary-formal-test-of-heterogeneity}
-
-Define the conditional average treatment effect (CATE)
-
-\[
-  \tau(x)=E[Y(1)-Y(0)\mid X=x].
-\]
-
-If \(\tau(x)\) is constant, effects are homogeneous; otherwise they
-vary. Classical interaction models impose strong forms; \textbf{grf}
-uses \emph{causal forests} to discover complex, nonlinear heterogeneity
-(\citeproc{ref-wager2018}{Wager \& Athey, 2018}). We assess
-heterogeneity with RATE \emph{p}-values corrected via
-Benjamini--Hochberg false-discovery-rate adjustment (q = 0.1),
-controlling the false-discovery rate
-(\citeproc{ref-benjamini1995controlling}{Benjamini \& Hochberg, 1995}).
-
-\subsubsection{3 Causal Forests for Individualised
-Estimates}\label{causal-forests-for-individualised-estimates}
-
-A causal forest is an ensemble of `honest' causal trees that split on
-covariates to maximise treated--control contrasts. For each unit \(i\)
-we obtain
-
-\[
-  \widehat{\tau}(x_i)
-\]
-
-Strengths are flexibility, orthogonalisation, and per-person estimates.
-
-\subsubsection{4 Built-in Protection Against
-Over-fitting}\label{built-in-protection-against-over-fitting}
-
-Honesty (split half/estimate half) plus out-of-bag (OOB) predictions
-yield unbiased \(\widehat{\tau}(x)\) and standard errors without manual
-hyper-tuning.
-
-\subsubsection{5 Missing Data Handling}\label{missing-data-handling}
-
-\textbf{grf} deploys `Missing Incorporated in Attributes' (MIA):
-missingness is a valid split, so cases stay in the analysis -- no ad-hoc
-imputation required.
-
-\subsubsection{\texorpdfstring{6 Testing for \textbf{Actionable}
-Heterogeneity: the TOC \& RATE
-Metrics}{6 Testing for Actionable Heterogeneity: the TOC \& RATE Metrics}}\label{testing-for-actionable-heterogeneity-the-toc-rate-metrics}
-
-Ranking units by \(\widehat{\tau}\) defines a \textbf{Targeting Operator
-Characteristic} (TOC) curve: the cumulative gain from treating the top
-fraction \(q\) of predicted responders. Two scalar summaries:
-
-\begin{itemize}
-\tightlist
-\item
-  \textbf{RATE AUTOC} -- area under the entire TOC; emphasises the very
-  highest responders.
-\item
-  \textbf{RATE Qini} -- weighted area with weight \(q\); rewards
-  sustained gains across larger coverage
-  (\citeproc{ref-yadlowsky2021evaluating}{Yadlowsky et al., 2021}).
-\end{itemize}
-
-Under \(H_0{:}\tau(x)\) constant, both equal 0.
-\texttt{grf::rank\_average\_treatment\_effect()} supplies point
-estimates, standard errors, and \(t\)-tests.
-
-\textbf{Multiplicity control}: We adjust AUTOC and Qini \emph{p}-values
-with Benjamini--Hochberg false-discovery-rate adjustment (q = 0.1)
-before declaring actionable heterogeneity.
-
-Here is an \textbf{interpretation tip}:
-
-\begin{itemize}
-\tightlist
-\item
-  AUTOC answers \emph{`How sharply can we prioritise?'}
-\item
-  Qini answers \emph{`How valuable is targeting when budgets are modest
-  but not tiny?'}
-\end{itemize}
-
-\subsubsection{7 Visualising Policy Value: the Qini
-Curve}\label{visualising-policy-value-the-qini-curve}
-
-Plotting the Qini curve (cumulative gain vs \(q\)) reveals where returns
-plateau. Investigators (and policy audiences) can see at a glance
-whether benefits concentrate in, say, the top 20 \% or persist up to 50
-\%.
-
-\subsubsection{8 Valid Inference for RATE /
-Qini}\label{valid-inference-for-rate-qini}
-
-Although OOB predictions are out-of-sample per tree, they inherit
-forest-level dependence. We use an explicit \textbf{sample split}:
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \textbf{Train set}: fit the causal forest and compute
-  \(\widehat{\tau}(x)\).
-\item
-  \textbf{Test set}: compute RATE AUTOC/Qini and run \(H_0\) tests.
-\end{enumerate}
-
-This second split yields honest policy evaluation and guards against
-optimistic bias (\citeproc{ref-grf2024}{Tibshirani et al., 2024}).
-
-\subsubsection{9 From Black Box to Simple Rules: Policy
-Trees}\label{from-black-box-to-simple-rules-policy-trees}
-
-Stakeholders value transparent criteria. The \textbf{policytree}
-algorithm takes \(\widehat{\tau}(x)\) or doubly-robust scores and learns
-a shallow decision tree that maximises expected welfare
-(\citeproc{ref-policytree_package_2024}{Sverdrup et al., 2024}).
-
-\emph{Advantages}: interpretability, the possibility of fairness
-constraints, and easy communication (e.g., \emph{`treat if age
-\textless{} 25 and baseline severity high'}).
-
-Training mirrors the split above: learn the tree on one fold, evaluate
-welfare on another.
-
-\begin{quote}
-\textbf{Caveat} Splits identify predictors of \emph{effect variation},
-not causal levers. Changing a covariate in the tree does \textbf{not}
-guarantee an effect on \(\tau(x)\).
-\end{quote}
-
-\subsubsection{10 Ethical and Practical
-Considerations}\label{ethical-and-practical-considerations}
-
-Statistical optimisation rarely aligns perfectly with equity or
-political feasibility. Decisions about who \emph{should} receive
-treatment belong to democratic processes that weigh fairness, cost, and
-broader social values.
-
-\subsubsection{Putting it together}\label{putting-it-together}
-
-The sequence---ATE, causal-forest CATEs, RATE/Qini diagnostics, Qini
-curve, and finally a shallow policy tree---delivers both rigorous
-evidence and a defensible targeting rule. Researchers learn \textbf{how
-large} heterogeneity is, \textbf{where} targeting pays off under budget
-constraints, and \textbf{which} simple covariate splits capture most of
-the welfare gain, all while guarding against over-fitting and
-multiplicity.
-
 \newpage{}
 
 \subsection*{References}\label{references}
@@ -2056,34 +1148,9 @@ multiplicity.
 
 \phantomsection\label{refs}
 \begin{CSLReferences}{1}{0}
-\bibitem[\citeproctext]{ref-athey2021}
-Athey, S., \& Wager, S. (2021b). Policy Learning With Observational
-Data. \emph{Econometrica}, \emph{89}(1), 133--161.
-\url{https://doi.org/10.3982/ECTA15732}
-
-\bibitem[\citeproctext]{ref-athey_2021_policy_tree_econometrica}
-Athey, S., \& Wager, S. (2021a). Policy learning with observational
-data. \emph{Econometrica}, \emph{89}(1), 133--161.
-https://doi.org/\url{https://doi.org/10.3982/ECTA15732}
-
 \bibitem[\citeproctext]{ref-atkinson2019}
 Atkinson, J., Salmond, C., \& Crampton, P. (2019). \emph{NZDep2018 index
 of deprivation, user{'}s manual.}
-
-\bibitem[\citeproctext]{ref-benjamini1995controlling}
-Benjamini, Y., \& Hochberg, Y. (1995). Controlling the false discovery
-rate: A practical and powerful approach to multiple testing.
-\emph{Journal of the Royal Statistical Society. Series B
-(Methodological)}, \emph{57}(1), 289--300.
-
-\bibitem[\citeproctext]{ref-margot2024}
-Bulbulia, J. A. (2024a). \emph{Margot: MARGinal observational
-treatment-effects}. \url{https://doi.org/10.5281/zenodo.10907724}
-
-\bibitem[\citeproctext]{ref-bulbulia2024wierd}
-Bulbulia, J. A. (2024b). Methods in causal inference part 3: Measurement
-error and external validity threats. \emph{Evolutionary Human Sciences},
-\emph{6}, e42. \url{https://doi.org/10.1017/ehs.2024.33}
 
 \bibitem[\citeproctext]{ref-cutrona1987}
 Cutrona, C. E., \& Russell, D. W. (1987). The provisions of social
@@ -2122,11 +1189,6 @@ of Belonging: \emph{Nursing Research}, \emph{44}(1), 9--13.
 Health, Ministry of. (2013). \emph{The {N}ew {Z}ealand {H}ealth
 {S}urvey: Content guide 2012-2013}. Princeton University Press.
 
-\bibitem[\citeproctext]{ref-hernan2016c}
-Hernán, M. A., \& Robins, J. M. (2016). Using big data to emulate a
-target trial when a randomized trial is not available. \emph{American
-Journal of Epidemiology}, \emph{183}(8), 758--764.
-
 \bibitem[\citeproctext]{ref-instrument1992mos}
 Instrument Ware Jr, J., \& Sherbourne, C. (1992). The MOS 36-item
 short-form health survey (SF-36): I. Conceptual framework and item
@@ -2144,25 +1206,11 @@ Short screening scales to monitor population prevalences and trends in
 non-specific psychological distress. \emph{Psychological Medicine},
 \emph{32}(6), 959--976. \url{https://doi.org/10.1017/S0033291702006074}
 
-\bibitem[\citeproctext]{ref-linden2020EVALUE}
-Linden, A., Mathur, M. B., \& VanderWeele, T. J. (2020). Conducting
-sensitivity analysis for unmeasured confounding in observational studies
-using e-values: The evalue package. \emph{The Stata Journal},
-\emph{20}(1), 162--175.
-
 \bibitem[\citeproctext]{ref-nolen-hoeksema_effects_1993}
 Nolen-hoeksema, S., \& Morrow, J. (1993). Effects of rumination and
 distraction on naturally occurring depressed mood. \emph{Cognition and
 Emotion}, \emph{7}(6), 561--570.
 \url{https://doi.org/10.1080/02699939308409206}
-
-\bibitem[\citeproctext]{ref-pearl2009a}
-Pearl, J. (2009). \emph{Causality}. Cambridge University Press.
-
-\bibitem[\citeproctext]{ref-rosenbaum1983central}
-Rosenbaum, P. R., \& Rubin, D. B. (1983). The central role of the
-propensity score in observational studies for causal effects.
-\emph{Biometrika}, \emph{70}(1), 41--55.
 
 \bibitem[\citeproctext]{ref-Rosenberg1965}
 Rosenberg, M. (1965). \emph{Society and the adolescent self-image}.
@@ -2198,41 +1246,10 @@ in life questionnaire: Assessing the presence of and search for meaning
 in life. \emph{Journal of Counseling Psychology}, \emph{53}(1), 80--93.
 \url{https://doi.org/10.1037/0022-0167.53.1.80}
 
-\bibitem[\citeproctext]{ref-policytree_package_2024}
-Sverdrup, E., Kanodia, A., Zhou, Z., Athey, S., \& Wager, S. (2024).
-\emph{Policytree: Policy learning via doubly robust empirical welfare
-maximization over trees}.
-\url{https://CRAN.R-project.org/package=policytree}
-
-\bibitem[\citeproctext]{ref-grf2024}
-Tibshirani, J., Athey, S., Sverdrup, E., \& Wager, S. (2024). \emph{Grf:
-Generalized random forests}. \url{https://github.com/grf-labs/grf}
-
-\bibitem[\citeproctext]{ref-vanderweele2019}
-VanderWeele, T. J. (2019). Principles of confounder selection.
-\emph{European Journal of Epidemiology}, \emph{34}(3), 211--219.
-
-\bibitem[\citeproctext]{ref-vanderweele2017}
-VanderWeele, T. J., \& Ding, P. (2017). Sensitivity analysis in
-observational research: Introducing the {E}-value. \emph{Annals of
-Internal Medicine}, \emph{167}(4), 268--274.
-\url{https://doi.org/10.7326/M16-2607}
-
-\bibitem[\citeproctext]{ref-vanderweele2020}
-VanderWeele, T. J., Mathur, M. B., \& Chen, Y. (2020). Outcome-wide
-longitudinal designs for causal inference: A new template for empirical
-studies. \emph{Statistical Science}, \emph{35}(3), 437--466.
-
 \bibitem[\citeproctext]{ref-verbrugge1997}
 Verbrugge, L. M. (1997). A global disability indicator. \emph{Journal of
 Aging Studies}, \emph{11}(4), 337--362.
 \url{https://doi.org/10.1016/S0890-4065(97)90026-8}
-
-\bibitem[\citeproctext]{ref-wager2018}
-Wager, S., \& Athey, S. (2018). Estimation and inference of
-heterogeneous treatment effects using random forests. \emph{Journal of
-the American Statistical Association}, \emph{113}(523), 1228--1242.
-\url{https://doi.org/10.1080/01621459.2017.1319839}
 
 \bibitem[\citeproctext]{ref-whitehead2023unmasking}
 Whitehead, J., Davie, G., Graaf, B. de, Crengle, S., Lawrenson, R.,
@@ -2240,12 +1257,6 @@ Miller, R., \& Nixon, G. (2023). Unmasking hidden disparities: A
 comparative observational study examining the impact of different
 rurality classifications for health research in aotearoa new zealand.
 \emph{BMJ Open}, \emph{13}(4), e067927.
-
-\bibitem[\citeproctext]{ref-yadlowsky2021evaluating}
-Yadlowsky, S., Fleming, S., Shah, N., Brunskill, E., \& Wager, S.
-(2021). Evaluating treatment prioritization rules via rank-weighted
-average treatment effects. \emph{arXiv Preprint arXiv:2111.07966}.
-\url{https://doi.org/10.48550/arXiv.2111.07966}
 
 \end{CSLReferences}
 

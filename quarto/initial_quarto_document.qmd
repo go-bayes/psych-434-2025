@@ -23,8 +23,8 @@ fontfamily: libertinus
 bibliography: references.bib
 csl: apa7.csl
 format:
-  # docx: # comment this out if you want pdf
-  #   default: false  # comment this out if you want pdf
+  docx: # comment this out if you want pdf
+    default: false  # comment this out if you want pdf
   pdf:
     pdf-engine: lualatex
     sanitise: true
@@ -68,7 +68,7 @@ dep <- requireNamespace("here", quietly = TRUE)
 if (!dep) install.packages("here")
 library(here)
 
-# create required folders
+# create required folders (these will likely already exist)
 dirs <- c(
   here("quarto"),
   here("bibliography"),
@@ -92,9 +92,9 @@ if (!requireNamespace("pacman", quietly = TRUE)) {
 
 
 # min version of margot
-if (packageVersion("margot") < "1.0.52") {
+if (packageVersion("margot") < "1.0.54") {
   stop(
-    "please install margot >= 1.0.52 for this workflow\n
+    "please install margot >= 1.0.54 for this workflow\n
        run: 
        devtools::install_github('go-bayes/margot')
 "
@@ -536,6 +536,7 @@ cli::cli_h1("Finished: depth-2 policy trees analysed ✔")
 # ───────────────────────────── EOF ────────────────────────────────────────────
 
 # names of valid models
+# you might have fewer models 
 glued_policy_names_1 <- glue( qini_names[[1]])
 glued_policy_names_2 <-glue( qini_names[[2]])
 glued_policy_names_3 <- glue(qini_names[[3]])
@@ -703,6 +704,8 @@ global_vars <- list(
 
 ```{r, results='asis'}
 #| eval: false # <- set to false/ copy and paste text so you can modify it/change the figure
+
+# run this code, copy and paste contents into your text
 cat(
   boilerplate::boilerplate_generate_text(
     category     = "methods",      # ← choose the right top-level list
@@ -725,113 +728,6 @@ cat(
 )
 ```
 
-### Target Population
-
-The data are simulated from the New Zealand Attitudes and Values Study. For the purposes of this assessment, the target population for this study comprises New Zealand residents as represented in the 2018 of the New Zealand Attitudes and Values Study (NZAVS) during the years 2018 weighted by New Zealand Census weights for age, gender, and ethnicity (refer to @sibley2021). The NZAVS is a national probability study designed to reflect the broader New Zealand population accurately. Despite its comprehensive scope, the NZAVS has some limitations in its demographic representation. Notably, it tends to under-sample males and individuals of Asian descent while over-sampling females and Māori (the indigenous peoples of New Zealand). To address these disparities and enhance the accuracy of our findings, we apply New Zealand Census survey weights to the sample data.
-
-### Eligibility Criteria
-
-To be included in the analysis of this study, participants needed to participate in the 2018 of the study and respond to the baseline measure of Extraversion.
-
-Participants may have been lost to follow-up at the end of the study if they met eligibility criteria at 2018. We adjusted for attrition and non-response using censoring weights, described below.
-
-A total of 39,635 individuals met these criteria and were included in the study.
-
-
-### Average treatment effect
-
-To learn how the outcome would shift if everyone received a different exposure, we emulate a **target trial** [@hernan2016c]. Making the hypothetical experiment explicit fixes the estimand, the data requirements, and the assumptions.
-
-Our guiding question is:
-
-> *How would the outcomes change if, for every individual, we set the exposure to **>4, scale range 1-7** rather than **<=4, scale range 1-7**, conditional on their baseline characteristics?*
-
-We compare two interventions:
-
-1. **1** — every participant is set to >4, scale range 1-7.
-2. **0** — every participant is set to <=4, scale range 1-7.
-
-The difference in population means defines the **average treatment effect (ATE)**. Figure @fig-exposure plots the exposure distribution and its dichotomisation; the centre dashed line marks the mean, flanked by one standard deviation.
-
-```{r}
-#| label: fig-exposure
-#| fig-cap: "Histogram of exposure with binary groupin"
-#| eval: true
-#| echo: false
-#| fig-height: 10   # tweak if needed
-#| fig-width: 12    # tweak if needed
-
-graph_cut
-
-```
-
-Because we test several outcomes, we adjust the ATE confidence intervals for multiplicity with bonferroni at $\alpha = 0.05$.
-
-The longitudinal design and rich baseline covariates allow us -- under the standard identification assumptions of consistency, positivity, and no unmeasured confounding -- to attribute the differences between the two exposure means as a causal effect. Conditioning on demographics, personality traits, and other pretreatment factors renders exposure assignment ignorable [@rosenbaum1983central].
-
-### Moderators and treatment policies
-
-We pursued two complementary objectives: (i) to test whether personalised targeting, based on individual conditional average treatment effects $\hat\tau(x)$, yields welfare gains, and (ii) to convert any such gains into transparent, practitioner‐ready decision rules.
-
-#### Pre-processing and honest model training
-
-Our protocol is as follows: in settings where the exposure is positive, outcomes for which lower is better are sign‐flipped so that larger values always index improvement. Similarly, where the exposure is negative, outcomes for which 'higher is better' are sign flipped.Here, we flipped: Anxiety, Depression, Rumination. 
-
-Each model estimate used an honest 70/30 split: the training fold built the causal forest with grf [@grf2024], while the held-out fold powered all diagnostic checks and provided data for fitting policy trees.  This separation curbs over-fitting yet keeps the workflow simple.
-
-#### Budget-based screening with Qini curves.
-
-Before constructing rules we asked a budget question: If resources allow treatment of only the top 20% or 50% of individuals ranked by $\hat\tau(x)$, what uplift is purchased relative to treating everyone?
-Qini curves quantified the incremental gain; outcomes whose 95% confidence intervals excluded zero at either spend level were labelled actionable, signalling meaningful heterogeneity in benefit.
-
-#### Deriving transparent decision rules.
-
-For each actionable outcome we trained depth-2 policy trees with policytree [@policytree_package_2024; @athey_2021_policy_tree_econometrica] on the validation data.  The resulting if–then statements maximise expected welfare under the same budget cap and remain auditable by domain experts.
-
-####  Global heterogeneity tests (supplementary).
-
-Appendix D reports RATE-AUTOC and RATE-Qini statistics, asking whether any covariate information can beat a uniform policy.  These tests, controlled for false discovery at q=0.1 via Benjamini–Hochberg false-discovery-rate adjustment, are informative but not required for the budget-first pipeline.
-
-Overall, combining Qini curves to screen and shallow policy trees to act isolates budget-relevant treatment heterogeneity and distils it into actionable rules, avoiding the chase for spurious complexity. Full technical details appear in Appendix E.
-
-### Exposure Indicator
-
-
-The New Zealand Attitudes and Values Study assesses Extraversion using the following question:
-
-
-Mini-IPIP6 Extraversion dimension: (i) I am the life of the party. (ii) I don't talk a lot. (r) (iii) I keep in the background. (r) (iv) I talk to a lot of different people at parties.(Refer to [Appendix A](#appendix-measures)).
-
-### Causal Identification Assumptions
-
-This study relies on the following identification assumptions for estimating the causal effect of Extraversion:
-
-1. **Consistency**: the observed outcome under the observed Extraversion is equal to the potential outcome under that exposure level. As part of consistency, we assume no interference: the potential outcomes for one individual are not affected by the Extraversion status of other individuals.
-
-2. **No unmeasured confounding**: all variables that affect both Extraversion and the outcome have been measured and accounted for in the analysis.
-
-3. **Positivity**: there is a non-zero probability of receiving each level of Extraversion for every combination of values of Extraversion and confounders in the population. Positivity is the only fundamental casual assumption that can be evaluated with data (refer to [Appendix C](#appendix-positivity)).
-
-### Confounding Control
-
-To manage confounding in our analysis, we implement @vanderweele2019's *modified disjunctive cause criterion* by following these steps:
-
-1. **Identified all common causes** of both the treatment and outcomes.
-2. **Excluded instrumental variables** that affect the exposure but not the outcome. Instrumental variables do not contribute to controlling confounding and can reduce the efficiency of the estimates.
-3. **Included proxies for unmeasured confounders** affecting both exposure and outcome. According to the principles of d-separation @pearl2009a, using proxies allows us to control for their associated unmeasured confounders indirectly.
-4. **Controlled for baseline exposure** and **baseline outcome**. Both are used as proxies for unmeasured common causes, enhancing the robustness of our causal estimates, refer to @vanderweele2020.
-
-### Statistical Estimation
-
-We estimate heterogeneous treatment effects with Generalized Random Forests (GRF) [@grf2024]. GRF extends random forests for causal inference by focusing on conditional average treatment effects (CATE). It handles complex interactions and non-linearities without explicit model specification, and it provides 'honest' estimates by splitting data between model-fitting and inference. GRF is doubly robust because it remains consistent if either the outcome model or the propensity model is correct. We evaluate policies with the `policytree` package [@policytree_package_2024; @athey_2021_policy_tree_econometrica] and visualise results with `margot` [@margot2024]. (Refer to [Appendix E](#appendix-explain-grf) for a detailed explanation of our approach.)
-
-### Missing Data
-
-The GRF package accepts missing values at baseline. To obtain valid inference for missing responses we computed inverse probability of censoring weights for censoring of the exposure, given that systematic censoring following the baseline wave may lead to selection bias that limit generalistion to the baseline target population [@bulbulia2024wierd]. See [Appendix E](#appendix-explain-grf).
-
-### Sensitivity Analysis
-
-We perform sensitivity analyses using the E-value metric [@vanderweele2017; @linden2020EVALUE]. The E-value represents the minimum association strength (on the risk-ratio scale) that an unmeasured confounder would need with both exposure and outcome—after adjusting for measured covariates—to explain away the observed association [@vanderweele2020; @linden2020EVALUE]. Confidence intervals for each E-value were derived from the multiplicity-adjusted confidence intervals of the corresponding coefficient estimates (bonferroni, $\alpha$ = 0.05), so the sensitivity analysis obeys the same error-control framework as the main results.
 
 {{< pagebreak >}}
 
@@ -862,53 +758,56 @@ margot_bind_tables_markdown
 
 
 ```{r, results = 'asis'}
-#| eval: true # |eval: false # <- set to false as needed/desired for your own material
+#| eval: false 
 
+# run this line, copy and paste text into your document 
 cat(ate_results$interpretation)
 ```
 
 
 {{< pagebreak >}}
 
+<!-- Uncomment text below and run if you have performed a subgroup comparison. -->
+<!-- ### Planned Subgroup Comparisons (Optional) -->
 
-### Planned Subgroup Comparisons (Optional)
+<!-- Based on theoretical findings we expected that the effects of {name_exposure} would vary by age...\@fig-planned-comparison and @tbl-planned-comparison -->
 
-Based on theoretical findings we expected that the effects of {name_exposure} would vary by age...\@fig-planned-comparison and @tbl-planned-comparison
+<!-- ```{r} -->
+<!-- #| label: fig-planned-comparison -->
+<!-- #| fig-cap: "Planned Comparison Plot" -->
+<!-- #| eval: true -->
+<!-- #| echo: false -->
+<!-- #| fig-height: 10 -->
+<!-- #| fig-width: 12 -->
+<!-- plots_subgroup_age_young_old -->
+<!-- ``` -->
 
-```{r}
-#| label: fig-planned-comparison
-#| fig-cap: "Planned Comparison Plot"
-#| eval: true
-#| echo: false
-#| fig-height: 10
-#| fig-width: 12
-plots_subgroup_age_young_old
-```
+<!-- ```{r} -->
+<!-- #| label: tbl-planned-comparison -->
+<!-- #| tbl-cap: "Planned Comparison Table" -->
+<!-- #| eval: true  # <- set to false: copy and paste your own text using this material -->
+<!-- #| echo: false -->
+<!-- # table (only use if more than one qini gain interpretation) -->
+<!-- group_comparison_age_young_old$results |>  -->
+<!--   mutate(across(where(is.numeric), ~ round(., 2))) %>% -->
+<!--   kbl(format = "markdown") -->
 
-```{r}
-#| label: tbl-planned-comparison
-#| tbl-cap: "Planned Comparison Table"
-#| eval: true  # <- set to false: copy and paste your own text using this material
-#| echo: false
-# table (only use if more than one qini gain interpretation)
-group_comparison_age_young_old$results |> 
-  mutate(across(where(is.numeric), ~ round(., 2))) %>%
-  kbl(format = "markdown")
+<!-- ``` -->
 
-```
-
-```{r, results = 'asis'}
-#| eval: true # <- set to false if you want to copy and paste your own text
-cat(group_comparison_age_young_old$interpretation)
-```
+<!-- ```{r, results = 'asis'} -->
+<!-- #| eval: false # copy and paste your own text -->
+<!-- cat(group_comparison_age_young_old$interpretation) -->
+<!-- ``` -->
 
 {{< pagebreak >}}
 
 ### Heterogeneous Treatment Effects {#results-qini-curve}
 
 ```{r, results='asis'}
-#| eval: true  # <- set to false: copy and paste your own text using this material
+#| eval: false  # <- set to false: copy and paste your own text using this material
 
+
+# copy and paste into your txt
 cat(
   boilerplate::boilerplate_generate_text(
     category     = "results",      # ← choose the right top-level list
@@ -923,6 +822,7 @@ cat(
 
 
 ```{r, results = 'asis'}
+#| eval: false  # <- set to false: copy and paste your own text using this material
 # only reliable results
 cat(qini_gain$qini_explanation) 
 ```
@@ -932,7 +832,7 @@ cat(qini_gain$qini_explanation)
 ```{r}
 #| label: tbl-qini
 #| tbl-cap: "Qini Curve Results"
-#| eval: true  # <- set to false: copy and paste your own text using this material
+#| eval: false  # <- set to false: copy and paste your own text using this material
 
 # table (only use if more than one qini gain interpretation)
 qini_gain$summary_table |> 
@@ -945,7 +845,7 @@ qini_gain$summary_table |>
 ```{r}
 #| label: fig-qini-1
 #| fig-cap: "Qini Graphs"
-#| eval: true # <- set to false as needed/desired
+#| eval: false # <- set to true once you have set up your graph correctly
 #| echo: false
 #| fig-height: 18
 #| fig-width: 12
@@ -954,6 +854,8 @@ library(patchwork)
 # combine first column of plots (4,6,7,8) and second column (9,11,12)
 # these showed reliable qini results
 
+# THIS WILL NEED TO BE MODIFED TO SUIT YOUR STUDY
+# Once you get the right arrangement 
 combined_qini <- (
   qini_plots[[1]] /
   qini_plots[[2]] /
@@ -988,7 +890,7 @@ print(combined_qini)
 ### Decision Rules (Who is Most Sensitive to Treatment?)
 
 ```{r, results='asis'}
-#| eval: true  # <- set to false: copy and paste your own text using this material
+#| eval: false  # <- set to false: copy and paste your own text using this material
 
 cat(
   boilerplate::boilerplate_generate_text(
@@ -1007,7 +909,7 @@ cat(
 ```{r}
 #| label: fig-policy-1
 #| fig-cap: "Decision Tree: {glued_policy_names_1}"
-#| eval: true
+#| eval: false # <- set to true once you have set up your graph correctly / if you have no qini graph delete skip this
 #| echo: false
 #| fig-height: 10
 #| fig-width: 12
@@ -1015,36 +917,25 @@ cat(
 policy_plots[[1]]
 ```
 
-**Findings for Life Satisfaction:**
-
-Split 1: NZsei 13 l ≤ -0.121 (original: 52.05).  Within that subgroup, split 2a: NZ Dep2018 ≤ 0.466 (original: 6.043), → **Control**; NZ Dep2018 > 0.466 (original: 6.043) → **Treated**.
-
-Split 2: NZsei 13 l > -0.121 (original: 52.05).  Within that subgroup, split 2b: Conscientiousness ≤ 1.528 (original: 6.719), → **Treated**; Conscientiousness > 1.528 (original: 6.719) → **Control**.
 
 {{< pagebreak >}}
 
 ```{r}
 #| label: fig-policy-2
 #| fig-cap: "Decision Tree: {glued_policy_names_2}"
-#| eval: true
+#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
 #| fig-height: 10
 #| fig-width: 12
 
 policy_plots[[2]]
 ```
 
-**Findings for Meaning: Purpose:**
-
-Split 1: Meaning: Sense ≤ -0.586 (original: 4.996).  Within that subgroup, split 2a: Meaning: Sense ≤ -0.617 (original: 4.959), → **Treated**; Meaning: Sense > -0.617 (original: 4.959) → **Control**.
-
-Split 2: Meaning: Sense > -0.586 (original: 4.996).  Within that subgroup, split 2b: NZ Dep2018 ≤ 1.552 (original: 9.007), → **Treated**; NZ Dep2018 > 1.552 (original: 9.007) → **Control**.
-
 {{< pagebreak >}}
 
 ```{r}
 #| label: fig-policy-3
 #| fig-cap: "Decision Tree: {glued_policy_names_3}"
-#| eval: true
+#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
 #| echo: false
 #| fig-height: 10
 #| fig-width: 12
@@ -1053,31 +944,18 @@ policy_plots[[3]]
 ```
 
 
-**Findings for Meaning: Sense:**
-
-Split 1: log Household Inc ≤ 0.15 (original: 100000.015).  Within that subgroup, split 2a: Age ≤ 0.612 (original: 57), → **Treated**; Age > 0.612 (original: 57) → **Control**.
-
-Split 2: log Household Inc > 0.15 (original: 100000.015).  Within that subgroup, split 2b: Hours of Exercise (log) ≤ -0.543 (original: 1.965), → **Control**; Hours of Exercise (log) > -0.543 (original: 1.965) → **Treated**.
-
 
 {{< pagebreak >}}
 
 ```{r}
 #| label: fig-policy-4
 #| fig-cap: "Decision Tree: {glued_policy_names_4}"
-#| eval: true
+#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
 #| fig-height: 10
 #| fig-width: 12
 
 policy_plots[[4]]
 ```
-
-
-**Findings for Neighbourhood Community:**
-
-Split 1: log Hours Housework ≤ -0.083 (original: 6.96).  Within that subgroup, split 2a: Life Satisfaction ≤ -1.515 (original: 3.481), → **Control**; Life Satisfaction > -1.515 (original: 3.481) → **Treated**.
-
-Split 2: log Hours Housework > -0.083 (original: 6.96).  Within that subgroup, split 2b: Neuroticism ≤ -1.328 (original: 1.963), → **Control**; Neuroticism > -1.328 (original: 1.963) → **Treated**.
 
 
 
@@ -1086,7 +964,7 @@ Split 2: log Hours Housework > -0.083 (original: 6.96).  Within that subgroup, s
 ```{r}
 #| label: fig-policy-5
 #| fig-cap: "Decision Tree: {glued_policy_names_5}"
-#| eval: true
+#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
 #| fig-height: 10
 #| fig-width: 10
 
@@ -1094,11 +972,6 @@ policy_plots[[5]]
 ```
 
 
-**Findings for Personal Well-being Index:**
-
-Split 1: Social Support ≤ 0.035 (original: 5.987).  Within that subgroup, split 2a: Meaning: Sense ≤ -3.021 (original: 2.032), → **Control**; Meaning: Sense > -3.021 (original: 2.032) → **Treated**.
-
-Split 2: Social Support > 0.035 (original: 5.987).  Within that subgroup, split 2b: Age ≤ -0.108 (original: 47), → **Treated**; Age > -0.108 (original: 47) → **Control**.
 
 
 {{< pagebreak >}}
@@ -1106,7 +979,7 @@ Split 2: Social Support > 0.035 (original: 5.987).  Within that subgroup, split 
 ```{r}
 #| label: fig-policy-6
 #| fig-cap: "Decision Tree: {glued_policy_names_6}"
-#| eval: true
+#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
 #| fig-height: 10
 #| fig-width: 12
 
@@ -1114,18 +987,13 @@ policy_plots[[6]]
 
 ```
 
-**Findings for Self Esteem:**
-
-Split 1: Neighbourhood Community ≤ -0.114 (original: 4.002).  Within that subgroup, split 2a: Hours of Exercise (log) ≤ 1.011 (original: 10.038), → **Treated**; Hours of Exercise (log) > 1.011 (original: 10.038) → **Control**.
-
-Split 2: Neighbourhood Community > -0.114 (original: 4.002).  Within that subgroup, split 2b: log Hours Housework ≤ -0.953 (original: 3.035), → **Control**; log Hours Housework > -0.953 (original: 3.035) → **Treated**.
 
 {{< pagebreak >}}
 
 ```{r}
 #| label: fig-policy-7
 #| fig-cap: "Decision Tree: {glued_policy_names_7}"
-#| eval: true
+#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
 #| echo: false
 #| fig-height: 10
 #| fig-width: 12
@@ -1133,22 +1001,12 @@ policy_plots[[7]]
 ```
 
 
-**Findings for Social Support:**
-
-Split 1: Neighbourhood Community ≤ -0.134 (original: 3.968).  Within that subgroup, split 2a: Hours of Exercise (log) ≤ 1.652 (original: 17.983), → **Treated**; Hours of Exercise (log) > 1.652 (original: 17.983) → **Control**.
-
-Split 2: Neighbourhood Community > -0.134 (original: 3.968).  Within that subgroup, split 2b: Age ≤ 0.468 (original: 55), → **Treated**; Age > 0.468 (original: 55) → **Control**.
-
-
-A shallow policy tree recommends actions based on two splits for depth=2, or one split for depth=1.
-We trained on 50% of the data and evaluated on the rest.
-
-
 {{< pagebreak >}}
 
 ```{r, results = 'asis'}
 #| eval: false # <- set to false if you want to copy and paste your own text
 
+# use this text to copy and paste below your decision tree graphs
 cat(policy_text, "\n")
 ```
 
@@ -1275,7 +1133,7 @@ cat(transition_tables_binary$explanation)
 ## Appendix D: RATE AUTOC and RATE Qini {#appendix-rate}
 
 ```{r, results='asis'}
-#| eval: true # <- set to false as needed/desired
+#| eval: false # <- set to true as needed/desired
 #| echo: false
 
 cat(
@@ -1287,10 +1145,12 @@ cat(
     db           = unified_db
   )
 )
+
+# if you did not flip, use this cat(unified_db$results$grf$interpretation_rate_no_flip)
 ```
 
 ```{r, results='asis'}
-#| eval: true # <- set to false as needed/desired
+#| eval: false # <- set to true as needed/desired
 #| echo: false
 cat(rate_interp$comparison)
 ```
@@ -1307,7 +1167,7 @@ cat(rate_interp$autoc_results)
 ```{r}
 #| label: fig-rate-1
 #| fig-cap: "RATE AUTOC Graphs"
-#| eval: true  # <- set to false as needed/desired
+#| eval: false # <- set to true as needed/desired
 #| echo: false
 #| fig-height: 10
 #| fig-width: 12
@@ -1337,10 +1197,13 @@ cat(
 
 {{< pagebreak >}}
 
+
+
+
 ## Appendix F: Strengths and Limitations of Causal Forests  {#appendix-rate}
 
 ```{r, results='asis'}
-#| eval: true # <- set to false as needed/desired
+#| eval: false # <- set to true as needed/desired or copy and paste text
 
 cat(
   boilerplate::boilerplate_generate_text(
@@ -1352,108 +1215,6 @@ cat(
   )
 )
 ```
-
-
-Here we explain a heterogeneous‐treatment‐effect (HTE) analysis using causal forests [@grf2024]. In our workflow, we move from the average treatment effect (ATE) to individualised effects, quantify the practical value of targeting, and finish with interpretable decision rules.
-
-
-### 1 Average Treatment Effect (ATE)
-
-The ATE answers: *'What would happen, on average, if everyone received treatment versus no one?'*
-
-$$
-    \text{ATE}=E[Y(1)-Y(0)].
-$$
-
-Using the `grf` package, we estimate the ATE doubly-robustly.  Because we analyse several outcomes, we adjust ATE *p*-values with bonferroni ($\alpha$ = 0.05) to control the family-wise error rate.
-
-
-
-
-### 2 Do Effects Vary?  Formal Test of Heterogeneity
-
-Define the conditional average treatment effect (CATE)
-
-$$
-  \tau(x)=E[Y(1)-Y(0)\mid X=x].
-$$
-
-If $\tau(x)$ is constant, effects are homogeneous; otherwise they vary. Classical interaction models impose strong forms; **grf** uses *causal forests* to discover complex, nonlinear heterogeneity [@wager2018].  We assess heterogeneity with RATE *p*-values corrected via Benjamini–Hochberg false-discovery-rate adjustment (q = 0.1), controlling the false-discovery rate [@benjamini1995controlling].
-
-
-
-
-### 3 Causal Forests for Individualised Estimates
-
-A causal forest is an ensemble of 'honest' causal trees that split on covariates to maximise treated–control contrasts. For each unit $i$ we obtain
-
-$$
-  \widehat{\tau}(x_i)
-$$
-
-Strengths are flexibility, orthogonalisation, and per-person estimates.
-
-
-### 4 Built-in Protection Against Over-fitting
-
-  Honesty (split half/estimate half) plus out-of-bag (OOB) predictions yield unbiased $\widehat{\tau}(x)$ and standard errors without manual hyper-tuning.
-
-
-### 5 Missing Data Handling
-
-**grf** deploys 'Missing Incorporated in Attributes' (MIA): missingness is a valid split, so cases stay in the analysis -- no ad-hoc imputation required.
-
-
-### 6 Testing for **Actionable** Heterogeneity: the TOC & RATE Metrics
-
-Ranking units by $\widehat{\tau}$ defines a **Targeting Operator Characteristic** (TOC) curve: the cumulative gain from treating the top fraction $q$ of predicted responders. Two scalar summaries:
-
-- **RATE AUTOC** – area under the entire TOC; emphasises the very highest responders.
-- **RATE Qini** – weighted area with weight $q$; rewards sustained gains across larger coverage [@yadlowsky2021evaluating].
-
-Under $H_0{:}\tau(x)$ constant, both equal 0.
-`grf::rank_average_treatment_effect()` supplies point estimates, standard errors, and $t$-tests.
-
-**Multiplicity control**: We adjust AUTOC and Qini *p*-values with Benjamini–Hochberg false-discovery-rate adjustment (q = 0.1) before declaring actionable heterogeneity.
-
-Here is an **interpretation tip**:
-
-* AUTOC answers *'How sharply can we prioritise?'*
-* Qini answers *'How valuable is targeting when budgets are modest but not tiny?'*
-
-### 7 Visualising Policy Value: the Qini Curve
-
-Plotting the Qini curve (cumulative gain vs $q$) reveals where returns plateau. Investigators (and policy audiences) can see at a glance whether benefits concentrate in, say, the top 20 % or persist up to 50 %.
-
-
-### 8 Valid Inference for RATE / Qini
-
-Although OOB predictions are out-of-sample per tree, they inherit forest-level dependence. We use an explicit **sample split**:
-
-1. **Train set**: fit the causal forest and compute $\widehat{\tau}(x)$.
-2. **Test set**: compute RATE AUTOC/Qini and run $H_0$ tests.
-
-This second split yields honest policy evaluation and guards against optimistic bias [@grf2024].
-
-### 9 From Black Box to Simple Rules: Policy Trees
-
-Stakeholders value transparent criteria. The **policytree** algorithm takes $\widehat{\tau}(x)$ or doubly-robust scores and learns a shallow decision tree that maximises expected welfare [@policytree_package_2024].
-
-*Advantages*: interpretability, the possibility of fairness constraints, and easy communication (e.g., *'treat if age < 25 and baseline severity high'*).
-
-Training mirrors the split above: learn the tree on one fold, evaluate welfare on another.
-
-> **Caveat**  Splits identify predictors of *effect variation*, not causal levers. Changing a covariate in the tree does **not** guarantee an effect on $\tau(x)$.
-
-
-### 10 Ethical and Practical Considerations
-
-Statistical optimisation rarely aligns perfectly with equity or political feasibility. Decisions about who *should* receive treatment belong to democratic processes that weigh fairness, cost, and broader social values.
-
-
-### Putting it together
-
-The sequence—ATE, causal-forest CATEs, RATE/Qini diagnostics, Qini curve, and finally a shallow policy tree—delivers both rigorous evidence and a defensible targeting rule.  Researchers learn **how large** heterogeneity is, **where** targeting pays off under budget constraints, and **which** simple covariate splits capture most of the welfare gain, all while guarding against over-fitting and multiplicity.
 
 
 {{< pagebreak >}}
