@@ -88,6 +88,7 @@ cli::cli_h1("data saved ✔")
 # set up bibliography and APA-7 template -----------------------------------
 fs::dir_create("quarto")  # for title.tex
 
+# download title.tex (probably safe to overwrite)
 download.file(
   url      = "https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/quarto/title.tex",
   destfile = "quarto/title.tex",
@@ -97,18 +98,28 @@ download.file(
 fs::dir_create("bibliography")
 fs::dir_create("csl")
 
-download.file(
-  url      = "https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/bib/references.bib",
-  destfile = "quarto/references.bib",
-  mode     = "wb"
-)
+# check if references.bib exists before downloading
+bib_path <- "quarto/references.bib"
+if (fs::file_exists(bib_path)) {
+  cli::cli_alert_info("references.bib already exists - skipping download")
+  cli::cli_text("  existing file: {.file {bib_path}}")
+} else {
+  download.file(
+    url      = "https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/bib/references.bib",
+    destfile = bib_path,
+    mode     = "wb"
+  )
+  cli::cli_alert_success("references.bib downloaded")
+}
 
+# download apa7.csl (style file - probably safe to update)
 download.file(
   url      = "https://raw.githubusercontent.com/go-bayes/templates/refs/heads/main/csl/apa-7.csl",
   destfile = "quarto/apa7.csl",
   mode     = "wb"
 )
 
+cli::cli_h1("bibliography and CSL setup complete ✔")
 cli::cli_h1("bibliography and CSL setup complete ✔")
 
 # end of script: do not rerun this file ------------------------------------
