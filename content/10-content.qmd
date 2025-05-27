@@ -81,7 +81,7 @@ Download Quarto here:
 #  Quarto with `boilerplate`
 
 ::: {.callout-quarto-manuscript-template}
-[Download Quarto Template](../quarto/initial_quarto_document.qmd)
+[Download Quarto Template](../quarto/new_initial_quarto_document.qmd)
 :::
 
 
@@ -92,6 +92,7 @@ Note -- rerun this script if you are missing updated templates, as they have bee
 ```{r}
 #| include: true
 #| eval: false
+#| code-fold: false
 #| file: ../laboratory/lab-11/00-boilerplate-setup.R
 ```
 
@@ -156,6 +157,7 @@ Note -- rerun this script if you are missing updated templates, as they have bee
 ```{r}
 #| include: true
 #| eval: false
+#| code-fold: false
 #| file: ../laboratory/lab-11/01-add-revise-measures.R
 
 ```
@@ -219,7 +221,17 @@ Save discussion database with these changes? [y/n]: y
 
 ::: {.callout-note}
 - save this document as a `.qmd` file in a directory called 'quarto' (in your rstudio project)
-- - to render a document click 'Render'
+-  please run the code line-by-line (ctr/cmd + ENTER) before rendering
+-  to render a document click 'Render'
+:::
+
+
+::: {.callout-important title="⚠️ IMPORTANT: flipped outcomes"}
+Before you run the analysis, check whether you inverted any outcomes.  
+Set:
+```r
+use_flipped <- TRUE  # ← make TRUE if you flipped outcomes; FALSE otherwise
+```
 :::
 
 
@@ -229,9 +241,43 @@ Save discussion database with these changes? [y/n]: y
 ```{r}
 #| include: true
 #| eval: false
-#| file: ../quarto/initial_quarto_document.qmd
-
+#| code-fold: false
+#| file: ../quarto/new_initial_quarto_document.qmd
 ```
+
+
+::: {.callout-note title="💡 Remember to customise!"}
+This code chunk is a **template**. Run it once to generate boilerplate text, then:
+
+1. **Copy** the printed text into your manuscript.  
+2. **Delete** any sections you don’t need.  
+3. **Modify** the remaining text so it fits _your_ variables, sample, and research question.
+
+:::
+
+```{r, results='asis'}
+#| eval: false # ← set to `FALSE`, run once, then copy, delete, modify, extend as needed
+cat(
+  boilerplate::boilerplate_generate_text(
+    category    = "methods",
+    sections    = c(
+      "student_sample.nzavs",
+      "student_target_population",
+      "eligibility.standard",
+      "causal_intervention.grf_simple_text",
+      "analytic_approach.general_approach_cate_long",
+      "exposure_indicator",
+      "causal_identification_criteria",
+      "confounding_control.vanderweele",
+      "statistical_models.grf_short_explanation",
+      "missing_data.missing_grf_simple",
+      "sensitivity_analysis.short_evalue"
+    ),
+    global_vars = global_vars,
+    db          = unified_db
+  )
+)
+```  
 
 #### Pro Tip
 
@@ -358,7 +404,22 @@ See the indexed reference: <https://go-bayes.github.io/margot/reference/index.ht
 - Ensure the boilerplate directory structure exists (run Script 0 and Script 1).
 - Run the initial code block line-by-line before hitting **Render**.  
 - Define all `global_vars` required by the boiler-plate.  
-- If you are *not* flipping outcomes, stub the flip variables:
+- The `new_initial_quarto_document.qmd` template should work if you remember to set this value correctly: `use_flipped <- TRUE`
+
+
+::: {.callout-important title="⚠️ IMPORTANT: flipped outcomes"}
+Again, before you run the analysis, check whether you inverted any outcomes.  
+Set:
+
+```r
+use_flipped <- TRUE  # ← make TRUE if you flipped outcomes; FALSE otherwise
+```
+:::
+
+
+
+
+- If you are sticking with the old template and you are are *not* flipping outcomes, stub the flip variables:
 
 ```r
 flipped_names <- ""
@@ -366,9 +427,6 @@ flip_outcomes <- ""
 flipped_list  <- ""
 ```
 
-::: {.callout-note}
-If you are not flipping forests, stub, comment-out or edit any boiler-plate code that assumes flips.
-:::
 
 ---
 
@@ -408,6 +466,17 @@ Run **Script 0** and **Script 1** from the start; they refresh every template.
 report::cite_packages()
 ```
 
+### My code was working with the old template, where can I find it? 
 
+Here:
+
+```{r}
+#| include: true
+#| eval: false
+#| file: ../quarto/initial_quarto_document.qmd
+
+```
+
+ However, be careful to use 'models_binary' and 'labels_mapped_all' in place of `models_binary_flipped` and `labels_mapped_all_flipped` throughout if you did not flip your models.  I would rather advise that you use your the new code. 
 
 

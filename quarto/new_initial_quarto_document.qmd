@@ -691,7 +691,7 @@ global_vars <- list(
 ## Method
 
 ```{r, results='asis'}
-#| eval: false # <- set to true and modify text as needed
+#| eval: false # <- set to false, copy, delete, modify, and extend text as needed
 
 # run this code, copy and paste contents into your text
 cat(
