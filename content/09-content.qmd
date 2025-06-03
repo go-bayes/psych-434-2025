@@ -1860,7 +1860,7 @@ the pre-stated protocols in Bulbulia [@bulbulia2024PRACTICAL]. The integration o
 and machine learning technologies reduces the dependence on restrictive
 modelling assumptions and introduces an additional layer of robustness.
 For further details of the specific targeted learning strategy we
-favour, see [@duxedaz2021; @hoffman2022, @hoffman2023]. We perform estimation using the
+favour, see [@hoffman2022, @hoffman2023]. We perform estimation using the
 \texttt{lmtp} package [@williams2021]. We used the \texttt{superlearner} library for semi-parametric estimation with the predefined libraries \texttt{SL.ranger},
 \texttt{SL.glmnet}, and \texttt{SL.xgboost} [@xgboost2023; @polley2023; @Ranger2017]. We created graphs, tables and output reports using the \texttt{margot} package
 [@margot2024].

@@ -164,7 +164,7 @@ name_exposure_lower        <- tolower(name_exposure)
 markdown_table_baseline    <- margot::here_read("baseline_table")
 markdown_table_exposures   <- margot::here_read("exposure_table")
 markdown_table_outcomes    <- margot::here_read("outcomes_table")
-margot_bind_tables_markdown <- margot::here_read("margot_bind_tables_markdown")
+# margot_bind_tables_markdown <- margot::here_read("margot_bind_tables_markdown")
 
 # ── sample size information ───────────────────────────────────────────────────
 n_total                    <- margot::here_read("n_total")
@@ -351,6 +351,9 @@ if (use_flipped) {
   flipped_list <- ""
 }
 
+devtools::load_all("/Users/joseph/GIT/margot/")
+
+
 # ── average treatment effects (ate) analysis ──────────────────────────────────
 ate_results <- margot_plot(
   models_binary$combined_table,
@@ -365,6 +368,43 @@ ate_results <- margot_plot(
   adjust                = "bonferroni",
   alpha                 = 0.05
 )
+
+
+# check original table
+models_binary$combined_table
+
+# check results table: 
+ate_results$transformed_table
+
+
+# check interpretation: 
+cat(ate_results$interpretation)
+
+# check plot data is correct
+# plot_data <- ate_results$plot$data
+# print(plot_data[plot_data$outcome == "Social Belonging", c("2.5 %", "97.5 %")])
+
+# ── make nice markdown table -----------------──────────────────────────────────
+
+margot_bind_tables_markdown <- margot_bind_tables(
+  ate_results$transformed_table,
+  sort_E_val_bound = "desc",
+  e_val_bound_threshold = 1.2,
+  # ← choose threshold
+  highlight_color = NULL,
+  bold = TRUE,
+  rename_cols = TRUE,
+  col_renames = list("E-Value" = "E_Value", "E-Value bound" = "E_Val_bound"),
+  rename_ate = TRUE,
+  threshold_col = "E_Val_bound",
+  output_format = "markdown",
+  kbl_args = list(
+    booktabs = TRUE,
+    caption = NULL,
+    align = NULL
+  )
+)
+
 
 # ──────────────────────────────────────────────────────────────────────────────
 # HETEROGENEITY ANALYSIS
@@ -987,6 +1027,8 @@ cat(boilerplate_generate_text(
   ),
   db = unified_db
 ))
+
+
 ```
 
 {{< pagebreak >}}
