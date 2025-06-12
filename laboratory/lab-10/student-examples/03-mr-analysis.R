@@ -446,19 +446,10 @@ here_save(margot_bind_tables_markdown, "margot_bind_tables_markdown")
 # +--------------------------+
 # |    MODIFY THIS           |
 # +--------------------------+
-
+t2_outcome_z
 # WHICH OUTCOMES -- if any ARE UNDESIREABLE?
 flip_outcomes_standard = c(
-  #"t2_alcohol_frequency_weekly_z",
-  #"t2_alcohol_intensity_z",
-  #"t2_hlth_bmi_z",
-  #"t2_hlth_fatigue_z",
-  "t2_kessler_latent_anxiety_z",
-  #  ← select
-  "t2_kessler_latent_depression_z",
-  #  ← select
-  "t2_rumination_z" #  ← select
-  #"t2_perfectionism_z" # the exposure variable was not investigated
+  t2_outcome_z
 )
 
 # when exposure is negative and you want to focus on how much worse off
@@ -531,6 +522,7 @@ here_save_qs(models_binary_flipped_all,
 # read back if needed
 models_binary_flipped_all <- here_read_qs("models_binary_flipped_all", push_mods)
 
+flip_outcomes
 
 # this is a new function requires margot 1.0.48 or higher
 label_mapping_all_flipped <- margot_reversed_labels(label_mapping_all, flip_outcomes)
@@ -570,6 +562,20 @@ here_save(label_mapping_all_flipped, "label_mapping_all_flipped")
 # check package version early
 stopifnot(utils::packageVersion("margot") >= "1.0.52")
 
+
+policy_tree_defaults <- list(
+  point_alpha               = 0.5,
+  title_size               = 12,
+  subtitle_size            = 12,
+  axis_title_size          = 12,
+  legend_title_size        = 12,
+  split_line_color         = "red",
+  split_line_alpha         = 0.8,
+  split_label_color        = "red",
+  split_label_nudge_factor = 0.007  # ← moved out of nested list
+)
+
+
 # helper: quick kable printer --------------------------------------------------
 print_rate <- function(tbl) {
   tbl |>
@@ -578,6 +584,7 @@ print_rate <- function(tbl) {
 }
 
 # 1  SCREEN FOR HETEROGENEITY (RATE AUTOC + RATE Qini)  ----------------------
+devtools::load_all("/Users/joseph/GIT/margot/")
 
 rate_results <- margot_rate(
   models        = models_binary_flipped_all,
@@ -644,7 +651,7 @@ print_rate(qini_gain$summary_table)
 cat(qini_gain$qini_explanation, "\n")
 
 reliable_ids <- qini_gain$reliable_model_ids
-
+reliable_ids
 # (re-)compute plots only for models that passed Qini reliability
 qini_results_valid <- margot_policy(
   models_binary_flipped_all,
@@ -652,7 +659,7 @@ qini_results_valid <- margot_policy(
   output_dir         = here::here(push_mods),
   decision_tree_args = decision_tree_args,
   policy_tree_args   = policy_tree_args,
-  model_names        = reliable_ids,
+  model_names        = names(reliable_ids),
   original_df        = original_df,
   label_mapping      = label_mapping_all_flipped,
   max_depth          = 2L,
@@ -660,27 +667,53 @@ qini_results_valid <- margot_policy(
 )
 
 qini_plots <- map(qini_results_valid, ~ .x$qini_plot)
-
+qini_results_valid
 # grab pretty outcome names
 qini_names <- margot_get_labels(reliable_ids, label_mapping_all_flipped)
-
+qini_names
+label_mapping_all_flipped
 cli_h1("Qini curves generated ✔")
-
+reliable_ids
+str(policy_tree_defaults)
+str(decision_tree_defaults)
+str(models_binary_flipped_all, max.level = 2)
+reliable_ids
+str(label_mapping_all_flipped)
+# minimal test
+test_result <- margot_policy(
+  models_binary_flipped_all,
+  save_plots = FALSE,
+  model_names = reliable_ids[1],  # just first model
+  max_depth = 2L,
+  output_objects = c("policy_tree")  # just policy tree
+)
 # 4  POLICY TREES (max depth = 2) -------------------------------------------
-
 policy_results_2L <- margot_policy(
   models_binary_flipped_all,
   save_plots         = FALSE,
   output_dir         = here::here(push_mods),
   decision_tree_args = decision_tree_defaults,
   policy_tree_args   = policy_tree_defaults,
-  model_names        = reliable_ids,      # only those passing Qini
+  model_names        = reliable_ids,
   max_depth          = 2L,
   original_df        = original_df,
-  label_mapping      = label_mapping_all_flipped,
-  output_objects     = c("combined_plot")
+  label_mapping      = label_mapping_all_flipped
 )
 
+policy_results_2L <- margot_plot_policy_combo(
+  models_binary_flipped_all,
+  # save_plots         = FALSE,
+  # output_dir         = here::here(push_mods),
+  decision_tree_args = decision_tree_defaults,
+  policy_tree_args   = policy_tree_defaults,
+  model_name        = "model_t2_support_z",
+  max_depth          = 2L,
+  original_df        = original_df,
+  label_mapping      = label_mapping_all_flipped
+)
+
+policy_results_2L
+label_mapping_all_flipped
 policy_plots <- map(policy_results_2L, ~ .x$combined_plot)
 
 # ️5  PLAIN-LANGUAGE INTERPRETATION OF TREES ----------------------------------

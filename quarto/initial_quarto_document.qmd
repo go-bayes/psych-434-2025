@@ -433,8 +433,7 @@ autoc_plots <- margot_plot_rate_batch(
 
 # inspect the first curve - note there may be more/none.
 # if none, comment out
-autoc_plots[[1]]
-autoc_name_1 <- rate_results$rate_autoc$outcome[[1]]
+# autoc_name_1 <- rate_results$rate_autoc$outcome[[1]]
 
 # 3  QINI CURVES + GAIN INTERPRETATION ---------------------------------------
 qini_results <- margot_policy(
@@ -538,12 +537,12 @@ cli::cli_h1("Finished: depth-2 policy trees analysed ✔")
 # names of valid models
 # you might have fewer models 
 glued_policy_names_1 <- glue( qini_names[[1]])
-glued_policy_names_2 <-glue( qini_names[[2]])
-glued_policy_names_3 <- glue(qini_names[[3]])
-glued_policy_names_4 <- glue(qini_names[[4]])
-glued_policy_names_5 <-glue( qini_names[[5]])
-glued_policy_names_6 <- glue(qini_names[[6]])
-glued_policy_names_7 <-glue( qini_names[[7]])
+# glued_policy_names_2 <-glue( qini_names[[2]])
+# glued_policy_names_3 <- glue(qini_names[[3]])
+# glued_policy_names_4 <- glue(qini_names[[4]])
+# glued_policy_names_5 <-glue( qini_names[[5]])
+# glued_policy_names_6 <- glue(qini_names[[6]])
+# glued_policy_names_7 <-glue( qini_names[[7]])
 
 
 # cli::cli_h1("Names of Reliable HTE Models Set")
@@ -857,15 +856,15 @@ library(patchwork)
 # THIS WILL NEED TO BE MODIFED TO SUIT YOUR STUDY
 # Once you get the right arrangement 
 combined_qini <- (
-  qini_plots[[1]] /
-  qini_plots[[2]] /
-  qini_plots[[3]] /
-  qini_plots[[4]]
-) | (
-  # remove this block if you don't have plots 9,11,12
-  qini_plots[[5]] /
-  qini_plots[[6]] /
-  qini_plots[[7]]
+  qini_plots[[1]] #/
+#   qini_plots[[2]] /
+#   qini_plots[[3]] /
+#   qini_plots[[4]]
+# ) | (
+#   # remove this block if you don't have plots 9,11,12
+#   qini_plots[[5]] /
+#   qini_plots[[6]] /
+#   qini_plots[[7]]
 ) +
   # collect all legends into one shared guide
   plot_layout(guides = "collect") +
@@ -932,73 +931,73 @@ policy_plots[[2]]
 
 {{< pagebreak >}}
 
-```{r}
-#| label: fig-policy-3
-#| fig-cap: "Decision Tree: {glued_policy_names_3}"
-#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
-#| echo: false
-#| fig-height: 10
-#| fig-width: 12
+<!-- ```{r} -->
+<!-- #| label: fig-policy-3 -->
+<!-- #| fig-cap: "Decision Tree: {glued_policy_names_3}" -->
+<!-- #| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this -->
+<!-- #| echo: false -->
+<!-- #| fig-height: 10 -->
+<!-- #| fig-width: 12 -->
 
-policy_plots[[3]]
-```
-
-
-
-{{< pagebreak >}}
-
-```{r}
-#| label: fig-policy-4
-#| fig-cap: "Decision Tree: {glued_policy_names_4}"
-#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
-#| fig-height: 10
-#| fig-width: 12
-
-policy_plots[[4]]
-```
+<!-- policy_plots[[3]] -->
+<!-- ``` -->
 
 
 
-{{< pagebreak >}}
+<!-- {{< pagebreak >}} -->
 
-```{r}
-#| label: fig-policy-5
-#| fig-cap: "Decision Tree: {glued_policy_names_5}"
-#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
-#| fig-height: 10
-#| fig-width: 10
+<!-- ```{r} -->
+<!-- #| label: fig-policy-4 -->
+<!-- #| fig-cap: "Decision Tree: {glued_policy_names_4}" -->
+<!-- #| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this -->
+<!-- #| fig-height: 10 -->
+<!-- #| fig-width: 12 -->
 
-policy_plots[[5]]
-```
-
-
+<!-- policy_plots[[4]] -->
+<!-- ``` -->
 
 
-{{< pagebreak >}}
 
-```{r}
-#| label: fig-policy-6
-#| fig-cap: "Decision Tree: {glued_policy_names_6}"
-#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
-#| fig-height: 10
-#| fig-width: 12
+<!-- {{< pagebreak >}} -->
 
-policy_plots[[6]]
+<!-- ```{r} -->
+<!-- #| label: fig-policy-5 -->
+<!-- #| fig-cap: "Decision Tree: {glued_policy_names_5}" -->
+<!-- #| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this -->
+<!-- #| fig-height: 10 -->
+<!-- #| fig-width: 10 -->
 
-```
+<!-- policy_plots[[5]] -->
+<!-- ``` -->
 
 
-{{< pagebreak >}}
 
-```{r}
-#| label: fig-policy-7
-#| fig-cap: "Decision Tree: {glued_policy_names_7}"
-#| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this
-#| echo: false
-#| fig-height: 10
-#| fig-width: 12
-policy_plots[[7]]
-```
+
+<!-- {{< pagebreak >}} -->
+
+<!-- ```{r} -->
+<!-- #| label: fig-policy-6 -->
+<!-- #| fig-cap: "Decision Tree: {glued_policy_names_6}" -->
+<!-- #| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this -->
+<!-- #| fig-height: 10 -->
+<!-- #| fig-width: 12 -->
+
+<!-- policy_plots[[6]] -->
+
+<!-- ``` -->
+
+
+<!-- {{< pagebreak >}} -->
+
+<!-- ```{r} -->
+<!-- #| label: fig-policy-7 -->
+<!-- #| fig-cap: "Decision Tree: {glued_policy_names_7}" -->
+<!-- #| eval: false # <- set to true once you have set up your graph correctly / if you have no policy graph delete skip this -->
+<!-- #| echo: false -->
+<!-- #| fig-height: 10 -->
+<!-- #| fig-width: 12 -->
+<!-- policy_plots[[7]] -->
+<!-- ``` -->
 
 
 {{< pagebreak >}}
@@ -1164,17 +1163,17 @@ Refer to [Appendix D](#appendix-cate-validation) for details.
 cat(rate_interp$autoc_results)
 ```
 
-```{r}
-#| label: fig-rate-1
-#| fig-cap: "RATE AUTOC Graphs"
-#| eval: false # <- set to true as needed/desired
-#| echo: false
-#| fig-height: 10
-#| fig-width: 12
-autoc_plots[[1]]
-```
-
-@fig-rate-1 presents the RATE AUTOC curve for `r autoc_name_1`
+<!-- # ```{r} -->
+<!-- # #| label: fig-rate-1 -->
+<!-- # #| fig-cap: "RATE AUTOC Graphs" -->
+<!-- # #| eval: false # <- set to true as needed/desired -->
+<!-- # #| echo: false -->
+<!-- # #| fig-height: 10 -->
+<!-- # #| fig-width: 12 -->
+<!-- # autoc_plots[[1]] -->
+<!-- # ``` -->
+<!-- #  -->
+<!-- # @fig-rate-1 presents the RATE AUTOC curve for r autoc_name_1 -->
 
 {{< pagebreak >}}
 
