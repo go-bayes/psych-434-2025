@@ -13,20 +13,16 @@ rstudioapi::restartSession()
 set.seed(123)
 
 # libraries ---------------------------------------------------------------
-# essential library ---------------------------------------------------------
+# essential libraries ---------------------------------------------------------
 if (!require(margot, quietly = TRUE)) {
   devtools::install_github("go-bayes/margot")
 }
 
-
-if (packageVersion("margot") < "1.0.41") {
-  stop("please install margot >= 1.0.41 for this workflow\n
+if (packageVersion("margot") < "1.0.140") {
+  stop("please install margot >= 1.0.140 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
-
-library(margot)
-
 # load packages -------------------------------------------------------------
 # pacman will install missing packages automatically
 if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
@@ -47,9 +43,11 @@ pacman::p_load(
   stringr,         # variable names
   patchwork,       # graphs
   table1,           # tables
-  cli
+  cli,
+  boilerplate
 )
 
+library(margot)
 # save paths -------------------------------------------------------------------
 push_mods <- here::here("examples") 
 

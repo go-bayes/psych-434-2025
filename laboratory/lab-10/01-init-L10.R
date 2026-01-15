@@ -72,7 +72,6 @@ push_mods <- here::here("save_directory")
 # load data -----------------------------------------------------------------
 df_nz_long <- margot::here_read_qs("df_nz_long", data_dir)
 colnames(df_nz_long)
-table1::table1( ~ denial_discriminaton | wave, data = df_nz_long)
 
 # initial data prep ---------------------------------------------------------
 # prepare intial data
