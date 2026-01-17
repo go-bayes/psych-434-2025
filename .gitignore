@@ -50,3 +50,5 @@ examples/
 
 # .quartoignore
 template-quarto-manuscript.qmd
+
+**/*.quarto_ipynb
