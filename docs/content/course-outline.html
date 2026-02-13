@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.20">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -89,14 +89,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-033f0a3337416018308464325f96c073.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-f449f32773a5225ecd44d73bcb3b8843.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-4b86d3c59a3259dfae97fcca19917030.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-6c685d3801e5e8e890260caa4e456868.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -193,11 +194,11 @@ div.csl-indent {
   </li>  
         <li>
     <a class="dropdown-item" href="../content/08-content.html">
- <span class="dropdown-text">Week 8: Causal Inference - Estimation of ATE and CATE - R and LaTeX</span></a>
+ <span class="dropdown-text">Week 8: Estimation of ATE and CATE using machine learning - R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/09-content.html">
- <span class="dropdown-text">Week 9: Hands On: A Full Study Analysis in R</span></a>
+ <span class="dropdown-text">Week 9: Theoretically postulated Subgroups analysis- R</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../content/10-content.html">
@@ -690,7 +691,7 @@ Suzuki, Etsuji, Tomohiro Shinozaki, and Eiji Yamamoto. 2020. <span>“Causal Dia
 VanderWeele, Tyler J. 2009. <span>“On the Distinction Between Interaction and Effect Modification.”</span> <em>Epidemiology</em>, 863–71.
 </div>
 <div id="ref-vanderweele2022" class="csl-entry" role="listitem">
-VanderWeele, Tyler J. 2022. <span>“Constructed Measures and Causal Inference: Towards a New Model of Measurement for Psychosocial Constructs.”</span> <em>Epidemiology</em> 33 (1): 141. <a href="https://doi.org/10.1097/EDE.0000000000001434">https://doi.org/10.1097/EDE.0000000000001434</a>.
+VanderWeele, Tyler J. 2022. <span>“Constructed Measures and Causal Inference: Towards a New Model of Measurement for Psychosocial Constructs.”</span> <em>Epidemiology</em> 33 (1): 141–51. <a href="https://doi.org/10.1097/EDE.0000000000001434">https://doi.org/10.1097/EDE.0000000000001434</a>.
 </div>
 <div id="ref-vanderweele2012MEASUREMENT" class="csl-entry" role="listitem">
 VanderWeele, Tyler J., and Miguel A. Hernán. 2012. <span>“Results on Differential and Dependent Measurement Error of the Exposure and the Outcome Using Signed Directed Acyclic Graphs.”</span> <em>American Journal of Epidemiology</em> 175 (12): 1303–10. <a href="https://doi.org/10.1093/aje/kwr458">https://doi.org/10.1093/aje/kwr458</a>.
@@ -756,13 +757,14 @@ Vijver, Fons J. R. van de, Kwok Leung, Velichko H. Fetvadjiev, Jia He, and Johnn
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -1155,7 +1157,7 @@ Vijver, Fons J. R. van de, Kwok Leung, Velichko H. Fetvadjiev, Jia He, and Johnn
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co">  "Psych 434: Conducting Research Across Cultures"</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> "Conducting Research About Cultures"</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-FEB-25"</span></span>
@@ -1427,7 +1429,7 @@ Vijver, Fons J. R. van de, Kwok Leung, Velichko H. Fetvadjiev, Jia He, and Johnn
 <span id="cb1-270"><a href="#cb1-270" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-271"><a href="#cb1-271" aria-hidden="true" tabindex="-1"></a> <span class="at">&gt; Abstract: Causal inference research has shifted from being primarily descriptive (describing the data-generating mechanism using statistical models) to being primarily prescriptive (evaluating the effects of specific interventions). The focus has thereby moved from being centered on statistical models to being centered on causal estimands. This evolution has been driven by the increasing need for practical solutions to real-world problems, such as designing effective interventions, making policy decisions, and identifying effective treatment strategies. It has brought enormous progress, not solely in terms of delivering more useful answers to the scientific questions at stake, but also in providing a more hygienic inference that targets a well-understood causal estimand. However, many causal questions are not readily translated into the effects of specific interventions, and even if they can, scientists may be reliant on help from an expert statistician to make that translation, may not find the considered interventions feasible or of immediate interest, or may find too little information in the data about the considered estimand. In this talk, I will reflect on this and argue that hygienic causal inference thinking therefore comes with a price. I will next propose a compromise solution at the intersection of descriptive and prescriptive causal inference. It borrows the flexibility of statistical modeling, while tying model parameters to causal estimands in order to ensure that we understand what is being estimated and obtain valid (data-adaptive) inference for it, even when the model is wrong. Examples on structural (nested) mean models, instrumental variables estimation, target trials, … will be used to provide insight.</span></span>
 <span id="cb1-272"><a href="#cb1-272" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>{{&lt; video https://www.youtube.com/watch?v=DkyNCJLWqUg&amp;t=2827s &gt;}}</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb1-273"><a href="#cb1-273" aria-hidden="true" tabindex="-1"></a>{{&lt; video https://www.youtube.com/watch?v=DkyNCJLWqUg&amp;t=2827s &gt;}}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

@@ -1,5 +1,5 @@
 ---
-title: "Psych 434: Conducting Research Across Cultures"
+title: "PSYC 434: Conducting Research Across Cultures"
 author:
     name: Joseph Bulbulia
     orcid: 0000-0002-5861-2056
@@ -30,14 +30,14 @@ editor_options:
 library("tinytex")
 ```
 
-# Welcome to the Psych 434 lecture website
+# Welcome to the PSYC 434 lecture website
 
 
 
 ::: {.callout-tip}
 ### Accessing Lectures and Readings
 
-- **Seminar Time/Location**: Tuesdays, 9:00-11:50am **Easterfield Building Room: EA201**
+- **Seminar Time/Location**: Wednesdays, 14:10–17:00 **Easterfield Building Room: EA120**
 
 - **Course Outline**: find a detailed schedule of topics, readings, and assignments in the `Course Outline` tab.
 
@@ -68,7 +68,7 @@ The `Contents` tab offers direct access to weekly seminar and lab materials, inc
 library(leaflet)
 leaflet() %>%
   addTiles() %>%  # Add default OpenStreetMap map tiles
-  addMarkers(lng=174.7681, lat=-41.2889, popup="Easterfield")
+  addMarkers(lng=174.7681, lat=-41.2889, popup="Easterfield EA120")
 ```
 
 ## Names and contact details
@@ -97,25 +97,26 @@ library(kableExtra)
 # create data frame
 my_data <- tibble(
   Assessment = c(
-    "Class participation",
-    "In-class Test",
-    "Introduction/Methods Research Report",
-    "Full Research Report"
+    "Lab diaries (8 × 1.25%)",
+    "In-class test 1",
+    "In-class test 2",
+    "In-class presentation",
+    "Research report"
   ),
-  CLOs = c("1,2,3", "2", "2", "1,2,3"),
-  Percent = c("10", "25", "25", "40"),
+  CLOs = c("1,2,3", "2", "2,3", "1,2,3", "1,2,3"),
+  Percent = c("10", "15", "15", "10", "50"),
   Due = c(
-    "Weekly",
-     "8 April (w7)",
-     "20 May (w11)",
-     "30 May (end of w12)"
+    "Weekly (satisfactory/not)",
+    "22 April (w7)",
+    "20 May (w11)",
+    "27 May (w12)",
+    "30 May (Fri, end of w12)"
   )
-  
 )
 
-# create table 
-my_data %>%
-  kbl(format = "html") |> 
+# create table
+my_data |>
+  kbl(format = "html") |>
   kable_styling("hover")
 
 ```
@@ -152,244 +153,197 @@ library(kableExtra)
 # create data frame
 my_data <- tibble(
   Assessment = c(
-    "Class participation",
-    "In-class Test",
-    "Introduction/Methods Research Report",
-    "Full Research Report"
+    "Lab diaries (8 × 1.25%)",
+    "In-class test 1",
+    "In-class test 2",
+    "In-class presentation",
+    "Research report"
   ),
-  CLOs = c("1,2,3", "2", "2", "1,2,3"),
-  Percent = c("10", "25", "25", "40"),
+  CLOs = c("1,2,3", "2", "2,3", "1,2,3", "1,2,3"),
+  Percent = c("10", "15", "15", "10", "50"),
   Due = c(
-    "Weekly",
-     "8 April (w7)",
-     "20 May (w11)",
-     "30 May (end of w12)"
+    "Weekly (satisfactory/not)",
+    "22 April (w7)",
+    "20 May (w11)",
+    "27 May (w12)",
+    "30 May (Fri, end of w12)"
   )
-  
 )
 
-# create table 
-my_data %>%
-  kbl(format = "html") |> 
+# create table
+my_data |>
+  kbl(format = "html") |>
   kable_styling("hover")
 
 ```
 
-### Assessment 1: Class Participation
+## Weekly schedule (2026)
+
+| Week | Date (Wed) | Content |
+|---|---|---|
+| w1 | 25 Feb | Course introduction / Intro to R |
+| w2 | 4 Mar | Causal diagrams: elementary structures |
+| w3 | 11 Mar | Causal diagrams: confounding bias |
+| w4 | 18 Mar | Interaction, measurement bias, selection bias |
+| w5 | 25 Mar | Causal inference: average treatment effects |
+| w6 | 2 Apr | Effect modification / CATE |
+| — | 8 Apr | Mid-trimester break |
+| — | 15 Apr | Mid-trimester break |
+| w7 | 22 Apr | **In-class test 1 (15%)** |
+| w8 | 29 Apr | Machine learning / IPTW |
+| w9 | 6 May | Hands-on analysis |
+| w10 | 13 May | Quarto / Measurement |
+| w11 | 20 May | **In-class test 2 (15%)** |
+| w12 | 27 May | **Student presentations (10%)** |
+
+Labs run in the final 60–90 minutes of the seminar during teaching weeks. Eight labs across weeks 1–6 and 8–10 (one of those nine teaching weeks is lab-free; to be confirmed).
 
 
-  - (a) Class attendance and active participation.
-  - (b) Lab attendance and active participation.
-  - (c) Presentation (Week 12)
+### Assessment 1: Lab diaries (10%)
 
-### Assessment 2: In-class Test
+- Eight weekly lab diaries submitted across the teaching weeks.
+- Each diary is marked satisfactory/not satisfactory (1.25% each, full credit for satisfactory).
+- Labs take place in the final 60–90 minutes of the seminar.
+- Coding itself is not marked; the diary records progress and engagement.
 
-## Test Guidelines
+### Assessment 2: In-class test 1 (15%) — 22 April
 
-- Test duration is one hour. The allocated time is nearly two hours.
+- Covers material from weeks 1–6 (causal diagrams, confounding, ATE, effect modification).
+- Test duration is 50 minutes. The allocated time is 1 hour 50 minutes.
+- Required: pen/pencil. No devices permitted.
 
 ::: {.callout-important}
 - **THE TEST IS IN CLASS** (i.e. come to class with a writing instrument).
 :::
 
-  - Each lecture starts and ends with key concept definitions and reviews for the test.
-  - R or RStudio knowledge isn't part of the test. R support aims to enhance research report skills.
-  - Tests are conducted in the lecture room without the aids of notes, a computer, or a phone.
-  - Required: pen/pencil. 
-  - **Test (50 minutes, total time allowed: 1 hour 50 minutes)**:
-    - Focuses on revising core statistical and methodological concepts.
-    - Aims to refresh basic statistical knowledge foundational for later course material.
+### Assessment 3: In-class test 2 (15%) — 20 May
 
+- Covers material from weeks 8–10 (machine learning, IPTW, measurement, Quarto workflows).
+- Same format and conditions as test 1.
 
+### Assessment 4: In-class presentation (10%) — 27 May
 
-## Introduction and methods section for your report (Take-Home Assessment)
+- 10-minute presentation summarising the student's study.
+- Assessment criteria: clarity, efficiency, and quality of presentation.
 
-- Take Home Asssessment (~6 Hours) due May 06**:
-- Builds upon the course concepts, emphasising the application of basic conceptual, statistical, and theoretical knowledge as applied to your research question.
-- Specifically, how to formulate a research question and develop a strategy for answering it.
+### Assessment 5: Research report (50%) — due 30 May
 
-**Task**
+::: {.callout-important}
+## Research report instructions
+- We will supply the data.
+- Lab sessions are designed to support you in this assignment.
+- We assume no statistical background.
+:::
 
--  Write a draft Introduction to your final writing assessment.
--  Write a draft Method section for your writing assessment. 
--  Prepare an in-class presentation of 10 minutes summaring your study.
--  **You are encouraged to use AI** for help with coding.
--  **You are permitted to use AI** for help with writing, **however, be warned:** I will mark hallucinations and errors harshly. You'll need to internalise understanding.
--  Although I encourage you to use AI, I also encourage you to you write in your own voice. Cultivating your self-expression will make you interesting, and employable. 
--  (* Note that even the best AI models make mistakes and hallucinate, particularly in causal inference)
+Students choose **one** of two formats and must declare their choice by a date TBD (suggest by end of w6, 2 April).
 
+#### Option A: Research Report
 
-### Assessment criteria 
+Quantify the Average Treatment Effect of a specific exposure using the NZAVS longitudinal synthetic dataset.
 
-#### Stating the problem
--   **State your question:** is your question clearly stated? 
--   **Relevance:** have you explained its *scientific* importance? 
--   **Causality:** Is your question causal?
--   **Subgroup analysis:** does your question involve a subgroups (e.g., cultural group)? Which?
--   **Explain the framework:** Have you explained the causal inference framework in a way that is comprehensible to non-specialists?
--   **Ethics/Policy interests** have you explained how this question might practically affect people? 
--   **Data source:** are your data from the NZAVS simulated data set? (if not, consult with me)
+- **Introduction**: 1,500-word limit.
+- **Conclusion**: 1,500-word limit.
+- **Methods/Results**: concise, no specific word limit.
+- APA style. Submit as a single PDF with R code appendix.
+
+**Assessment criteria (Option A)**
+
+##### Stating the problem
+-   **State your question:** is your question clearly stated?
+-   **Relevance:** have you explained its *scientific* importance?
+-   **Causality:** is your question causal?
+-   **Subgroup analysis:** does your question involve subgroups (e.g., cultural group)? Which?
+-   **Explain the framework:** have you explained the causal inference framework in a way that is comprehensible to non-specialists?
+-   **Ethics/Policy interests:** have you explained how this question might practically affect people?
+-   **Data source:** are your data from the NZAVS simulated dataset? (if not, consult with me)
 -   **Data waves:** are your data using three waves?
 
-#### Determining the Outcome
--   **Outcome variable:** is your outcome variable *Y* well-defined? 
--   **Multiple outcomes:** do you assess multiple outcomes are are these well-defined?
--   **Outcome relevance:** can you explain how the outcome variable/s relate to your question? 
+##### Determining the outcome
+-   **Outcome variable:** is your outcome variable *Y* well-defined?
+-   **Multiple outcomes:** do you assess multiple outcomes and are these well-defined?
+-   **Outcome relevance:** can you explain how the outcome variable/s relate to your question?
 -   **Outcome type:** is your outcome binary and rare? ... etc.
 -   **Outcome timing:** does your outcome appear after your exposure?
 
-#### Determining the Exposure
-
+##### Determining the exposure
 -   **Exposure variable:** is your exposure variable *A* well-defined?
--   **Multiple exposures:** are there multiple exposures? (If yes, for this study, reassess).
--   **Exposure relevance:** have you explained how the exposure variable relates to your question? 
+-   **Multiple exposures:** are there multiple exposures? (If yes, for this study, reassess.)
+-   **Exposure relevance:** have you explained how the exposure variable relates to your question?
 -   **Positivity:** can we intervene on the exposure at all levels of the covariates?
--   **Consistency:** can we interpret what it means to intervene on the exposure? 
+-   **Consistency:** can we interpret what it means to intervene on the exposure?
 -   **Exchangeability:** are there different versions of the exposure conditionally exchangeable given measured baseline confounders?
 -   **Exposure type:** is the exposure binary or continuous?
--   **Shift intervention**: do you contrast static interventions or modified treatment policies? 
+-   **Shift intervention:** do you contrast static interventions or modified treatment policies?
 -   **Exposure timing:** does your exposure appear before the outcome? (It should.)
 
-#### Accounting for Confounders
+##### Accounting for confounders
+-   **Baseline confounders:** have you defined your baseline confounders *L*?
+-   **Justification:** can you explain how the baseline confounders could affect both *A* and *Y*?
+-   **Timing:** are the baseline confounders measured before the exposure?
+-   **Inclusion:** is the baseline measure of the exposure and the baseline outcome included in the set of baseline confounders?
+-   **Sufficiency:** are the baseline confounders sufficient to ensure balance on the exposure, such that *A* is independent of *Y* given *L*? If not, explain your sensitivity analysis (E-values).
+-   **Confounder type:** are the confounders continuous or binary? If so, consider converting them to z-scores. If they are categorical with three or more levels, do not convert them to z-scores, but rather use one-hot encoding.
 
--   **Baseline confounders:** Have you defined your baseline confounders *L*?
--   **Justification:** Can you explain how the baseline confounders could affect both *A* and *Y*? 
--   **Timing:** Are the baseline confounders measured before the exposure? 
--   **Inclusion:** Is the baseline measure of the exposure and the baseline outcome included in the set of baseline confounders? 
--   **Sufficiency:** Are the baseline confounders sufficient to ensure balance on the exposure, such that *A* is independent of *Y* given *L*? If not, explain your sensitivity analysis (E-values)
--   **Confounder type:** Are the confounders continuous or binary? If so, consider converting them to z-scores. If they are categorical with three or more levels, do not convert them to z-scores, but rather use one-hot encoding (see lecture 9.)
+##### Drawing a causal diagram with unmeasured confounders
+-   **Causal diagram:** have you drawn a causal diagram (DAG) to highlight both measured and unmeasured sources of confounding?
+-   **Measurement error:** have you described potential biases from measurement errors?
+-   **Temporal order:** does your DAG have time indicators to ensure correct temporal order?
+-   **Time consistency:** is your DAG organised so that time follows in a consistent direction?
 
-#### Drawing a Causal Diagram with Unmeasured Confounders
+##### Identifying the estimand
+-   What is your causal contrast?
+-   Have you stated your causal contrast clearly?
 
--   **Causal diagram:** Have you drawn a causal diagram (DAG) to highlight both measured and unmeasured sources of confounding? 
--   **Measurement error:** Have you described potential biases from measurement errors?
--   **Temporal order:** Does your DAG have time indicators to ensure correct temporal order? 
--   **Time consistency:** Is your DAG organized so that time follows in a consistent direction? 
+##### Understanding source and target populations
+-   **Populations identified:** have you explained how your sample relates to your target populations?
 
-#### Identifying the Estimand
+##### Set eligibility criteria
+-   **Criteria stated:** have you stated the eligibility criteria for the study?
 
-- What is your casual contrast?
-- Have you stated your causal contrast clearly? 
+##### Describe sample characteristics
+-   **Descriptive statistics:** have you provided descriptive statistics for demographic information taken at baseline?
+-   **Exposure change:** have you described the magnitudes of change in the exposure from baseline to the exposure interval?
+-   **References:** have you included references for more information about the sample (e.g. the NZAVS website)?
+-   **DATA ARE SIMULATED:** have you made it clear you are working with simulated data?
 
-<!-- **Note**: Do not be alarmed by this math if you are reading this material before I have introduced these concepts. All will be made clear, I promise.  -->
+##### Addressing missing data
+-   **Missing data checks:** have you checked for missing data?
+-   **Missing data plan:** if there are missing data, have you described how you will address the problem? (IPCW)
 
-<!-- -   **Causal Estimand:** Is your causal estimand one of the following: -->
+##### Selecting the model approach
+-   **Approach decision:** G-computation, IPTW, or doubly-robust estimation?
+-   **Model specification:** model specification?
+-   **Machine learning:** have you explained how machine learning works?
+-   **Outcome specifics:** if the outcome is rare and binary, have you specified logistic regression? If it's continuous, have you considered converting it to z-scores?
+-   **Sensitivity analysis:** have you described your sensitivity analysis (e.g. E-values)?
 
-<!-- $$ATE_{G,(A,A')} = E[Y(1) - Y(0)|G, L]$$ -->
-
-<!-- $$ATE_{G,(A/A')} = \frac{E[Y(1)|G, L]}{E[Y(0)|G, L]}$$ -->
-
-<!-- A modified treatment policy, e.g. -->
-
-<!-- $$ -->
-<!-- \mathbf{d}^\lambda (a_1) = \begin{cases} 4 & \text{if } a_1 < 4 \\  -->
-<!-- a_1 & \text{otherwise} \end{cases} -->
-<!-- $$ -->
-<!-- $$ -->
-<!-- \mathbf{d}^\phi (a_1) = \begin{cases} 0 & \text{if } a_1 > 0 \\  -->
-<!-- a_1 & \text{otherwise} \end{cases} -->
-<!-- $$ -->
-
-<!-- $$ g' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
-
-<!-- $$ g'' = \text{Intervention 1 - Intervention 2} = E[Y(\mathbf{d}^\lambda) - Y(\mathbf{d}^\phi)] $$ -->
-
-<!-- $$ -->
-<!-- {\delta}(g) ={g'} - {g''} -->
-<!-- $$ -->
+Most of these items can be addressed in a sentence or two, but all need to be covered.
 
 
+#### Option B: Marsden Fund Expression of Interest (EOI)
 
-#### Understanding Source and Target Populations
+Write a first-round Marsden Fund EOI following the RSNZ 2026 guidelines. The research question must use the causal inference framework taught in this course.
 
--   **Populations identified:** Have you explained how your sample relates to your target populations? 
+**Required sections (adapted for student context, CV excluded):**
 
+1. **Research Title** (max 25 words, plain language)
+2. **Research Summary** (max 200 words, plain language for non-specialists)
+3. **Abstract** (one page: aim, importance, methods, key information)
+4. **Benefit Statement** (one standalone page: why this research benefits New Zealand)
+5. **References** (max 3 pages)
+6. **Roles and Resources** (max one page: describe the team and resources a project like this would require)
+7. **Vision Mātauranga** (200 words: indicate relevance to the four VM themes, or justify why not applicable)
 
-#### Set Eligibility Criteria
+**Formatting:** 12-point Times, single spacing, 2 cm margins.
 
--   **Criteria stated:** Have you stated the eligibility criteria for the study?
+**Assessment criteria (Option B):**
 
-#### Describe Sample Characteristics
+- Novelty and ambition of the research question.
+- Rigour of the proposed methods.
+- Clarity of the benefit case.
+- Quality of the causal reasoning.
+- Adherence to EOI formatting requirements.
 
--   **Descriptive statistics:** have you provided descriptive statistics for demographic information taken at baseline? 
-
--   **Exposure change:** Have you described the magnitudes of change in the exposure from baseline to the exposure interval 
-
--   **References:** Have you included references for more information about the sample (e.g. the NZAVS website)? I should have.
-
-- **DATA ARE SIMULATED**: Have you made it clear you are working with simulated data? 
-
-#### Addressing Missing Data
-
--   **Missing data checks:** Have you checked for missing data? 
--   **Missing data plan:** If there are missing data, have you described how you will address the problem? (IPCW, see week 9)
-
-#### Selecting the Model Approach
-
--   **Approach decision:** G-computation, IPTW, or Doubly-Robust Estimation? 
--   **Model specification:** Model Specification?
--   **Machine Learning**: have you explained how machine learning works? 
--   **Outcome Specifics:** If the outcome is rare and binary, have you specified logistic regression? If it's continuous, have I considered converting it to z-scores?
--   **Sensitivity analysis:** Have you described your sensitivity analysis (e.g. E-values.)
-
-
-Note most of these tasks can be ticked off in a sentence or two, but all need to be covered. 
-
-**Length:** ~ 1,000 - 2,000 words (note it is a draft introduction and draft methods section).
-
-
-### Assessment 3: Research Report
-
-::: {.callout-important}
-## Research Report Instructions
-- We will supply the data.
-- Lab sessions are designed to support you in this assignment.
-- We assume no statistical background. 
-:::
-
-
-
-- **Title**: "(Title should be describe your study)".
-
-- **Objective**:
-    - To quantify the Average Treatment Effect of a specific exposure on well-being dimensions using the NZAVS longitudinal synthetic dataset.
-    - To evaluate evidence for Heterogenous Treatment Effects
-    - (Optional): To performa a theoretically motivated subgroup analysis.
-
-- **Instructions**:
-
-  1. **Theoretical Interest and Research Question**:
-        - Describe the significance of your chosen exposure and its potential impact on the selected outcomes, modified by the cultural or sociodemographic category.
-        - State the research question clearly.
-
-  2. **Directed Acyclic Graph (DAG)**:
-        - Construct a DAG illustrating the relationships between exposure, outcomes, sociodemographic category, and potential bias sources.
-
-  3. **Confounding Control Strategy**:
-        - Outline your strategy for confounding control, justifying the chosen confounders.
-
-  4. **Measurement Biases**:
-        - Address and analyse measurement biases as relevant.
-
-    5. **Assumptions and Statistical Models**:
-        - Discuss the assumptions of your causal inference approach and your statistical model, including their limitations.
-
-- **Requirements**:
-    - Introduction: 1,500 words **limit.**
-    - Conclusion: 1,500 words  **limit.**
-    - Method and Results sections should be concise; no specific word limit.
-    - Use any useful sources, citing appropriately to avoid academic misconduct.
-    - Follow APA style for citations and references.
-    - Include tables/figures as needed.
-    - Submit as a single PDF, including R code in an appendix.
-    - Presentations of Study in Week 12 (or by arrangement.)
-
-- **Evaluation Criteria**:
-    - Clarity of theoretical framework, research question, and design.
-    - Validity of confounding control strategy. 
-    - Discussion on assumptions and statistical models.
-    - Presentation quality (10%)
-      - clearly and efficiently presents study 
 
 ### Extensions and Penalties
 

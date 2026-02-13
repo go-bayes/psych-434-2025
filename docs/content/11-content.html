@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.20">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -89,14 +89,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-94df807a54b4aea56b59f6b1a3567e79.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-6b2306b05fee0b85d8c2d824c36e28c3.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-d5a3029baa3e394e88f18ffb9b51a21b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8d3921fbd61f36c27af49d0c67ac2e08.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -153,7 +154,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -385,7 +386,7 @@ window.Quarto = {
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Key concepts
+<span class="screen-reader-only">Important</span>Key concepts
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -462,7 +463,7 @@ Harkness, J. [et al]. 2003. <span>“Questionnaire Translation.”</span> In <em
 <section id="select-a-scale-to-validate-kessler-6-distress" class="level4">
 <h4 class="anchored" data-anchor-id="select-a-scale-to-validate-kessler-6-distress">Select A Scale To Validate: Kessler 6 Distress</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get synthetic data</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get synthetic data</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(margot)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
@@ -486,7 +487,7 @@ Harkness, J. [et al]. 2003. <span>“Questionnaire Translation.”</span> In <em
 <span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># check factor structure</span></span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">check_factorstructure</span>(dt_only_k6)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">check_factorstructure</span>(dt_only_k6)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Is the data suitable for Factor Analysis?
 
@@ -500,11 +501,11 @@ Harkness, J. [et al]. 2003. <span>“Questionnaire Translation.”</span> In <em
 <h3 class="anchored" data-anchor-id="practical-definitions-of-the-kessler-6-items">Practical Definitions of the Kessler-6 Items</h3>
 <ul>
 <li>The <code>df_nz</code> is loaded with the <code>margot</code> package. It is a synthetic dataset.</li>
-<li>take items from the Kessler-6 (K6) scale: depressed, effort, hopeless, worthless, nervous, and restless <span class="citation" data-cites="kessler2002 kessler2010">(<a href="#ref-kessler2002" role="doc-biblioref">R. &nbsp;C. Kessler et al. 2002</a>; <a href="#ref-kessler2010" role="doc-biblioref">R. C. Kessler et al. 2010</a>)</span>.</li>
+<li>take items from the Kessler-6 (K6) scale: depressed, effort, hopeless, worthless, nervous, and restless <span class="citation" data-cites="kessler2002 kessler2010">(<a href="#ref-kessler2002" role="doc-biblioref">R. C. Kessler et al. 2002</a>; <a href="#ref-kessler2010" role="doc-biblioref">Ronald C. Kessler et al. 2010</a>)</span>.</li>
 <li>The Kessler-6 is used as a diagnostic screening tool for depression for physicians in New Zealand</li>
 </ul>
 <div class="no-row-height column-margin column-container"><div id="ref-kessler2002" class="csl-entry" role="listitem">
-Kessler, R.&nbsp;C., G. Andrews, L.&nbsp;J. Colpe, E. Hiripi, D.&nbsp;K. Mroczek, S.-L.&nbsp;T. Normand, E.&nbsp;E. Walters, and A.&nbsp;M. Zaslavsky. 2002. <span>“Short Screening Scales to Monitor Population Prevalences and Trends in Non-Specific Psychological Distress.”</span> <em>Psychological Medicine</em> 32 (6): 959–76. <a href="https://doi.org/10.1017/S0033291702006074">https://doi.org/10.1017/S0033291702006074</a>.
+Kessler, R.C., G. Andrews, L.J. Colpe, E. Hiripi, D.K. Mroczek, S.-L.T. Normand, E. E. Walters, and A.M. Zaslavsky. 2002. <span>“Short Screening Scales to Monitor Population Prevalences and Trends in Non-Specific Psychological Distress.”</span> <em>Psychological Medicine</em> 32 (6): 959–76. <a href="https://doi.org/10.1017/S0033291702006074">https://doi.org/10.1017/S0033291702006074</a>.
 </div><div id="ref-kessler2010" class="csl-entry" role="listitem">
 Kessler, Ronald C., Jennifer Greif Green, Michael J. Gruber, Nancy A. Sampson, Evelyn Bromet, Marius Cuitan, Toshi A. Furukawa, et al. 2010. <span>“Screening for Serious Mental Illness in the General Population with the K6 Screening Scale: Results from the WHO World Mental Health (WMH) Survey Initiative.”</span> <em>International Journal of Methods in Psychiatric Research</em> 19 (S1): 4–22. <a href="https://doi.org/10.1002/mpr.310">https://doi.org/10.1002/mpr.310</a>.
 </div></div><p>The Kessler-6 (K6) is a widely-used diagnostic screening tool designed to identify levels of psychological distress that may indicate mental health disorders such as depression and anxiety. Physicians in New Zealand to screen patients quickly <span class="citation" data-cites="krynen2013measuring">(<a href="#ref-krynen2013measuring" role="doc-biblioref"><strong>krynen2013measuring?</strong></a>)</span>. Each item on the Kessler-6 asks respondents to reflect on their feelings and behaviors over the past 30 days, with responses provided on a five-point ordinal scale:</p>
@@ -575,7 +576,7 @@ Kessler, Ronald C., Jennifer Greif Green, Michael J. Gruber, Nancy A. Sampson, E
 <h4 class="anchored" data-anchor-id="explore-factor-structure">Explore Factor Structure</h4>
 <p>The following R code allows us to perform exploratory factor analysis (EFA) on the Kessler 6 (K6) scale data, assuming three latent factors.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exploratory factor analysis</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exploratory factor analysis</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># explore a factor structure made of 3 latent variables</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(<span class="st">"psych"</span>)</span>
@@ -586,7 +587,7 @@ Kessler, Ronald C., Jennifer Greif Green, Michael J. Gruber, Nancy A. Sampson, E
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>efa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(dt_only_k6, <span class="at">nfactors =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> <span class="st">"max"</span>)</span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>( efa )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>( efa )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Rotated loadings from Factor Analysis (oblimin-rotation)
 
@@ -606,10 +607,10 @@ The 3 latent factors (oblimin rotation) accounted for 62.94% of the total varian
 <section id="explore-factor-structure-1" class="level4">
 <h4 class="anchored" data-anchor-id="explore-factor-structure-1">Explore Factor Structure</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>efa <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(dt_only_k6, <span class="at">nfactors =</span> <span class="dv">3</span>) <span class="sc">|&gt;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model_parameters</span>(<span class="at">sort =</span> <span class="cn">TRUE</span>, <span class="at">threshold =</span> <span class="st">"max"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(efa)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(efa)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Rotated loadings from Factor Analysis (oblimin-rotation)
 
@@ -661,8 +662,8 @@ The 3 latent factors (oblimin rotation) accounted for 62.94% of the total varian
 <div class="cell page-columns page-full">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span><span class="fu">n_factors</span>(dt_only_k6)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span><span class="fu">n_factors</span>(dt_only_k6)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># Method Agreement Procedure:
@@ -671,8 +672,8 @@ The choice of 1 dimensions is supported by 8 (50.00%) methods out of 16 (Optimal
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(n) <span class="sc">+</span> <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(n) <span class="sc">+</span> <span class="fu">theme_classic</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display page-columns page-full">
 <div class="page-columns page-full">
@@ -702,10 +703,10 @@ The choice of 1 dimensions is supported by 8 (50.00%) methods out of 16 (Optimal
 <h4 class="anchored" data-anchor-id="data-partition">1. Data Partition</h4>
 <p>First, we take the dataset (<code>dt_only_k6</code>) and partition it into training and testing sets. This division helps in validating the model built on the training data against an unseen test set; this enhances robustness for the factor analysis findings.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>part_data <span class="ot">&lt;-</span> datawizard<span class="sc">::</span><span class="fu">data_partition</span>(dt_only_k6, <span class="at">training_proportion =</span> .<span class="dv">7</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>training <span class="ot">&lt;-</span> part_data<span class="sc">$</span>p_0<span class="fl">.7</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> part_data<span class="sc">$</span>test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> part_data<span class="sc">$</span>test</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="model-setup-for-cfa" class="level4">
@@ -718,7 +719,7 @@ The choice of 1 dimensions is supported by 8 (50.00%) methods out of 16 (Optimal
 </ul>
 <p>We fit each model to the training data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One-factor model</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># One-factor model</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>structure_k6_one <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(training, <span class="at">nfactors =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">efa_to_cfa</span>()</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -728,11 +729,11 @@ The choice of 1 dimensions is supported by 8 (50.00%) methods out of 16 (Optimal
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Three-factor model</span></span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>structure_k6_three <span class="ot">&lt;-</span> psych<span class="sc">::</span><span class="fu">fa</span>(training, <span class="at">nfactors =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">efa_to_cfa</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">efa_to_cfa</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Then we split our data for cross-validation</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first partition the data </span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># first partition the data </span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>part_data <span class="ot">&lt;-</span> datawizard<span class="sc">::</span><span class="fu">data_partition</span>(dt_only_k6, <span class="at">traing_proportion =</span> .<span class="dv">7</span>, <span class="at">seed =</span> <span class="dv">123</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -754,18 +755,18 @@ The choice of 1 dimensions is supported by 8 (50.00%) methods out of 16 (Optimal
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">efa_to_cfa</span>()</span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect models</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>structure_k6_one</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>structure_k6_one</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Latent variables
 MR1 =~ kessler_depressed + kessler_effort + kessler_hopeless + kessler_worthless + kessler_nervous + kessler_restless + .row_id</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>structure_k6_two</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>structure_k6_two</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Latent variables
 MR1 =~ kessler_depressed + kessler_hopeless + kessler_worthless
 MR2 =~ kessler_effort + kessler_nervous + kessler_restless + .row_id</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>structure_k6_three</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>structure_k6_three</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Latent variables
 MR1 =~ kessler_depressed + kessler_hopeless + kessler_worthless
@@ -790,7 +791,7 @@ MR3 =~ kessler_nervous + kessler_restless + .row_id</code></pre>
 <p>Do these results make sense? Note they are different from the Exploratory Factor Analysis. Why might that be?</p>
 <p>Next we perform the confirmatory factor analysis itself…</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit and compare models</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit and compare models</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># one latent model</span></span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>one_latent <span class="ot">&lt;-</span></span>
@@ -814,7 +815,7 @@ MR3 =~ kessler_nervous + kessler_restless + .row_id</code></pre>
 <span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a><span class="co"># view as html table</span></span>
 <span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(key_columns_df) <span class="sc">|&gt;</span></span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -943,7 +944,7 @@ MR3 =~ kessler_nervous + kessler_restless + .row_id</code></pre>
 <p>The upshot is that understanding these levels of invariance helps ensure that when we compare mental health or other constructs across different groups, we are making fair and meaningful comparisons. Partial invariance offers a flexible approach to handle real-world data where not all conditions are perfectly met. This approach allows researchers to acknowledge and account for minor discrepancies while still extracting valuable insights from their analyses.</p>
 <p>The following script runs multi-group confirmatory factor analysis (MG-CFA) to assess the invariance of the Kessler 6 (K6) distress scale across two ethnic groups: European New Zealanders and Māori.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select needed columns plus 'ethnicity'</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select needed columns plus 'ethnicity'</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co"># filter dataset for only 'euro' and 'maori' ethnic categories</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>dt_eth_k6_eth <span class="ot">&lt;-</span> df_nz <span class="sc">|&gt;</span> </span>
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(wave <span class="sc">==</span> <span class="dv">2018</span>) <span class="sc">|&gt;</span> </span>
@@ -966,7 +967,7 @@ MR3 =~ kessler_nervous + kessler_restless + .row_id</code></pre>
 <span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="co"># compare model performances for configural invariance</span></span>
 <span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>compare_eth_configural <span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">compare_performance</span>(one_latent_eth_configural, two_latents_eth_configural, three_latents_eth_configural, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>compare_eth_configural</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>compare_eth_configural</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Comparison of Model Performance Indices
 
@@ -1006,7 +1007,7 @@ one_latent_eth_configural    | 1.8e+05 (&lt;.001) |    1.759e+05
 two_latents_eth_configural   | 1.8e+05 (&lt;.001) |    1.755e+05
 three_latents_eth_configural | 1.8e+05 (&gt;.999) |    1.754e+05</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metric invariance models</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># metric invariance models</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co"># run CFA models holding factor loadings equal across groups</span></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>one_latent_eth_metric <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_k6_one, <span class="at">group =</span> <span class="st">"eth_cat"</span>, <span class="at">group.equal =</span> <span class="st">"loadings"</span>, <span class="at">data =</span> test_eth))</span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>two_latents_eth_metric  <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_k6_two, <span class="at">group =</span> <span class="st">"eth_cat"</span>, <span class="at">group.equal =</span> <span class="st">"loadings"</span>, <span class="at">data =</span> test_eth))</span>
@@ -1022,17 +1023,17 @@ three_latents_eth_configural | 1.8e+05 (&gt;.999) |    1.754e+05</code></pre>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>three_latents_eth_scalar  <span class="ot">&lt;-</span> <span class="fu">suppressWarnings</span>(lavaan<span class="sc">::</span><span class="fu">cfa</span>(structure_k6_three, <span class="at">group =</span> <span class="st">"eth_cat"</span>,<span class="at">group.equal =</span>  <span class="fu">c</span>(<span class="st">"loadings"</span>,<span class="st">"intercepts"</span>), <span class="at">data =</span> test_eth))</span>
 <span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Compare model performances for scalar invariance</span></span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>compare_eth_scalar <span class="ot">&lt;-</span> compare_eth_scalar  <span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">compare_performance</span>(one_latent_eth_scalar, two_latents_eth_scalar, three_latents_eth_scalar, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>compare_eth_scalar <span class="ot">&lt;-</span> compare_eth_scalar  <span class="ot">&lt;-</span> performance<span class="sc">::</span><span class="fu">compare_performance</span>(one_latent_eth_scalar, two_latents_eth_scalar, three_latents_eth_scalar, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 </section>
 <section id="configural-invariance-results" class="level3">
 <h3 class="anchored" data-anchor-id="configural-invariance-results">Configural Invariance Results</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>compare_eth_configural_key <span class="ot">&lt;-</span> compare_eth_configural[, <span class="fu">c</span>(<span class="st">"Name"</span>, <span class="st">"Chi2"</span>, <span class="st">"Chi2_df"</span>,<span class="st">"RFI"</span>, <span class="st">"NNFI"</span>, <span class="st">"CFI"</span>,<span class="st">"GFI"</span>,<span class="st">"RMSEA"</span>, <span class="st">"RMSEA_CI_low"</span>, <span class="st">"RMSEA_CI_high"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span>)]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>compare_eth_configural_key <span class="ot">&lt;-</span> compare_eth_configural[, <span class="fu">c</span>(<span class="st">"Name"</span>, <span class="st">"Chi2"</span>, <span class="st">"Chi2_df"</span>,<span class="st">"RFI"</span>, <span class="st">"NNFI"</span>, <span class="st">"CFI"</span>,<span class="st">"GFI"</span>,<span class="st">"RMSEA"</span>, <span class="st">"RMSEA_CI_low"</span>, <span class="st">"RMSEA_CI_high"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span>)]</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(compare_eth_configural_key)<span class="sc">|&gt;</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -1135,10 +1136,10 @@ three_latents_eth_configural | 1.8e+05 (&gt;.999) |    1.754e+05</code></pre>
 <section id="metric-equivalence" class="level3">
 <h3 class="anchored" data-anchor-id="metric-equivalence">Metric Equivalence</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>compare_eth_metric <span class="ot">&lt;-</span> compare_eth_metric[, <span class="fu">c</span>(<span class="st">"Name"</span>, <span class="st">"Chi2"</span>, <span class="st">"Chi2_df"</span>,<span class="st">"RFI"</span>, <span class="st">"NNFI"</span>, <span class="st">"CFI"</span>,<span class="st">"GFI"</span>,<span class="st">"RMSEA"</span>, <span class="st">"RMSEA_CI_low"</span>, <span class="st">"RMSEA_CI_high"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span>)]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>compare_eth_metric <span class="ot">&lt;-</span> compare_eth_metric[, <span class="fu">c</span>(<span class="st">"Name"</span>, <span class="st">"Chi2"</span>, <span class="st">"Chi2_df"</span>,<span class="st">"RFI"</span>, <span class="st">"NNFI"</span>, <span class="st">"CFI"</span>,<span class="st">"GFI"</span>,<span class="st">"RMSEA"</span>, <span class="st">"RMSEA_CI_low"</span>, <span class="st">"RMSEA_CI_high"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span>)]</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(compare_eth_metric)<span class="sc">|&gt;</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -1224,12 +1225,12 @@ three_latents_eth_configural | 1.8e+05 (&gt;.999) |    1.754e+05</code></pre>
 <section id="scalar-equivalence" class="level3">
 <h3 class="anchored" data-anchor-id="scalar-equivalence">Scalar Equivalence</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view as html table</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># view as html table</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>compare_eth_scalar <span class="ot">&lt;-</span> compare_eth_scalar[, <span class="fu">c</span>(<span class="st">"Name"</span>, <span class="st">"Chi2"</span>, <span class="st">"Chi2_df"</span>,<span class="st">"RFI"</span>, <span class="st">"NNFI"</span>, <span class="st">"CFI"</span>,<span class="st">"GFI"</span>,<span class="st">"RMSEA"</span>, <span class="st">"RMSEA_CI_low"</span>, <span class="st">"RMSEA_CI_high"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span>)]</span>
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(compare_eth_scalar)<span class="sc">|&gt;</span></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>(<span class="at">format =</span> <span class="st">"markdown"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
@@ -1356,7 +1357,7 @@ three_latents_eth_configural | 1.8e+05 (&gt;.999) |    1.754e+05</code></pre>
 <li>…</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the correlation matrix</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the correlation matrix</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(margot)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>dt_only_k6 <span class="ot">&lt;-</span> df_nz <span class="sc">|&gt;</span> </span>
@@ -1373,7 +1374,7 @@ three_latents_eth_configural | 1.8e+05 (&gt;.999) |    1.754e+05</code></pre>
 <span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>cor_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(dt_only_k6, <span class="at">use =</span> <span class="st">"pairwise.complete.obs"</span>, <span class="at">method =</span> <span class="st">"pearson"</span>)</span>
 <span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>( </span>
 <span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>( cor_matrix, <span class="dv">2</span>) </span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  kessler_depressed kessler_effort kessler_hopeless
 kessler_depressed              1.00           0.50             0.68
@@ -1392,7 +1393,7 @@ kessler_restless               0.39            0.46             1.00</code></pre
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co">#plot</span></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>cor_matrix_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(cor_matrix)  <span class="co"># convert matrix to data frame</span></span>
@@ -1408,7 +1409,7 @@ kessler_restless               0.39            0.46             1.00</code></pre
 <span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradient2</span>(<span class="at">low =</span> <span class="st">"blue"</span>, <span class="at">high =</span> <span class="st">"red"</span>, <span class="at">mid =</span> <span class="st">"white"</span>, <span class="at">midpoint =</span> <span class="dv">0</span>, <span class="at">limit =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)) <span class="sc">+</span></span>
 <span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Variables"</span>, <span class="at">y =</span> <span class="st">"Variables"</span>, <span class="at">fill =</span> <span class="st">"Correlation"</span>) <span class="sc">+</span></span>
-<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1421,7 +1422,7 @@ kessler_restless               0.39            0.46             1.00</code></pre
 <section id="packages" class="level3">
 <h3 class="anchored" data-anchor-id="packages">Packages</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  - Barrett M (2021). _ggokabeito: 'Okabe-Ito' Scales for 'ggplot2' and 'ggraph'_. R package version 0.1.0, &lt;https://CRAN.R-project.org/package=ggokabeito&gt;.
   - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 0.3.1.0 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
@@ -1483,7 +1484,7 @@ Harkness, Janet A, Fons JR Van de Vijver, and Timothy P Johnson. 2003. <span>“
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Key concepts
+<span class="screen-reader-only">Important</span>Key concepts
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1524,7 +1525,7 @@ Important
 <h2 class="anchored" data-anchor-id="two-ways-of-thinking-about-measurement-in-psychometric-research.">Two ways of thinking about measurement in psychometric research.</h2>
 <p>In psychometric research, formative and reflective models describe the relationship between latent variables and their respective indicators. VanderWeele discusses this in the assigned reading for this week <span class="citation" data-cites="vanderweele2022">(<a href="#ref-vanderweele2022" role="doc-biblioref">Tyler J. VanderWeele 2022</a>)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-vanderweele2022" class="csl-entry" role="listitem">
-VanderWeele, Tyler J. 2022. <span>“Constructed Measures and Causal Inference: Towards a New Model of Measurement for Psychosocial Constructs.”</span> <em>Epidemiology</em> 33 (1): 141. <a href="https://doi.org/10.1097/EDE.0000000000001434">https://doi.org/10.1097/EDE.0000000000001434</a>.
+VanderWeele, Tyler J. 2022. <span>“Constructed Measures and Causal Inference: Towards a New Model of Measurement for Psychosocial Constructs.”</span> <em>Epidemiology</em> 33 (1): 141–51. <a href="https://doi.org/10.1097/EDE.0000000000001434">https://doi.org/10.1097/EDE.0000000000001434</a>.
 </div></div><section id="reflective-model-factor-analysis" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="reflective-model-factor-analysis">Reflective Model (Factor Analysis)</h3>
 <p>In a reflective measurement model, also known as an effect indicator model, the latent variable is understood to cause the observed variables. In this model, changes in the latent variable cause changes in the observed variables. Each indicator (observed variable) is a ‘reflection’ of the latent variable. In other words, they are effects or manifestations of the latent variable. These relations are presented in <a href="#fig-dag-latent-1" class="quarto-xref">Figure&nbsp;1</a>.</p>
@@ -2006,7 +2007,7 @@ Greifer, Noah, Steven Worthington, Stefano Iacus, and Gary King. 2023. <em>Clari
 <section id="packages-1" class="level3">
 <h3 class="anchored" data-anchor-id="packages-1">Packages</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  - Arel-Bundock V, Greifer N, Heiss A (2024). "How to Interpret Statistical Models Using marginaleffects for R and Python." _Journal of Statistical Software_, *111*(9), 1-32. doi:10.18637/jss.v111.i09 &lt;https://doi.org/10.18637/jss.v111.i09&gt;.
   - Barrett M (2021). _ggokabeito: 'Okabe-Ito' Scales for 'ggplot2' and 'ggraph'_. R package version 0.1.0, &lt;https://CRAN.R-project.org/package=ggokabeito&gt;.
@@ -2155,13 +2156,14 @@ Greifer, Noah, Steven Worthington, Stefano Iacus, and Gary King. 2023. <em>Clari
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -2554,7 +2556,7 @@ Greifer, Noah, Steven Worthington, Stefano Iacus, and Gary King. 2023. <em>Clari
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb32" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Hands on Measurement: Exploratory Factor Analysis, Confirmatory Factor Analysis (CFA), Multigroup Confirmatory Factor Analysis, Partial Invariance (Configural, Metric, and Scalar equivalence)."</span></span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> "2025-MAY-20"</span></span>
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="an">bibliography:</span><span class="co"> /Users/joseph/GIT/templates/bib/references.bib</span></span>
@@ -4170,7 +4172,7 @@ Greifer, Noah, Steven Worthington, Stefano Iacus, and Gary King. 2023. <em>Clari
 <span id="cb32-1678"><a href="#cb32-1678" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb32-1679"><a href="#cb32-1679" aria-hidden="true" tabindex="-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span>
 <span id="cb32-1680"><a href="#cb32-1680" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

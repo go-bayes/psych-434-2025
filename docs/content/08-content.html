@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.20">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -89,14 +89,15 @@ div.csl-indent {
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-6b83053bd867e91890e3c09412db0bb7.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-efd6ff7163e34c65f10ccb003a1f55f5.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-b150b11e25d71d79f94868488eae0a4a.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-9d193847158c4aeeaf690b62843f4284.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -153,7 +154,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -378,7 +379,7 @@ VanderWeele, Tyler J, Maya B Mathur, and Ying Chen. 2020. <span>“Outcome-Wide 
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Key concepts
+<span class="screen-reader-only">Important</span>Key concepts
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -604,7 +605,7 @@ Note
 <section id="script-0-synthetic-data-fetch" class="level2">
 <h2 class="anchored" data-anchor-id="script-0-synthetic-data-fetch">Script 0: Synthetic Data Fetch</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># for students: reproducibility is like following a recipe; each step ensures the same result</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># for students: reproducibility is like following a recipe; each step ensures the same result</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="co"># restart fresh session if needed</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="co"># +--------------------------+</span></span>
@@ -701,13 +702,13 @@ Note
 <span id="cb1-95"><a href="#cb1-95"></a></span>
 <span id="cb1-96"><a href="#cb1-96"></a><span class="co"># +--------------------------+</span></span>
 <span id="cb1-97"><a href="#cb1-97"></a><span class="co"># |     </span><span class="re">END</span><span class="co">                  |</span></span>
-<span id="cb1-98"><a href="#cb1-98"></a><span class="co"># +--------------------------+</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-98"><a href="#cb1-98"></a><span class="co"># +--------------------------+</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="script-1-initial-data-wrangling" class="level2">
 <h2 class="anchored" data-anchor-id="script-1-initial-data-wrangling">Script 1: Initial Data Wrangling</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># script 1 workflow lecture 10</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># script 1 workflow lecture 10</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="co"># may 2025</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co"># questions: joseph.bulbulia@vuw.ac.nz</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a></span>
@@ -1533,13 +1534,13 @@ Note
 <span id="cb2-824"><a href="#cb2-824"></a><span class="co">#   full_response_scale = TRUE,</span></span>
 <span id="cb2-825"><a href="#cb2-825"></a><span class="co">#   seed = 123</span></span>
 <span id="cb2-826"><a href="#cb2-826"></a><span class="co"># )</span></span>
-<span id="cb2-827"><a href="#cb2-827"></a><span class="co"># print(individual_plot)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-827"><a href="#cb2-827"></a><span class="co"># print(individual_plot)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="script-2-make-wide-data-format-with-censoring-weights" class="level2">
 <h2 class="anchored" data-anchor-id="script-2-make-wide-data-format-with-censoring-weights">Script 2: Make Wide Data Format With Censoring Weights</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># script 2: causal workflow for estimating average treatment effects using margot</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># script 2: causal workflow for estimating average treatment effects using margot</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="co"># may 2025</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="co"># questions: joseph.bulbulia@vuw.ac.nz</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a></span>
@@ -2070,13 +2071,13 @@ Note
 <span id="cb3-529"><a href="#cb3-529"></a><span class="co"># # use qs to save only if you have space</span></span>
 <span id="cb3-530"><a href="#cb3-530"></a><span class="co"># here_save_qs(propensity_model_and_plots,</span></span>
 <span id="cb3-531"><a href="#cb3-531"></a><span class="co">#              "propensity_model_and_plots",</span></span>
-<span id="cb3-532"><a href="#cb3-532"></a><span class="co">#              push_mods)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-532"><a href="#cb3-532"></a><span class="co">#              push_mods)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="script-3-models-graphs" class="level2">
 <h2 class="anchored" data-anchor-id="script-3-models-graphs">Script 3: Models &amp; Graphs</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># script 3: causal workflow for estimating average treatment effects using margot</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># script 3: causal workflow for estimating average treatment effects using margot</span></span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co"># may 2025</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a><span class="co"># questions: joseph.bulbulia@vuw.ac.nz</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a></span>
@@ -3217,7 +3218,7 @@ Note
 <span id="cb4-1139"><a href="#cb4-1139"></a></span>
 <span id="cb4-1140"><a href="#cb4-1140"></a><span class="co"># adjust only the alpha</span></span>
 <span id="cb4-1141"><a href="#cb4-1141"></a>margot<span class="sc">::</span><span class="fu">margot_plot_policy_tree</span>(models_binary, <span class="st">"model_t2_support_z"</span>, <span class="at">point_alpha =</span> .<span class="dv">1</span>)</span>
-<span id="cb4-1142"><a href="#cb4-1142"></a>margot<span class="sc">::</span><span class="fu">margot_plot_policy_tree</span>(models_binary, <span class="st">"model_t2_support_z"</span>, <span class="at">point_alpha =</span> .<span class="dv">9</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-1142"><a href="#cb4-1142"></a>margot<span class="sc">::</span><span class="fu">margot_plot_policy_tree</span>(models_binary, <span class="st">"model_t2_support_z"</span>, <span class="at">point_alpha =</span> .<span class="dv">9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="homework-prepare-a-fresh-set-of-analysis-scripts-using-a-different-exposure" class="level2">
@@ -3231,7 +3232,7 @@ Note
 <section id="packages" class="level3">
 <h3 class="anchored" data-anchor-id="packages">Packages</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>report<span class="sc">::</span><span class="fu">cite_packages</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  - Bulbulia J (2024). _boilerplate_. doi:10.5281/zenodo.13370825 &lt;https://doi.org/10.5281/zenodo.13370825&gt;, R package version 1.0.43, &lt;https://go-bayes.github.io/biolerplate/&gt;.
   - Bulbulia J (2024). _margot: MARGinal Observational Treatment-effects_. doi:10.5281/zenodo.10907724 &lt;https://doi.org/10.5281/zenodo.10907724&gt;, R package version 1.0.52 Functions to obtain MARGinal Observational Treatment-effects from observational data., &lt;https://go-bayes.github.io/margot/&gt;.
@@ -3494,13 +3495,14 @@ E(\delta) = E(Y^{a=1} - Y^{a=0})\\
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -3893,7 +3895,7 @@ E(\delta) = E(Y^{a=1} - Y^{a=0})\\
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
-<div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">---</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">---</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a><span class="an">title:</span><span class="co"> "Estimation of ATE and CATE Using Machine Learning"</span></span>
 <span id="cb7-3"><a href="#cb7-3"></a><span class="an">date:</span><span class="co"> "2025-APR-29"</span></span>
 <span id="cb7-4"><a href="#cb7-4"></a><span class="an">format:</span></span>
@@ -4773,7 +4775,7 @@ E(\delta) = E(Y^{a=1} - Y^{a=0})\\
 <span id="cb7-890"><a href="#cb7-890"></a><span class="co">&lt;!-- ## Extra Readings n on Propensity Scores: --&gt;</span></span>
 <span id="cb7-891"><a href="#cb7-891"></a></span>
 <span id="cb7-892"><a href="#cb7-892"></a><span class="co">&lt;!-- Noah Griefer's Software and Blogs: [https://ngreifer.github.io/blog/subgroup-analysis-psm/](https://ngreifer.github.io/blog/) --&gt;</span></span>
-</code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+</code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

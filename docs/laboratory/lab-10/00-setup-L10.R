@@ -4,7 +4,7 @@
 # +--------------------------+
 # |       DO NOT ALTER       |
 # +--------------------------+
-
+# fresh session
 rstudioapi::restartSession()
 
 # set seed for reproducibility
@@ -18,15 +18,14 @@ if (!require(margot, quietly = TRUE)) {
 }
 
 
-if (packageVersion("margot") < "1.0.43") {
-  stop("please install margot >= 1.0.43 for this workflow\n
+if (packageVersion("margot") < "1.0.224") {
+  stop("please install margot >= 1.0.224 for this workflow\n
        run: devtools::install_github(\"go-bayes/margot\")
 ")
 }
 
 # call library
 library("margot")
-
 
 
 # load packages ----------------------------------------------------------
@@ -87,10 +86,6 @@ print(colnames(df_nz_long))
 here_save_qs(df_nz_long, "df_nz_long", data_dir)
 
 cli::cli_h1("downloaded data to data folder for furture use ✔")
-
-# +--------------------------+
-# |     END DO NOT ALTER     |
-# +--------------------------+
 
 
 # +--------------------------+
