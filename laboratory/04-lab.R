@@ -10,7 +10,7 @@ if (!require(tidyverse, quietly = TRUE)) {
   install.packages("tidyverse")
   library(tidyverse)
 }
-# graphing 
+# graphing
 if (!require(ggplot2, quietly = TRUE)) {
   install.packages("ggplot2")
   library(ggplot2)
@@ -23,30 +23,31 @@ if (!require(ggdag, quietly = TRUE)) {
 
 # code for creating a DAG
 graph_fork <- dagify(Y ~ L,
-                     A ~ L,
-                     exposure = "A",
-                     outcome = "Y") |>
+  A ~ L,
+  exposure = "A",
+  outcome = "Y"
+) |>
   tidy_dagitty(layout = "tree")
 # plot the DAG
 graph_fork |>
   ggdag() + theme_dag_blank() + labs(title = "L is a common cause of A and Y")
 
 # next
-ggdag::ggdag_adjustment_set(graph_fork) + 
-  theme_dag_blank() + 
+ggdag::ggdag_adjustment_set(graph_fork) +
+  theme_dag_blank() +
   labs(title = "{L} is the exclusive member of the confounder set for A and Y. Conditioning on L 'd-separates' A and Y ")
 
 # simulate
 # set seed
 set.seed(123)
 # number of observations
-N = 1000
+N <- 1000
 # confounder
-L = rnorm(N)
-# A is caused by 
-A = rnorm(N, L)
+L <- rnorm(N)
+# A is caused by
+A <- rnorm(N, L)
 # Y draws randomly from L but is not caused by A
-Y = rnorm(N, L)
+Y <- rnorm(N, L)
 # note we did not need to make a data frame
 # regress Y on A without control
 fit_fork <- lm(Y ~ A)
@@ -59,21 +60,25 @@ parameters::model_parameters(fit_fork_controlled)
 
 # mediation bias
 graph_mediation <- dagify(Y ~ M,
-                          M ~ A,
-                          exposure = "A",
-                          outcome = "Y") |>
+  M ~ A,
+  exposure = "A",
+  outcome = "Y"
+) |>
   ggdag::tidy_dagitty(layout = "tree")
+
 graph_mediation |>
-  ggdag() +   
-  theme_dag_blank() + 
+  ggdag() +
+  theme_dag_blank() +
   labs(title = "Mediation Graph")
 
 # or like this
-graph_mediation_full <- ggdag_mediation_triangle(x = "A", 
-                                                 y = "Y", 
-                                                 m = "M", 
-                                                 x_y_associated = FALSE) 
-graph_mediation_full + theme_dag_blank() + 
+graph_mediation_full <- ggdag_mediation_triangle(
+  x = "A",
+  y = "Y",
+  m = "M",
+  x_y_associated = FALSE
+)
+graph_mediation_full + theme_dag_blank() +
   labs(title = "Fully Mediated Graph")
 
 # ask which vars to condition on
@@ -91,14 +96,18 @@ m <- rnorm(N, x) # sim X -> M
 y <- rnorm(N, x + m) # sim M -> Y
 df <- data.frame(x, m, y)
 df <- df |>
-  dplyr::mutate(x_s = scale(x),
-                m_s = scale(m))
+  dplyr::mutate(
+    x_s = scale(x),
+    m_s = scale(m)
+  )
 
 fit_mediation <- lm(y ~ x_s, data = df)
 parameters::model_parameters(fit_mediation)
 
-# Next we ask, is A related to Y conditional on M? 
+# next we ask, is A related to Y conditional on M?
 fit_total_mediated_effect <- lm(y ~ x_s + m_s, data = df)
+
+# show
 parameters::model_parameters(fit_total_mediated_effect)
 
 # initial example showing attenuated effect
@@ -133,17 +142,17 @@ N <- 100
 c0 <- rnorm(N, 10, 2)
 
 # assign treatments and simulate charitable giving and increase in social cohesion
-ritual <- rep(0:1, each = N/2)
+ritual <- rep(0:1, each = N / 2)
 cohesion <- ritual * rnorm(N, .5, .2)
 
 # increase in charity
-c1 <- c0 + ritual * cohesion 
+c1 <- c0 + ritual * cohesion
 
 # dataframe
 d <- data.frame(
-  c0 = c0, 
-  c1 = c1, 
-  ritual = ritual, 
+  c0 = c0,
+  c1 = c1,
+  ritual = ritual,
   cohesion = cohesion
 )
 skimr::skim(d)
@@ -159,8 +168,8 @@ parameters::model_parameters(
   lm(c1 ~ c0 + ritual + cohesion, data = d)
 )
 
-# note: the (direct) effect of ritual entirely drops out when we include both 
-# ritual and social cohesion. once our model knows cohesion, it does not 
+# note: the (direct) effect of ritual entirely drops out when we include both
+# ritual and social cohesion. once our model knows cohesion, it does not
 # obtain any new information by knowing ritual.
 
 # ---------------------------------------------------------------
@@ -173,9 +182,10 @@ parameters::model_parameters(
 library(ggdag)
 # create dag where conservatism affects religion and distress
 dag_m1 <- dagify(K ~ C + R,
-                 R ~ C,
-                 exposure = "C",
-                 outcome = "K") |>
+  R ~ C,
+  exposure = "C",
+  outcome = "K"
+) |>
   tidy_dagitty(layout = "tree")
 
 # graph the dag
@@ -225,10 +235,13 @@ dag_m1 |>
 
 # create dag for selection based on newsworthy and trustworthy papers
 dag_sd <- dagify(S ~ N,
-                 S ~ T,
-                 labels = c("S" = "Selection",
-                            "N" = "Newsworthy",
-                            "T" = "Trustworthy")) |>
+  S ~ T,
+  labels = c(
+    "S" = "Selection",
+    "N" = "Newsworthy",
+    "T" = "Trustworthy"
+  )
+) |>
   tidy_dagitty(layout = "nicely")
 
 # graph the dag
@@ -247,15 +260,16 @@ ggdag_dseparated(
 
 # find colliders in the dag
 ggdag::ggdag_collider(dag_sd,
-                      text = FALSE,
-                      use_labels = "label")
+  text = FALSE,
+  use_labels = "label"
+)
 
 # simulate selection distortion effect
 set.seed(123)
-n <- 1000  # number of grant proposals
-p <- 0.05  # proportion to select
+n <- 1000 # number of grant proposals
+p <- 0.05 # proportion to select
 
-d <- 
+d <-
   # uncorrelated newsworthiness and trustworthiness
   dplyr::tibble(
     newsworthiness = rnorm(n, mean = 0, sd = 1),
@@ -267,9 +281,9 @@ d <-
   dplyr::mutate(selected = ifelse(total_score >= quantile(total_score, 1 - p), TRUE, FALSE))
 
 # check correlation among selected proposals
-d |> 
-  dplyr::filter(selected == TRUE) |> 
-  dplyr::select(newsworthiness, trustworthiness) |> 
+d |>
+  dplyr::filter(selected == TRUE) |>
+  dplyr::select(newsworthiness, trustworthiness) |>
   cor()
 
 # create text for plot annotation
@@ -284,7 +298,7 @@ text <-
 # visualize the selection distortion effect
 d |>
   ggplot2::ggplot(aes(x = newsworthiness, y = trustworthiness, color = selected)) +
-  ggplot2::geom_point(aes(shape = selected), alpha = 3/4) +
+  ggplot2::geom_point(aes(shape = selected), alpha = 3 / 4) +
   ggplot2::geom_text(data = text, aes(label = label)) +
   ggplot2::geom_smooth(
     data = d |> filter(selected == TRUE),
@@ -299,7 +313,8 @@ d |>
   ggplot2::coord_cartesian(ylim = range(d$trustworthiness)) +
   ggplot2::theme(legend.position = "none") +
   ggplot2::xlab("Newsworthy") +
-  ggplot2::ylab("Trustworthy") + theme_bw()
+  ggplot2::ylab("Trustworthy") +
+  theme_bw()
 
 # ---------------------------------------------------------------
 # collider bias within experiments
@@ -321,7 +336,7 @@ dag_ex2 <- dagify(
   outcome = "C1",
   latent = "U"
 ) |>
-  control_for(c("Ch", "C0"))  
+  control_for(c("Ch", "C0"))
 
 # visualize the dag
 dag_ex2 |>
@@ -351,6 +366,7 @@ dag_ex3 <- dagify(
   outcome = "C1",
   latent = "U"
 )
+
 ggdag_adjustment_set(dag_ex3)
 
 # ---------------------------------------------------------------
@@ -358,9 +374,11 @@ ggdag_adjustment_set(dag_ex3)
 # ---------------------------------------------------------------
 
 # 1. the fork (omitted variable bias)
-confounder_triangle(x = "Coffee",
-                    y = "Lung Cancer",
-                    z = "Smoking") |>
+confounder_triangle(
+  x = "Coffee",
+  y = "Lung Cancer",
+  z = "Smoking"
+) |>
   ggdag_dconnected(text = FALSE, use_labels = "label")
 
 # 2. the pipe (fully mediated effects)
@@ -390,8 +408,7 @@ dag_sd <- dagify(
   ),
   exposure = "X",
   outcome = "Y"
-) |>
-  control_for("D") 
+) |> control_for("D")
 
 dag_sd |>
   ggdag_dseparated(
@@ -402,12 +419,15 @@ dag_sd |>
     use_labels = "label"
   ) +
   ggtitle("X --> Y, controlling for D",
-          subtitle = "D induces collider bias")
+    subtitle = "D induces collider bias"
+  )
 
 # ---------------------------------------------------------------
 # complex example with multiple variables
 # ---------------------------------------------------------------
 # example of a complex dag with many variables and relationships
+# TO DO AT HOME
+
 
 library(ggdag)
 dg_1 <- ggdag::dagify(
@@ -456,15 +476,18 @@ p3
 
 # find adjustment set
 p2 <- ggdag::ggdag_adjustment_set(dg_1,
-                                  text = FALSE,
-                                  use_labels = "label") +
+  text = FALSE,
+  use_labels = "label"
+) +
   theme_dag_blank() +
-  labs(title = "Adjustment set",
-       subtite = "Model for Source credibility from belief ")
+  labs(
+    title = "Adjustment set",
+    subtite = "Model for Source credibility from belief "
+  )
 p2
 
 # ---------------------------------------------------------------
-# alternative assumptions 
+# alternative assumptions
 # ---------------------------------------------------------------
 # altering the causal model by assuming source affects religion
 
@@ -509,8 +532,10 @@ ggdag::ggdag_adjustment_set(
   use_labels = "label"
 ) +
   theme_dag_blank() +
-  labs(title = "Adjustment set",
-       subtite = "Model for Source credibility from belief ")
+  labs(
+    title = "Adjustment set",
+    subtite = "Model for Source credibility from belief "
+  )
 
 # ---------------------------------------------------------------
 # nzavs research example
@@ -520,22 +545,23 @@ ggdag::ggdag_adjustment_set(
 # create dag for wellbeing and belief relationships
 tidy_ggdag <- dagify(
   WB ~ belief + age_within + age_between + partner + nzdep + urban + male + pols + empl,
-  WB ~~ partner,
+  WB ~ ~partner,
   belief ~ age_within + age_between + male + ethn,
-  partner ~ nzdep + age_within + age_between + belief, 
+  partner ~ nzdep + age_within + age_between + belief,
   nzdep ~ empl + age_within + age_between,
   pols ~ age_within + age_between + empl + ethn,
   empl ~ edu + ethn + age_within + age_between,
   exposure = "belief",
-  outcome = "WB") |>
+  outcome = "WB"
+) |>
   tidy_dagitty()
 
-# visualize the dag
+# visualise the dag
 tidy_ggdag |>
   ggdag()
 
 # find adjustment sets for this dag
-ggdag::ggdag_adjustment_set(tidy_ggdag, node_size = 14) + 
+ggdag::ggdag_adjustment_set(tidy_ggdag, node_size = 14) +
   theme(legend.position = "bottom") + theme_dag_blank()
 
 # ---------------------------------------------------------------
@@ -554,7 +580,7 @@ dag_m3 <- dagify(
 ) |>
   tidy_dagitty(layout = "nicely")
 
-# visualize the dag
+# visualise the dag
 dag_m3 |>
   ggdag()
 
@@ -596,8 +622,9 @@ smoking_ca_dag <- dagify(
 
 # visualize the dag
 ggdag(smoking_ca_dag,
-      text = FALSE,
-      use_labels = "label")
+  text = FALSE,
+  use_labels = "label"
+)
 
 # find adjustment sets
 ggdag_adjustment_set(
@@ -633,16 +660,21 @@ coords_mine <- tibble::tribble(
 
 # create and visualize dag for hospitalization selection bias
 dagify(hospitalized ~ broken_bone + glioma,
-       broken_bone ~ reckless,
-       smoking ~ reckless,
-       labels = c(hospitalized = "Hospitalization",
-                  broken_bone = "Broken Bone",
-                  glioma = "Glioma",
-                  reckless = "Reckless \nBehavior",
-                  smoking = "Smoking"),
-       coords = coords_mine) |> 
-  ggdag_dconnected("glioma", "smoking", controlling_for = "hospitalized", 
-                   text = FALSE, use_labels = "label", collider_lines = FALSE)
+  broken_bone ~ reckless,
+  smoking ~ reckless,
+  labels = c(
+    hospitalized = "Hospitalization",
+    broken_bone = "Broken Bone",
+    glioma = "Glioma",
+    reckless = "Reckless \nBehavior",
+    smoking = "Smoking"
+  ),
+  coords = coords_mine
+) |>
+  ggdag_dconnected("glioma", "smoking",
+    controlling_for = "hospitalized",
+    text = FALSE, use_labels = "label", collider_lines = FALSE
+  )
 
 # ---------------------------------------------------------------
 # selection bias in longitudinal research
@@ -713,3 +745,4 @@ ggdag_adjustment_set(dag_sel)
 # - included variable biases arise from "pipes", "colliders", and conditioning on descendant of colliders
 # - the ggdag package can help to obtain causal inference, but it relies on assumptions that are not part of your data
 # - clarify your assumptions
+

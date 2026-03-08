@@ -85,7 +85,7 @@ groupB_scores <- rnorm(100, mean = 105, sd = 15) # simulate scores for group b
 
 # combine into a data frame
 df_scores <- data.frame(
-  group = rep(c("A", "B"), each = 100), 
+  group = rep(c("A", "B"), each = 100),
   scores = c(groupA_scores, groupB_scores)
 )
 
@@ -96,7 +96,7 @@ df_scores <- data.frame(
 # tail(df_scores)
 
 # make group a factor (not strictly necessary here, but useful in other applications)
-df_scores_1 <- df_scores |> 
+df_scores_1 <- df_scores |>
   mutate(group = as.factor(group))
 
 head(df_scores_1)
@@ -113,9 +113,11 @@ ggplot(df_scores_1, aes(x = group, y = scores, fill = group)) +
 # histograms for both groups
 ggplot(df_scores_1, aes(x = scores, fill = group)) +
   geom_histogram(binwidth = 5, color = "black") +
-  labs(title = "Distribution of Scores by Group",
-       x = "Scores",
-       y = "Frequency") +
+  labs(
+    title = "Distribution of Scores by Group",
+    x = "Scores",
+    y = "Frequency"
+  ) +
   facet_wrap(~group, ncol = 1) +
   theme_minimal()
 
@@ -150,9 +152,11 @@ report::report(model)
 # create prediction plot
 pred_plot <- ggeffects::ggpredict(model, terms = "group") |>
   plot() +
-  labs(title = "Predicted Scores by Group",
-       x = "Group", 
-       y = "Predicted Score")
+  labs(
+    title = "Predicted Scores by Group",
+    x = "Group",
+    y = "Predicted Score"
+  )
 
 print(pred_plot)
 
@@ -167,9 +171,10 @@ treatment <- sample(c("Control", "Treatment"), n, replace = TRUE) # treatment as
 
 # effect that varies by age (interaction)
 # younger people benefit more from treatment
-effect_size <- ifelse(treatment == "Treatment", 
-                      15 - 0.3 * age, # treatment effect decreases with age
-                      0)             # no effect in control group
+effect_size <- ifelse(treatment == "Treatment",
+  15 - 0.3 * age, # treatment effect decreases with age
+  0
+) # no effect in control group
 
 # create outcome with some noise
 outcome <- 50 + effect_size + rnorm(n, mean = 0, sd = 10)
@@ -188,9 +193,11 @@ summary(mod_model)
 # visualize interaction effect
 interaction_plot <- ggeffects::ggpredict(mod_model, terms = c("age[all]", "treatment")) |>
   plot() +
-  labs(title = "Treatment Effect Conditional on Age",
-       x = "Age", 
-       y = "Predicted Outcome")
+  labs(
+    title = "Treatment Effect Conditional on Age",
+    x = "Age",
+    y = "Predicted Outcome"
+  )
 
 print(interaction_plot)
 
@@ -215,12 +222,14 @@ scatter_plot <- ggplot(df_moderation, aes(x = age, y = outcome, color = treatmen
   geom_point(alpha = 0.6) +
   geom_smooth(method = "lm", se = TRUE) +
   theme_minimal() +
-  labs(title = "Raw Data with Regression Lines",
-       x = "Age", 
-       y = "Outcome")
+  labs(
+    title = "Raw Data with Regression Lines",
+    x = "Age",
+    y = "Outcome"
+  )
 
 # combine plots
-combined_plot <- scatter_plot / interaction_plot + 
+combined_plot <- scatter_plot / interaction_plot +
   plot_annotation(
     title = "Treatment Effects by Age",
     subtitle = "Raw data (top) and model predictions (bottom)",
@@ -231,3 +240,4 @@ print(combined_plot)
 
 # save combined plot
 ggsave("combined_treatment_age_analysis.png", combined_plot, width = 10, height = 12)
+
